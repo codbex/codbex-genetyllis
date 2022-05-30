@@ -1,0 +1,5 @@
+{
+	"description": "ClinicalSignificance view",
+	"extensionPoint": "launchpad-codbex-genetyllis-Entities-view",
+	"module": "genetyllis-app/gen/ui/Entities/views/ClinicalSignificance/extensions/view.js"
+}

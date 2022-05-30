@@ -1,0 +1,5 @@
+{
+	"description": "Gene menu",
+	"extensionPoint": "shell-genetyllis-app-menu",
+	"module": "genetyllis-app/views/Gene/menu/item.js"
+}

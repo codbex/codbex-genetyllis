@@ -1,0 +1,5 @@
+{
+	"description": "Variant menu",
+	"extensionPoint": "shell-genetyllis-app-menu",
+	"module": "genetyllis-app/views/Variant/menu/item.js"
+}

@@ -1,0 +1,5 @@
+{
+	"description": "ClinicalSignificance menu",
+	"extensionPoint": "shell-genetyllis-app-menu",
+	"module": "genetyllis-app/views/ClinicalSignificance/menu/item.js"
+}

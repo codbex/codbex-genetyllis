@@ -1,0 +1,4 @@
+{
+	"description": "Extension Point for the genetyllis-app Menu Providers",
+	"name": "launchpad-genetyllis-app-menu"
+}

@@ -1,0 +1,5 @@
+{
+	"description": "VariantRecord menu",
+	"extensionPoint": "shell-genetyllis-app-menu",
+	"module": "genetyllis-app/views/VariantRecord/menu/item.js"
+}

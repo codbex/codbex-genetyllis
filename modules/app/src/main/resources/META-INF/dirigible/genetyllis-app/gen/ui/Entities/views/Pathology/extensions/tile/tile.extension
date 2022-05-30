@@ -1,0 +1,5 @@
+{
+	"description": "Entities tiles",
+	"extensionPoint": "launchpad-codbex-genetyllis-tiles",
+	"module": "genetyllis-app/gen/ui/Entities/views/Pathology/extensions/tile/tile.js"
+}

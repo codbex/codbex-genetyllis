@@ -1,0 +1,5 @@
+{
+	"description": "ClinicalHistory menu",
+	"extensionPoint": "shell-genetyllis-app-menu",
+	"module": "genetyllis-app/views/ClinicalHistory/menu/item.js"
+}
