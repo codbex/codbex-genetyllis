@@ -18,7 +18,7 @@
 
 <body ng-controller="PageController">
 	<div class="page-header container">
-		<h1>Manage SignificanceType</h1>
+		<h1>Manage Significance</h1>
 	</div>
 	<div class="container">
 		<button type="button" ng-click="openNewDialog()" class="btn btn-lg btn-outline-primary pull-right table-header-button"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -59,7 +59,7 @@
 					<form name="entityForm" ng-hide="actionType === 'delete'">
 						<div class="form-group">
 							<label>Name</label>
-							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter name" ng-model="entity.Name" ng-change="updateCalculatedProperties()">
+							<input   type="text"  maxlength="50" class="form-control" placeholder="Enter name" ng-model="entity.Name" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="modal-footer">
 							<input type="submit" value="Save" class="btn btn-primary btn-lg" ng-show="actionType === 'new'" ng-click="create()">
@@ -68,7 +68,7 @@
 						</div>
 					</form>
 					<div ng-show="actionType === 'delete'">
-						You are going to delete <b>SignificanceType</b> with <b>Id = {{entity.Id}}</b>.
+						You are going to delete <b>Significance</b> with <b>Id = {{entity.Id}}</b>.
 					</div>
 					<div class="modal-footer" ng-show="actionType === 'delete'">
 						<button type="button" class="btn btn-primary btn-lg" ng-click="delete()">Delete</button>

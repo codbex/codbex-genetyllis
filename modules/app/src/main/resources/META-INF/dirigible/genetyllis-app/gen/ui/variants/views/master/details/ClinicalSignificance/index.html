@@ -29,7 +29,7 @@
 					<th class="text-capitalize">Id</th>
 					<th class="text-capitalize">VariantId</th>
 					<th class="text-capitalize">PathologyId</th>
-					<th class="text-capitalize">SignificanceTypeId</th>
+					<th class="text-capitalize">SignificanceId</th>
 					<th class="text-capitalize">Evaluated</th>
 					<th class="text-capitalize">ReviewStatus</th>
 					<th class="text-capitalize">Updated</th>
@@ -40,9 +40,8 @@
 				<tr ng-repeat="next in data">
 					<td>{{(dataPage - 1) * dataLimit + $index + 1}}</td>
 					<td>{{next.Id}}</td>
-					<td>{{variantidOptionValue(next.VariantId)}}</td>
 					<td>{{pathologyidOptionValue(next.PathologyId)}}</td>
-					<td>{{significancetypeidOptionValue(next.SignificanceTypeId)}}</td>
+					<td>{{significanceidOptionValue(next.SignificanceId)}}</td>
 					<td>{{next.Evaluated | date:dateFormat}}</td>
 					<td>{{next.ReviewStatus}}</td>
 					<td>{{next.Updated | date:dateFormat}}</td>
@@ -69,16 +68,12 @@
 				<div class="modal-body">
 					<form name="entityForm" ng-hide="actionType === 'delete'">
 						<div class="form-group">
-							<label>VariantId</label>
-							<select  class="form-control" ng-options="o.Id as o.HGVS for o in variantidOptions" ng-model="entity.VariantId" ng-change="updateCalculatedProperties()"></select>
-						</div>
-						<div class="form-group">
 							<label>PathologyId</label>
 							<select  class="form-control" ng-options="o.Id as o.Name for o in pathologyidOptions" ng-model="entity.PathologyId" ng-change="updateCalculatedProperties()"></select>
 						</div>
 						<div class="form-group">
-							<label>SignificanceTypeId</label>
-							<select  class="form-control" ng-options="o.Id as o.Name for o in significancetypeidOptions" ng-model="entity.SignificanceTypeId" ng-change="updateCalculatedProperties()"></select>
+							<label>SignificanceId</label>
+							<select  class="form-control" ng-options="o.Id as o.Name for o in significanceidOptions" ng-model="entity.SignificanceId" ng-change="updateCalculatedProperties()"></select>
 						</div>
 						<div class="form-group">
 							<label>Evaluated</label>

@@ -8,11 +8,14 @@
  * SAP - initial API and implementation
  */
 
-exports.getMenu = function() {
+exports.getView = function(relativePath) {
 	return {
-		id: "SignificanceType",
-		name: "SignificanceType",
-		link: "#",
-		order: 800
+		id: "Significance",
+		name: "Significance",
+		label: "Significance",
+		order: 100,
+		factory: "frame",
+		// region: "center-bottom",
+		link: relativePath + "services/v4/web/genetyllis-app/gen/ui/nomenclature/views/Significance/index.html"
 	};
 };

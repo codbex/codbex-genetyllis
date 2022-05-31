@@ -1,5 +1,5 @@
 {
 	"description": "variants view",
-	"extensionPoint": "launchpad-codbex-genetellis-variants-Variant-view",
+	"extensionPoint": "launchpad-genetyllis-variants-Variant-view",
 	"module": "genetyllis-app/gen/ui/variants/views/master/Variant/master/extensions/view.js"
 }

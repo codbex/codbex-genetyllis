@@ -61,11 +61,11 @@
 					<form name="entityForm" ng-hide="actionType === 'delete'">
 						<div class="form-group">
 							<label>CUI</label>
-							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter cui" ng-model="entity.CUI" ng-change="updateCalculatedProperties()">
+							<input   type="text"  maxlength="8" class="form-control" placeholder="Enter cui" ng-model="entity.CUI" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="form-group">
 							<label>Name</label>
-							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter name" ng-model="entity.Name" ng-change="updateCalculatedProperties()">
+							<input   type="text"  maxlength="500" class="form-control" placeholder="Enter name" ng-model="entity.Name" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="modal-footer">
 							<input type="submit" value="Save" class="btn btn-primary btn-lg" ng-show="actionType === 'new'" ng-click="create()">

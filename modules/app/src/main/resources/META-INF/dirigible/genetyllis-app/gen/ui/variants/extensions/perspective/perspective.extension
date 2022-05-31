@@ -1,5 +1,5 @@
 {
 	"description": "variants perspective",
-	"extensionPoint": "launchpad-codbex-genetellis-perspective",
+	"extensionPoint": "launchpad-genetyllis-perspective",
 	"module": "genetyllis-app/gen/ui/variants/extensions/perspective/perspective.js"
 }

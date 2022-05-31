@@ -1,5 +1,5 @@
 {
 	"description": "patients tiles",
-	"extensionPoint": "launchpad-codbex-genetellis-tiles",
+	"extensionPoint": "launchpad-genetyllis-tiles",
 	"module": "genetyllis-app/gen/ui/patients/views/Patient/extensions/tile/tile.js"
 }

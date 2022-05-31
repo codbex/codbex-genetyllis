@@ -38,7 +38,7 @@
 <body ng-app="workbench" ng-controller="WorkbenchController">
 
 	<div class="shell">
-		<div id="genetyllis-app-Patient" class="plane plane-inner" views-layout views-layout-model="layoutModel" views-extension-point="launchpad-codbex-genetellis-patients-Patient-view"></div>
+		<div id="genetyllis-app-Patient" class="plane plane-inner" views-layout views-layout-model="layoutModel" views-extension-point="launchpad-genetyllis-patients-Patient-view"></div>
 	</div>
 	<!-- div class="statusbar" status-bar></div -->
 	
@@ -91,7 +91,7 @@
 				}
 			};
 
-			$http.get('/services/v4/js/genetyllis-app/gen/shell/launchpad/views.js?extensionPoint=launchpad-codbex-genetellis-patients-Patient-view&pathSegments=6')
+			$http.get('/services/v4/js/genetyllis-app/gen/shell/launchpad/views.js?extensionPoint=launchpad-genetyllis-patients-Patient-view&pathSegments=6')
 			.then(function(views) {
 				var master = [];
 				var details = [];

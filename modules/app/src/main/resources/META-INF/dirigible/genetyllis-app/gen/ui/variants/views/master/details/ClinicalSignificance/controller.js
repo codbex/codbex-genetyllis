@@ -43,8 +43,11 @@ angular.module('page')
 		onPathologyModified: function(callback) {
 			on('genetyllis-app.variants.Pathology.modified', callback);
 		},
-		onSignificanceTypeModified: function(callback) {
-			on('genetyllis-app.variants.SignificanceType.modified', callback);
+		onSignificanceModified: function(callback) {
+			on('genetyllis-app.variants.Significance.modified', callback);
+		},
+		onVariantSelected: function(callback) {
+			on('genetyllis-app.variants.Variant.selected', callback);
 		},
 		messageEntityModified: function() {
 			message('modified');
@@ -56,7 +59,7 @@ angular.module('page')
 	var api = '/services/v4/js/genetyllis-app/gen/api/variants/ClinicalSignificance.js';
 	var variantidOptionsApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';
 	var pathologyidOptionsApi = '/services/v4/js/genetyllis-app/gen/api/nomenclature/Pathology.js';
-	var significancetypeidOptionsApi = '/services/v4/js/genetyllis-app/gen/api/nomenclature/SignificanceType.js';
+	var significanceidOptionsApi = '/services/v4/js/genetyllis-app/gen/api/nomenclature/Significance.js';
 
 	$scope.dateOptions = {
 		startingDay: 1
@@ -72,7 +75,7 @@ angular.module('page')
 
 	$scope.pathologyidOptions = [];
 
-	$scope.significancetypeidOptions = [];
+	$scope.significanceidOptions = [];
 
 	function variantidOptionsLoad() {
 		$http.get(variantidOptionsApi)
@@ -90,13 +93,13 @@ angular.module('page')
 	}
 	pathologyidOptionsLoad();
 
-	function significancetypeidOptionsLoad() {
-		$http.get(significancetypeidOptionsApi)
+	function significanceidOptionsLoad() {
+		$http.get(significanceidOptionsApi)
 		.then(function(data) {
-			$scope.significancetypeidOptions = data.data;
+			$scope.significanceidOptions = data.data;
 		});
 	}
-	significancetypeidOptionsLoad();
+	significanceidOptionsLoad();
 
 	$scope.dataPage = 1;
 	$scope.dataCount = 0;
@@ -125,7 +128,7 @@ angular.module('page')
 		.then(function(data) {
 			$scope.dataCount = data.data;
 			$scope.dataPages = Math.ceil($scope.dataCount / $scope.dataLimit);
-			$http.get(api + '?=' + $scope.masterEntityId + '&$offset=' + ((pageNumber - 1) * $scope.dataLimit) + '&$limit=' + $scope.dataLimit)
+			$http.get(api + '?VariantId=' + $scope.masterEntityId + '&$offset=' + ((pageNumber - 1) * $scope.dataLimit) + '&$limit=' + $scope.dataLimit)
 			.then(function(data) {
 				$scope.data = data.data;
 			});
@@ -158,6 +161,7 @@ angular.module('page')
 
 	$scope.create = function() {
 		if ($scope.entityForm.$valid) {
+			$scope.entity.VariantId = $scope.masterEntityId;
 			$http.post(api, JSON.stringify($scope.entity))
 			.then(function(data) {
 				$scope.loadPage($scope.dataPage);
@@ -171,6 +175,7 @@ angular.module('page')
 
 	$scope.update = function() {
 		if ($scope.entityForm.$valid) {
+			$scope.entity.VariantId = $scope.masterEntityId;
 
 			$http.put(api + '/' + $scope.entity.Id, JSON.stringify($scope.entity))
 			.then(function(data) {
@@ -230,10 +235,10 @@ angular.module('page')
 		}
 		return null;
 	};
-	$scope.significancetypeidOptionValue = function(optionKey) {
-		for (var i = 0 ; i < $scope.significancetypeidOptions.length; i ++) {
-			if ($scope.significancetypeidOptions[i].Id === optionKey) {
-				return $scope.significancetypeidOptions[i].Name;
+	$scope.significanceidOptionValue = function(optionKey) {
+		for (var i = 0 ; i < $scope.significanceidOptions.length; i ++) {
+			if ($scope.significanceidOptions[i].Id === optionKey) {
+				return $scope.significanceidOptions[i].Name;
 			}
 		}
 		return null;
@@ -242,8 +247,12 @@ angular.module('page')
 	$messageHub.onEntityRefresh($scope.loadPage($scope.dataPage));
 	$messageHub.onVariantModified(variantidOptionsLoad);
 	$messageHub.onPathologyModified(pathologyidOptionsLoad);
-	$messageHub.onSignificanceTypeModified(significancetypeidOptionsLoad);
+	$messageHub.onSignificanceModified(significanceidOptionsLoad);
 
+	$messageHub.onVariantSelected(function(event) {
+		$scope.masterEntityId = event.data.id;
+		$scope.loadPage($scope.dataPage);
+	});
 
 	function toggleEntityModal() {
 		$('#entityModal').modal('toggle');

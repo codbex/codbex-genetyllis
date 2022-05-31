@@ -21,8 +21,8 @@ var dao = daoApi.create({
 			column: "CLINICALSIGNIFICANCE_PATHOLOGYID",
 			type: "INTEGER",
 		}, {
-			name: "SignificanceTypeId",
-			column: "CLINICALSIGNIFICANCE_SIGNIFICANCETYPEID",
+			name: "SignificanceId",
+			column: "CLINICALSIGNIFICANCE_SIGNIFICANCEID",
 			type: "INTEGER",
 		}, {
 			name: "Evaluated",

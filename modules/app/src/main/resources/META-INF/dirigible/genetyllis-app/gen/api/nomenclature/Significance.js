@@ -1,5 +1,5 @@
 var rs = require("http/v4/rs");
-var dao = require("genetyllis-app/gen/dao/nomenclature/SignificanceType");
+var dao = require("genetyllis-app/gen/dao/nomenclature/Significance");
 var http = require("genetyllis-app/gen/api/utils/http");
 
 rs.service()
@@ -43,7 +43,7 @@ rs.service()
 			if (entity) {
 			    http.sendResponseOk(entity);
 			} else {
-				http.sendResponseNotFound("SignificanceType not found");
+				http.sendResponseNotFound("Significance not found");
 			}
 		})
 		.produces(["application/json"])
@@ -60,7 +60,7 @@ rs.service()
 		.post(function(ctx, request, response) {
 			var entity = request.getJSON();
 			entity.Id = dao.create(entity);
-			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/SignificanceType.js/" + entity.Id);
+			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/Significance.js/" + entity.Id);
 			http.sendResponseCreated(entity);
 		})
 		.produces(["application/json"])
@@ -98,7 +98,7 @@ rs.service()
 				dao.delete(id);
 				http.sendResponseNoContent();
 			} else {
-				http.sendResponseNotFound("SignificanceType not found");
+				http.sendResponseNotFound("Significance not found");
 			}
 		})
 		.catch(function(ctx, error) {

@@ -1,5 +1,5 @@
 {
-    "namespace": "codbex-genetyllis",
+    "namespace": "genetyllis",
     "entities": [
         {
             "name": "Patient",
@@ -307,8 +307,8 @@
                     "nullable": true
                 },
                 {
-                    "name": "SignificanceTypeId",
-                    "column": "CLINICALSIGNIFICANCE_SIGNIFICANCETYPEID",
+                    "name": "SignificanceId",
+                    "column": "CLINICALSIGNIFICANCE_SIGNIFICANCEID",
                     "nullable": true
                 },
                 {
@@ -330,24 +330,24 @@
             "navigations": []
         },
         {
-            "name": "SignificanceType",
-            "alias": "SignificanceType",
-            "table": "GENETYLLIS_SIGNIFICANCETYPE",
+            "name": "Significance",
+            "alias": "Significance",
+            "table": "GENETYLLIS_SIGNIFICANCE",
             "properties": [
                 {
                     "name": "Id",
-                    "column": "SIGNIFICANCETYPE_ID"
+                    "column": "SIGNIFICANCE_ID"
                 },
                 {
                     "name": "Name",
-                    "column": "SIGNIFICANCETYPE_NAME",
+                    "column": "SIGNIFICANCE_NAME",
                     "nullable": true
                 }
             ],
             "navigations": [
                 {
                     "name": "ClinicalSignificance",
-                    "association": "SignificanceTypeClinicalSignificance"
+                    "association": "SignificanceClinicalSignificance"
                 }
             ]
         },
@@ -400,6 +400,11 @@
                 {
                     "name": "Name",
                     "column": "POPULATION_NAME",
+                    "nullable": true
+                },
+                {
+                    "name": "Description",
+                    "column": "POPULATION_DESCRIPTION",
                     "nullable": true
                 }
             ],
@@ -556,15 +561,15 @@
             }
         },
         {
-            "name": "SignificanceTypeClinicalSignificance",
+            "name": "SignificanceClinicalSignificance",
             "from": {
-                "entity": "SignificanceType",
+                "entity": "Significance",
                 "property": "Id",
                 "multiplicity": "1"
             },
             "to": {
                 "entity": "ClinicalSignificance",
-                "property": "SignificanceTypeId",
+                "property": "SignificanceId",
                 "multiplicity": "*"
             }
         },

@@ -9,5 +9,38 @@
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
     "keys": []
+  },
+  {
+    "table": "GENETYLLIS_GENDER",
+    "schema": "PUBLIC",
+    "file": "/genetyllis-data/data/GENETYLLIS_GENDER.csv",
+    "header": true,
+    "useHeaderNames": true,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
+  },
+  {
+    "table": "GENETYLLIS_POPULATION",
+    "schema": "PUBLIC",
+    "file": "/genetyllis-data/data/GENETYLLIS_POPULATION.csv",
+    "header": true,
+    "useHeaderNames": true,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
+  },
+  {
+    "table": "GENETYLLIS_SIGNIFICANCE",
+    "schema": "PUBLIC",
+    "file": "/genetyllis-data/data/GENETYLLIS_SIGNIFICANCE.csv",
+    "header": true,
+    "useHeaderNames": true,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
   }
 ]

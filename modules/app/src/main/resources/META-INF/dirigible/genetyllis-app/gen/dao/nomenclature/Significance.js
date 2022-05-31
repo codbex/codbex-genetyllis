@@ -3,17 +3,17 @@ var producer = require("messaging/v4/producer");
 var daoApi = require("db/v4/dao");
 
 var dao = daoApi.create({
-	table: "GENETYLLIS_SIGNIFICANCETYPE",
+	table: "GENETYLLIS_SIGNIFICANCE",
 	properties: [
 		{
 			name: "Id",
-			column: "SIGNIFICANCETYPE_ID",
+			column: "SIGNIFICANCE_ID",
 			type: "INTEGER",
 			id: true,
 			autoIncrement: true,
 		}, {
 			name: "Name",
-			column: "SIGNIFICANCETYPE_NAME",
+			column: "SIGNIFICANCE_NAME",
 			type: "VARCHAR",
 		}]
 });
@@ -29,10 +29,10 @@ exports.get = function(id) {
 exports.create = function(entity) {
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
-		table: "GENETYLLIS_SIGNIFICANCETYPE",
+		table: "GENETYLLIS_SIGNIFICANCE",
 		key: {
 			name: "Id",
-			column: "SIGNIFICANCETYPE_ID",
+			column: "SIGNIFICANCE_ID",
 			value: id
 		}
 	});
@@ -42,10 +42,10 @@ exports.create = function(entity) {
 exports.update = function(entity) {
 	dao.update(entity);
 	triggerEvent("Update", {
-		table: "GENETYLLIS_SIGNIFICANCETYPE",
+		table: "GENETYLLIS_SIGNIFICANCE",
 		key: {
 			name: "Id",
-			column: "SIGNIFICANCETYPE_ID",
+			column: "SIGNIFICANCE_ID",
 			value: entity.Id
 		}
 	});
@@ -54,10 +54,10 @@ exports.update = function(entity) {
 exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
-		table: "GENETYLLIS_SIGNIFICANCETYPE",
+		table: "GENETYLLIS_SIGNIFICANCE",
 		key: {
 			name: "Id",
-			column: "SIGNIFICANCETYPE_ID",
+			column: "SIGNIFICANCE_ID",
 			value: id
 		}
 	});
@@ -68,7 +68,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_SIGNIFICANCETYPE");
+	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_SIGNIFICANCE");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -80,5 +80,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/nomenclature/SignificanceType/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/nomenclature/Significance/" + operation).send(JSON.stringify(data));
 }

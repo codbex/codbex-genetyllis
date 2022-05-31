@@ -43,6 +43,9 @@ angular.module('page')
 		onPathologyModified: function(callback) {
 			on('genetyllis-app.patients.Pathology.modified', callback);
 		},
+		onPatientSelected: function(callback) {
+			on('genetyllis-app.patients.Patient.selected', callback);
+		},
 		messageEntityModified: function() {
 			message('modified');
 		}
@@ -111,7 +114,7 @@ angular.module('page')
 		.then(function(data) {
 			$scope.dataCount = data.data;
 			$scope.dataPages = Math.ceil($scope.dataCount / $scope.dataLimit);
-			$http.get(api + '?=' + $scope.masterEntityId + '&$offset=' + ((pageNumber - 1) * $scope.dataLimit) + '&$limit=' + $scope.dataLimit)
+			$http.get(api + '?PatientId=' + $scope.masterEntityId + '&$offset=' + ((pageNumber - 1) * $scope.dataLimit) + '&$limit=' + $scope.dataLimit)
 			.then(function(data) {
 				$scope.data = data.data;
 			});
@@ -144,6 +147,7 @@ angular.module('page')
 
 	$scope.create = function() {
 		if ($scope.entityForm.$valid) {
+			$scope.entity.PatientId = $scope.masterEntityId;
 			$http.post(api, JSON.stringify($scope.entity))
 			.then(function(data) {
 				$scope.loadPage($scope.dataPage);
@@ -157,6 +161,7 @@ angular.module('page')
 
 	$scope.update = function() {
 		if ($scope.entityForm.$valid) {
+			$scope.entity.PatientId = $scope.masterEntityId;
 
 			$http.put(api + '/' + $scope.entity.Id, JSON.stringify($scope.entity))
 			.then(function(data) {
@@ -205,6 +210,10 @@ angular.module('page')
 	$messageHub.onPatientModified(patientidOptionsLoad);
 	$messageHub.onPathologyModified(pathologyidOptionsLoad);
 
+	$messageHub.onPatientSelected(function(event) {
+		$scope.masterEntityId = event.data.id;
+		$scope.loadPage($scope.dataPage);
+	});
 
 	function toggleEntityModal() {
 		$('#entityModal').modal('toggle');

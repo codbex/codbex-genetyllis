@@ -24,7 +24,7 @@ angular.module('page')
 	var messageHub = new FramesMessageHub();
 
 	var message = function(evtName, data){
-		messageHub.post({data: data}, 'genetyllis-app.nomenclature.SignificanceType.' + evtName);
+		messageHub.post({data: data}, 'genetyllis-app.nomenclature.Significance.' + evtName);
 	};
 
 	var on = function(topic, callback){
@@ -35,7 +35,7 @@ angular.module('page')
 		message: message,
 		on: on,
 		onEntityRefresh: function(callback) {
-			on('genetyllis-app.nomenclature.SignificanceType.refresh', callback);
+			on('genetyllis-app.nomenclature.Significance.refresh', callback);
 		},
 		messageEntityModified: function() {
 			message('modified');
@@ -44,7 +44,7 @@ angular.module('page')
 }])
 .controller('PageController', function ($scope, $http, $messageHub) {
 
-	var api = '/services/v4/js/genetyllis-app/gen/api/nomenclature/SignificanceType.js';
+	var api = '/services/v4/js/genetyllis-app/gen/api/nomenclature/Significance.js';
 
 	$scope.dateOptions = {
 		startingDay: 1

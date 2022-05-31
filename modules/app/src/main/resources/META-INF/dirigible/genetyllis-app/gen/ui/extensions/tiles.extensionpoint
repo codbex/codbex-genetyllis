@@ -1,4 +1,4 @@
 {
-	"description": "Extension Point for the codbex-genetellis Tiles Providers",
-	"name": "launchpad-codbex-genetellis-tiles"
+	"description": "Extension Point for the genetyllis Tiles Providers",
+	"name": "launchpad-genetyllis-tiles"
 }

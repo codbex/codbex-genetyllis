@@ -37,6 +37,9 @@ angular.module('page')
 		onEntityRefresh: function(callback) {
 			on('genetyllis-app.records.Filter.refresh', callback);
 		},
+		onVariantRecordSelected: function(callback) {
+			on('genetyllis-app.records.VariantRecord.selected', callback);
+		},
 		messageEntityModified: function() {
 			message('modified');
 		}
@@ -83,7 +86,7 @@ angular.module('page')
 		.then(function(data) {
 			$scope.dataCount = data.data;
 			$scope.dataPages = Math.ceil($scope.dataCount / $scope.dataLimit);
-			$http.get(api + '?=' + $scope.masterEntityId + '&$offset=' + ((pageNumber - 1) * $scope.dataLimit) + '&$limit=' + $scope.dataLimit)
+			$http.get(api + '?VariantRecordId=' + $scope.masterEntityId + '&$offset=' + ((pageNumber - 1) * $scope.dataLimit) + '&$limit=' + $scope.dataLimit)
 			.then(function(data) {
 				$scope.data = data.data;
 			});
@@ -116,6 +119,7 @@ angular.module('page')
 
 	$scope.create = function() {
 		if ($scope.entityForm.$valid) {
+			$scope.entity.VariantRecordId = $scope.masterEntityId;
 			$http.post(api, JSON.stringify($scope.entity))
 			.then(function(data) {
 				$scope.loadPage($scope.dataPage);
@@ -129,6 +133,7 @@ angular.module('page')
 
 	$scope.update = function() {
 		if ($scope.entityForm.$valid) {
+			$scope.entity.VariantRecordId = $scope.masterEntityId;
 
 			$http.put(api + '/' + $scope.entity.Id, JSON.stringify($scope.entity))
 			.then(function(data) {
@@ -159,6 +164,10 @@ angular.module('page')
 
 	$messageHub.onEntityRefresh($scope.loadPage($scope.dataPage));
 
+	$messageHub.onVariantRecordSelected(function(event) {
+		$scope.masterEntityId = event.data.id;
+		$scope.loadPage($scope.dataPage);
+	});
 
 	function toggleEntityModal() {
 		$('#entityModal').modal('toggle');

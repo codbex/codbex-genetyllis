@@ -67,13 +67,13 @@
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 20,
+                        "length": 8,
                         "nullable": true,
                         "name": "PATHOLOGY_CUI"
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 20,
+                        "length": 500,
                         "nullable": true,
                         "name": "PATHOLOGY_NAME"
                     }
@@ -309,7 +309,7 @@
                         "type": "INTEGER",
                         "length": 0,
                         "nullable": true,
-                        "name": "CLINICALSIGNIFICANCE_SIGNIFICANCETYPEID"
+                        "name": "CLINICALSIGNIFICANCE_SIGNIFICANCEID"
                     },
                     {
                         "type": "DATE",
@@ -332,7 +332,7 @@
                 ]
             },
             {
-                "name": "GENETYLLIS_SIGNIFICANCETYPE",
+                "name": "GENETYLLIS_SIGNIFICANCE",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -341,13 +341,13 @@
                         "primaryKey": true,
                         "identity": true,
                         "nullable": true,
-                        "name": "SIGNIFICANCETYPE_ID"
+                        "name": "SIGNIFICANCE_ID"
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 20,
+                        "length": 50,
                         "nullable": true,
-                        "name": "SIGNIFICANCETYPE_NAME"
+                        "name": "SIGNIFICANCE_NAME"
                     }
                 ]
             },
@@ -412,6 +412,12 @@
                         "length": 20,
                         "nullable": true,
                         "name": "POPULATION_NAME"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 200,
+                        "nullable": true,
+                        "name": "POPULATION_DESCRIPTION"
                     }
                 ]
             },
@@ -497,13 +503,13 @@
                 "referencedColumns": "PATHOLOGY_ID"
             },
             {
-                "name": "ClinicalSignificance_SignificanceType",
+                "name": "ClinicalSignificance_Significance",
                 "type": "foreignKey",
                 "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
-                "constraintName": "ClinicalSignificance_SignificanceType",
-                "columns": "CLINICALSIGNIFICANCE_SIGNIFICANCETYPEID",
-                "referencedTable": "GENETYLLIS_SIGNIFICANCETYPE",
-                "referencedColumns": "SIGNIFICANCETYPE_ID"
+                "constraintName": "ClinicalSignificance_Significance",
+                "columns": "CLINICALSIGNIFICANCE_SIGNIFICANCEID",
+                "referencedTable": "GENETYLLIS_SIGNIFICANCE",
+                "referencedColumns": "SIGNIFICANCE_ID"
             },
             {
                 "name": "AlleleFrequency_Variant",

@@ -1,4 +1,5 @@
 {
 	"description": "ClinicalSignificance view",
+	"extensionPoint": "launchpad-genetyllis-variants-Variant-view",
 	"module": "genetyllis-app/gen/ui/variants/views/master/details/ClinicalSignificance/extensions/view.js"
 }

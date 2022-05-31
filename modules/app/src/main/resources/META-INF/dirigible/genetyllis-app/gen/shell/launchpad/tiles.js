@@ -15,7 +15,7 @@ var response = require("http/v4/response");
 var tiles = [];
 
 var relativePath = getRelativePath(request.getParameter("pathSegments"));
-var tileExtensions = extensions.getExtensions("launchpad-codbex-genetellis-tiles");
+var tileExtensions = extensions.getExtensions("launchpad-genetyllis-tiles");
 for (var i = 0; tileExtensions !== null && i < tileExtensions.length; i++) {
     var tileExtension = require(tileExtensions[i]);
     var tile = tileExtension.getTile(relativePath);

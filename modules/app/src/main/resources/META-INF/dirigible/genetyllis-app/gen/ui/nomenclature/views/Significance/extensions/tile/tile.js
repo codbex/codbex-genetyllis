@@ -8,17 +8,17 @@
  * SAP - initial API and implementation
  */
 
-var dao = require("genetyllis-app/gen/dao/nomenclature/SignificanceType.js")
+var dao = require("genetyllis-app/gen/dao/nomenclature/Significance.js")
 
 exports.getTile = function(relativePath) {
 	let count = "n/a";
 	try {
 		count = dao.customDataCount();	
 	} catch (e) {
-		console.error("Error occured while involking 'genetyllis-app/gen/dao/nomenclature/SignificanceType.customDataCount()': " + e);
+		console.error("Error occured while involking 'genetyllis-app/gen/dao/nomenclature/Significance.customDataCount()': " + e);
 	}
 	return {
-		name: "SignificanceType",
+		name: "Significance",
 		group: "nomenclature",
 		icon: "star",
 		location: relativePath + "services/v4/web/genetyllis-app/gen/ui/nomenclature/index.html",
