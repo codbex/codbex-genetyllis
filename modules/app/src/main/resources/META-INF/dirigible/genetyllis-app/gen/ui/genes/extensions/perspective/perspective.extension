@@ -1,0 +1,5 @@
+{
+	"description": "genes perspective",
+	"extensionPoint": "launchpad-codbex-genetellis-perspective",
+	"module": "genetyllis-app/gen/ui/genes/extensions/perspective/perspective.js"
+}

@@ -1,0 +1,5 @@
+{
+	"description": "nomenclature tiles",
+	"extensionPoint": "launchpad-codbex-genetellis-tiles",
+	"module": "genetyllis-app/gen/ui/nomenclature/views/Pathology/extensions/tile/tile.js"
+}

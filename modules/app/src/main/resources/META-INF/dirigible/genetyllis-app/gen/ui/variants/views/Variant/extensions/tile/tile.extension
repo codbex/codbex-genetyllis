@@ -1,0 +1,5 @@
+{
+	"description": "variants tiles",
+	"extensionPoint": "launchpad-codbex-genetellis-tiles",
+	"module": "genetyllis-app/gen/ui/variants/views/Variant/extensions/tile/tile.js"
+}

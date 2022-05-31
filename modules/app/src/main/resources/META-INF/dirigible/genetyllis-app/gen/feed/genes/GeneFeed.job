@@ -1,0 +1,5 @@
+{
+	"expression": "0 0 0 1 * ? *",
+	"handler": "genetyllis-app/gen/feed/genes/GeneFeedSynchronizer.js",
+	"description": "GeneFeedSynchronizer Job"
+}

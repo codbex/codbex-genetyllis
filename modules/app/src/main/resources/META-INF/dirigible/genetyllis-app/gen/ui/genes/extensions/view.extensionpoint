@@ -1,0 +1,4 @@
+{
+	"description": "Extension Point for the genes View Providers",
+	"name": "launchpad-codbex-genetellis-genes-view"
+}

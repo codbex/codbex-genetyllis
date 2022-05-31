@@ -1,0 +1,5 @@
+{
+	"description": "records tiles",
+	"extensionPoint": "launchpad-codbex-genetellis-tiles",
+	"module": "genetyllis-app/gen/ui/records/views/VariantRecord/extensions/tile/tile.js"
+}

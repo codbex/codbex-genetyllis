@@ -1,0 +1,4 @@
+{
+	"description": "ClinicalHistory view",
+	"module": "genetyllis-app/gen/ui/patients/views/master/details/ClinicalHistory/extensions/view.js"
+}

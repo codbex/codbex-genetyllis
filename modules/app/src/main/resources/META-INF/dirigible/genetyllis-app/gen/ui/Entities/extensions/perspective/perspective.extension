@@ -1,5 +1,0 @@
-{
-	"description": "Entities perspective",
-	"extensionPoint": "launchpad-codbex-genetyllis-perspective",
-	"module": "genetyllis-app/gen/ui/Entities/extensions/perspective/perspective.js"
-}

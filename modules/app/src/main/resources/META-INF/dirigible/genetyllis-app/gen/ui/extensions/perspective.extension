@@ -1,5 +1,5 @@
 {
 	"description": "Home perspective",
-	"extensionPoint": "launchpad-codbex-genetyllis-perspective",
+	"extensionPoint": "launchpad-codbex-genetellis-perspective",
 	"module": "genetyllis-app/gen/ui/extensions/perspective.js"
 }

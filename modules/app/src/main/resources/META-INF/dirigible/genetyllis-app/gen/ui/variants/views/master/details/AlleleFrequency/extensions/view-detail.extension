@@ -1,0 +1,4 @@
+{
+	"description": "AlleleFrequency view",
+	"module": "genetyllis-app/gen/ui/variants/views/master/details/AlleleFrequency/extensions/view.js"
+}

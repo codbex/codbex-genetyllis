@@ -2,7 +2,7 @@
     "schema": {
         "structures": [
             {
-                "name": "PATIENT",
+                "name": "GENETYLLIS_PATIENT",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -34,7 +34,7 @@
                 ]
             },
             {
-                "name": "GENDER",
+                "name": "GENETYLLIS_GENDER",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -54,7 +54,7 @@
                 ]
             },
             {
-                "name": "PATHOLOGY",
+                "name": "GENETYLLIS_PATHOLOGY",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -80,7 +80,7 @@
                 ]
             },
             {
-                "name": "CLINICALHISTORY",
+                "name": "GENETYLLIS_CLINICALHISTORY",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -106,7 +106,7 @@
                 ]
             },
             {
-                "name": "VARIANT",
+                "name": "GENETYLLIS_VARIANT",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -174,7 +174,7 @@
                 ]
             },
             {
-                "name": "VARIANTRECORD",
+                "name": "GENETYLLIS_VARIANTRECORD",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -224,7 +224,7 @@
                 ]
             },
             {
-                "name": "GENE",
+                "name": "GENETYLLIS_GENE",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -256,7 +256,7 @@
                 ]
             },
             {
-                "name": "FILTER",
+                "name": "GENETYLLIS_FILTER",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -282,7 +282,7 @@
                 ]
             },
             {
-                "name": "CLINICALSIGNIFICANCE",
+                "name": "GENETYLLIS_CLINICALSIGNIFICANCE",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -332,7 +332,7 @@
                 ]
             },
             {
-                "name": "SIGNIFICANCETYPE",
+                "name": "GENETYLLIS_SIGNIFICANCETYPE",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -352,7 +352,7 @@
                 ]
             },
             {
-                "name": "ALLELEFREQUENCY",
+                "name": "GENETYLLIS_ALLELEFREQUENCY",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -396,7 +396,7 @@
                 ]
             },
             {
-                "name": "POPULATION",
+                "name": "GENETYLLIS_POPULATION",
                 "type": "TABLE",
                 "columns": [
                     {
@@ -418,118 +418,118 @@
             {
                 "name": "Patient_Gender",
                 "type": "foreignKey",
-                "table": "PATIENT",
+                "table": "GENETYLLIS_PATIENT",
                 "constraintName": "Patient_Gender",
                 "columns": "PATIENT_GENDERID",
-                "referencedTable": "GENDER",
+                "referencedTable": "GENETYLLIS_GENDER",
                 "referencedColumns": "GENDER_ID"
             },
             {
                 "name": "ClinicalHistory_Patient",
                 "type": "foreignKey",
-                "table": "CLINICALHISTORY",
+                "table": "GENETYLLIS_CLINICALHISTORY",
                 "constraintName": "ClinicalHistory_Patient",
                 "columns": "CLINICALHISTORY_PATIENTID",
-                "referencedTable": "PATIENT",
+                "referencedTable": "GENETYLLIS_PATIENT",
                 "referencedColumns": "PATIENT_ID"
             },
             {
                 "name": "ClinicalHistory_Pathology",
                 "type": "foreignKey",
-                "table": "CLINICALHISTORY",
+                "table": "GENETYLLIS_CLINICALHISTORY",
                 "constraintName": "ClinicalHistory_Pathology",
                 "columns": "CLINICALHISTORY_PATHOLOGYID",
-                "referencedTable": "PATHOLOGY",
+                "referencedTable": "GENETYLLIS_PATHOLOGY",
                 "referencedColumns": "PATHOLOGY_ID"
             },
             {
                 "name": "Variant_Gene",
                 "type": "foreignKey",
-                "table": "VARIANT",
+                "table": "GENETYLLIS_VARIANT",
                 "constraintName": "Variant_Gene",
                 "columns": "VARIANT_GENEID",
-                "referencedTable": "GENE",
+                "referencedTable": "GENETYLLIS_GENE",
                 "referencedColumns": "GENE_ID"
             },
             {
                 "name": "VariantRecord_Patient",
                 "type": "foreignKey",
-                "table": "VARIANTRECORD",
+                "table": "GENETYLLIS_VARIANTRECORD",
                 "constraintName": "VariantRecord_Patient",
                 "columns": "VARIANTRECORD_PATIENTID",
-                "referencedTable": "PATIENT",
+                "referencedTable": "GENETYLLIS_PATIENT",
                 "referencedColumns": "PATIENT_ID"
             },
             {
                 "name": "VariantRecord_Variant",
                 "type": "foreignKey",
-                "table": "VARIANTRECORD",
+                "table": "GENETYLLIS_VARIANTRECORD",
                 "constraintName": "VariantRecord_Variant",
                 "columns": "VARIANTRECORD_VARIANTID",
-                "referencedTable": "VARIANT",
+                "referencedTable": "GENETYLLIS_VARIANT",
                 "referencedColumns": "VARIANT_ID"
             },
             {
                 "name": "Filter_VariantRecord",
                 "type": "foreignKey",
-                "table": "FILTER",
+                "table": "GENETYLLIS_FILTER",
                 "constraintName": "Filter_VariantRecord",
                 "columns": "FILTER_VARIANTRECORDID",
-                "referencedTable": "VARIANTRECORD",
+                "referencedTable": "GENETYLLIS_VARIANTRECORD",
                 "referencedColumns": "VARIANTRECORD_ID"
             },
             {
                 "name": "ClinicalSignificance_Variant",
                 "type": "foreignKey",
-                "table": "CLINICALSIGNIFICANCE",
+                "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
                 "constraintName": "ClinicalSignificance_Variant",
                 "columns": "CLINICALSIGNIFICANCE_VARIANTID",
-                "referencedTable": "VARIANT",
+                "referencedTable": "GENETYLLIS_VARIANT",
                 "referencedColumns": "VARIANT_ID"
             },
             {
                 "name": "ClinicalSignificance_Pathology",
                 "type": "foreignKey",
-                "table": "CLINICALSIGNIFICANCE",
+                "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
                 "constraintName": "ClinicalSignificance_Pathology",
                 "columns": "CLINICALSIGNIFICANCE_PATHOLOGYID",
-                "referencedTable": "PATHOLOGY",
+                "referencedTable": "GENETYLLIS_PATHOLOGY",
                 "referencedColumns": "PATHOLOGY_ID"
             },
             {
                 "name": "ClinicalSignificance_SignificanceType",
                 "type": "foreignKey",
-                "table": "CLINICALSIGNIFICANCE",
+                "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
                 "constraintName": "ClinicalSignificance_SignificanceType",
                 "columns": "CLINICALSIGNIFICANCE_SIGNIFICANCETYPEID",
-                "referencedTable": "SIGNIFICANCETYPE",
+                "referencedTable": "GENETYLLIS_SIGNIFICANCETYPE",
                 "referencedColumns": "SIGNIFICANCETYPE_ID"
             },
             {
                 "name": "AlleleFrequency_Variant",
                 "type": "foreignKey",
-                "table": "ALLELEFREQUENCY",
+                "table": "GENETYLLIS_ALLELEFREQUENCY",
                 "constraintName": "AlleleFrequency_Variant",
                 "columns": "ALLELEFREQUENCY_VARIANTID",
-                "referencedTable": "VARIANT",
+                "referencedTable": "GENETYLLIS_VARIANT",
                 "referencedColumns": "VARIANT_ID"
             },
             {
                 "name": "AlleleFrequency_Gender",
                 "type": "foreignKey",
-                "table": "ALLELEFREQUENCY",
+                "table": "GENETYLLIS_ALLELEFREQUENCY",
                 "constraintName": "AlleleFrequency_Gender",
                 "columns": "ALLELEFREQUENCY_GENDERID",
-                "referencedTable": "GENDER",
+                "referencedTable": "GENETYLLIS_GENDER",
                 "referencedColumns": "GENDER_ID"
             },
             {
                 "name": "AlleleFrequency_Population",
                 "type": "foreignKey",
-                "table": "ALLELEFREQUENCY",
+                "table": "GENETYLLIS_ALLELEFREQUENCY",
                 "constraintName": "AlleleFrequency_Population",
                 "columns": "ALLELEFREQUENCY_POPULATIONID",
-                "referencedTable": "POPULATION",
+                "referencedTable": "GENETYLLIS_POPULATION",
                 "referencedColumns": "POPULATION_ID"
             }
         ]

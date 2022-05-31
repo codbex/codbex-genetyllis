@@ -1,0 +1,5 @@
+{
+	"description": "SignificanceType view",
+	"extensionPoint": "launchpad-codbex-genetellis-nomenclature-view",
+	"module": "genetyllis-app/gen/ui/nomenclature/views/SignificanceType/extensions/view.js"
+}

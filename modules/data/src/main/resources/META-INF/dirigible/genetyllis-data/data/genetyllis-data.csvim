@@ -1,0 +1,13 @@
+[
+  {
+    "table": "GENETYLLIS_PATHOLOGY",
+    "schema": "PUBLIC",
+    "file": "/genetyllis-data/data/GENETYLLIS_PATHOLOGY.csv",
+    "header": true,
+    "useHeaderNames": true,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
+  }
+]

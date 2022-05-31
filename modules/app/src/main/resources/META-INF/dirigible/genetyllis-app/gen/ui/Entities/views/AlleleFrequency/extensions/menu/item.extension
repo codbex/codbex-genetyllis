@@ -1,5 +1,0 @@
-{
-	"description": "AlleleFrequency menu",
-	"extensionPoint": "shell-genetyllis-app-menu",
-	"module": "genetyllis-app/views/AlleleFrequency/menu/item.js"
-}

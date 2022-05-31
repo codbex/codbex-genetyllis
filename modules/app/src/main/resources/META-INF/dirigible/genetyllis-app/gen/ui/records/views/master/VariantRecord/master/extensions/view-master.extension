@@ -1,0 +1,5 @@
+{
+	"description": "records view",
+	"extensionPoint": "launchpad-codbex-genetellis-records-VariantRecord-view",
+	"module": "genetyllis-app/gen/ui/records/views/master/VariantRecord/master/extensions/view.js"
+}

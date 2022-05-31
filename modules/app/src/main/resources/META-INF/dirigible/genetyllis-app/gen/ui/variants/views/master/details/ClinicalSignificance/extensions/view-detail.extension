@@ -1,0 +1,4 @@
+{
+	"description": "ClinicalSignificance view",
+	"module": "genetyllis-app/gen/ui/variants/views/master/details/ClinicalSignificance/extensions/view.js"
+}

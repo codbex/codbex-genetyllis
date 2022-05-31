@@ -1,0 +1,5 @@
+{
+	"description": "patients view",
+	"extensionPoint": "launchpad-codbex-genetellis-patients-view",
+	"module": "genetyllis-app/gen/ui/patients/views/master/Patient/extensions/view.js"
+}
