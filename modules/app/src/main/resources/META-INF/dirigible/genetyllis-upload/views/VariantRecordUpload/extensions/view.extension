@@ -1,0 +1,5 @@
+{
+	"description": "Upload Variant Record view",
+	"extensionPoint": "launchpad-genetyllis-records-view",
+	"module": "genetyllis-upload/views/VariantRecordUpload/extensions/view.js"
+}

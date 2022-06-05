@@ -12,7 +12,7 @@ exports.getMenu = function() {
 	return {
 		id: "Population",
 		name: "Population",
-		link: "#",
+		link: relativePath + "services/v4/web/${projectName}/gen/ui/${perspectiveName}/index.html",
 		order: 800
 	};
 };

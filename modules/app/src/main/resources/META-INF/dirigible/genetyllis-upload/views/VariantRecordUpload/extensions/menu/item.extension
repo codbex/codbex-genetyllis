@@ -1,0 +1,1 @@
+{"description":"Upload Variant Record menu","extensionPoint":"shell-genetyllis-app-menu","module":"genetyllis-upload/views/VariantRecordUpload/extensions/menu/item.js"}

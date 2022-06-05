@@ -8,11 +8,11 @@
  * SAP - initial API and implementation
  */
 
-exports.getMenu = function() {
+exports.getMenu = function () {
 	return {
-		id: "Gender",
-		name: "Gender",
-		link: relativePath + "services/v4/web/${projectName}/gen/ui/${perspectiveName}/index.html",
-		order: 800
+		id: "Upload",
+		name: "Upload",
+		link: "#",
+		order: 100
 	};
 };

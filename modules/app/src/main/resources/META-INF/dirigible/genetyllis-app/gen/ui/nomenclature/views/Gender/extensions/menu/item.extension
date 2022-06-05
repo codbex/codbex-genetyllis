@@ -1,5 +1,5 @@
 {
 	"description": "Gender menu",
 	"extensionPoint": "shell-genetyllis-app-menu",
-	"module": "genetyllis-app/views/Gender/menu/item.js"
+	"module": "genetyllis-app/gen/ui/nomenclature/views/Gender/extensions/menu/item.js"
 }
