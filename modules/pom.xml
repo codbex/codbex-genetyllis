@@ -17,6 +17,7 @@
 		<module>parser</module>
 		<module>app</module>
 		<module>data</module>
+		<module>upload</module>
 	</modules>
 
 	<properties>

@@ -1,0 +1,5 @@
+{
+	"description": "Pathology view",
+	"extensionPoint": "launchpad-genetyllis-nomenclature-view",
+	"module": "genetyllis-app/gen/ui/nomenclature/views/Pathology/extensions/view.js"
+}

@@ -1,0 +1,5 @@
+{
+	"description": "variants view",
+	"extensionPoint": "launchpad-genetyllis-variants-view",
+	"module": "genetyllis-app/gen/ui/variants/views/master/Variant/extensions/view.js"
+}

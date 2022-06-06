@@ -1,0 +1,543 @@
+{
+    "schema": {
+        "structures": [
+            {
+                "name": "GENETYLLIS_PATIENT",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "PATIENT_ID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "PATIENT_GENDERID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 2000,
+                        "nullable": true,
+                        "name": "PATIENT_INFO"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "PATIENT_AGE"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_GENDER",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "GENDER_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "GENDER_NAME"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_PATHOLOGY",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "PATHOLOGY_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 8,
+                        "nullable": true,
+                        "name": "PATHOLOGY_CUI"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 500,
+                        "nullable": true,
+                        "name": "PATHOLOGY_NAME"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_CLINICALHISTORY",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "CLINICALHISTORY_ID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "CLINICALHISTORY_PATIENTID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "CLINICALHISTORY_PATHOLOGYID"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_VARIANT",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "VARIANT_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANT_HGVS"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 5,
+                        "nullable": true,
+                        "name": "VARIANT_CHROMOSOME"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANT_POSITION"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANT_DBSNP"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANT_REFERENCE"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANT_ALTERNATIVE"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "VARIANT_GENEID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 2000,
+                        "nullable": true,
+                        "name": "VARIANT_CONSEQUENCE"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 2000,
+                        "nullable": true,
+                        "name": "VARIANT_CONSEQUENCEDETAILS"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_VARIANTRECORD",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "VARIANTRECORD_ID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "VARIANTRECORD_PATIENTID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "VARIANTRECORD_VARIANTID"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANTRECORD_HOMOZYGOUS"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANTRECORD_ALLELEDEPTH"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANTRECORD_DEPTH"
+                    },
+                    {
+                        "type": "DOUBLE",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANTRECORD_QUALITY"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_GENE",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "GENE_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "GENE_NAME"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "GENE_PSEUDO"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "GENE_REGION"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_FILTER",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "FILTER_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "FILTER_NAME"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "FILTER_VARIANTRECORDID"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_CLINICALSIGNIFICANCE",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "CLINICALSIGNIFICANCE_ID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "CLINICALSIGNIFICANCE_VARIANTID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "CLINICALSIGNIFICANCE_PATHOLOGYID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "CLINICALSIGNIFICANCE_SIGNIFICANCEID"
+                    },
+                    {
+                        "type": "DATE",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "CLINICALSIGNIFICANCE_EVALUATED"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 2000,
+                        "nullable": true,
+                        "name": "CLINICALSIGNIFICANCE_REVIEWSTATUS"
+                    },
+                    {
+                        "type": "DATE",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "CLINICALSIGNIFICANCE_UPDATED"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_SIGNIFICANCE",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "SIGNIFICANCE_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 50,
+                        "nullable": true,
+                        "name": "SIGNIFICANCE_NAME"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_ALLELEFREQUENCY",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "ALLELEFREQUENCY_ID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "ALLELEFREQUENCY_VARIANTID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "ALLELEFREQUENCY_GENDERID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "ALLELEFREQUENCY_POPULATIONID"
+                    },
+                    {
+                        "type": "DOUBLE",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "ALLELEFREQUENCY_FREQUENCY"
+                    },
+                    {
+                        "type": "DATE",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "ALLELEFREQUENCY_UPDATED"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_POPULATION",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "POPULATION_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "POPULATION_NAME"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 200,
+                        "nullable": true,
+                        "name": "POPULATION_DESCRIPTION"
+                    }
+                ]
+            },
+            {
+                "name": "Patient_Gender",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_PATIENT",
+                "constraintName": "Patient_Gender",
+                "columns": "PATIENT_GENDERID",
+                "referencedTable": "GENETYLLIS_GENDER",
+                "referencedColumns": "GENDER_ID"
+            },
+            {
+                "name": "ClinicalHistory_Patient",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_CLINICALHISTORY",
+                "constraintName": "ClinicalHistory_Patient",
+                "columns": "CLINICALHISTORY_PATIENTID",
+                "referencedTable": "GENETYLLIS_PATIENT",
+                "referencedColumns": "PATIENT_ID"
+            },
+            {
+                "name": "ClinicalHistory_Pathology",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_CLINICALHISTORY",
+                "constraintName": "ClinicalHistory_Pathology",
+                "columns": "CLINICALHISTORY_PATHOLOGYID",
+                "referencedTable": "GENETYLLIS_PATHOLOGY",
+                "referencedColumns": "PATHOLOGY_ID"
+            },
+            {
+                "name": "Variant_Gene",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_VARIANT",
+                "constraintName": "Variant_Gene",
+                "columns": "VARIANT_GENEID",
+                "referencedTable": "GENETYLLIS_GENE",
+                "referencedColumns": "GENE_ID"
+            },
+            {
+                "name": "VariantRecord_Patient",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_VARIANTRECORD",
+                "constraintName": "VariantRecord_Patient",
+                "columns": "VARIANTRECORD_PATIENTID",
+                "referencedTable": "GENETYLLIS_PATIENT",
+                "referencedColumns": "PATIENT_ID"
+            },
+            {
+                "name": "VariantRecord_Variant",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_VARIANTRECORD",
+                "constraintName": "VariantRecord_Variant",
+                "columns": "VARIANTRECORD_VARIANTID",
+                "referencedTable": "GENETYLLIS_VARIANT",
+                "referencedColumns": "VARIANT_ID"
+            },
+            {
+                "name": "Filter_VariantRecord",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_FILTER",
+                "constraintName": "Filter_VariantRecord",
+                "columns": "FILTER_VARIANTRECORDID",
+                "referencedTable": "GENETYLLIS_VARIANTRECORD",
+                "referencedColumns": "VARIANTRECORD_ID"
+            },
+            {
+                "name": "ClinicalSignificance_Variant",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
+                "constraintName": "ClinicalSignificance_Variant",
+                "columns": "CLINICALSIGNIFICANCE_VARIANTID",
+                "referencedTable": "GENETYLLIS_VARIANT",
+                "referencedColumns": "VARIANT_ID"
+            },
+            {
+                "name": "ClinicalSignificance_Pathology",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
+                "constraintName": "ClinicalSignificance_Pathology",
+                "columns": "CLINICALSIGNIFICANCE_PATHOLOGYID",
+                "referencedTable": "GENETYLLIS_PATHOLOGY",
+                "referencedColumns": "PATHOLOGY_ID"
+            },
+            {
+                "name": "ClinicalSignificance_Significance",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
+                "constraintName": "ClinicalSignificance_Significance",
+                "columns": "CLINICALSIGNIFICANCE_SIGNIFICANCEID",
+                "referencedTable": "GENETYLLIS_SIGNIFICANCE",
+                "referencedColumns": "SIGNIFICANCE_ID"
+            },
+            {
+                "name": "AlleleFrequency_Variant",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_ALLELEFREQUENCY",
+                "constraintName": "AlleleFrequency_Variant",
+                "columns": "ALLELEFREQUENCY_VARIANTID",
+                "referencedTable": "GENETYLLIS_VARIANT",
+                "referencedColumns": "VARIANT_ID"
+            },
+            {
+                "name": "AlleleFrequency_Gender",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_ALLELEFREQUENCY",
+                "constraintName": "AlleleFrequency_Gender",
+                "columns": "ALLELEFREQUENCY_GENDERID",
+                "referencedTable": "GENETYLLIS_GENDER",
+                "referencedColumns": "GENDER_ID"
+            },
+            {
+                "name": "AlleleFrequency_Population",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_ALLELEFREQUENCY",
+                "constraintName": "AlleleFrequency_Population",
+                "columns": "ALLELEFREQUENCY_POPULATIONID",
+                "referencedTable": "GENETYLLIS_POPULATION",
+                "referencedColumns": "POPULATION_ID"
+            }
+        ]
+    }
+}

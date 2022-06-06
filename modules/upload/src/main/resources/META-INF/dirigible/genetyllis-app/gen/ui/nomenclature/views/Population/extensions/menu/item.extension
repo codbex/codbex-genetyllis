@@ -1,0 +1,5 @@
+{
+	"description": "Population menu",
+	"extensionPoint": "shell-genetyllis-app-menu",
+	"module": "genetyllis-app/gen/ui/nomenclature/views/Population/extensions/menu/item.js"
+}

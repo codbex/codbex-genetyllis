@@ -1,0 +1,5 @@
+{
+	"description": "AlleleFrequency view",
+	"extensionPoint": "launchpad-genetyllis-variants-Variant-view",
+	"module": "genetyllis-app/gen/ui/variants/views/master/details/AlleleFrequency/extensions/view.js"
+}

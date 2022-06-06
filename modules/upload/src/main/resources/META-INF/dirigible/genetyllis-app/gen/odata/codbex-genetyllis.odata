@@ -1,0 +1,590 @@
+{
+    "namespace": "genetyllis",
+    "entities": [
+        {
+            "name": "Patient",
+            "alias": "Patient",
+            "table": "GENETYLLIS_PATIENT",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "PATIENT_ID"
+                },
+                {
+                    "name": "GenderId",
+                    "column": "PATIENT_GENDERID",
+                    "nullable": true
+                },
+                {
+                    "name": "Info",
+                    "column": "PATIENT_INFO",
+                    "nullable": true
+                },
+                {
+                    "name": "Age",
+                    "column": "PATIENT_AGE",
+                    "nullable": true
+                }
+            ],
+            "navigations": [
+                {
+                    "name": "ClinicalHistory",
+                    "association": "PatientClinicalHistory"
+                },
+                {
+                    "name": "VariantRecord",
+                    "association": "PatientVariantRecord"
+                }
+            ]
+        },
+        {
+            "name": "Gender",
+            "alias": "Gender",
+            "table": "GENETYLLIS_GENDER",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "GENDER_ID"
+                },
+                {
+                    "name": "Name",
+                    "column": "GENDER_NAME",
+                    "nullable": true
+                }
+            ],
+            "navigations": [
+                {
+                    "name": "Patient",
+                    "association": "GenderPatient"
+                },
+                {
+                    "name": "AlleleFrequency",
+                    "association": "GenderAlleleFrequency"
+                }
+            ]
+        },
+        {
+            "name": "Pathology",
+            "alias": "Pathology",
+            "table": "GENETYLLIS_PATHOLOGY",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "PATHOLOGY_ID"
+                },
+                {
+                    "name": "CUI",
+                    "column": "PATHOLOGY_CUI",
+                    "nullable": true
+                },
+                {
+                    "name": "Name",
+                    "column": "PATHOLOGY_NAME",
+                    "nullable": true
+                }
+            ],
+            "navigations": [
+                {
+                    "name": "ClinicalHistory",
+                    "association": "PathologyClinicalHistory"
+                },
+                {
+                    "name": "ClinicalSignificance",
+                    "association": "PathologyClinicalSignificance"
+                }
+            ]
+        },
+        {
+            "name": "ClinicalHistory",
+            "alias": "ClinicalHistory",
+            "table": "GENETYLLIS_CLINICALHISTORY",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "CLINICALHISTORY_ID"
+                },
+                {
+                    "name": "PatientId",
+                    "column": "CLINICALHISTORY_PATIENTID",
+                    "nullable": true
+                },
+                {
+                    "name": "PathologyId",
+                    "column": "CLINICALHISTORY_PATHOLOGYID",
+                    "nullable": true
+                }
+            ],
+            "navigations": []
+        },
+        {
+            "name": "Variant",
+            "alias": "Variant",
+            "table": "GENETYLLIS_VARIANT",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "VARIANT_ID"
+                },
+                {
+                    "name": "HGVS",
+                    "column": "VARIANT_HGVS",
+                    "nullable": true
+                },
+                {
+                    "name": "Chromosome",
+                    "column": "VARIANT_CHROMOSOME",
+                    "nullable": true
+                },
+                {
+                    "name": "Position",
+                    "column": "VARIANT_POSITION",
+                    "nullable": true
+                },
+                {
+                    "name": "DBSNP",
+                    "column": "VARIANT_DBSNP",
+                    "nullable": true
+                },
+                {
+                    "name": "Reference",
+                    "column": "VARIANT_REFERENCE",
+                    "nullable": true
+                },
+                {
+                    "name": "Alternative",
+                    "column": "VARIANT_ALTERNATIVE",
+                    "nullable": true
+                },
+                {
+                    "name": "GeneId",
+                    "column": "VARIANT_GENEID",
+                    "nullable": true
+                },
+                {
+                    "name": "Consequence",
+                    "column": "VARIANT_CONSEQUENCE",
+                    "nullable": true
+                },
+                {
+                    "name": "ConsequenceDetails",
+                    "column": "VARIANT_CONSEQUENCEDETAILS",
+                    "nullable": true
+                }
+            ],
+            "navigations": [
+                {
+                    "name": "VariantRecord",
+                    "association": "VariantVariantRecord"
+                },
+                {
+                    "name": "ClinicalSignificance",
+                    "association": "VariantClinicalSignificance"
+                },
+                {
+                    "name": "AlleleFrequency",
+                    "association": "VariantAlleleFrequency"
+                }
+            ]
+        },
+        {
+            "name": "VariantRecord",
+            "alias": "VariantRecord",
+            "table": "GENETYLLIS_VARIANTRECORD",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "VARIANTRECORD_ID"
+                },
+                {
+                    "name": "PatientId",
+                    "column": "VARIANTRECORD_PATIENTID",
+                    "nullable": true
+                },
+                {
+                    "name": "VariantId",
+                    "column": "VARIANTRECORD_VARIANTID",
+                    "nullable": true
+                },
+                {
+                    "name": "Homozygous",
+                    "column": "VARIANTRECORD_HOMOZYGOUS",
+                    "nullable": true
+                },
+                {
+                    "name": "AlleleDepth",
+                    "column": "VARIANTRECORD_ALLELEDEPTH",
+                    "nullable": true
+                },
+                {
+                    "name": "Depth",
+                    "column": "VARIANTRECORD_DEPTH",
+                    "nullable": true
+                },
+                {
+                    "name": "Quality",
+                    "column": "VARIANTRECORD_QUALITY",
+                    "nullable": true
+                }
+            ],
+            "navigations": [
+                {
+                    "name": "Filter",
+                    "association": "VariantRecordFilter"
+                }
+            ]
+        },
+        {
+            "name": "Gene",
+            "alias": "Gene",
+            "table": "GENETYLLIS_GENE",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "GENE_ID"
+                },
+                {
+                    "name": "Name",
+                    "column": "GENE_NAME",
+                    "nullable": true
+                },
+                {
+                    "name": "Pseudo",
+                    "column": "GENE_PSEUDO",
+                    "nullable": true
+                },
+                {
+                    "name": "Region",
+                    "column": "GENE_REGION",
+                    "nullable": true
+                }
+            ],
+            "navigations": [
+                {
+                    "name": "Variant",
+                    "association": "GeneVariant"
+                }
+            ]
+        },
+        {
+            "name": "Filter",
+            "alias": "Filter",
+            "table": "GENETYLLIS_FILTER",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "FILTER_ID"
+                },
+                {
+                    "name": "Name",
+                    "column": "FILTER_NAME",
+                    "nullable": true
+                },
+                {
+                    "name": "VariantRecordId",
+                    "column": "FILTER_VARIANTRECORDID",
+                    "nullable": true
+                }
+            ],
+            "navigations": []
+        },
+        {
+            "name": "ClinicalSignificance",
+            "alias": "ClinicalSignificance",
+            "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "CLINICALSIGNIFICANCE_ID"
+                },
+                {
+                    "name": "VariantId",
+                    "column": "CLINICALSIGNIFICANCE_VARIANTID",
+                    "nullable": true
+                },
+                {
+                    "name": "PathologyId",
+                    "column": "CLINICALSIGNIFICANCE_PATHOLOGYID",
+                    "nullable": true
+                },
+                {
+                    "name": "SignificanceId",
+                    "column": "CLINICALSIGNIFICANCE_SIGNIFICANCEID",
+                    "nullable": true
+                },
+                {
+                    "name": "Evaluated",
+                    "column": "CLINICALSIGNIFICANCE_EVALUATED",
+                    "nullable": true
+                },
+                {
+                    "name": "ReviewStatus",
+                    "column": "CLINICALSIGNIFICANCE_REVIEWSTATUS",
+                    "nullable": true
+                },
+                {
+                    "name": "Updated",
+                    "column": "CLINICALSIGNIFICANCE_UPDATED",
+                    "nullable": true
+                }
+            ],
+            "navigations": []
+        },
+        {
+            "name": "Significance",
+            "alias": "Significance",
+            "table": "GENETYLLIS_SIGNIFICANCE",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "SIGNIFICANCE_ID"
+                },
+                {
+                    "name": "Name",
+                    "column": "SIGNIFICANCE_NAME",
+                    "nullable": true
+                }
+            ],
+            "navigations": [
+                {
+                    "name": "ClinicalSignificance",
+                    "association": "SignificanceClinicalSignificance"
+                }
+            ]
+        },
+        {
+            "name": "AlleleFrequency",
+            "alias": "AlleleFrequency",
+            "table": "GENETYLLIS_ALLELEFREQUENCY",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "ALLELEFREQUENCY_ID"
+                },
+                {
+                    "name": "VariantId",
+                    "column": "ALLELEFREQUENCY_VARIANTID",
+                    "nullable": true
+                },
+                {
+                    "name": "GenderId",
+                    "column": "ALLELEFREQUENCY_GENDERID",
+                    "nullable": true
+                },
+                {
+                    "name": "PopulationId",
+                    "column": "ALLELEFREQUENCY_POPULATIONID",
+                    "nullable": true
+                },
+                {
+                    "name": "Frequency",
+                    "column": "ALLELEFREQUENCY_FREQUENCY",
+                    "nullable": true
+                },
+                {
+                    "name": "Updated",
+                    "column": "ALLELEFREQUENCY_UPDATED",
+                    "nullable": true
+                }
+            ],
+            "navigations": []
+        },
+        {
+            "name": "Population",
+            "alias": "Population",
+            "table": "GENETYLLIS_POPULATION",
+            "properties": [
+                {
+                    "name": "Id",
+                    "column": "POPULATION_ID"
+                },
+                {
+                    "name": "Name",
+                    "column": "POPULATION_NAME",
+                    "nullable": true
+                },
+                {
+                    "name": "Description",
+                    "column": "POPULATION_DESCRIPTION",
+                    "nullable": true
+                }
+            ],
+            "navigations": [
+                {
+                    "name": "AlleleFrequency",
+                    "association": "PopulationAlleleFrequency"
+                }
+            ]
+        }
+    ],
+    "associations": [
+        {
+            "name": "PatientClinicalHistory",
+            "from": {
+                "entity": "Patient",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "ClinicalHistory",
+                "property": "PatientId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "PatientVariantRecord",
+            "from": {
+                "entity": "Patient",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "VariantRecord",
+                "property": "PatientId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "GenderPatient",
+            "from": {
+                "entity": "Gender",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "Patient",
+                "property": "GenderId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "GenderAlleleFrequency",
+            "from": {
+                "entity": "Gender",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "AlleleFrequency",
+                "property": "GenderId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "PathologyClinicalHistory",
+            "from": {
+                "entity": "Pathology",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "ClinicalHistory",
+                "property": "PathologyId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "PathologyClinicalSignificance",
+            "from": {
+                "entity": "Pathology",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "ClinicalSignificance",
+                "property": "PathologyId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "VariantVariantRecord",
+            "from": {
+                "entity": "Variant",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "VariantRecord",
+                "property": "VariantId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "VariantClinicalSignificance",
+            "from": {
+                "entity": "Variant",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "ClinicalSignificance",
+                "property": "VariantId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "VariantAlleleFrequency",
+            "from": {
+                "entity": "Variant",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "AlleleFrequency",
+                "property": "VariantId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "VariantRecordFilter",
+            "from": {
+                "entity": "VariantRecord",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "Filter",
+                "property": "VariantRecordId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "GeneVariant",
+            "from": {
+                "entity": "Gene",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "Variant",
+                "property": "GeneId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "SignificanceClinicalSignificance",
+            "from": {
+                "entity": "Significance",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "ClinicalSignificance",
+                "property": "SignificanceId",
+                "multiplicity": "*"
+            }
+        },
+        {
+            "name": "PopulationAlleleFrequency",
+            "from": {
+                "entity": "Population",
+                "property": "Id",
+                "multiplicity": "1"
+            },
+            "to": {
+                "entity": "AlleleFrequency",
+                "property": "PopulationId",
+                "multiplicity": "*"
+            }
+        }
+    ]
+}
