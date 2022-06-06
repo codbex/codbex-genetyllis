@@ -20,36 +20,17 @@ if (request.getMethod() === "POST") {
         for (i = 0; i < fileItems.size(); i++) {
             var fileItem = fileItems.get(i);
             if (!fileItem.isFormField()) {
-                // Getting the file name and bytes
+
                 console.log("File Name: " + fileItem.getName());
-                //console.log("File Bytes (as text): " + String.fromCharCode.apply(null, fileItem.getBytes()));
 
                 var tempFile = files.createTempFile("genetyllis", ".vcf");
                 try {
-                    console.log("Temp file: " + tempFile);
-                    files.writeBytes(tempFile, fileItem.getBytes());
-                    var vcfReader = parser.createVCFFileReader(tempFile);
-                    var vcfHeader = vcfReader.getFileHeader();
-                    console.log('------------- ' + vcfHeader.getColumnCount());
+                    processVCFFile(tempFile, fileItem.getBytes());
                 } finally {
                     files.deleteFile(tempFile);
                 }
             } else {
-                // Getting the headers
-                var fileItemHeaders = fileItem.getHeaders();
-                var fileItemHeaderNames = fileItemHeaders.getHeaderNames();
-
-                var fieldHeaders = {};
-                for (j = 0; j < fileItemHeaderNames.size(); j++) {
-                    var headerName = fileItemHeaderNames.get(j);
-                    var headerValue = fileItemHeaders.getHeader(headerName);
-                    fieldHeaders[headerName] = headerValue;
-                }
-                console.log("Field Headers: " + JSON.stringify(fieldHeaders));
-
-                // Getting the field name and value
-                console.log("Field Name: " + fileItem.getFieldName());
-                console.log("Field Text: " + fileItem.getText());
+                console.error("Incorrect usage of the VCF upload");
             }
         }
     } else {
@@ -57,4 +38,39 @@ if (request.getMethod() === "POST") {
     }
 } else if (request.getMethod() === "GET") {
     console.warn("Use POST request.");
+}
+
+function processVCFFile(fileName, content) {
+    console.log("Temp file: " + fileName);
+    files.writeBytes(fileName, content);
+    var vcfReader = parser.createVCFFileReader(tempFile);
+    var vcfHeader = vcfReader.getFileHeader();
+    console.log('Column Count: ' + vcfHeader.getColumnCount());
+    console.log('VCF Header Version: ' + vcfHeader.getVCFHeaderVersion());
+    console.log('SAM Sequence Record: ' + vcfHeader.getSAMSequenceRecord());
+
+    let lines = vcfHeader.getContigLines();
+    lines.forEach(function (line) {
+        console.log('Contig ID: ' + line.getID());
+        console.log('Contig Key: ' + line.getKey());
+        console.log('Contig Value: ' + line.getValue());
+        console.log('Contig Index ' + line.getContigIndex());
+        const fields = line.getGenericFields();
+        fields.forEach(function (value, key) {
+            console.log('    Contig Generic Field-Key: ' + key);
+            console.log('    Contig Generic Field-Value: ' + value);
+        })
+    });
+
+    lines = vcfHeader.getFilterLines();
+    lines.forEach(function (line) {
+        console.log('Filter ID: ' + line.getID());
+        console.log('Filter Key: ' + line.getKey());
+        console.log('Filter Value: ' + line.getValue());
+        const fields = line.getGenericFields();
+        fields.forEach(function (value, key) {
+            console.log('    Filter Generic Field-Key: ' + key);
+            console.log('    Filter Generic Field-Value: ' + value);
+        })
+    });
 }
