@@ -11,6 +11,8 @@
  */
 var upload = require("http/v4/upload");
 var request = require("http/v4/request");
+var parser = require("genetyllis-parser/vcf/parser");
+var files = require("io/v4/files");
 
 if (request.getMethod() === "POST") {
     if (upload.isMultipartContent()) {
@@ -21,6 +23,17 @@ if (request.getMethod() === "POST") {
                 // Getting the file name and bytes
                 console.log("File Name: " + fileItem.getName());
                 //console.log("File Bytes (as text): " + String.fromCharCode.apply(null, fileItem.getBytes()));
+
+                var tempFile = files.createTempFile("genetyllis", ".vcf");
+                try {
+                    console.log("Temp file: " + tempFile);
+                    files.writeBytes(tempFile, fileItem.getBytes());
+                    var vcfReader = parser.createVCFFileReader(tempFile);
+                    var vcfHeader = vcfReader.getFileHeader();
+                    console.log('------------- ' + vcfHeader.getColumnCount());
+                } finally {
+                    files.deleteFile(tempFile);
+                }
             } else {
                 // Getting the headers
                 var fileItemHeaders = fileItem.getHeaders();

@@ -10,17 +10,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-exports.createVCFFileReader = function(path) {
-	const vcfFileReader = new VCFFileReader();
-	vcfFileReader.native = com.codbex.genetyllis.parser.createVCFFileReader(path);
+exports.createVCFFileReader = function (path) {
+	const vcfFileReader = new exports.VCFFileReader();
+	vcfFileReader.native = Packages.com.codbex.genetyllis.parser.VCFParser.createVCFFileReader(path);
 	return vcfFileReader;
 };
 
 
-exports.VCFFileReader = function() {
+exports.VCFFileReader = function () {
 
-	this.getFileHeader = function() {
-		const vcfFileHeader = new VCFFileHeader();
+	this.getFileHeader = function () {
+		const vcfFileHeader = new exports.VCFFileHeader();
 		const native = this.native.getFileHeader();
 		vcfFileHeader.native = native;
 		return vcfFileHeader;
@@ -28,9 +28,9 @@ exports.VCFFileReader = function() {
 
 };
 
-exports.VCFFileHeader = function() {
+exports.VCFFileHeader = function () {
 
-	this.getColumnCount = function() {
+	this.getColumnCount = function () {
 		return this.native.getColumnCount();
 	};
 
