@@ -11,6 +11,21 @@
  */
 package com.codbex.genetyllis.parser;
 
+import java.io.File;
+
+import htsjdk.variant.vcf.VCFFileReader;
+
+/**
+ * Parser utilities for VCF file format
+ *
+ */
 public class VCFParser {
+	
+	/**
+	 * Creates the VCF file reader
+	 */
+	public static VCFFileReader createVCFFileReader(String path) {
+		return new VCFFileReader(new File(path), false);
+	}
 
 }
