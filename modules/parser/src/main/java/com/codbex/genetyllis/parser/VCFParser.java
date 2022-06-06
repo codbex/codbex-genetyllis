@@ -24,7 +24,7 @@ public class VCFParser {
 	/**
 	 * Creates the VCF file reader
 	 */
-	public static VCFFileReader createVCFFileReader(String path) {
+	public static final VCFFileReader createVCFFileReader(String path) {
 		return new VCFFileReader(new File(path), false);
 	}
 
