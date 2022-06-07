@@ -297,8 +297,8 @@ public class VCFParserTest {
 					System.out.println("Reference Allele - Base String: " + variantContext.getReference().getBaseString());
 					System.out.println("Reference Allele - Display String: " + variantContext.getReference().getDisplayString());
 					System.out.println("Source: " + variantContext.getSource());
-					System.out.println("Structural Variant Type: " + variantContext.getStructuralVariantType());
-					System.out.println("Type: " + variantContext.getType());
+					System.out.println("Structural Variant Type: " + variantContext.getStructuralVariantType().name());
+					System.out.println("Type: " + variantContext.getType().name());
 					
 					System.out.println("Is Biallelic: " + variantContext.isBiallelic());
 					System.out.println("Is Complex Indel: " + variantContext.isComplexIndel());
@@ -314,8 +314,8 @@ public class VCFParserTest {
 					System.out.println("Is Point Event: " + variantContext.isPointEvent());
 					System.out.println("Is Reference Block: " + variantContext.isReferenceBlock());
 					System.out.println("Is Simple Deletion: " + variantContext.isSimpleDeletion());
-					System.out.println("Is Simple Indel: " + variantContext.isSimpleIndel());
 					System.out.println("Is Simple Insertion: " + variantContext.isSimpleInsertion());
+					System.out.println("Is Simple Indel: " + variantContext.isSimpleIndel());
 					System.out.println("Is Structural Indel: " + variantContext.isStructuralIndel());
 					System.out.println("Is Symbolic: " + variantContext.isSymbolic());
 					System.out.println("Is Variant: " + variantContext.isVariant());
