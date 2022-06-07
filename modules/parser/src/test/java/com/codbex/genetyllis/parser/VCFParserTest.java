@@ -297,8 +297,8 @@ public class VCFParserTest {
 					System.out.println("Reference Allele - Base String: " + variantContext.getReference().getBaseString());
 					System.out.println("Reference Allele - Display String: " + variantContext.getReference().getDisplayString());
 					System.out.println("Source: " + variantContext.getSource());
-					System.out.println("Structural Variant Type: " + variantContext.getStructuralVariantType().name());
-					System.out.println("Type: " + variantContext.getType().name());
+					System.out.println("Structural Variant Type: " + variantContext.getStructuralVariantType());
+					System.out.println("Type: " + variantContext.getType());
 					
 					System.out.println("Is Biallelic: " + variantContext.isBiallelic());
 					System.out.println("Is Complex Indel: " + variantContext.isComplexIndel());
