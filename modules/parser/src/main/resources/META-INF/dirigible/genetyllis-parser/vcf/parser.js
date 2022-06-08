@@ -132,7 +132,12 @@ exports.VCFFileHeader = function () {
 		return list;
 	};
 
-
+	this.getVariantContextIterator = function () {
+		const iterator = new exports.VCFVariantContextIterator();
+		const native = this.native.iterator();
+		iterator.native = native;
+		return iterator;
+	};
 
 
 };
@@ -347,6 +352,361 @@ exports.VCFMetaDataInInputOrder = function () {
 
 	this.getValue = function () {
 		return this.native.getValue();
+	};
+
+}
+
+/**
+ * VCF Variant Context Iterator
+ */
+exports.VCFVariantContextIterator = function () {
+
+	this.hasNext = function () {
+		return this.native.hasNext();
+	};
+
+	this.next = function () {
+		const vcfVariantContext = new exports.VCFVariantContext();
+		const native = this.native.next();
+		vcfVariantContext.native = native;
+		return vcfVariantContext;
+	};
+
+}
+
+exports.VCFVariantContext = function () {
+
+	this.getID = function () {
+		return this.native.getID();
+	};
+
+	this.getCalledChrCount = function () {
+		return this.native.getCalledChrCount();
+	};
+
+	this.getContig = function () {
+		return this.native.getContig();
+	};
+
+	this.getStart = function () {
+		return this.native.getStart();
+	};
+
+	this.getEnd = function () {
+		return this.native.getEnd();
+	};
+
+	this.getHetCount = function () {
+		return this.native.getHetCount();
+	};
+
+	this.getHomRefCount = function () {
+		return this.native.getHomRefCount();
+	};
+
+	this.getHomVarCount = function () {
+		return this.native.getHomVarCount();
+	};
+
+	this.getLengthOnReference = function () {
+		return this.native.getLengthOnReference();
+	};
+
+	this.getLog10PError = function () {
+		return this.native.getLog10PError();
+	};
+
+	this.getMixedCount = function () {
+		return this.native.getMixedCount();
+	};
+
+	this.getNAlleles = function () {
+		return this.native.getNAlleles();
+	};
+
+	this.getNoCallCount = function () {
+		return this.native.getNoCallCount();
+	};
+
+	this.getNSamples = function () {
+		return this.native.getNSamples();
+	};
+
+	this.getPhredScaledQual = function () {
+		return this.native.getPhredScaledQual();
+	};
+
+	this.getReferenceBaseString = function () {
+		return this.native.getReferenceBaseString();
+	};
+
+	this.getReferenceDisplayString = function () {
+		return this.native.getReferenceDisplayString();
+	};
+
+	this.getSource = function () {
+		return this.native.getSource();
+	};
+
+	this.getStructuralVariantType = function () {
+		return this.native.getStructuralVariantType().name();
+	};
+
+	this.getType = function () {
+		return this.native.getType().name();
+	};
+
+	this.isBiallelic = function () {
+		return this.native.isBiallelic();
+	};
+
+	this.isComplexIndel = function () {
+		return this.native.isComplexIndel();
+	};
+
+	this.isFiltered = function () {
+		return this.native.isFiltered();
+	};
+
+	this.isNotFiltered = function () {
+		return this.native.isNotFiltered();
+	};
+
+	this.isFullyDecoded = function () {
+		return this.native.isFullyDecoded();
+	};
+
+	this.isIndel = function () {
+		return this.native.isIndel();
+	};
+
+	this.isMixed = function () {
+		return this.native.isMixed();
+	};
+
+	this.isMNP = function () {
+		return this.native.isMNP();
+	};
+
+	this.isSNP = function () {
+		return this.native.isSNP();
+	};
+
+	this.isMonomorphicInSamples = function () {
+		return this.native.isMonomorphicInSamples();
+	};
+
+	this.isPolymorphicInSamples = function () {
+		return this.native.isPolymorphicInSamples();
+	};
+
+	this.isPointEvent = function () {
+		return this.native.isPointEvent();
+	};
+
+	this.isReferenceBlock = function () {
+		return this.native.isReferenceBlock();
+	};
+
+	this.isSimpleDeletion = function () {
+		return this.native.isSimpleDeletion();
+	};
+
+	this.isSimpleInsertion = function () {
+		return this.native.isSimpleInsertion();
+	};
+
+	this.isSimpleIndel = function () {
+		return this.native.isSimpleIndel();
+	};
+
+	this.isStructuralIndel = function () {
+		return this.native.isStructuralIndel();
+	};
+
+	this.isSymbolic = function () {
+		return this.native.isSymbolic();
+	};
+
+	this.isVariant = function () {
+		return this.native.isVariant();
+	};
+
+	this.getAttributes = function () {
+		const map = new Map();
+		const nativeMap = this.native.getCommonInfo().getAttributes();
+		var entries = nativeMap.entrySet().iterator();
+		while (entries.hasNext()) {
+			var entry = entries.next();
+			map.set(entry.getKey(), entry.getValue());
+		}
+		return map;
+	};
+
+	this.getAlleles = function () {
+		const list = new Array();
+		const nativeList = this.native.getAlleles();
+		for (let i in nativeList) {
+			const vcfAllele = new exports.VCFAllele();
+			vcfAllele.native = nativeList[i];
+			list.push(vcfAllele);
+		}
+		return list;
+	};
+
+	this.getAlternateAlleles = function () {
+		const list = new Array();
+		const nativeList = this.native.getAlternateAlleles();
+		for (let i in nativeList) {
+			const vcfAllele = new exports.VCFAllele();
+			vcfAllele.native = nativeList[i];
+			list.push(vcfAllele);
+		}
+		return list;
+	};
+
+	this.getFilters = function () {
+		const list = new Array();
+		const nativeList = this.native.getFilters();
+		for (let i in nativeList) {
+			list.push(nativeList[i]);
+		}
+		return list;
+	};
+
+	this.getGenotypes = function () {
+		const list = new Array();
+		const nativeIterator = this.native.getGenotypes().iterator();
+		while (nativeIterator.hasNext()) {
+			const vcfGenotype = new exports.VCFGenotype();
+			vcfGenotype.native = nativeIterator.next();
+			list.push(vcfGenotype);
+		}
+		return list;
+	};
+
+	this.getGenotypeContextIterator = function () {
+		const iterator = new exports.VCFGenotypeContextIterator();
+		const native = this.native.getGenotypes().iterator();
+		iterator.native = native;
+		return iterator;
+	};
+
+
+}
+
+/**
+ * VCF Allele
+ */
+exports.VCFAllele = function () {
+
+	this.getBaseString = function () {
+		return this.native.getBaseString();
+	};
+
+	this.getDisplayString = function () {
+		return this.native.getDisplayString();
+	};
+
+}
+
+/**
+* VCF Genotype Context Iterator
+*/
+exports.VCFGenotypeContextIterator = function () {
+
+	this.hasNext = function () {
+		return this.native.hasNext();
+	};
+
+	this.next = function () {
+		const vcfGenotype = new exports.VCFGenotype();
+		const native = this.native.next();
+		vcfGenotype.native = native;
+		return vcfGenotype;
+	};
+
+}
+
+/**
+ * VCF Genotype
+ */
+exports.VCFGenotype = function () {
+
+	this.getAD = function () {
+		const list = new Array();
+		const nativeList = this.native.getAD();
+		for (let i in nativeList) {
+			list.push(nativeList[i]);
+		}
+		return list;
+	};
+
+	this.getDP = function () {
+		return this.native.getDP();
+	};
+
+	this.getGQ = function () {
+		return this.native.getGQ();
+	};
+
+	this.getPL = function () {
+		const list = new Array();
+		const nativeList = this.native.getPL();
+		for (let i in nativeList) {
+			list.push(nativeList[i]);
+		}
+		return list;
+	};
+
+	this.isPhased = function () {
+		return this.native.isPhased();
+	};
+
+	this.getFilters = function () {
+		return this.native.getFilters();
+	};
+
+	this.getGenotypeString = function () {
+		return this.native.getGenotypeString();
+	};
+
+	this.getLikelihoodsString = function () {
+		return this.native.getLikelihoodsString();
+	};
+
+	this.getPloidy = function () {
+		return this.native.getPloidy();
+	};
+
+	this.getSampleName = function () {
+		return this.native.getSampleName();
+	};
+
+	this.getType = function () {
+		return this.native.getType();
+	};
+
+	this.getAlleles = function () {
+		const list = new Array();
+		const nativeList = this.native.getAlleles();
+		for (let i in nativeList) {
+			const vcfAllele = new exports.VCFAllele();
+			vcfAllele.native = nativeList[i];
+			list.push(vcfAllele);
+		}
+		return list;
+	};
+
+	this.getExtendedAttributes = function () {
+		const map = new Map();
+		const nativeMap = this.native.getExtendedAttributes();
+		var entries = nativeMap.entrySet().iterator();
+		while (entries.hasNext()) {
+			var entry = entries.next();
+			map.set(entry.getKey(), entry.getValue());
+		}
+		return map;
 	};
 
 }
