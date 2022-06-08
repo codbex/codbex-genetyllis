@@ -363,7 +363,7 @@ public class VCFParserTest {
 						System.out.println("    Is Phased: " + genotype.isPhased());
 						System.out.println("    Filters: " + genotype.getFilters());
 						System.out.println("    Genotype String: " + genotype.getGenotypeString());
-//						System.out.println("    Likelihoods String: " + genotype.getLikelihoodsString());
+						System.out.println("    Likelihoods String: " + genotype.getLikelihoodsString());
 						System.out.println("    * Log10 PError: " + genotype.getLog10PError());
 						System.out.println("    * Phred Scaled Qual: " + genotype.getPhredScaledQual());
 						System.out.println("    Ploidy: " + genotype.getPloidy());
