@@ -1,18 +1,18 @@
 # folders
 dist/
-# .settings/
+.settings/
 .idea/
 .run/
-# target/
+target/
 dirigible_local/
 bin/
 
-# .editorconfig
-# .gitattributes
-# files
+.editorconfig
+.gitattributes
+files
 .DS_Store
-#.project
-# .classpath
+.project
+.classpath
 *.bak
 *.class
 *.jar
