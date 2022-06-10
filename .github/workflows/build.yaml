@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+#-----------------Build codbex - genetyllis-------------------#
+
+      - name: Set up JDK 13
+        uses: actions/setup-java@v1
+        with:
+          java-version: 13
+      - name: Build codbex - genetyllis
+        run: mvn clean install -Dmaven.javadoc.skip=false
+
+#-----------------Publish Docker Images-------------------#
+
+      - name: Docker Login
+        run: docker login ${{secrets.DOCKER_REGISTRY}} -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Docker Image
+        run: |
+          cd releng/genetyllis-platform
+          docker build . -t ${{secrets.DOCKER_REGISTRY}}/codbex/codbex-genetyllis:latest
+          docker push ${{secrets.DOCKER_REGISTRY}}/codbex/codbex-genetyllis:latest
+          cd ../../
+      - name: Docker Image - Keycloack
+        run: |
+          cd releng/genetyllis-platform-keycloack
+          docker build . -t ${{secrets.DOCKER_REGISTRY}}/codbex/codbex-genetyllis:keycloack-latest
+          docker push ${{secrets.DOCKER_REGISTRY}}/codbex/codbex-genetyllis:keycloack-latest
+          cd ../../
