@@ -64,7 +64,18 @@
 				<h3 class="page-header">Import Variant Record</h3>
 			</div>
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-sm-12">
+					<form>
+						<div class="form-group">
+							<label>PatientId</label>
+							<select class="form-control" ng-options="o.Id as o.Info for o in patientidOptions"
+								ng-model="PatientId"></select>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
 					<div ng-show="uploader.isHTML5">
 						<!-- 3. nv-file-over uploader="link" over-class="className" -->
 						<div class="well my-drop-zone" nv-file-over="" uploader="uploader">
@@ -74,7 +85,9 @@
 					or browse your file system
 					<input type="file" nv-file-select="" uploader="uploader" multiple /><br />
 				</div>
-				<div class="col-md-6" style="margin-bottom: 40px">
+			</div>
+			<div class="row">
+				<div class="col-md-12" style="margin-bottom: 40px">
 					<h3>Upload queue</h3>
 					<p>Queue length: {{ uploader.queue.length }}</p>
 					<table class="table">

@@ -31,6 +31,13 @@ exports.VCFFileReader = function () {
 		return vcfFileHeader;
 	};
 
+	this.getVariantContextIterator = function () {
+		const iterator = new exports.VCFVariantContextIterator();
+		const native = this.native.iterator();
+		iterator.native = native;
+		return iterator;
+	};
+
 };
 
 /**
@@ -131,14 +138,6 @@ exports.VCFFileHeader = function () {
 		}
 		return list;
 	};
-
-	this.getVariantContextIterator = function () {
-		const iterator = new exports.VCFVariantContextIterator();
-		const native = this.native.iterator();
-		iterator.native = native;
-		return iterator;
-	};
-
 
 };
 

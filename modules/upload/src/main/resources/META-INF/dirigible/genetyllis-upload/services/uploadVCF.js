@@ -13,9 +13,18 @@ var upload = require("http/v4/upload");
 var request = require("http/v4/request");
 var parser = require("genetyllis-parser/vcf/parser");
 var files = require("io/v4/files");
+var daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
+var daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
+var daoFilter = require("genetyllis-app/gen/dao/records/Filter");
+var daoGene = require("genetyllis-app/gen/dao/genes/Gene");
 
 if (request.getMethod() === "POST") {
     if (upload.isMultipartContent()) {
+        let patientId = request.getParameter("PatientId");
+        if (!patientId) {
+            console.log("PatientId has to be set as a parameter in the URL");
+        }
+        console.log("PatientId: " + patientId);
         var fileItems = upload.parseRequest();
         for (i = 0; i < fileItems.size(); i++) {
             var fileItem = fileItems.get(i);
@@ -25,7 +34,7 @@ if (request.getMethod() === "POST") {
 
                 var tempFile = files.createTempFile("genetyllis", ".vcf");
                 try {
-                    processVCFFile(tempFile, fileItem.getBytes());
+                    processVCFFile(tempFile, fileItem.getBytes(), patientId);
                 } finally {
                     files.deleteFile(tempFile);
                 }
@@ -40,14 +49,26 @@ if (request.getMethod() === "POST") {
     console.warn("Use POST request.");
 }
 
-function processVCFFile(fileName, content) {
+function processVCFFile(fileName, content, patientId) {
     console.log("Temp file: " + fileName);
     files.writeBytes(fileName, content);
     var vcfReader = parser.createVCFFileReader(tempFile);
+
+
+    let iteratorVariants = vcfReader.getVariantContextIterator();
+    while (iteratorVariants.hasNext()) {
+        let variantContext = iteratorVariants.next();
+        let genotypes = variantContext.getGenotypes();
+        for (i in genotypes) {
+            let genotype = genotypes[i];
+            console.log('Genotype DP: ' + genotype.getDP());
+        }
+    }
+
     var vcfHeader = vcfReader.getFileHeader();
     console.log('Column Count: ' + vcfHeader.getColumnCount());
     console.log('VCF Header Version: ' + vcfHeader.getVCFHeaderVersion());
-    console.log('SAM Sequence Record: ' + vcfHeader.getSAMSequenceRecord());
+
 
     let lines = vcfHeader.getContigLines();
     lines.forEach(function (line) {
@@ -55,6 +76,7 @@ function processVCFFile(fileName, content) {
         console.log('Contig Key: ' + line.getKey());
         console.log('Contig Value: ' + line.getValue());
         console.log('Contig Index ' + line.getContigIndex());
+        console.log('Contig SAM Sequence Record: ' + line.getSAMSequenceRecord());
         const fields = line.getGenericFields();
         fields.forEach(function (value, key) {
             console.log('    Contig Generic Field-Key: ' + key);

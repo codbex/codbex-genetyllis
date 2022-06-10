@@ -50,6 +50,19 @@ angular
 	}])
 	.controller('ImportController', ['$scope', '$http', 'FileUploader', '$messageHub', function ($scope, $http, FileUploader, $messageHub) {
 
+		var patientidOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
+
+		$scope.patientidOptions = [];
+		function patientidOptionsLoad() {
+			$http.get(patientidOptionsApi)
+				.then(function (data) {
+					$scope.patientidOptions = data.data;
+				});
+		}
+		patientidOptionsLoad();
+
+
+
 		$scope.IMPORT_URL = "/services/v4/js/genetyllis-upload/services/uploadVCF.js";
 
 		// FILE UPLOADER
@@ -72,11 +85,12 @@ angular
 		uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
 		};
 		uploader.onAfterAddingFile = function (fileItem) {
+			console.log("Patient: " + $scope.PatientId);
 		};
 		uploader.onAfterAddingAll = function (addedFileItems) {
 		};
 		uploader.onBeforeUploadItem = function (item) {
-			item.url = $scope.IMPORT_URL + "/" + $scope.selectedWs;
+			item.url = $scope.IMPORT_URL + "?PatientId=" + $scope.PatientId;
 		};
 		uploader.onProgressItem = function (fileItem, progress) {
 		};
@@ -85,7 +99,7 @@ angular
 		uploader.onSuccessItem = function (fileItem, response, status, headers) {
 		};
 		uploader.onErrorItem = function (fileItem, response, status, headers) {
-			alert(response.err.message);
+			alert('Error: ' + status + ' - ' + response.message);
 		};
 		uploader.onCancelItem = function (fileItem, response, status, headers) {
 		};
