@@ -136,8 +136,13 @@
                     "nullable": true
                 },
                 {
-                    "name": "Position",
-                    "column": "VARIANT_POSITION",
+                    "name": "Start",
+                    "column": "VARIANT_START",
+                    "nullable": true
+                },
+                {
+                    "name": "End",
+                    "column": "VARIANT_END",
                     "nullable": true
                 },
                 {

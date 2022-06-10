@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2022 codbex or an codbex affiliate company and contributors
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v20.html
- *
- * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
- * SPDX-License-Identifier: EPL-2.0
- */
 var query = require("db/v4/query");
 var producer = require("messaging/v4/producer");
 var daoApi = require("db/v4/dao");
@@ -31,8 +20,12 @@ var dao = daoApi.create({
 			column: "VARIANT_CHROMOSOME",
 			type: "VARCHAR",
 		}, {
-			name: "Position",
-			column: "VARIANT_POSITION",
+			name: "Start",
+			column: "VARIANT_START",
+			type: "INTEGER",
+		}, {
+			name: "End",
+			column: "VARIANT_END",
 			type: "INTEGER",
 		}, {
 			name: "DBSNP",

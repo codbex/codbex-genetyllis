@@ -436,11 +436,11 @@ exports.VCFVariantContext = function () {
 	};
 
 	this.getReferenceBaseString = function () {
-		return this.native.getReferenceBaseString();
+		return this.native.getReference().getBaseString();
 	};
 
 	this.getReferenceDisplayString = function () {
-		return this.native.getReferenceDisplayString();
+		return this.native.getReference().getDisplayString();
 	};
 
 	this.getSource = function () {

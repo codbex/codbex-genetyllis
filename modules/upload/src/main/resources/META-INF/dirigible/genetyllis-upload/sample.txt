@@ -1,0 +1,145 @@
+Contig Header
+--------------------------------
+ID: chr1
+Key: contig
+Value: 
+Contig Index: 0
+Generic Fields: {ID=chr1, length=249250621}
+SAM Sequence Record: SAMSequenceRecord(name=chr1,length=249250621,dict_index=0,assembly=null,alternate_names=[])
+--------------------------------
+--------------------------------
+ID: chr10
+Key: contig
+Value: 
+Contig Index: 1
+Generic Fields: {ID=chr10, length=135534747}
+SAM Sequence Record: SAMSequenceRecord(name=chr10,length=135534747,dict_index=1,assembly=null,alternate_names=[])
+--------------------------------
+--------------------------------
+ID: chr11
+Key: contig
+Value: 
+Contig Index: 2
+Generic Fields: {ID=chr11, length=135006516}
+SAM Sequence Record: SAMSequenceRecord(name=chr11,length=135006516,dict_index=2,assembly=null,alternate_names=[])
+--------------------------------
+
+
+
+
+
+
+
+Variant
+--------------------------------
+ID: rs1264383
+Called Chr Count: 2
+Contig: chrX
+Start: 133086710
+End: 133086710
+Het Count: 0
+Hom Ref Count: 0
+Hom Var Count: 1
+Length On Reference: 1
+Log10 PError: -20.453
+Mixed Count: 0
+NAlleles: 2
+No Call Count: 0
+NSamples: 1
+Phred Scaled Qual: 204.53
+Reference Allele - Base String: A
+Reference Allele - Display String: A
+Source: Unknown
+Structural Variant Type: null
+Type: SNP
+Is Biallelic: true
+Is Complex Indel: false
+Is Filtered: true
+Is Not Filtered: false
+Is Fully Decoded: false
+Is Indel: false
+Is Mixed: false
+Is MNP: false
+Is SNP: true
+Is Monomorphic In Samples: false
+Is Polymorphic In Samples: true
+Is Point Event: true
+Is Reference Block: false
+Is Simple Deletion: false
+Is Simple Insertion: false
+Is Simple Indel: false
+Is Structural Indel: false
+Is Symbolic: false
+Is Variant: true
+    >>> Start Attributes List: 
+    Attribute Key: HRun
+    Attributes Value: 0
+    Attribute Key: GI
+    Attributes Value: [GPC3, GPC3, GPC3, GPC3]
+    Attribute Key: MQ
+    Attributes Value: 60
+    Attribute Key: Dels
+    Attributes Value: 0.00
+    Attribute Key: HaplotypeScore
+    Attributes Value: 0.0000
+    Attribute Key: DP
+    Attributes Value: 8
+    Attribute Key: FS
+    Attributes Value: 0.000
+    Attribute Key: MQ0
+    Attributes Value: 0
+    Attribute Key: SB
+    Attributes Value: -0.01
+    Attribute Key: QD
+    Attributes Value: 25.57
+    Attribute Key: TI
+    Attributes Value: [NM_004484, NM_001164617, NM_001164619, NM_001164618]
+    Attribute Key: FC
+    Attributes Value: [Silent, Silent, Silent, Silent]
+    <<< End Attributes List: 
+    >>> Start Alleles List: 
+    Allele - Base String: A
+    Allele - Display String: A
+    Allele - Base String: G
+    Allele - Display String: G
+    <<< End Alleles List: 
+    >>> Start Alternate Alleles List: 
+    Alternative Allele - Base String: G
+    Alternative Allele - Display String: G
+    <<< End Alternate Alleles List: 
+    >>> Start Filters List: 
+    Filter: LowDP
+    Filter: LowGQ
+    Filter: SB
+    <<< End Filters List: 
+    >>> Start Genotypes List: 
+    AD: [0, 8]
+    DP: 8
+    GQ: 21
+    PL: [237, 21, 0]
+    Is Phased: false
+    Filters: null
+    Genotype String: G/G
+    Likelihoods String: 237,21,0
+    * Log10 PError: -2.1
+    * Phred Scaled Qual: 21
+    Ploidy: 2
+    GenotypeLikelihoods: 237,21,0
+    Sample Name: 1
+    Type: HOM_VAR
+        >>> Start Alleles List: 
+        Allele - Base String: G
+        Allele - Display String: G
+        Allele - Base String: G
+        Allele - Display String: G
+        <<< End Alleles List: 
+        >>> Start Extended Attributes List: 
+        Extended Attribute Key: VF
+        Extended Attributes Value: 1.000
+        Extended Attribute Key: MQ
+        Extended Attributes Value: 60
+        Extended Attribute Key: GQX
+        Extended Attributes Value: 21
+        <<< End Extended Attributes List: 
+    <<< End Genotypes List: 
+--------------------------------

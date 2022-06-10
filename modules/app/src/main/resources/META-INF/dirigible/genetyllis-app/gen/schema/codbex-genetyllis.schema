@@ -133,7 +133,13 @@
                         "type": "INTEGER",
                         "length": 20,
                         "nullable": true,
-                        "name": "VARIANT_POSITION"
+                        "name": "VARIANT_START"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "VARIANT_END"
                     },
                     {
                         "type": "VARCHAR",

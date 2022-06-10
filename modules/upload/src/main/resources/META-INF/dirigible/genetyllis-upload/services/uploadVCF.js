@@ -58,41 +58,88 @@ function processVCFFile(fileName, content, patientId) {
     let iteratorVariants = vcfReader.getVariantContextIterator();
     while (iteratorVariants.hasNext()) {
         let variantContext = iteratorVariants.next();
+
+        // TODO if (variantContext.getAlternateAlleles().size() > 1)
+
+        let entityVariant = {};
+        // <chr>+":"+"g."+<pos><ref allele>+">"+"alt allele" -> chr1:g.10316791A>C
+        entityVariant.HGVS = variantContext.getContig() + ":" + "g."
+            + variantContext.getStart() + variantContext.getReferenceBaseString()
+            + ">" + variantContext.getAlternateAlleles()[0].getBaseString();
+        entityVariant.Chromosome = variantContext.getContig(); // chr1
+        entityVariant.Start = variantContext.getStart(); // 10316791
+        entityVariant.End = variantContext.getEnd(); // 10316791
+        entityVariant.DBSNP = variantContext.getID(); // rs1264383
+        entityVariant.Reference = variantContext.getReferenceBaseString(); // A
+        entityVariant.Alternative = variantContext.getAlternateAlleles()[0].getBaseString() // C
+
+        // http://myvariant.info/
+        entityVariant.Consequence = ""; // TODO to be taken via annotator
+        entityVariant.ConsequenceDetails = ""; // TODO to be taken via annotator
+
+        console.log(entityVariant.HGVS);
+        console.log(entityVariant.Chromosome);
+        console.log(entityVariant.Start);
+        console.log(entityVariant.End);
+        console.log(entityVariant.DBSNP);
+        console.log(entityVariant.Reference);
+        console.log(entityVariant.Alternative);
+
+        // variantId = save entityVariant
+
+        let entityVariantRecord = {};
+        entityVariantRecord.PatientId = patientId;
+        entityVariantRecord.VariantId = variantId;
+        entityVariantRecord.Quality = variantContext.getPhredScaledQual();
+
         let genotypes = variantContext.getGenotypes();
-        for (i in genotypes) {
-            let genotype = genotypes[i];
-            console.log('Genotype DP: ' + genotype.getDP());
-        }
+
+        entityVariantRecord.Homozygous = true; // TODO to be calculated -> AD - a:b, a:b:c;
+        entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
+        entityVariantRecord.Depth = genotypes[0].getDP();
+
+
+
+
+
+
+        // let genotypes = variantContext.getGenotypes();
+        // for (i in genotypes) {
+        //     let genotype = genotypes[i];
+        //     console.log('Genotype DP: ' + genotype.getDP());
+        // }
+
+        break;
     }
 
-    var vcfHeader = vcfReader.getFileHeader();
-    console.log('Column Count: ' + vcfHeader.getColumnCount());
-    console.log('VCF Header Version: ' + vcfHeader.getVCFHeaderVersion());
+    // var vcfHeader = vcfReader.getFileHeader();
+    // console.log('Column Count: ' + vcfHeader.getColumnCount());
+    // console.log('VCF Header Version: ' + vcfHeader.getVCFHeaderVersion());
 
 
-    let lines = vcfHeader.getContigLines();
-    lines.forEach(function (line) {
-        console.log('Contig ID: ' + line.getID());
-        console.log('Contig Key: ' + line.getKey());
-        console.log('Contig Value: ' + line.getValue());
-        console.log('Contig Index ' + line.getContigIndex());
-        console.log('Contig SAM Sequence Record: ' + line.getSAMSequenceRecord());
-        const fields = line.getGenericFields();
-        fields.forEach(function (value, key) {
-            console.log('    Contig Generic Field-Key: ' + key);
-            console.log('    Contig Generic Field-Value: ' + value);
-        })
-    });
+    // let lines = vcfHeader.getContigLines();
+    // lines.forEach(function (line) {
+    //     console.log('Contig ID: ' + line.getID());
+    //     console.log('Contig Key: ' + line.getKey());
+    //     console.log('Contig Value: ' + line.getValue());
+    //     console.log('Contig Index ' + line.getContigIndex());
+    //     console.log('Contig SAM Sequence Record: ' + line.getSAMSequenceRecord());
+    //     const fields = line.getGenericFields();
+    //     fields.forEach(function (value, key) {
+    //         console.log('    Contig Generic Field-Key: ' + key);
+    //         console.log('    Contig Generic Field-Value: ' + value);
+    //     })
+    // });
 
-    lines = vcfHeader.getFilterLines();
-    lines.forEach(function (line) {
-        console.log('Filter ID: ' + line.getID());
-        console.log('Filter Key: ' + line.getKey());
-        console.log('Filter Value: ' + line.getValue());
-        const fields = line.getGenericFields();
-        fields.forEach(function (value, key) {
-            console.log('    Filter Generic Field-Key: ' + key);
-            console.log('    Filter Generic Field-Value: ' + value);
-        })
-    });
+    // lines = vcfHeader.getFilterLines();
+    // lines.forEach(function (line) {
+    //     console.log('Filter ID: ' + line.getID());
+    //     console.log('Filter Key: ' + line.getKey());
+    //     console.log('Filter Value: ' + line.getValue());
+    //     const fields = line.getGenericFields();
+    //     fields.forEach(function (value, key) {
+    //         console.log('    Filter Generic Field-Key: ' + key);
+    //         console.log('    Filter Generic Field-Value: ' + value);
+    //     })
+    // });
 }

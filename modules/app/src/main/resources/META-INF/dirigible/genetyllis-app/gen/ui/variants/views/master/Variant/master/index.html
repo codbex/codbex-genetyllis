@@ -29,7 +29,8 @@
 					<th class="text-capitalize">Id</th>
 					<th class="text-capitalize">HGVS</th>
 					<th class="text-capitalize">Chromosome</th>
-					<th class="text-capitalize">Position</th>
+					<th class="text-capitalize">Start</th>
+					<th class="text-capitalize">End</th>
 					<th class="text-capitalize">DBSNP</th>
 					<th class="text-capitalize">Reference</th>
 					<th class="text-capitalize">Alternative</th>
@@ -45,7 +46,8 @@
 					<td>{{next.Id}}</td>
 					<td>{{next.HGVS}}</td>
 					<td>{{next.Chromosome}}</td>
-					<td>{{next.Position}}</td>
+					<td>{{next.Start}}</td>
+					<td>{{next.End}}</td>
 					<td>{{next.DBSNP}}</td>
 					<td>{{next.Reference}}</td>
 					<td>{{next.Alternative}}</td>
@@ -83,8 +85,12 @@
 							<input   type="text"  maxlength="5" class="form-control" placeholder="Enter chromosome" ng-model="entity.Chromosome" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="form-group">
-							<label>Position</label>
-							<input   type="number" class="form-control" placeholder="Enter position" ng-model="entity.Position" ng-change="updateCalculatedProperties()">
+							<label>Start</label>
+							<input   type="number" class="form-control" placeholder="Enter start" ng-model="entity.Start" ng-change="updateCalculatedProperties()">
+						</div>
+						<div class="form-group">
+							<label>End</label>
+							<input   type="number" class="form-control" placeholder="Enter end" ng-model="entity.End" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="form-group">
 							<label>DBSNP</label>
