@@ -1,5 +1,0 @@
-{
-	"description": "Significance menu",
-	"extensionPoint": "shell-genetyllis-app-menu",
-	"module": "genetyllis-app/views/Significance/menu/item.js"
-}

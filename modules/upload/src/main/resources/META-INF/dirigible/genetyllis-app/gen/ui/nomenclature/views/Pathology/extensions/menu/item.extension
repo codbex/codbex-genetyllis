@@ -1,5 +1,0 @@
-{
-	"description": "Pathology menu",
-	"extensionPoint": "shell-genetyllis-app-menu",
-	"module": "genetyllis-app/views/Pathology/menu/item.js"
-}
