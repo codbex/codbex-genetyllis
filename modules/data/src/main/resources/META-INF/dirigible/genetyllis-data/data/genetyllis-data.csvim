@@ -42,5 +42,16 @@
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
     "keys": []
+  },
+  {
+    "table": "GENETYLLIS_GENE",
+    "schema": "PUBLIC",
+    "file": "/genetyllis-data/data/GENETYLLIS_GENE.csv",
+    "header": true,
+    "useHeaderNames": true,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
   }
 ]
