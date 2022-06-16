@@ -62,6 +62,10 @@ function processVCFFile(fileName, content, patientId) {
         // TODO if (variantContext.getAlternateAlleles().size() > 1)
 
         let entityVariant = {};
+
+        // TODO - correct link to Genes
+        entityVariant.GeneId = 1;
+
         // <chr>+":"+"g."+<pos><ref allele>+">"+"alt allele" -> chr1:g.10316791A>C
         entityVariant.HGVS = variantContext.getContig() + ":" + "g."
             + variantContext.getStart() + variantContext.getReferenceBaseString()
@@ -85,7 +89,9 @@ function processVCFFile(fileName, content, patientId) {
         console.log(entityVariant.Reference);
         console.log(entityVariant.Alternative);
 
-        // variantId = save entityVariant
+        // save new variant
+        let variantId = daoVariant.create(entityVariant);
+        console.log("Variant ID: " + variantId);
 
         let entityVariantRecord = {};
         entityVariantRecord.PatientId = patientId;
@@ -98,7 +104,9 @@ function processVCFFile(fileName, content, patientId) {
         entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
         entityVariantRecord.Depth = genotypes[0].getDP();
 
-
+        // save new variant record
+        let variantRecordId = daoVariantRecord.create(entityVariantRecord);
+        console.log("Variant Record ID: " + variantRecordId);
 
 
 
@@ -109,6 +117,7 @@ function processVCFFile(fileName, content, patientId) {
         //     console.log('Genotype DP: ' + genotype.getDP());
         // }
 
+        // TODO - stop iteration at the first variant for test purposes
         break;
     }
 
