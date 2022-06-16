@@ -239,7 +239,7 @@
     <properties>
         <project.title>codbex genetyllis</project.title>
 
-        <dirigible.version>7.0.0-SNAPSHOT</dirigible.version>
+        <dirigible.version>6.3.2</dirigible.version>
 
         <java.version>11</java.version>
 
