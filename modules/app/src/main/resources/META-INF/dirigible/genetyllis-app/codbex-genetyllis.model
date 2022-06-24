@@ -296,7 +296,7 @@
                     {
                         "calculatedPropertyExpression": "",
                         "dataAutoIncrement": "false",
-                        "dataLength": "20",
+                        "dataLength": "120",
                         "dataName": "VARIANT_HGVS",
                         "dataNullable": "true",
                         "dataPrimaryKey": "false",
@@ -356,7 +356,7 @@
                     {
                         "calculatedPropertyExpression": "",
                         "dataAutoIncrement": "false",
-                        "dataLength": "20",
+                        "dataLength": "50",
                         "dataName": "VARIANT_DBSNP",
                         "dataNullable": "true",
                         "dataPrimaryKey": "false",
@@ -371,7 +371,7 @@
                     {
                         "calculatedPropertyExpression": "",
                         "dataAutoIncrement": "false",
-                        "dataLength": "20",
+                        "dataLength": "51",
                         "dataName": "VARIANT_REFERENCE",
                         "dataNullable": "true",
                         "dataPrimaryKey": "false",
@@ -386,7 +386,7 @@
                     {
                         "calculatedPropertyExpression": "",
                         "dataAutoIncrement": "false",
-                        "dataLength": "20",
+                        "dataLength": "51",
                         "dataName": "VARIANT_ALTERNATIVE",
                         "dataNullable": "true",
                         "dataPrimaryKey": "false",
@@ -620,6 +620,21 @@
                         "calculatedPropertyExpression": "",
                         "dataAutoIncrement": "false",
                         "dataLength": "20",
+                        "dataName": "GENE_GENEID",
+                        "dataNullable": "true",
+                        "dataPrimaryKey": "false",
+                        "dataType": "INTEGER",
+                        "dataUnique": "false",
+                        "isCalculatedProperty": "false",
+                        "name": "GeneId",
+                        "widgetIsMajor": "true",
+                        "widgetLength": "20",
+                        "widgetType": "NUMBER"
+                    },
+                    {
+                        "calculatedPropertyExpression": "",
+                        "dataAutoIncrement": "false",
+                        "dataLength": "100",
                         "dataName": "GENE_NAME",
                         "dataNullable": "true",
                         "dataPrimaryKey": "false",

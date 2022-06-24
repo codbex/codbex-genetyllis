@@ -248,6 +248,11 @@
                     "column": "GENE_ID"
                 },
                 {
+                    "name": "GeneId",
+                    "column": "GENE_GENEID",
+                    "nullable": true
+                },
+                {
                     "name": "Name",
                     "column": "GENE_NAME",
                     "nullable": true

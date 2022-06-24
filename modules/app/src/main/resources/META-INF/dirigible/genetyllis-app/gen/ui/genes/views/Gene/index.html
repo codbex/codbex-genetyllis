@@ -27,6 +27,7 @@
 				<tr>
 					<th>#</th>
 					<th class="text-capitalize">Id</th>
+					<th class="text-capitalize">GeneId</th>
 					<th class="text-capitalize">Name</th>
 					<th class="text-capitalize">Pseudo</th>
 					<th class="text-capitalize">Region</th>
@@ -37,6 +38,7 @@
 				<tr ng-repeat="next in data">
 					<td>{{(dataPage - 1) * dataLimit + $index + 1}}</td>
 					<td>{{next.Id}}</td>
+					<td>{{next.GeneId}}</td>
 					<td>{{next.Name}}</td>
 					<td><input type="checkbox" ng-model="next.Pseudo" disabled></td>
 					<td>{{next.Region}}</td>
@@ -61,6 +63,10 @@
 				</div>
 				<div class="modal-body">
 					<form name="entityForm" ng-hide="actionType === 'delete'">
+						<div class="form-group">
+							<label>GeneId</label>
+							<input   type="number" class="form-control" placeholder="Enter geneid" ng-model="entity.GeneId" ng-change="updateCalculatedProperties()">
+						</div>
 						<div class="form-group">
 							<label>Name</label>
 							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter name" ng-model="entity.Name" ng-change="updateCalculatedProperties()">

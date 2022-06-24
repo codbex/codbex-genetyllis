@@ -13,10 +13,14 @@ var upload = require("http/v4/upload");
 var request = require("http/v4/request");
 var parser = require("genetyllis-parser/vcf/parser");
 var files = require("io/v4/files");
+var httpClient = require("http/v4/client");
+var response = require("http/v4/response");
 var daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
 var daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
-var daoFilter = require("genetyllis-app/gen/dao/records/Filter");
 var daoGene = require("genetyllis-app/gen/dao/genes/Gene");
+var daoFilter = require("genetyllis-app/gen/dao/records/Filter");
+var daoClinicalSignificane = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
+var daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
 
 if (request.getMethod() === "POST") {
     if (upload.isMultipartContent()) {
@@ -61,94 +65,109 @@ function processVCFFile(fileName, content, patientId) {
 
         // TODO if (variantContext.getAlternateAlleles().size() > 1)
 
+        //VARIANT
         let entityVariant = {};
-
-        // TODO - correct link to Genes
-        entityVariant.GeneId = 1;
-
         // <chr>+":"+"g."+<pos><ref allele>+">"+"alt allele" -> chr1:g.10316791A>C
+        //TODO replace %3E with > later
         entityVariant.HGVS = variantContext.getContig() + ":" + "g."
             + variantContext.getStart() + variantContext.getReferenceBaseString()
-            + ">" + variantContext.getAlternateAlleles()[0].getBaseString();
+            + "%3E" + variantContext.getAlternateAlleles()[0].getBaseString();
         entityVariant.Chromosome = variantContext.getContig(); // chr1
         entityVariant.Start = variantContext.getStart(); // 10316791
         entityVariant.End = variantContext.getEnd(); // 10316791
         entityVariant.DBSNP = variantContext.getID(); // rs1264383
         entityVariant.Reference = variantContext.getReferenceBaseString(); // A
         entityVariant.Alternative = variantContext.getAlternateAlleles()[0].getBaseString() // C
+        // console.log("Trace" + variantContext.getStart());
 
-        // http://myvariant.info/
-        entityVariant.Consequence = ""; // TODO to be taken via annotator
-        entityVariant.ConsequenceDetails = ""; // TODO to be taken via annotator
+        var httpResponse = httpClient.get("https://myvariant.info/v1/variant/" + entityVariant.HGVS);
 
-        console.log(entityVariant.HGVS);
-        console.log(entityVariant.Chromosome);
-        console.log(entityVariant.Start);
-        console.log(entityVariant.End);
-        console.log(entityVariant.DBSNP);
-        console.log(entityVariant.Reference);
-        console.log(entityVariant.Alternative);
+        const myVariantJSON = JSON.parse(httpResponse.text);
 
-        // save new variant
-        let variantId = daoVariant.create(entityVariant);
-        console.log("Variant ID: " + variantId);
+        if (myVariantJSON["error"] == undefined) {
+            // console.log(entityVariant.HGVS + " " + myVariantJSON["cadd"]["consequence"]);
+            console.log(myVariantJSON["cadd"]);
 
-        let entityVariantRecord = {};
-        entityVariantRecord.PatientId = patientId;
-        entityVariantRecord.VariantId = variantId;
-        entityVariantRecord.Quality = variantContext.getPhredScaledQual();
+            if (myVariantJSON["cadd"] !== undefined && myVariantJSON["cadd"]["consequence"] !== undefined)
+                entityVariant.Consequence = JSON.stringify(myVariantJSON["cadd"]["consequence"]);
+            else
+                entityVariant.Consequence = "";
 
-        let genotypes = variantContext.getGenotypes();
+            if (myVariantJSON["cadd"] !== undefined && myVariantJSON["cadd"]["consequence"] !== undefined)
+                entityVariant.ConsequenceDetails = JSON.stringify(myVariantJSON["cadd"]["consdetail"]);
+            else
+                entityVariant.ConsequenceDetails = "";
 
-        entityVariantRecord.Homozygous = true; // TODO to be calculated -> AD - a:b, a:b:c;
-        entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
-        entityVariantRecord.Depth = genotypes[0].getDP();
+            if (myVariantJSON["dbsnp"]["gene"] !== undefined) {
+                for (var i = 0; i < myVariantJSON["dbsnp"]["gene"].length; i++) {
+                    var geneId = myVariantJSON["dbsnp"]["gene"][i]["geneid"];
+                    var geneName = myVariantJSON["dbsnp"]["gene"][i]["name"];
+                    var isPseudo = myVariantJSON["dbsnp"]["gene"][i]["is_pseudo"];
 
-        // save new variant record
-        let variantRecordId = daoVariantRecord.create(entityVariantRecord);
-        console.log("Variant Record ID: " + variantRecordId);
-
+                    let entityGene = {};
+                    entityGene.GeneId = geneId;
+                    entityGene.Name = geneName;
+                    entityGene.Pseudo = isPseudo;
 
 
+                    //TODO exon undefined
+                    if (myVariantJSON["cadd"] !== undefined && myVariantJSON["cadd"]["exon"] !== undefined)
+                        entityGene.Region = JSON.stringify(myVariantJSON["cadd"]["exon"]);
+                    else
+                        entityGene.Region = JSON.stringify(myVariantJSON["cadd"]["intron"]);
+
+                    entityVariant.GeneId = daoGene.create(entityGene);
+                    variantId = daoVariant.create(entityVariant);
+                }
+            } //тодо асдадад
+            else {
+                entityVariant.GeneId = null;
+                variantId = daoVariant.create(entityVariant);
+            }
+        }
+        else {
+            entityVariant.Consequence = "";
+            entityVariant.ConsequenceDetails = "";
+            entityVariant.GeneId = null;
+            variantId = daoVariant.create(entityVariant);
+        }
+
+
+        //TODO check if it's correct syntaxis
+
+
+        //VARIANT RECORD
+        // let entityVariantRecord = {};
+        // entityVariantRecord.PatientId = patientId;
+        // entityVariantRecord.VariantId = variantId;
+        // entityVariantRecord.Quality = variantContext.getPhredScaledQual();
 
         // let genotypes = variantContext.getGenotypes();
-        // for (i in genotypes) {
-        //     let genotype = genotypes[i];
-        //     console.log('Genotype DP: ' + genotype.getDP());
-        // }
 
-        // TODO - stop iteration at the first variant for test purposes
-        break;
+        // entityVariantRecord.Homozygous = true; // TODO to be calculated -> AD - a:b, a:b:c;
+        // entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
+        // entityVariantRecord.Depth = genotypes[0].getDP();
+
+        // //CLINICAL SIGNIFICANCE
+        // let entityClinicalSignificance = {};
+        // entityClinicalSignificance.VariantId = variantId;
+        // entityClinicalSignificance.Significance = myVariantJSON["clinvar"]["rcv"]["clinical_significance"];
+        // entityClinicalSignificance.Evaluated = myVariantJSON["clinvar"]["rcv"]["last_evaluated"];
+        // entityClinicalSignificance.ReviewStatus = myVariantJSON["clinvar"]["rcv"]["review_status"];
+        // entityClinicalSignificance.Update
+
+        // //TODO what if the fields are missing in MyVariantInfo
+        // //PATHOLOGY
+        // let entityPathology = {};
+        // entityPathology.DiseaseId = myVariantJSON["clinvar"]["rcv"]["conditions"]["identifiers"]["medgen"];
+        // entityPathology.Description = myVariantJSON["clinvar"]["rcv"]["conditions"]["name"];
+
+        // daoPathology.create(entityPathology);
+
+
+        // break;
     }
 
-    // var vcfHeader = vcfReader.getFileHeader();
-    // console.log('Column Count: ' + vcfHeader.getColumnCount());
-    // console.log('VCF Header Version: ' + vcfHeader.getVCFHeaderVersion());
-
-
-    // let lines = vcfHeader.getContigLines();
-    // lines.forEach(function (line) {
-    //     console.log('Contig ID: ' + line.getID());
-    //     console.log('Contig Key: ' + line.getKey());
-    //     console.log('Contig Value: ' + line.getValue());
-    //     console.log('Contig Index ' + line.getContigIndex());
-    //     console.log('Contig SAM Sequence Record: ' + line.getSAMSequenceRecord());
-    //     const fields = line.getGenericFields();
-    //     fields.forEach(function (value, key) {
-    //         console.log('    Contig Generic Field-Key: ' + key);
-    //         console.log('    Contig Generic Field-Value: ' + value);
-    //     })
-    // });
-
-    // lines = vcfHeader.getFilterLines();
-    // lines.forEach(function (line) {
-    //     console.log('Filter ID: ' + line.getID());
-    //     console.log('Filter Key: ' + line.getKey());
-    //     console.log('Filter Value: ' + line.getValue());
-    //     const fields = line.getGenericFields();
-    //     fields.forEach(function (value, key) {
-    //         console.log('    Filter Generic Field-Key: ' + key);
-    //         console.log('    Filter Generic Field-Value: ' + value);
-    //     })
-    // });
+    response.flush();
+    response.close();
 }

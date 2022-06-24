@@ -119,7 +119,7 @@
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 20,
+                        "length": 120,
                         "nullable": true,
                         "name": "VARIANT_HGVS"
                     },
@@ -143,19 +143,19 @@
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 20,
+                        "length": 50,
                         "nullable": true,
                         "name": "VARIANT_DBSNP"
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 20,
+                        "length": 51,
                         "nullable": true,
                         "name": "VARIANT_REFERENCE"
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 20,
+                        "length": 51,
                         "nullable": true,
                         "name": "VARIANT_ALTERNATIVE"
                     },
@@ -242,8 +242,14 @@
                         "name": "GENE_ID"
                     },
                     {
-                        "type": "VARCHAR",
+                        "type": "INTEGER",
                         "length": 20,
+                        "nullable": true,
+                        "name": "GENE_GENEID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 100,
                         "nullable": true,
                         "name": "GENE_NAME"
                     },
