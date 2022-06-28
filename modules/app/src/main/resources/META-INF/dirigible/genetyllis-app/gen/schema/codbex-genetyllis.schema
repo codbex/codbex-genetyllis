@@ -2,6 +2,26 @@
     "schema": {
         "structures": [
             {
+                "name": "GENETYLLIS_GENDER",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "GENDER_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "GENDER_NAME"
+                    }
+                ]
+            },
+            {
                 "name": "GENETYLLIS_PATIENT",
                 "type": "TABLE",
                 "columns": [
@@ -30,26 +50,12 @@
                         "length": 0,
                         "nullable": true,
                         "name": "PATIENT_AGE"
-                    }
-                ]
-            },
-            {
-                "name": "GENETYLLIS_GENDER",
-                "type": "TABLE",
-                "columns": [
+                    },
                     {
                         "type": "INTEGER",
                         "length": 0,
-                        "primaryKey": true,
-                        "identity": true,
                         "nullable": true,
-                        "name": "GENDER_ID"
-                    },
-                    {
-                        "type": "VARCHAR",
-                        "length": 20,
-                        "nullable": true,
-                        "name": "GENDER_NAME"
+                        "name": "GENETYLLIS_PATIENT_PHYSICIANID"
                     }
                 ]
             },
@@ -102,6 +108,12 @@
                         "length": 0,
                         "nullable": true,
                         "name": "CLINICALHISTORY_PATHOLOGYID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 2000,
+                        "nullable": true,
+                        "name": "GENETYLLIS_CLINICALHISTORY_NOTES"
                     }
                 ]
             },
@@ -173,6 +185,18 @@
                     },
                     {
                         "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "GENETYLLIS_VARIANT_REGION"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "GENETYLLIS_VARIANT_REGIONNUM"
+                    },
+                    {
+                        "type": "VARCHAR",
                         "length": 2000,
                         "nullable": true,
                         "name": "VARIANT_CONSEQUENCEDETAILS"
@@ -226,6 +250,12 @@
                         "length": 20,
                         "nullable": true,
                         "name": "VARIANTRECORD_QUALITY"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "GENETYLLIS_VARIANTRECORD_ANALYSISID"
                     }
                 ]
             },
@@ -249,7 +279,7 @@
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 100,
+                        "length": 20,
                         "nullable": true,
                         "name": "GENE_NAME"
                     },
@@ -258,12 +288,6 @@
                         "length": 20,
                         "nullable": true,
                         "name": "GENE_PSEUDO"
-                    },
-                    {
-                        "type": "VARCHAR",
-                        "length": 20,
-                        "nullable": true,
-                        "name": "GENE_REGION"
                     }
                 ]
             },
@@ -434,6 +458,136 @@
                 ]
             },
             {
+                "name": "GENETYLLIS_ANALYSIS",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "ANALYSIS_ID"
+                    },
+                    {
+                        "type": "DATE",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "ANALYSIS_DATE"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "ANALYSIS_PROVIDERID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "ANALYSIS_PLATFORMID"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_PROVIDER",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "PROVIDER_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "PROVIDER_NAME"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_PLATFORM",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "PLATFORM_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "PLATFORM_NAME"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_PHYSICIAN",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "PHYSICIAN_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "PHYSICIAN_NAME"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "PHYSICIAN_EMAIL"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "PHYSICIAN_INSTITUTIONID"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_INSTITUTION",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "INSTITUTION_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "INSTITUTION_NAME"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "INSTITUTION_ADDRESS"
+                    }
+                ]
+            },
+            {
                 "name": "Patient_Gender",
                 "type": "foreignKey",
                 "table": "GENETYLLIS_PATIENT",
@@ -441,6 +595,15 @@
                 "columns": "PATIENT_GENDERID",
                 "referencedTable": "GENETYLLIS_GENDER",
                 "referencedColumns": "GENDER_ID"
+            },
+            {
+                "name": "Patient_Physician",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_PATIENT",
+                "constraintName": "Patient_Physician",
+                "columns": "GENETYLLIS_PATIENT_PHYSICIANID",
+                "referencedTable": "GENETYLLIS_PHYSICIAN",
+                "referencedColumns": "PHYSICIAN_ID"
             },
             {
                 "name": "ClinicalHistory_Patient",
@@ -486,6 +649,15 @@
                 "columns": "VARIANTRECORD_VARIANTID",
                 "referencedTable": "GENETYLLIS_VARIANT",
                 "referencedColumns": "VARIANT_ID"
+            },
+            {
+                "name": "VariantRecord_Analysis",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_VARIANTRECORD",
+                "constraintName": "VariantRecord_Analysis",
+                "columns": "GENETYLLIS_VARIANTRECORD_ANALYSISID",
+                "referencedTable": "GENETYLLIS_ANALYSIS",
+                "referencedColumns": "ANALYSIS_ID"
             },
             {
                 "name": "Filter_VariantRecord",
@@ -549,6 +721,33 @@
                 "columns": "ALLELEFREQUENCY_POPULATIONID",
                 "referencedTable": "GENETYLLIS_POPULATION",
                 "referencedColumns": "POPULATION_ID"
+            },
+            {
+                "name": "Analysis_Provider",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_ANALYSIS",
+                "constraintName": "Analysis_Provider",
+                "columns": "ANALYSIS_PROVIDERID",
+                "referencedTable": "GENETYLLIS_PROVIDER",
+                "referencedColumns": "PROVIDER_ID"
+            },
+            {
+                "name": "Analysis_Platform",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_ANALYSIS",
+                "constraintName": "Analysis_Platform",
+                "columns": "ANALYSIS_PLATFORMID",
+                "referencedTable": "GENETYLLIS_PLATFORM",
+                "referencedColumns": "PLATFORM_ID"
+            },
+            {
+                "name": "Physician_Institution",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_PHYSICIAN",
+                "constraintName": "Physician_Institution",
+                "columns": "PHYSICIAN_INSTITUTIONID",
+                "referencedTable": "GENETYLLIS_INSTITUTION",
+                "referencedColumns": "INSTITUTION_ID"
             }
         ]
     }

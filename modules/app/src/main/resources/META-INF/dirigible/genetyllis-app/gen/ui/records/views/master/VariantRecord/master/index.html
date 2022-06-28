@@ -33,6 +33,7 @@
 					<th class="text-capitalize">AlleleDepth</th>
 					<th class="text-capitalize">Depth</th>
 					<th class="text-capitalize">Quality</th>
+					<th class="text-capitalize">AnalysisId</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -46,6 +47,7 @@
 					<td>{{next.AlleleDepth}}</td>
 					<td>{{next.Depth}}</td>
 					<td>{{next.Quality}}</td>
+					<td>{{next.AnalysisId}}</td>
 					<td>
 						<i class="close fa fa-remove" ng-click="openDeleteDialog(next)" style="font-size: 1.4em"></i>
 						<i class="close fa fa-bars" ng-click="openEditDialog(next)" style="margin-right: 0.5em; font-size: 1.4em"></i>
@@ -91,6 +93,10 @@
 						<div class="form-group">
 							<label>Quality</label>
 							<input   type="number" class="form-control" placeholder="Enter quality" ng-model="entity.Quality" ng-change="updateCalculatedProperties()">
+						</div>
+						<div class="form-group">
+							<label>AnalysisId</label>
+							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter analysisid" ng-model="entity.AnalysisId" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="modal-footer">
 							<input type="submit" value="Save" class="btn btn-primary btn-lg" ng-show="actionType === 'new'" ng-click="create()">

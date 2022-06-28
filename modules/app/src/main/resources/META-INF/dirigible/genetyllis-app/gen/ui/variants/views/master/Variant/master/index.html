@@ -36,6 +36,8 @@
 					<th class="text-capitalize">Alternative</th>
 					<th class="text-capitalize">GeneId</th>
 					<th class="text-capitalize">Consequence</th>
+					<th class="text-capitalize">Region</th>
+					<th class="text-capitalize">RegionNum</th>
 					<th class="text-capitalize">ConsequenceDetails</th>
 					<th></th>
 				</tr>
@@ -53,6 +55,8 @@
 					<td>{{next.Alternative}}</td>
 					<td>{{geneidOptionValue(next.GeneId)}}</td>
 					<td>{{next.Consequence}}</td>
+					<td>{{next.Region}}</td>
+					<td>{{next.RegionNum}}</td>
 					<td>{{next.ConsequenceDetails}}</td>
 					<td>
 						<i class="close fa fa-remove" ng-click="openDeleteDialog(next)" style="font-size: 1.4em"></i>
@@ -111,6 +115,14 @@
 						<div class="form-group">
 							<label>Consequence</label>
 							<textarea    maxlength="2000" class="form-control" placeholder="Enter consequence" ng-model="entity.Consequence" ng-change="updateCalculatedProperties()"></textarea>
+						</div>
+						<div class="form-group">
+							<label>Region</label>
+							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter region" ng-model="entity.Region" ng-change="updateCalculatedProperties()">
+						</div>
+						<div class="form-group">
+							<label>RegionNum</label>
+							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter regionnum" ng-model="entity.RegionNum" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="form-group">
 							<label>ConsequenceDetails</label>

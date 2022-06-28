@@ -1,0 +1,5 @@
+{
+	"description": "Physician view",
+	"extensionPoint": "launchpad-genetyllis-analysis-view",
+	"module": "genetyllis-app/gen/ui/analysis/views/Physician/extensions/view.js"
+}

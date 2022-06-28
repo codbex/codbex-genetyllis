@@ -30,6 +30,7 @@
 					<th class="text-capitalize">GenderId</th>
 					<th class="text-capitalize">Info</th>
 					<th class="text-capitalize">Age</th>
+					<th class="text-capitalize">PhysicianId</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -40,6 +41,7 @@
 					<td>{{genderidOptionValue(next.GenderId)}}</td>
 					<td>{{next.Info}}</td>
 					<td>{{next.Age}}</td>
+					<td>{{physicianidOptionValue(next.PhysicianId)}}</td>
 					<td>
 						<i class="close fa fa-remove" ng-click="openDeleteDialog(next)" style="font-size: 1.4em"></i>
 						<i class="close fa fa-bars" ng-click="openEditDialog(next)" style="margin-right: 0.5em; font-size: 1.4em"></i>
@@ -73,6 +75,10 @@
 						<div class="form-group">
 							<label>Age</label>
 							<input   type="number" class="form-control" placeholder="Enter age" ng-model="entity.Age" ng-change="updateCalculatedProperties()">
+						</div>
+						<div class="form-group">
+							<label>PhysicianId</label>
+							<select  class="form-control" ng-options="o.Id as o.Name for o in physicianidOptions" ng-model="entity.PhysicianId" ng-change="updateCalculatedProperties()"></select>
 						</div>
 						<div class="modal-footer">
 							<input type="submit" value="Save" class="btn btn-primary btn-lg" ng-show="actionType === 'new'" ng-click="create()">

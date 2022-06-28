@@ -1,0 +1,5 @@
+{
+	"description": "Physician menu",
+	"extensionPoint": "shell-genetyllis-app-menu",
+	"module": "genetyllis-app/gen/ui/analysis/views/Physician/extensions/menu/item.js"
+}

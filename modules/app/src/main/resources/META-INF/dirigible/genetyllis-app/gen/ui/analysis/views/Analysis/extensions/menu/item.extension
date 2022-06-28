@@ -1,0 +1,5 @@
+{
+	"description": "Analysis menu",
+	"extensionPoint": "shell-genetyllis-app-menu",
+	"module": "genetyllis-app/gen/ui/analysis/views/Analysis/extensions/menu/item.js"
+}

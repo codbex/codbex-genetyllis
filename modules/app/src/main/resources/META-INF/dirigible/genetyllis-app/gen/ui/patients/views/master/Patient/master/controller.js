@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2022 codbex or an codbex affiliate company and contributors
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v20.html
- *
- * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
- * SPDX-License-Identifier: EPL-2.0
- */
 angular.module('page', ['ngAnimate', 'ui.bootstrap']);
 angular.module('page')
 .factory('httpRequestInterceptor', function () {
@@ -51,6 +40,9 @@ angular.module('page')
 		onGenderModified: function(callback) {
 			on('genetyllis-app.patients.Gender.modified', callback);
 		},
+		onPhysicianModified: function(callback) {
+			on('genetyllis-app.patients.Physician.modified', callback);
+		},
 		messageEntityModified: function() {
 			message('modified');
 		},
@@ -63,8 +55,11 @@ angular.module('page')
 
 	var api = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
 	var genderidOptionsApi = '/services/v4/js/genetyllis-app/gen/api/nomenclature/Gender.js';
+	var physicianidOptionsApi = '/services/v4/js/genetyllis-app/gen/api/analysis/Physician.js';
 
 	$scope.genderidOptions = [];
+
+	$scope.physicianidOptions = [];
 
 	$scope.dateOptions = {
 		startingDay: 1
@@ -83,6 +78,14 @@ angular.module('page')
 		});
 	}
 	genderidOptionsLoad();
+
+	function physicianidOptionsLoad() {
+		$http.get(physicianidOptionsApi)
+		.then(function(data) {
+			$scope.physicianidOptions = data.data;
+		});
+	}
+	physicianidOptionsLoad();
 
 	$scope.dataPage = 1;
 	$scope.dataCount = 0;
@@ -193,8 +196,18 @@ angular.module('page')
 		return null;
 	};
 
+	$scope.physicianidOptionValue = function(optionKey) {
+		for (var i = 0 ; i < $scope.physicianidOptions.length; i ++) {
+			if ($scope.physicianidOptions[i].Id === optionKey) {
+				return $scope.physicianidOptions[i].Name;
+			}
+		}
+		return null;
+	};
+
 	$messageHub.onEntityRefresh($scope.loadPage($scope.dataPage));
 	$messageHub.onGenderModified(genderidOptionsLoad);
+	$messageHub.onPhysicianModified(physicianidOptionsLoad);
 
 	$scope.selectEntity = function(entity) {
 		$scope.selectedEntity = entity;

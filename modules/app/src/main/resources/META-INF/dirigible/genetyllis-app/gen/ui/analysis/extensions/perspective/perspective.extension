@@ -1,0 +1,5 @@
+{
+	"description": "analysis perspective",
+	"extensionPoint": "launchpad-genetyllis-perspective",
+	"module": "genetyllis-app/gen/ui/analysis/extensions/perspective/perspective.js"
+}
