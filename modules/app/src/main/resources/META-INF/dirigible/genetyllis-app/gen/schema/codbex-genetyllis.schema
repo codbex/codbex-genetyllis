@@ -34,6 +34,18 @@
                         "name": "PATIENT_ID"
                     },
                     {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "GENETYLLIS_PATIENT_LABID"
+                    },
+                    {
+                        "type": "DATE",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "PATIENT_AGE"
+                    },
+                    {
                         "type": "INTEGER",
                         "length": 0,
                         "nullable": true,
@@ -44,12 +56,6 @@
                         "length": 2000,
                         "nullable": true,
                         "name": "PATIENT_INFO"
-                    },
-                    {
-                        "type": "INTEGER",
-                        "length": 0,
-                        "nullable": true,
-                        "name": "PATIENT_AGE"
                     },
                     {
                         "type": "INTEGER",
@@ -108,6 +114,12 @@
                         "length": 0,
                         "nullable": true,
                         "name": "CLINICALHISTORY_PATHOLOGYID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "GENETYLLIS_CLINICALHISTORY_AGEONSET"
                     },
                     {
                         "type": "VARCHAR",
@@ -179,12 +191,6 @@
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 2000,
-                        "nullable": true,
-                        "name": "VARIANT_CONSEQUENCE"
-                    },
-                    {
-                        "type": "VARCHAR",
                         "length": 20,
                         "nullable": true,
                         "name": "GENETYLLIS_VARIANT_REGION"
@@ -194,6 +200,12 @@
                         "length": 20,
                         "nullable": true,
                         "name": "GENETYLLIS_VARIANT_REGIONNUM"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 2000,
+                        "nullable": true,
+                        "name": "VARIANT_CONSEQUENCE"
                     },
                     {
                         "type": "VARCHAR",
@@ -486,6 +498,12 @@
                         "length": 0,
                         "nullable": true,
                         "name": "ANALYSIS_PLATFORMID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "GENETYLLIS_ANALYSIS_PATIENTID"
                     }
                 ]
             },
@@ -584,6 +602,58 @@
                         "length": 20,
                         "nullable": true,
                         "name": "INSTITUTION_ADDRESS"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_FAMILYHISTORY",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "FAMILYHISTORY_ID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "FAMILYHISTORY_PATIENTID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "FAMILYHISTORY_RELATIONIDN"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "FAMILYHISTORY_FAMILYMEMBERID"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_RELATION",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "RELATION_INDN"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "RELATION_RELATIONTYPE"
                     }
                 ]
             },
@@ -741,6 +811,15 @@
                 "referencedColumns": "PLATFORM_ID"
             },
             {
+                "name": "Analysis_Patient",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_ANALYSIS",
+                "constraintName": "Analysis_Patient",
+                "columns": "GENETYLLIS_ANALYSIS_PATIENTID",
+                "referencedTable": "GENETYLLIS_PATIENT",
+                "referencedColumns": "PATIENT_ID"
+            },
+            {
                 "name": "Physician_Institution",
                 "type": "foreignKey",
                 "table": "GENETYLLIS_PHYSICIAN",
@@ -748,6 +827,33 @@
                 "columns": "PHYSICIAN_INSTITUTIONID",
                 "referencedTable": "GENETYLLIS_INSTITUTION",
                 "referencedColumns": "INSTITUTION_ID"
+            },
+            {
+                "name": "FamilyHistory_Patient",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_FAMILYHISTORY",
+                "constraintName": "FamilyHistory_Patient",
+                "columns": "FAMILYHISTORY_PATIENTID",
+                "referencedTable": "GENETYLLIS_PATIENT",
+                "referencedColumns": "PATIENT_ID"
+            },
+            {
+                "name": "FamilyHistory_Relation",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_FAMILYHISTORY",
+                "constraintName": "FamilyHistory_Relation",
+                "columns": "FAMILYHISTORY_RELATIONIDN",
+                "referencedTable": "GENETYLLIS_RELATION",
+                "referencedColumns": "RELATION_INDN"
+            },
+            {
+                "name": "FamilyHistory_Patient",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_FAMILYHISTORY",
+                "constraintName": "FamilyHistory_Patient",
+                "columns": "FAMILYHISTORY_FAMILYMEMBERID",
+                "referencedTable": "GENETYLLIS_PATIENT",
+                "referencedColumns": "PATIENT_ID"
             }
         ]
     }

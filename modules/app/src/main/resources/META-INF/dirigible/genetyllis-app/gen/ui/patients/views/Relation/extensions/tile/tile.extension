@@ -1,0 +1,5 @@
+{
+	"description": "patients tiles",
+	"extensionPoint": "launchpad-genetyllis-tiles",
+	"module": "genetyllis-app/gen/ui/patients/views/Relation/extensions/tile/tile.js"
+}

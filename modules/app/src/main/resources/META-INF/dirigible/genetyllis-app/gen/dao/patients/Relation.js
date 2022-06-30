@@ -1,61 +1,38 @@
 var query = require("db/v4/query");
 var producer = require("messaging/v4/producer");
 var daoApi = require("db/v4/dao");
-var EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
 
 var dao = daoApi.create({
-	table: "GENETYLLIS_PATIENT",
+	table: "GENETYLLIS_RELATION",
 	properties: [
 		{
 			name: "Id",
-			column: "PATIENT_ID",
+			column: "RELATION_INDN",
 			type: "INTEGER",
 			id: true,
 			autoIncrement: true,
 		}, {
-			name: "LabId",
-			column: "GENETYLLIS_PATIENT_LABID",
+			name: "RelationType",
+			column: "RELATION_RELATIONTYPE",
 			type: "VARCHAR",
-		}, {
-			name: "BirthDate",
-			column: "PATIENT_AGE",
-			type: "DATE",
-		}, {
-			name: "GenderId",
-			column: "PATIENT_GENDERID",
-			type: "INTEGER",
-		}, {
-			name: "Info",
-			column: "PATIENT_INFO",
-			type: "VARCHAR",
-		}, {
-			name: "PhysicianId",
-			column: "GENETYLLIS_PATIENT_PHYSICIANID",
-			type: "INTEGER",
 		}]
 });
 
 exports.list = function(settings) {
-	return dao.list(settings).map(function(e) {
-		EntityUtils.setLocalDate(e, "BirthDate");
-		return e;
-	});
+	return dao.list(settings);
 };
 
 exports.get = function(id) {
-	var entity = dao.find(id);
-	EntityUtils.setLocalDate(entity, "BirthDate");
-	return entity;
+	return dao.find(id);
 };
 
 exports.create = function(entity) {
-	EntityUtils.setLocalDate(entity, "BirthDate");
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
-		table: "GENETYLLIS_PATIENT",
+		table: "GENETYLLIS_RELATION",
 		key: {
 			name: "Id",
-			column: "PATIENT_ID",
+			column: "RELATION_INDN",
 			value: id
 		}
 	});
@@ -63,13 +40,12 @@ exports.create = function(entity) {
 };
 
 exports.update = function(entity) {
-	EntityUtils.setLocalDate(entity, "BirthDate");
 	dao.update(entity);
 	triggerEvent("Update", {
-		table: "GENETYLLIS_PATIENT",
+		table: "GENETYLLIS_RELATION",
 		key: {
 			name: "Id",
-			column: "PATIENT_ID",
+			column: "RELATION_INDN",
 			value: entity.Id
 		}
 	});
@@ -78,10 +54,10 @@ exports.update = function(entity) {
 exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
-		table: "GENETYLLIS_PATIENT",
+		table: "GENETYLLIS_RELATION",
 		key: {
 			name: "Id",
-			column: "PATIENT_ID",
+			column: "RELATION_INDN",
 			value: id
 		}
 	});
@@ -92,7 +68,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATIENT");
+	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_RELATION");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -104,5 +80,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/patients/Patient/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/patients/Relation/" + operation).send(JSON.stringify(data));
 }

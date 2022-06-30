@@ -1,0 +1,5 @@
+{
+	"description": "FamilyHistory menu",
+	"extensionPoint": "shell-genetyllis-app-menu",
+	"module": "genetyllis-app/gen/ui/patients/views/FamilyHistory/extensions/menu/item.js"
+}
