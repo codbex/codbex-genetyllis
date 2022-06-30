@@ -17,7 +17,7 @@ var dao = daoApi.create({
 			type: "INTEGER",
 		}, {
 			name: "RelationId ",
-			column: "FAMILYHISTORY_RELATIONIDN",
+			column: "FAMILYHISTORY_RELATIONID",
 			type: "INTEGER",
 		}, {
 			name: "FamilyMemberId",

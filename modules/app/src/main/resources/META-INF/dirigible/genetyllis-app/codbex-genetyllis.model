@@ -1628,7 +1628,7 @@
                         "calculatedPropertyExpression": "",
                         "dataAutoIncrement": "false",
                         "dataLength": "0",
-                        "dataName": "FAMILYHISTORY_RELATIONIDN",
+                        "dataName": "FAMILYHISTORY_RELATIONID",
                         "dataNullable": "true",
                         "dataPrimaryKey": "false",
                         "dataType": "INTEGER",
@@ -1640,7 +1640,7 @@
                         "widgetType": "TEXTBOX",
                         "relationshipName": "FamilyHistory_Relation",
                         "relationshipEntityName": "Relation",
-                        "relationshipEntityPerspectiveName": "patients"
+                        "relationshipEntityPerspectiveName": "nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1683,7 +1683,7 @@
                         "calculatedPropertyExpression": "",
                         "dataAutoIncrement": "true",
                         "dataLength": "0",
-                        "dataName": "RELATION_INDN",
+                        "dataName": "RELATION_ID",
                         "dataNullable": "true",
                         "dataPrimaryKey": "true",
                         "dataType": "INTEGER",
@@ -1720,11 +1720,11 @@
                 "menuLabel": "Relation",
                 "name": "Relation",
                 "perspectiveIcon": "files-o",
-                "perspectiveName": "patients",
+                "perspectiveName": "nomenclature",
                 "perspectiveOrder": "100",
                 "title": "Relation",
                 "tooltip": "Relation",
-                "type": "DEPENDENT"
+                "type": "PRIMARY"
             }
         ],
         "perspectives": [

@@ -7,7 +7,7 @@ var dao = daoApi.create({
 	properties: [
 		{
 			name: "Id",
-			column: "RELATION_INDN",
+			column: "RELATION_ID",
 			type: "INTEGER",
 			id: true,
 			autoIncrement: true,
@@ -32,7 +32,7 @@ exports.create = function(entity) {
 		table: "GENETYLLIS_RELATION",
 		key: {
 			name: "Id",
-			column: "RELATION_INDN",
+			column: "RELATION_ID",
 			value: id
 		}
 	});
@@ -45,7 +45,7 @@ exports.update = function(entity) {
 		table: "GENETYLLIS_RELATION",
 		key: {
 			name: "Id",
-			column: "RELATION_INDN",
+			column: "RELATION_ID",
 			value: entity.Id
 		}
 	});
@@ -57,7 +57,7 @@ exports.delete = function(id) {
 		table: "GENETYLLIS_RELATION",
 		key: {
 			name: "Id",
-			column: "RELATION_INDN",
+			column: "RELATION_ID",
 			value: id
 		}
 	});
@@ -80,5 +80,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/patients/Relation/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/nomenclature/Relation/" + operation).send(JSON.stringify(data));
 }
