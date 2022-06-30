@@ -24,6 +24,10 @@ var dao = daoApi.create({
 			name: "PlatformId",
 			column: "ANALYSIS_PLATFORMID",
 			type: "INTEGER",
+		}, {
+			name: "PatientId",
+			column: "GENETYLLIS_ANALYSIS_PATIENTID",
+			type: "INTEGER",
 		}]
 });
 

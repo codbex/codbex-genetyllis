@@ -53,5 +53,16 @@
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
     "keys": []
+  },
+  {
+    "table": "GENETYLLIS_RELATION",
+    "schema": "PUBLIC",
+    "file": "/genetyllis-data/data/GENETYLLIS_RELATION.csv",
+    "header": true,
+    "useHeaderNames": true,
+    "delimField": ";",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
   }
 ]

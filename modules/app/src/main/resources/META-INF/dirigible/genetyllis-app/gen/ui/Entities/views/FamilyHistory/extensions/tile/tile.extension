@@ -1,0 +1,5 @@
+{
+	"description": "Entities tiles",
+	"extensionPoint": "launchpad-genetyllis-tiles",
+	"module": "genetyllis-app/gen/ui/Entities/views/FamilyHistory/extensions/tile/tile.js"
+}

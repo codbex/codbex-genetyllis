@@ -3,62 +3,26 @@ var producer = require("messaging/v4/producer");
 var daoApi = require("db/v4/dao");
 
 var dao = daoApi.create({
-	table: "GENETYLLIS_VARIANT",
+	table: "GENETYLLIS_FAMILYHISTORY",
 	properties: [
 		{
 			name: "Id",
-			column: "VARIANT_ID",
+			column: "FAMILYHISTORY_ID",
 			type: "INTEGER",
 			id: true,
 			autoIncrement: true,
 		}, {
-			name: "HGVS",
-			column: "VARIANT_HGVS",
-			type: "VARCHAR",
-		}, {
-			name: "Chromosome",
-			column: "VARIANT_CHROMOSOME",
-			type: "VARCHAR",
-		}, {
-			name: "Start",
-			column: "VARIANT_START",
+			name: "PatientId",
+			column: "FAMILYHISTORY_PATIENTID",
 			type: "INTEGER",
 		}, {
-			name: "End",
-			column: "VARIANT_END",
+			name: "RelationId ",
+			column: "FAMILYHISTORY_RELATIONIDN",
 			type: "INTEGER",
 		}, {
-			name: "DBSNP",
-			column: "VARIANT_DBSNP",
-			type: "VARCHAR",
-		}, {
-			name: "Reference",
-			column: "VARIANT_REFERENCE",
-			type: "VARCHAR",
-		}, {
-			name: "Alternative",
-			column: "VARIANT_ALTERNATIVE",
-			type: "VARCHAR",
-		}, {
-			name: "GeneId",
-			column: "VARIANT_GENEID",
+			name: "FamilyMemberId",
+			column: "FAMILYHISTORY_FAMILYMEMBERID",
 			type: "INTEGER",
-		}, {
-			name: "Region",
-			column: "GENETYLLIS_VARIANT_REGION",
-			type: "VARCHAR",
-		}, {
-			name: "RegionNum",
-			column: "GENETYLLIS_VARIANT_REGIONNUM",
-			type: "VARCHAR",
-		}, {
-			name: "Consequence",
-			column: "VARIANT_CONSEQUENCE",
-			type: "VARCHAR",
-		}, {
-			name: "ConsequenceDetails",
-			column: "VARIANT_CONSEQUENCEDETAILS",
-			type: "VARCHAR",
 		}]
 });
 
@@ -73,10 +37,10 @@ exports.get = function(id) {
 exports.create = function(entity) {
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
-		table: "GENETYLLIS_VARIANT",
+		table: "GENETYLLIS_FAMILYHISTORY",
 		key: {
 			name: "Id",
-			column: "VARIANT_ID",
+			column: "FAMILYHISTORY_ID",
 			value: id
 		}
 	});
@@ -86,10 +50,10 @@ exports.create = function(entity) {
 exports.update = function(entity) {
 	dao.update(entity);
 	triggerEvent("Update", {
-		table: "GENETYLLIS_VARIANT",
+		table: "GENETYLLIS_FAMILYHISTORY",
 		key: {
 			name: "Id",
-			column: "VARIANT_ID",
+			column: "FAMILYHISTORY_ID",
 			value: entity.Id
 		}
 	});
@@ -98,10 +62,10 @@ exports.update = function(entity) {
 exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
-		table: "GENETYLLIS_VARIANT",
+		table: "GENETYLLIS_FAMILYHISTORY",
 		key: {
 			name: "Id",
-			column: "VARIANT_ID",
+			column: "FAMILYHISTORY_ID",
 			value: id
 		}
 	});
@@ -112,7 +76,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_VARIANT");
+	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_FAMILYHISTORY");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -124,5 +88,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/variants/Variant/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/patients/FamilyHistory/" + operation).send(JSON.stringify(data));
 }

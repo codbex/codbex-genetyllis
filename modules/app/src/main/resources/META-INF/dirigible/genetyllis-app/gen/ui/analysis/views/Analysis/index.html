@@ -30,6 +30,7 @@
 					<th class="text-capitalize">Date</th>
 					<th class="text-capitalize">ProviderId</th>
 					<th class="text-capitalize">PlatformId</th>
+					<th class="text-capitalize">PatientId</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -40,6 +41,7 @@
 					<td>{{next.Date | date:dateFormat}}</td>
 					<td>{{provideridOptionValue(next.ProviderId)}}</td>
 					<td>{{platformidOptionValue(next.PlatformId)}}</td>
+					<td>{{next.PatientId}}</td>
 					<td>
 						<i class="close fa fa-remove" ng-click="openDeleteDialog(next)" style="font-size: 1.4em"></i>
 						<i class="close fa fa-bars" ng-click="openEditDialog(next)" style="margin-right: 0.5em; font-size: 1.4em"></i>					</td>
@@ -90,6 +92,10 @@
 						<div class="form-group">
 							<label>PlatformId</label>
 							<select  class="form-control" ng-options="o.Id as o.Name for o in platformidOptions" ng-model="entity.PlatformId" ng-change="updateCalculatedProperties()"></select>
+						</div>
+						<div class="form-group">
+							<label>PatientId</label>
+							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter patientid" ng-model="entity.PatientId" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="modal-footer">
 							<input type="submit" value="Save" class="btn btn-primary btn-lg" ng-show="actionType === 'new'" ng-click="create()">

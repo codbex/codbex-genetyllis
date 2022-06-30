@@ -20,6 +20,10 @@ var dao = daoApi.create({
 			column: "CLINICALHISTORY_PATHOLOGYID",
 			type: "INTEGER",
 		}, {
+			name: "AgeOnset",
+			column: "GENETYLLIS_CLINICALHISTORY_AGEONSET",
+			type: "INTEGER",
+		}, {
 			name: "Notes",
 			column: "GENETYLLIS_CLINICALHISTORY_NOTES",
 			type: "VARCHAR",

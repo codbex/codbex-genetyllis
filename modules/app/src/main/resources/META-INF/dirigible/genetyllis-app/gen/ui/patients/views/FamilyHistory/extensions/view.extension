@@ -1,0 +1,5 @@
+{
+	"description": "FamilyHistory view",
+	"extensionPoint": "launchpad-genetyllis-patients-view",
+	"module": "genetyllis-app/gen/ui/patients/views/FamilyHistory/extensions/view.js"
+}

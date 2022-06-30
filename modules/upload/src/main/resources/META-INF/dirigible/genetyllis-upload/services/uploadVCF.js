@@ -78,14 +78,12 @@ function processVCFFile(fileName, content, patientId) {
         entityVariant.DBSNP = variantContext.getID(); // rs1264383
         entityVariant.Reference = variantContext.getReferenceBaseString(); // A
         entityVariant.Alternative = variantContext.getAlternateAlleles()[0].getBaseString() // C
-        // console.log("Trace" + variantContext.getStart());
 
         var httpResponse = httpClient.get("https://myvariant.info/v1/variant/" + entityVariant.HGVS);
 
         const myVariantJSON = JSON.parse(httpResponse.text);
 
         if (myVariantJSON["error"] == undefined) {
-            // console.log(entityVariant.HGVS + " " + myVariantJSON["cadd"]["consequence"]);
             console.log(myVariantJSON["cadd"]);
 
             if (myVariantJSON["cadd"] !== undefined && myVariantJSON["cadd"]["consequence"] !== undefined)
@@ -98,6 +96,19 @@ function processVCFFile(fileName, content, patientId) {
             else
                 entityVariant.ConsequenceDetails = "";
 
+            if (myVariantJSON["cadd"] !== undefined && myVariantJSON["cadd"]["exon"] !== undefined) {
+                entityVariant.Region = "exon";
+                entityVariant.RegionNum = JSON.stringify(myVariantJSON["cadd"]["exon"]);
+            }
+            else if (myVariantJSON["cadd"] !== undefined && myVariantJSON["cadd"]["intron"] !== undefined) {
+                entityVariant.Region = "intron";
+                entityVariant.RegionNum = JSON.stringify(myVariantJSON["cadd"]["intron"]);
+            }
+            else {
+                entityVariant.Region = "";
+                entityVariant.RegionNum = "";
+            }
+
             if (myVariantJSON["dbsnp"]["gene"] !== undefined) {
                 for (var i = 0; i < myVariantJSON["dbsnp"]["gene"].length; i++) {
                     var geneId = myVariantJSON["dbsnp"]["gene"][i]["geneid"];
@@ -109,21 +120,56 @@ function processVCFFile(fileName, content, patientId) {
                     entityGene.Name = geneName;
                     entityGene.Pseudo = isPseudo;
 
-
-                    //TODO exon undefined
-                    if (myVariantJSON["cadd"] !== undefined && myVariantJSON["cadd"]["exon"] !== undefined)
-                        entityGene.Region = JSON.stringify(myVariantJSON["cadd"]["exon"]);
-                    else
-                        entityGene.Region = JSON.stringify(myVariantJSON["cadd"]["intron"]);
-
                     entityVariant.GeneId = daoGene.create(entityGene);
                     variantId = daoVariant.create(entityVariant);
                 }
-            } //тодо асдадад
+            }
             else {
                 entityVariant.GeneId = null;
                 variantId = daoVariant.create(entityVariant);
             }
+
+            //CLINICAL SIGNIFICANCE
+            let entityClinicalSignificance = {};
+            entityClinicalSignificance.VariantId = variantId;
+
+            ////TODO Very possible break, must be tested
+            var query = require("db/v4/query");
+
+            var sql = "SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = " + myVariantJSON["clinvar"]["rcv"]["conditions"]["identifiers"]["medgen"];
+            var resultset = query.execute(sql, ["ide-editor"], "local", "SystemDB");
+
+            response.println(JSON.stringify(resultset));
+
+            entityClinicalSignificance.PathologyId = 0;
+
+            ////
+
+            switch (myVariantJSON["clinvar"]["rcv"]["clinical_significance"]) {
+                case "Pathogenic":
+                    entityClinicalSignificance.Significance = 1;
+                    break;
+                case "Likely pathogenic":
+                    entityClinicalSignificance.Significance = 2;
+                    break;
+                case "Uncertain":
+                    entityClinicalSignificance.Significance = 3;
+                    break;
+                case "Likely bening":
+                    entityClinicalSignificance.Significance = 4;
+                    break;
+                case "Bening":
+                    entityClinicalSignificance.Significance = 5;
+                    break;
+                default:
+                    entityClinicalSignificance.Significance = null;
+            }
+
+            entityClinicalSignificance.Evaluated = myVariantJSON["clinvar"]["rcv"]["last_evaluated"];
+            entityClinicalSignificance.ReviewStatus = myVariantJSON["clinvar"]["rcv"]["review_status"];
+            entityClinicalSignificance.Update;
+
+            daoClinicalSignificane.create(entityClinicalSignificance);
         }
         else {
             entityVariant.Consequence = "";
@@ -132,11 +178,7 @@ function processVCFFile(fileName, content, patientId) {
             variantId = daoVariant.create(entityVariant);
         }
 
-
-        //TODO check if it's correct syntaxis
-
-
-        //VARIANT RECORD
+        // //VARIANT RECORD
         // let entityVariantRecord = {};
         // entityVariantRecord.PatientId = patientId;
         // entityVariantRecord.VariantId = variantId;
@@ -148,16 +190,10 @@ function processVCFFile(fileName, content, patientId) {
         // entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
         // entityVariantRecord.Depth = genotypes[0].getDP();
 
-        // //CLINICAL SIGNIFICANCE
-        // let entityClinicalSignificance = {};
-        // entityClinicalSignificance.VariantId = variantId;
-        // entityClinicalSignificance.Significance = myVariantJSON["clinvar"]["rcv"]["clinical_significance"];
-        // entityClinicalSignificance.Evaluated = myVariantJSON["clinvar"]["rcv"]["last_evaluated"];
-        // entityClinicalSignificance.ReviewStatus = myVariantJSON["clinvar"]["rcv"]["review_status"];
-        // entityClinicalSignificance.Update
 
-        // //TODO what if the fields are missing in MyVariantInfo
-        // //PATHOLOGY
+
+        //TODO what if the fields are missing in MyVariantInfo
+        //PATHOLOGY
         // let entityPathology = {};
         // entityPathology.DiseaseId = myVariantJSON["clinvar"]["rcv"]["conditions"]["identifiers"]["medgen"];
         // entityPathology.Description = myVariantJSON["clinvar"]["rcv"]["conditions"]["name"];

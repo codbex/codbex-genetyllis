@@ -27,9 +27,10 @@
 				<tr>
 					<th>#</th>
 					<th class="text-capitalize">Id</th>
+					<th class="text-capitalize">LabId</th>
+					<th class="text-capitalize">BirthDate</th>
 					<th class="text-capitalize">GenderId</th>
 					<th class="text-capitalize">Info</th>
-					<th class="text-capitalize">Age</th>
 					<th class="text-capitalize">PhysicianId</th>
 					<th></th>
 				</tr>
@@ -38,9 +39,10 @@
 				<tr ng-repeat="next in data" ng-class="{'bg-info':next && next.Id == selectedEntity.Id}" style="cursor: pointer;" ng-click="selectEntity(next)">
 					<td>{{(dataPage - 1) * dataLimit + $index + 1}}</td>
 					<td>{{next.Id}}</td>
+					<td>{{next.LabId}}</td>
+					<td>{{next.BirthDate}}</td>
 					<td>{{genderidOptionValue(next.GenderId)}}</td>
 					<td>{{next.Info}}</td>
-					<td>{{next.Age}}</td>
 					<td>{{physicianidOptionValue(next.PhysicianId)}}</td>
 					<td>
 						<i class="close fa fa-remove" ng-click="openDeleteDialog(next)" style="font-size: 1.4em"></i>
@@ -65,16 +67,20 @@
 				<div class="modal-body">
 					<form name="entityForm" ng-hide="actionType === 'delete'">
 						<div class="form-group">
+							<label>LabId</label>
+							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter labid" ng-model="entity.LabId" ng-change="updateCalculatedProperties()">
+						</div>
+						<div class="form-group">
+							<label>BirthDate</label>
+							<input   type="number" class="form-control" placeholder="Enter birthdate" ng-model="entity.BirthDate" ng-change="updateCalculatedProperties()">
+						</div>
+						<div class="form-group">
 							<label>GenderId</label>
 							<select  class="form-control" ng-options="o.Id as o.Name for o in genderidOptions" ng-model="entity.GenderId" ng-change="updateCalculatedProperties()"></select>
 						</div>
 						<div class="form-group">
 							<label>Info</label>
 							<textarea    maxlength="2000" class="form-control" placeholder="Enter info" ng-model="entity.Info" ng-change="updateCalculatedProperties()"></textarea>
-						</div>
-						<div class="form-group">
-							<label>Age</label>
-							<input   type="number" class="form-control" placeholder="Enter age" ng-model="entity.Age" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="form-group">
 							<label>PhysicianId</label>
