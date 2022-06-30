@@ -1,5 +1,5 @@
 var rs = require("http/v4/rs");
-var dao = require("genetyllis-app/gen/dao/patients/Relation");
+var dao = require("genetyllis-app/gen/dao/nomenclature/Relation");
 var http = require("genetyllis-app/gen/api/utils/http");
 
 rs.service()

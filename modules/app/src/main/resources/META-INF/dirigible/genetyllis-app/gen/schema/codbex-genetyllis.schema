@@ -627,7 +627,7 @@
                         "type": "INTEGER",
                         "length": 0,
                         "nullable": true,
-                        "name": "FAMILYHISTORY_RELATIONIDN"
+                        "name": "FAMILYHISTORY_RELATIONID"
                     },
                     {
                         "type": "INTEGER",
@@ -647,7 +647,7 @@
                         "primaryKey": true,
                         "identity": true,
                         "nullable": true,
-                        "name": "RELATION_INDN"
+                        "name": "RELATION_ID"
                     },
                     {
                         "type": "VARCHAR",
@@ -842,9 +842,9 @@
                 "type": "foreignKey",
                 "table": "GENETYLLIS_FAMILYHISTORY",
                 "constraintName": "FamilyHistory_Relation",
-                "columns": "FAMILYHISTORY_RELATIONIDN",
+                "columns": "FAMILYHISTORY_RELATIONID",
                 "referencedTable": "GENETYLLIS_RELATION",
-                "referencedColumns": "RELATION_INDN"
+                "referencedColumns": "RELATION_ID"
             },
             {
                 "name": "FamilyHistory_Patient",
