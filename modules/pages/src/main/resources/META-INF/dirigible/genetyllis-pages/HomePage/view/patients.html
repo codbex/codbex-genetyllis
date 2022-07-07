@@ -25,25 +25,24 @@
 			<table class="table product-table">
 				<thead>
 					<tr>
-						<th class="text-capitalize">LabId</th>
-						<th class="text-capitalize">MedGen ID</th>
-						<th class="text-capitalize">Patient Info</th>
-						<th class="text-capitalize">Clinical history</th>
-
-						<th class="text-capitalize">Patient Age</th>
+						<th class="text-capitalize">Id</th>
+						<!-- <th class="text-capitalize">MedGen ID</th> -->
+						<th class="text-capitalize">BirthDate</th>
+						<th class="text-capitalize">GenderId</th>
+						<th class="text-capitalize">Info</th>
 						<!-- <th class="text-capitalize">Disease</th>
-						<th class="text-capitalize">Disease</th> -->
+                        <th class="text-capitalize">Disease</th> -->
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="next in data">
 						<!-- <td>{{next.patient_id}}</td> -->
-						<td>{{next.patientLabId}}</td>
-						<td>{{next.patientGenderId}}</td>
-						<td>{{next.patientInfo}}</td>
-						<td>{{next.patientAge}}</td>
-						<td>{{next.patientId}}</td>
-						<!-- <td>{{next.genetyllis_patient_labId}}</td> -->
+						<td>{{next.Id}}</td>
+						<!-- <td>{{entity.LabId}}</td> -->
+						<td>{{next.BirthDate}}</td>
+						<td>{{next.GenderId}}</td>
+						<td>{{next.Info}}</td>
+
 						<td>
 							<i class="close fa fa-2x fa-remove" ng-click="openDeleteDialog(next)"></i>
 							<i class="close fa fa-2x fa-pencil" ng-click="openEditDialog(next)"
@@ -69,30 +68,47 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form ng-hide="actionType === 'delete'">
+						<form ng-hide="actionType === 'create'">
 							<div class="form-group">
 								<label>LabId</label>
-								<input type="text" class="form-control" placeholder="Enter isbn" ng-model="entity.isbn">
+								<input type="text" class="form-control" placeholder="Enter LabId"
+									ng-model="entity.LabId" required>
 							</div>
 							<div class="form-group">
-								<label>Title</label>
-								<input type="text" class="form-control" placeholder="Enter title"
-									ng-model="entity.title">
+								<label>patientAge</label>
+								<input type="text" class="form-control" placeholder="Enter patient age"
+									ng-model="entity.BirthDate" required>
 							</div>
 							<div class="form-group">
-								<label>Publisher</label>
-								<input type="text" class="form-control" placeholder="Enter publisher"
-									ng-model="entity.publisher">
+								<label>GenderId</label>
+								<input type="text" class="form-control" placeholder="Enter patient gender id"
+									ng-model="entity.GenderId" required>
 							</div>
 							<div class="form-group">
-								<label>Date</label>
-								<input type="date" class="form-control" placeholder="Enter date" ng-model="entity.date">
+								<label>patientInfo</label>
+								<input type="text" class="form-control" placeholder="Enter patient info"
+									ng-model="entity.Info" required>
 							</div>
-							<div class="form-group">
-								<label>price</label>
-								<input type="number" class="form-control" placeholder="Enter price"
-									ng-model="entity.price">
-							</div>
+
+							<!-- <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" class="form-control" placeholder="Enter title"
+                                    ng-model="entity.title">
+                            </div> -->
+							<!-- <div class="form-group">
+                                <label>Publisheeeer</label>
+                                <input type="text" class="form-control" placeholder="Enter publisher"
+                                    ng-model="entity.publisher">
+                            </div>
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" class="form-control" placeholder="Enter date" ng-model="entity.date">
+                            </div>
+                            <div class="form-group">
+                                <label>price</label>
+                                <input type="number" class="form-control" placeholder="Enter price"
+                                    ng-model="entity.price">
+                            </div> -->
 						</form>
 						<div ng-show="actionType === 'delete'">
 							You are going to delete <b>Books</b> with <b>id = {{entity.id}}</b>.

@@ -1,63 +1,58 @@
 var daoApi = require('db/v4/dao');
 var dao = daoApi.create({
-	'table': 'patients_BOOKS',
+	'table': 'GENETYLLIS_PATIENT',
 	'properties': [
 		{
-			'name':  'id',
-			'column': 'BOOK_ID',
-			'type':'INTEGER',
+			'name': 'PATIENT_ID',
+			'column': 'PATIENT_ID',
+			'type': 'INTEGER',
 			'id': true,
 			'required': true
-		},		{
-			'name':  'isbn',
-			'column': 'BOOK_ISBN',
-			'type':'CHAR',
+		}, {
+			'name': 'PATIENT_GENDERID',
+			'column': 'PATIENT_GENDERID',
+			'type': 'INTEGER',
 			'id': false,
 			'required': false
-		},		{
-			'name':  'title',
-			'column': 'BOOK_TITLE',
-			'type':'VARCHAR',
+		}, {
+			'name': 'PATIENT_INFO',
+			'column': 'PATIENT_INFO',
+			'type': 'VARCHAR',
 			'id': false,
 			'required': false
-		},		{
-			'name':  'publisher',
-			'column': 'BOOK_PUBLISHER',
-			'type':'VARCHAR',
+		}, {
+			'name': 'PATIENT_AGE',
+			'column': 'PATIENT_AGE',
+			'type': 'INTEGER',
 			'id': false,
 			'required': false
-		},		{
-			'name':  'date',
-			'column': 'BOOK_DATE',
-			'type':'DATE',
+		}, {
+			'name': 'GENETYLLIS_PATIENT_LABID',
+			'column': 'GENETYLLIS_PATIENT_LABID',
+			'type': 'VARCHAR',
 			'id': false,
 			'required': true
-		},		{
-			'name':  'price',
-			'column': 'BOOK_PRICE',
-			'type':'DOUBLE',
-			'id': false,
-			'required': true
-		}]
+		}
+	]
 });
 
-exports.list = function(settings) {
+exports.list = function (settings) {
 	return dao.list(settings);
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	return dao.find(id);
 };
 
-exports.create = function(entity) {
+exports.create = function (entity) {
 	return dao.insert(entity);
 };
 
-exports.update = function(entity) {
+exports.update = function (entity) {
 	return dao.update(entity);
 };
 
-exports.delete = function(id) {
+exports.delete = function (id) {
 	dao.remove(id);
 };
-  
+
