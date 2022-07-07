@@ -60,7 +60,7 @@
     "file": "/genetyllis-data/data/GENETYLLIS_RELATION.csv",
     "header": true,
     "useHeaderNames": true,
-    "delimField": ";",
+    "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
     "keys": []
