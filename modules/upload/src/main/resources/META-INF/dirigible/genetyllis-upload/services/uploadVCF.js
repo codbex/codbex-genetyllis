@@ -82,10 +82,11 @@ function processVCFFile(fileName, content, patientId) {
         entityVariant.Reference = variantContext.getReferenceBaseString(); // A
         entityVariant.Alternative = variantContext.getAlternateAlleles()[0].getBaseString() // C
 
+        console.log(entityVariant.HGVS);
+
         var httpResponse = httpClient.get("https://myvariant.info/v1/variant/" + entityVariant.HGVS);
 
         const myVariantJSON = JSON.parse(httpResponse.text);
-        console.log(myVariantJSON["_id"]);
 
         if (!myVariantJSON["error"]) {
             if (myVariantJSON["cadd"] !== undefined && myVariantJSON["cadd"]["consequence"] !== undefined)
@@ -214,7 +215,27 @@ function processVCFFile(fileName, content, patientId) {
         entityVariantRecord.Quality = variantContext.getPhredScaledQual();
 
         let genotypes = variantContext.getGenotypes();
-        entityVariantRecord.Homozygous = true; // TODO to be calculated -> AD - a:b, a:b:c;
+        if (genotypes[0].getAD().length == 2) {
+            var a = genotypes[0].getAD()[0];
+            var b = genotypes[0].getAD()[1];
+
+            if (a / (a + b) >= 0.8 || b / (a + b) >= 0.8)
+                entityVariantRecord.Homozygous = true;
+            else if (b / (a + b) > 0.2 && b / (a + b) < 0.8)
+                entityVariantRecord.Homozygous = false;
+        }
+        else if (genotypes[0].getAD().length == 3) {
+            var a = genotypes[0].getAD()[0];
+            var b = genotypes[0].getAD()[1];
+            var c = genotypes[0].getAD()[2];
+
+            if ((b / (a + b + c) >= 0.6 && a / (a + b + c) < 0.2 && c / (a + b + c) < 0.2) || (c / (a + b + c) >= 0.6 && a / (a + b + c) < 0.2) && b / (a + b + c) < 0.2)
+                entityVariantRecord.Homozygous = true;
+            else if ((b / (a + b + c) > 0.2 && b / (a + b + c) < 0.6 && a / (a + b + c) > 0.2 && a / (a + b + c) < 0.6) || (c / (a + b + c) > 0.2 && c / (a + b + c) < 0.6 && a / (a + b + c) > 0.2 && a / (a + b + c) < 0.6) || (b / (a + b + c) > 0.2 && b / (a + b + c) < 0.6 && c / (a + b + c) > 0.2 && c / (a + b + c) < 0.6))
+                entityVariantRecord.Homozygous = false;
+        }
+
+        // entityVariantRecord.Homozygous = true; // TODO to be calculated -> AD - a:b, a:b:c;
         entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
         entityVariantRecord.Depth = genotypes[0].getDP();
         entityVariantRecord.AnalysisId = null;
