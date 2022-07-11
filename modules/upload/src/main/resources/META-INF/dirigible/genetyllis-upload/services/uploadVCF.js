@@ -57,6 +57,7 @@ if (request.getMethod() === "POST") {
 }
 
 function processVCFFile(fileName, content, patientId) {
+    patientId = 3;
     console.log("Temp file: " + fileName);
     files.writeBytes(fileName, content);
     var vcfReader = parser.createVCFFileReader(tempFile);
@@ -114,6 +115,7 @@ function processVCFFile(fileName, content, patientId) {
 
             //GENE
             if (myVariantJSON["dbsnp"]["gene"] !== undefined) {
+                console.log("GENE");
                 for (var i = 0; i < myVariantJSON["dbsnp"]["gene"].length; i++) {
                     var geneId = myVariantJSON["dbsnp"]["gene"][i]["geneid"];
                     var geneName = myVariantJSON["dbsnp"]["gene"][i]["name"];
@@ -134,11 +136,50 @@ function processVCFFile(fileName, content, patientId) {
             }
 
             //CLINICAL SIGNIFICANCE
-            if (myVariantJSON["clinvar"]["rcv"] !== undefined) {
+            if (myVariantJSON["clinvar"] !== undefined && myVariantJSON["clinvar"]["rcv"] !== undefined) {
+                console.log("CLINSIG");
                 var rcvArray = myVariantJSON["clinvar"]["rcv"];
                 var connection = database.getConnection("local", "DefaultDB");
-                rcvArray.forEach(rcv => {
-                    var statement = connection.prepareStatement("SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = '" + rcv["conditions"]["identifiers"]["medgen"] + "'");
+
+                if (rcvArray.length !== undefined) {
+                    rcvArray.forEach(rcv => {
+                        var statement = connection.prepareStatement("SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = '" + rcv["conditions"]["identifiers"]["medgen"] + "'");
+                        var resultSet = statement.executeQuery();
+
+                        while (resultSet.next()) {
+                            let entityClinicalSignificance = {};
+                            entityClinicalSignificance.VariantId = variantId;
+                            entityClinicalSignificance.PathologyId = resultSet.getInt("PATHOLOGY_ID");
+                            switch (myVariantJSON["clinvar"]["rcv"]["clinical_significance"]) {
+                                case "Pathogenic":
+                                    entityClinicalSignificance.Significance = 1;
+                                    break;
+                                case "Likely pathogenic":
+                                    entityClinicalSignificance.Significance = 2;
+                                    break;
+                                case "Uncertain":
+                                    entityClinicalSignificance.Significance = 3;
+                                    break;
+                                case "Likely bening":
+                                    entityClinicalSignificance.Significance = 4;
+                                    break;
+                                case "Bening":
+                                    entityClinicalSignificance.Significance = 5;
+                                    break;
+                                default:
+                                    entityClinicalSignificance.Significance = null;
+                            }
+
+                            entityClinicalSignificance.Evaluated = myVariantJSON["clinvar"]["rcv"]["last_evaluated"];
+                            entityClinicalSignificance.ReviewStatus = myVariantJSON["clinvar"]["rcv"]["review_status"];
+                            entityClinicalSignificance.Update = Date.now;
+
+                            daoClinicalSignificane.create(entityClinicalSignificance);
+                        }
+                    });
+                }
+                else {
+                    var statement = connection.prepareStatement("SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = '" + myVariantJSON["clinvar"]["rcv"]["conditions"]["identifiers"]["medgen"] + "'");
                     var resultSet = statement.executeQuery();
 
                     while (resultSet.next()) {
@@ -171,16 +212,17 @@ function processVCFFile(fileName, content, patientId) {
 
                         daoClinicalSignificane.create(entityClinicalSignificance);
                     }
-                });
+                }
             }
 
             //ALLELE FREQUENCY
+            console.log("ALLELE FREQ");
             let entityAlleleFrequency = {};
             entityAlleleFrequency.VariantId = variantId;
 
             var connection = database.getConnection("local", "DefaultDB");
 
-            var statement = connection.prepareStatement("SELECT GENDER_ID FROM GENETYLLIS_PATIENT WHERE PATIENT_ID = '" + patientId + "'");
+            var statement = connection.prepareStatement("SELECT PATIENT_GENDERID FROM GENETYLLIS_PATIENT WHERE PATIENT_ID = '" + patientId + "'");
             var resultSet = statement.executeQuery();
             entityAlleleFrequency.GenderId = resultSet;
 
@@ -209,6 +251,7 @@ function processVCFFile(fileName, content, patientId) {
         }
 
         //VARIANT RECORD
+        console.log("VAR REC");
         let entityVariantRecord = {};
         entityVariantRecord.PatientId = patientId;
         entityVariantRecord.VariantId = variantId;
@@ -242,11 +285,18 @@ function processVCFFile(fileName, content, patientId) {
         var variantRecordId = daoVariantRecord.create(entityVariantRecord);
 
         //FILTER
+        console.log("FILTER");
         let entityFilter = {};
-        entityFilter.Name = variantContext.getFilters();
-        entityFilter.VariantRecordId = variantRecordId;
+        var filters = variantContext.getFilters();
 
-        daoFilter.create(entityFilter);
+        filters.forEach(filter => {
+            if (filter) {
+                entityFilter.Name = "";
+                entityFilter.VariantRecordId = variantRecordId;
+
+                daoFilter.create(entityFilter);
+            }
+        });
 
 
         // break;
