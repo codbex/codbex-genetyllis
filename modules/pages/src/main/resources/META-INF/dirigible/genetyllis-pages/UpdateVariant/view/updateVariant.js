@@ -80,7 +80,15 @@ function updateVariant(variantId) {
         //GENE
         if (myVariantJSON.dbsnp.gene !== undefined && entityVariant.GeneId != null) {
             var statement = "SELECT VARIANT_GENEID FROM GENETYLLIS_VARIANT WHERE VARIANT_ID = ?";
+<<<<<<< HEAD
             var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
+=======
+<<<<<<< HEAD
+            var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
+=======
+            var resultset = query.execute(statement, [variantId], "local", "DefaultDB");
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
 
             let entityGene = {};
             entityGene.GeneId = myVariantJSON.dbsnp.gene.geneid;
@@ -112,7 +120,15 @@ function updateVariant(variantId) {
 
             let entityClinicalSignificance = {};
             var statement = "SELECT * FROM GENETYLLIS_CLINICALSIGNIFICANCE WHERE CLINICALSIGNIFICANCE_VARIANTID = ?";
+<<<<<<< HEAD
             var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
+=======
+<<<<<<< HEAD
+            var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
+=======
+            var resultset = query.execute(statement, [variantId], "local", "DefaultDB");
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
 
             entityClinicalSignificance.Id = resultset[0].CLINICALSIGNIFICANCE_VARIANTID;
 
@@ -122,10 +138,22 @@ function updateVariant(variantId) {
                     var statement = "SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?";
                     var resultset = query.execute(statement, [rcv.conditions.identifiers.medgen], "local", "DefaultDB");
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
                     // while (resultset.next()) {
                     resultset.forEach(clinsig => {
                         entityClinicalSignificance.VariantId = entityVariant.Id;
                         entityClinicalSignificance.PathologyId = clinsig.PATHOLOGY_ID;
+<<<<<<< HEAD
+=======
+=======
+                    while (resultset.next()) {
+                        entityClinicalSignificance.VariantId = variantId;
+                        entityClinicalSignificance.PathologyId = resultSet.getInt("PATHOLOGY_ID");
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
                         switch (myVariantJSON.clinvar.rcv.clinical_significance) {
                             case "Pathogenic":
                                 entityClinicalSignificance.Significance = 1;
@@ -150,19 +178,42 @@ function updateVariant(variantId) {
                         entityClinicalSignificance.ReviewStatus = myVariantJSON.clinvar.rcv.review_status;
                         entityClinicalSignificance.Update = Date.now;
 
+<<<<<<< HEAD
                         daoClinicalSignificance.update(entityClinicalSignificance);
                     });
+=======
+<<<<<<< HEAD
+                        daoClinicalSignificance.update(entityClinicalSignificance);
+                    });
+=======
+                        daoClinicalSignificane.update(entityClinicalSignificance);
+                    }
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
                 });
             }
             else {
                 var statement = "SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?";
                 var resultset = query.execute(statement, [myVariantJSON.clinvar.rcv.conditions.identifiers.medgen], "local", "DefaultDB");
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
                 // while (resultset.next()) {
                 resultset.forEach(clinsig => {
                     let entityClinicalSignificance = {};
                     entityClinicalSignificance.VariantId = entityVariant.Id;
                     entityClinicalSignificance.PathologyId = clinsig.PATHOLOGY_ID;
+<<<<<<< HEAD
+=======
+=======
+                while (resultset.next()) {
+                    let entityClinicalSignificance = {};
+                    entityClinicalSignificance.VariantId = variantId;
+                    entityClinicalSignificance.PathologyId = resultSet.getInt("PATHOLOGY_ID");
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
                     switch (myVariantJSON.clinvar.rcv.clinical_significance) {
                         case "Pathogenic":
                             entityClinicalSignificance.Significance = 1;
@@ -187,8 +238,18 @@ function updateVariant(variantId) {
                     entityClinicalSignificance.ReviewStatus = myVariantJSON.clinvar.rcv.review_status;
                     entityClinicalSignificance.Update = Date.now;
 
+<<<<<<< HEAD
                     daoClinicalSignificance.update(entityClinicalSignificance);
                 });
+=======
+<<<<<<< HEAD
+                    daoClinicalSignificance.update(entityClinicalSignificance);
+                });
+=======
+                    daoClinicalSignificane.update(entityClinicalSignificance);
+                }
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
             }
         }
 
@@ -196,6 +257,10 @@ function updateVariant(variantId) {
         console.log("ALLELE FREQ");
         let entityAlleleFrequency = {};
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
         var statement = "SELECT * FROM GENETYLLIS_ALLELEFREQUENCY WHERE ALLELEFREQUENCY_VARIANTID = ?";
         var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
         entityAlleleFrequency.Id = resultset[0].ALLELEFREQUENCY_VARIANTID;
@@ -207,6 +272,22 @@ function updateVariant(variantId) {
         var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
 
         entityAlleleFrequency.GenderId = resultset[0].PATIENT_GENDERID;
+<<<<<<< HEAD
+=======
+=======
+        var statement = "SELECT * FROM GENETYLLIS_ALLELEFREQEUNCEY WHERE ALLELEFREQUENCY_VARIANTID = ?";
+        var resultset = query.execute(statement, [variantId], "local", "DefaultDB");
+        entityAlleleFrequency.Id = resultset[0].ALLELEFREQUENCY_VARIANTID;
+
+        entityAlleleFrequency.VariantId = variantId;
+
+        //TODO what happens if we have a variant which applies to both genders
+        var statement = "SELECT DISTINCT PATIENT_GENDERID FROM GENETYLLIS_PATIENT INNER JOIN GENETYLLIS_VARIANTRECORD ON VARIANTRECORD_VARIANTID = ?";
+        var resultset = query.execute(statement, [variantId], "local", "DefaultDB");
+
+        entityAlleleFrequency.GenderId = resultSet[0].PATIENT_GENDERID;
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
+>>>>>>> 057a7ba98cdf008123e916c2203bc1ac1e7d48f0
 
         entityAlleleFrequency.Update = Date.now;
 
