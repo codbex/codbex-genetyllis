@@ -62,6 +62,10 @@ function processVCFFile(fileName, content, patientId) {
     files.writeBytes(fileName, content);
     var vcfReader = parser.createVCFFileReader(tempFile);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
     let iteratorVariants = vcfReader.getVariantContextIterator();
     while (iteratorVariants.hasNext()) {
         let variantContext = iteratorVariants.next();
@@ -135,7 +139,10 @@ function processVCFFile(fileName, content, patientId) {
             //CLINICAL SIGNIFICANCE
             if (myVariantJSON.clinvar !== undefined && myVariantJSON.clinvar.rcv !== undefined) {
                 console.log("CLINSIG");
+<<<<<<< HEAD
 
+=======
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
                 var rcvArray = myVariantJSON.clinvar.rcv;
 
                 if (rcvArray.length !== undefined) {
@@ -181,6 +188,7 @@ function processVCFFile(fileName, content, patientId) {
                 else {
                     //if rcv is a single entity
                     var statement = "SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?";
+<<<<<<< HEAD
                     var resultset = query.execute(statement, [myVariantJSON.clinvar.rcv.conditions.identifiers.medgen], "local", "DefaultDB");
 
                     // while (resultset.next()) {
@@ -188,6 +196,14 @@ function processVCFFile(fileName, content, patientId) {
                         let entityClinicalSignificance = {};
                         entityClinicalSignificance.VariantId = entityVariant.Id;
                         entityClinicalSignificance.PathologyId = clinsig.PATHOLOGY_ID;
+=======
+                    var resultset = query.execute(statement, [rcv.conditions.identifiers.medgen], "local", "DefaultDB");
+
+                    while (resultset.next()) {
+                        let entityClinicalSignificance = {};
+                        entityClinicalSignificance.VariantId = entityVariant.Id;
+                        entityClinicalSignificance.PathologyId = resultset.PATHOLOGY_ID;
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
                         switch (myVariantJSON.clinvar.rcv.clinical_significance) {
                             case "Pathogenic":
                                 entityClinicalSignificance.Significance = 1;
@@ -213,7 +229,11 @@ function processVCFFile(fileName, content, patientId) {
                         entityClinicalSignificance.Update = Date.now;
 
                         daoClinicalSignificane.create(entityClinicalSignificance);
+<<<<<<< HEAD
                     });
+=======
+                    }
+>>>>>>> db5663a15dd536347721a4feb6dde4aa61b80de9
                 }
             }
 
