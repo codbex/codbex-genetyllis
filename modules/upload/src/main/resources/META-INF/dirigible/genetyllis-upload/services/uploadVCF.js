@@ -21,7 +21,7 @@ var daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
 var daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
 var daoGene = require("genetyllis-app/gen/dao/genes/Gene");
 var daoFilter = require("genetyllis-app/gen/dao/records/Filter");
-var daoClinicalSignificane = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
+var daoClinicalSignificance = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
 var daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
 var daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
 
@@ -148,10 +148,7 @@ function processVCFFile(fileName, content, patientId) {
             }
 
             //CLINICAL SIGNIFICANCE
-            if (
-                myVariantJSON.clinvar !== undefined &&
-                myVariantJSON.clinvar.rcv !== undefined
-            ) {
+            if (myVariantJSON.clinvar !== undefined && myVariantJSON.clinvar.rcv !== undefined) {
                 console.log("CLINSIG");
 
                 var rcvArray = myVariantJSON.clinvar.rcv;
@@ -205,7 +202,8 @@ function processVCFFile(fileName, content, patientId) {
                                             myVariantJSON.clinvar.rcv.review_status;
                                         entityClinicalSignificance.Update = Date.now;
 
-                                        daoClinicalSignificane.create(entityClinicalSignificance);
+                                        daoClinicalSignificance
+                                            .create(entityClinicalSignificance);
                                     });
 
                                 } else {
@@ -240,7 +238,7 @@ function processVCFFile(fileName, content, patientId) {
                                         myVariantJSON.clinvar.rcv.review_status;
                                     entityClinicalSignificance.Update = Date.now;
 
-                                    daoClinicalSignificane.create(entityClinicalSignificance);
+                                    daoClinicalSignificance.create(entityClinicalSignificance);
                                 }
                             });
                         } else {
@@ -284,7 +282,7 @@ function processVCFFile(fileName, content, patientId) {
                                         myVariantJSON.clinvar.rcv.review_status;
                                     entityClinicalSignificance.Update = Date.now;
 
-                                    daoClinicalSignificane.create(entityClinicalSignificance);
+                                    daoClinicalSignificance.create(entityClinicalSignificance);
                                 });
 
                             } else {
@@ -317,7 +315,7 @@ function processVCFFile(fileName, content, patientId) {
                                     myVariantJSON.clinvar.rcv.review_status;
                                 entityClinicalSignificance.Update = Date.now;
 
-                                daoClinicalSignificane.create(entityClinicalSignificance);
+                                daoClinicalSignificance.create(entityClinicalSignificance);
                             }
                         }
                     });
@@ -362,7 +360,7 @@ function processVCFFile(fileName, content, patientId) {
                             myVariantJSON.clinvar.rcv.review_status;
                         entityClinicalSignificance.Update = Date.now;
 
-                        daoClinicalSignificane.create(entityClinicalSignificance);
+                        daoClinicalSignificance.create(entityClinicalSignificance);
                     });
                 }
             }
@@ -375,14 +373,11 @@ function processVCFFile(fileName, content, patientId) {
             var statement = "SELECT PATIENT_GENDERID FROM GENETYLLIS_PATIENT WHERE PATIENT_ID = ?";
             var resultset = query.execute(statement, [patientId], "local", "DefaultDB");
 
-            var statement = "SELECT PATIENT_GENDERID FROM GENETYLLIS_PATIENT WHERE PATIENT_ID = ?";
-            var resultset = query.execute(statement, [patientId], "local", "DefaultDB");
-
             entityAlleleFrequency.GenderId = resultset.PATIENT_GENDERID;
 
             entityAlleleFrequency.Update = Date.now;
 
-            if (myVariantJSON.gnomad !== undefined) {
+            if (myVariantJSON.gnomad_genome !== undefined) {
                 if (myVariantJSON.gnomad_genome.af.af !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af;
