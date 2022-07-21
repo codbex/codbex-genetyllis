@@ -16,7 +16,6 @@ var parser = require("genetyllis-parser/vcf/parser");
 var files = require("io/v4/files");
 var httpClient = require("http/v4/client");
 var database = require("db/v4/database");
-var response = require("http/v4/response");
 var daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
 var daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
 var daoGene = require("genetyllis-app/gen/dao/genes/Gene");
@@ -446,26 +445,23 @@ function processVCFFile(fileName, content, patientId) {
         entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
         entityVariantRecord.Depth = genotypes[0].getDP();
         entityVariantRecord.AnalysisId = null;
-        var variantRecordId = daoVariantRecord.update(entityVariantRecord);
+        var variantRecordId = daoVariantRecord.create(entityVariantRecord);
 
         //FILTER
         console.log("FILTER");
         let entityFilter = {};
         var filters = variantContext.getFilters();
 
+        //TODO should null filters be added to DB
         filters.forEach(filter => {
             if (filter) {
-                entityFilter.Name = "";
+                entityFilter.Name = filter;
                 entityFilter.VariantRecordId = variantRecordId;
-
                 daoFilter.create(entityFilter);
             }
         });
 
 
-        // break;
+        break;
     }
-
-    response.flush();
-    response.close();
 }
