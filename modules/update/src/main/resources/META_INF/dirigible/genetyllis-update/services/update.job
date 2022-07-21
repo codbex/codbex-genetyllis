@@ -1,0 +1,6 @@
+{
+    "expression": "0 0 22 * * ?",
+    "group": "dirigible-defined",
+    "handler": "genetyllis-update/services/update-handler.js",
+    "description": "filename Job"
+}

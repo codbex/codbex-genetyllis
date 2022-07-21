@@ -10,10 +10,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-var request = require("http/v4/request");
 var query = require("db/v4/query");
 var httpClient = require("http/v4/client");
-var response = require("http/v4/response");
 var daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
 var daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
 var daoGene = require("genetyllis-app/gen/dao/genes/Gene");
@@ -21,15 +19,9 @@ var daoFilter = require("genetyllis-app/gen/dao/records/Filter");
 var daoClinicalSignificance = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
 var daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
 var daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
-var rs = require('http/v4/rs');
 
-if (request.getMethod() === "POST") {
-    const body = request.getJSON();
-    let variantId = body.variantId;
-
+exports.updateTrigger = function (variantId) {
     updateVariant(variantId);
-} else if (request.getMethod() === "GET") {
-    console.warn("Use POST request.");
 }
 
 function updateVariant(variantId) {
@@ -649,8 +641,5 @@ function updateVariant(variantId) {
                 }
             }
         }
-
-        response.flush();
-        response.close();
     }
 }

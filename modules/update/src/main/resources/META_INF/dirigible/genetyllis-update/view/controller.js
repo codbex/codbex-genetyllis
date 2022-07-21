@@ -1,7 +1,8 @@
 angular.module('page', []);
 angular.module('page').controller('PageController', function ($scope, $http) {
     var api = "/services/v4/js/genetyllis-update/view/updateRs.js";
-    var apiUpload = "/services/v4/js/genetyllis-update/services/updateVariant.js";
+    // var apiUpload = "/services/v4/js/genetyllis-update/services/updateVariant.js";
+    var updateVariantController = "/services/v4/js/genetyllis-update/services/updateController.js";
 
     $scope.getVariantId = function () {
         $scope.variant = $scope.data.filter(v => {
@@ -12,7 +13,7 @@ angular.module('page').controller('PageController', function ($scope, $http) {
 
         $scope.actionType = "show";
 
-        $http.post(apiUpload, JSON.stringify({ variantId: $scope.variantInfo.Id }))
+        $http.post(updateVariantController, JSON.stringify({ variantId: $scope.variantInfo.Id }))
             .then(data => {
                 console.log("asd", data);
             });
