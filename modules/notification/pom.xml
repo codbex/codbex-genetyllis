@@ -3,26 +3,17 @@
 
 	<parent>
 		<groupId>com.codbex.genetyllis</groupId>
-		<artifactId>codbex-genetyllis-parent</artifactId>
+		<artifactId>codbex-genetyllis-modules-parent</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<name>codbex - genetyllis - modules - parent</name>
-	<artifactId>codbex-genetyllis-modules-parent</artifactId>
+	<name>codbex - genetyllis - modules - notification</name>
+	<artifactId>codbex-genetyllis-modules-notification</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-
-	<modules>
-		<module>parser</module>
-		<module>app</module>
-		<module>data</module>
-		<module>upload</module>
-		<module>pages</module>
-		<module>notification</module>
-	</modules>
+	<packaging>jar</packaging>
 
 	<properties>
-		<license.header.location>../licensing-header.txt</license.header.location>
+		<license.header.location>../../licensing-header.txt</license.header.location>
 	</properties>
 </project>
