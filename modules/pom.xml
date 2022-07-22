@@ -19,11 +19,8 @@
 		<module>data</module>
 		<module>upload</module>
 		<module>pages</module>
-<<<<<<< HEAD
 		<module>update</module>
-=======
 		<module>notification</module>
->>>>>>> d316350abb179a4ed4750aac913cbdc42afc7c62
 	</modules>
 
 	<properties>
