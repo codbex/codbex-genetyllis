@@ -29,6 +29,8 @@
 					<th class="text-capitalize">NotificationId</th>
 					<th class="text-capitalize">UserUserId</th>
 					<th class="text-capitalize">VariantId</th>
+					<th class="text-capitalize">SeenFlag</th>
+					<th class="text-capitalize">ChangeFlag</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -38,6 +40,8 @@
 					<td>{{next.NotificationId}}</td>
 					<td>{{next.UserUserId}}</td>
 					<td>{{next.VariantId}}</td>
+					<td>{{next.SeenFlag}}</td>
+					<td>{{next.ChangeFlag}}</td>
 					<td>
 						<i class="close fa fa-remove" ng-click="openDeleteDialog(next)" style="font-size: 1.4em"></i>
 						<i class="close fa fa-bars" ng-click="openEditDialog(next)" style="margin-right: 0.5em; font-size: 1.4em"></i>					</td>
@@ -66,6 +70,14 @@
 						<div class="form-group">
 							<label>VariantId</label>
 							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter variantid" ng-model="entity.VariantId" ng-change="updateCalculatedProperties()">
+						</div>
+						<div class="form-group">
+							<label>SeenFlag</label>
+							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter seenflag" ng-model="entity.SeenFlag" ng-change="updateCalculatedProperties()">
+						</div>
+						<div class="form-group">
+							<label>ChangeFlag</label>
+							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter changeflag" ng-model="entity.ChangeFlag" ng-change="updateCalculatedProperties()">
 						</div>
 						<div class="modal-footer">
 							<input type="submit" value="Save" class="btn btn-primary btn-lg" ng-show="actionType === 'new'" ng-click="create()">

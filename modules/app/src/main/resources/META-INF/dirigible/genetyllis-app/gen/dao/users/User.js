@@ -1,20 +1,9 @@
-/*
- * Copyright (c) 2022 codbex or an codbex affiliate company and contributors
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v20.html
- *
- * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
- * SPDX-License-Identifier: EPL-2.0
- */
 var query = require("db/v4/query");
 var producer = require("messaging/v4/producer");
 var daoApi = require("db/v4/dao");
 
 var dao = daoApi.create({
-	table: "GENETYLLIS_USER",
+	table: "USER",
 	properties: [
 		{
 			name: "UserId",
@@ -44,7 +33,7 @@ exports.get = function(id) {
 exports.create = function(entity) {
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
-		table: "GENETYLLIS_USER",
+		table: "USER",
 		key: {
 			name: "UserId",
 			column: "USER_USERID",
@@ -57,7 +46,7 @@ exports.create = function(entity) {
 exports.update = function(entity) {
 	dao.update(entity);
 	triggerEvent("Update", {
-		table: "GENETYLLIS_USER",
+		table: "USER",
 		key: {
 			name: "UserId",
 			column: "USER_USERID",
@@ -69,7 +58,7 @@ exports.update = function(entity) {
 exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
-		table: "GENETYLLIS_USER",
+		table: "USER",
 		key: {
 			name: "UserId",
 			column: "USER_USERID",
@@ -83,7 +72,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_USER");
+	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM USER");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;

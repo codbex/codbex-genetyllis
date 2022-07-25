@@ -1796,10 +1796,40 @@
                         "relationshipName": "Notification_Variant",
                         "relationshipEntityName": "Variant",
                         "relationshipEntityPerspectiveName": "variants"
+                    },
+                    {
+                        "calculatedPropertyExpression": "",
+                        "dataAutoIncrement": "false",
+                        "dataLength": "20",
+                        "dataName": "NOTIFICATION_SEENFLAG",
+                        "dataNullable": "true",
+                        "dataPrimaryKey": "false",
+                        "dataType": "BOOLEAN",
+                        "dataUnique": "false",
+                        "isCalculatedProperty": "false",
+                        "name": "SeenFlag",
+                        "widgetIsMajor": "true",
+                        "widgetLength": "20",
+                        "widgetType": "TEXTBOX"
+                    },
+                    {
+                        "calculatedPropertyExpression": "",
+                        "dataAutoIncrement": "false",
+                        "dataLength": "20",
+                        "dataName": "NOTIFICATION_CHANGEFLAG",
+                        "dataNullable": "true",
+                        "dataPrimaryKey": "false",
+                        "dataType": "BOOLEAN",
+                        "dataUnique": "false",
+                        "isCalculatedProperty": "false",
+                        "name": "ChangeFlag",
+                        "widgetIsMajor": "true",
+                        "widgetLength": "20",
+                        "widgetType": "TEXTBOX"
                     }
                 ],
-                "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_NOTIFICATION",
-                "dataName": "GENETYLLIS_NOTIFICATION",
+                "dataCount": "SELECT COUNT(*) AS COUNT FROM NOTIFICATION",
+                "dataName": "NOTIFICATION",
                 "dataQuery": "",
                 "icon": "file-o",
                 "layoutType": "MANAGE",
@@ -1862,8 +1892,8 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
-                "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_USER",
-                "dataName": "GENETYLLIS_USER",
+                "dataCount": "SELECT COUNT(*) AS COUNT FROM USER",
+                "dataName": "USER",
                 "dataQuery": "",
                 "icon": "file-o",
                 "layoutType": "MANAGE",

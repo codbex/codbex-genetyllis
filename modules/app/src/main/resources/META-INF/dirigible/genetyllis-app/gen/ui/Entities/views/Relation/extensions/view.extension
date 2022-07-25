@@ -1,5 +1,0 @@
-{
-	"description": "Relation view",
-	"extensionPoint": "launchpad-genetyllis-Entities-view",
-	"module": "genetyllis-app/gen/ui/Entities/views/Relation/extensions/view.js"
-}

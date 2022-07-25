@@ -19,11 +19,14 @@ var daoFilter = require("genetyllis-app/gen/dao/records/Filter");
 var daoClinicalSignificance = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
 var daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
 var daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
+var daoNotification = require("genetyllis-app/gen/dao/users/Notification.js");
 
 exports.updateTrigger = function (variantId) {
     updateVariant(variantId);
 }
 
+//TODO make array with extracted info for every table and compare it to myvariantinfo array corresponding to id
+// if theres a difference then change a boolean to let know that the variant must be updated in Notification
 function updateVariant(variantId) {
     console.log(variantId);
     if (!variantId) {
@@ -36,6 +39,13 @@ function updateVariant(variantId) {
     let entityVariant = {};
     var statement = "SELECT * FROM GENETYLLIS_VARIANT WHERE VARIANT_ID= ?";
     var resultset = query.execute(statement, [variantId], "local", "DefaultDB");
+    console.log(JSON.stringify(resultset));
+    // console.log(JSON.stringify(resultset[0]));
+    let dbEntityVariant = {
+        Id: resultset[0].VARIANT_ID, HGVS: resultset[0].VARIANT_HGVS, GeneId: resultset[0].VARIANT_GENEID,
+        Consequence: resultset[0].VARIANT_CONSEQUENCE, ConsequenceDetails: resultset[0].VARIANT_CONSEQUENCEDETAILS,
+        Region: resultset[0].GENETYLLIS_VARIANT_REGION, RegionNum: resultset[0].GENETYLLIS_VARIANT_REGIONNUM
+    };
 
     entityVariant.Id = resultset[0].VARIANT_ID;
     entityVariant.HGVS = resultset[0].VARIANT_HGVS;
@@ -69,15 +79,32 @@ function updateVariant(variantId) {
             entityVariant.RegionNum = "";
         }
 
+        if (JSON.stringify(dbEntityVariant) === JSON.stringify(entityVariant)) {
+            console.log("The same")
+            console.log(daoVariant.update(entityVariant));
+        } else {
+            //TODO change flag
+            console.log("not the same")
+            console.log(JSON.stringify(dbdbEntityVariantTest));
+            console.log(JSON.stringify(entityVariant));
+            daoVariant.update(entityVariant);
+        }
+
         //GENE
         if (myVariantJSON.dbsnp !== undefined && myVariantJSON.dbsnp.gene !== undefined) {
             console.log("GENE");
             var statement = "SELECT VARIANT_GENEID FROM GENETYLLIS_VARIANT WHERE VARIANT_ID = ?";
-            var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
+            var resultsetGeneId = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
 
-            if (resultset[0] !== undefined && resultset[0].VARIANT_GENEID !== undefined) {
+            var statement = "SELECT * FROM GENETYLLIS_GENE WHERE GENE_ID = ?";
+            var resultset = query.execute(statement, [resultsetGeneId[0].VARIANT_GENEID], "local", "DefaultDB");
+
+            console.log(JSON.stringify(resultset[0]));
+
+            if (resultset[0] !== undefined) {
+                let dbEntityGene = { Id: resultset[0].GENE_ID, GeneId: resultset[0].GENE_GENEID, Name: resultset[0].GENE_NAME, Pseudo: resultset[0].GENE_PSEUDO };
                 let entityGene = {};
-                entityGene.Id = resultset[0].VARIANT_GENEID;
+                entityGene.Id = resultset[0].GENE_ID;
 
                 geneArray = myVariantJSON.dbsnp.gene;
                 if (geneArray.length !== undefined) {
@@ -88,7 +115,14 @@ function updateVariant(variantId) {
                         entityGene.Name = JSON.stringify(gene.name).substring(0, 19);
                         entityGene.Pseudo = gene.is_pseudo;
 
-                        daoGene.update(entityGene);
+                        if (JSON.stringify(dbEntityGene) === JSON.stringify(entityGene)) {
+                            console.log("The same")
+                        } else {
+                            console.log("not the same")
+                            console.log(JSON.stringify(dbEntityGene));
+                            console.log(JSON.stringify(entityGene));
+                            daoGene.update(entityGene);
+                        }
                     });
                 } else {
                     entityGene.GeneId = myVariantJSON.dbsnp.gene.geneid;
@@ -96,7 +130,14 @@ function updateVariant(variantId) {
                     entityGene.Name = JSON.stringify(myVariantJSON.dbsnp.gene.name).substring(0, 19);
                     entityGene.Pseudo = myVariantJSON.dbsnp.gene.is_pseudo;
 
-                    daoGene.update(entityGene);
+                    if (JSON.stringify(dbEntityGene) === JSON.stringify(entityGene)) {
+                        console.log("The same")
+                    } else {
+                        console.log("not the same")
+                        console.log(JSON.stringify(dbEntityGene));
+                        console.log(JSON.stringify(entityGene));
+                        daoGene.update(entityGene);
+                    }
                 }
             } else {
                 console.log("GENE create");
@@ -113,6 +154,9 @@ function updateVariant(variantId) {
 
                         entityVariant.GeneId = daoGene.create(entityGene);
                         console.log("gene id" + entityVariant.GeneId);
+
+                        console.log(JSON.stringify(entityGene));
+                        //TODO update flag in variant
                         daoVariant.update(entityVariant)
                     });
                 } else {
@@ -124,6 +168,9 @@ function updateVariant(variantId) {
 
                     entityVariant.GeneId = daoGene.create(entityGene);
                     console.log("gene id" + entityVariant.GeneId);
+
+                    console.log(JSON.stringify(entityGene));
+                    //TODO update flag in variant
                     daoVariant.update(entityVariant)
                 }
             }
@@ -133,10 +180,15 @@ function updateVariant(variantId) {
         if (myVariantJSON.clinvar !== undefined && myVariantJSON.clinvar.rcv !== undefined) {
             console.log("CLINSIG");
 
-            let entityClinicalSignificance = {};
+            // let entityClinicalSignificance = {};
             var statement = "SELECT * FROM GENETYLLIS_CLINICALSIGNIFICANCE WHERE CLINICALSIGNIFICANCE_VARIANTID = ?";
             var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
+            console.log(JSON.stringify(resultset[0]));
+            let dbEntityClinicalSignificance = { Id: resultset[0].CLINICALSIGNIFICANCE_ID, VariantId: resultset[0].CLINICALSIGNIFICANCE_VARIANTID, PathologyId: resultset[0].CLINICALSIGNIFICANCE_PATHOLOGYID, Evaluated: resultset[0].CLINICALSIGNIFICANCE_EVALUATED, ReviewStatus: resultset[0].CLINICALSIGNIFICANCE_REVIEWSTATUS };
+            let entityClinicalSignificance = {};
 
+
+            //TODO Evaluated wont be the same because of date formats., ex. 2018-06-22T00:00:00+0300 and 2018-06-22
             if (resultset[0] !== undefined) {
                 entityClinicalSignificance.Id = resultset[0].CLINICALSIGNIFICANCE_VARIANTID;
 
@@ -187,7 +239,18 @@ function updateVariant(variantId) {
                                             myVariantJSON.clinvar.rcv.review_status;
                                         entityClinicalSignificance.Update = Date.now;
 
-                                        daoClinicalSignificance.update(entityClinicalSignificance);
+                                        console.log(entityClinicalSignificance);
+
+
+                                        if (JSON.stringify(dbEntityClinicalSignificance) === JSON.stringify(entityClinicalSignificance)) {
+                                            console.log("The same")
+                                        } else {
+                                            console.log("not the same1")
+                                            // console.log(JSON.stringify(entityClinicalSignificance));
+                                            // console.log(JSON.stringify(entityGene));
+                                            daoClinicalSignificance.update(entityClinicalSignificance);
+                                        }
+                                        // daoClinicalSignificance.update(entityClinicalSignificance);
                                     });
 
                                 } else {
@@ -220,7 +283,16 @@ function updateVariant(variantId) {
                                         myVariantJSON.clinvar.rcv.review_status;
                                     entityClinicalSignificance.Update = Date.now;
 
-                                    daoClinicalSignificance.update(entityClinicalSignificance);
+                                    console.log(entityClinicalSignificance);
+
+                                    if (JSON.stringify(dbEntityClinicalSignificance) === JSON.stringify(entityClinicalSignificance)) {
+                                        console.log("The same")
+                                    } else {
+                                        console.log("not the same2")
+                                        // console.log(JSON.stringify(entityClinicalSignificance));
+                                        // console.log(JSON.stringify(entityGene));
+                                        daoClinicalSignificance.update(entityClinicalSignificance);
+                                    }
                                 }
                             });
                         } else {
@@ -264,7 +336,16 @@ function updateVariant(variantId) {
                                         myVariantJSON.clinvar.rcv.review_status;
                                     entityClinicalSignificance.Update = Date.now;
 
-                                    daoClinicalSignificance.update(entityClinicalSignificance);
+                                    console.log(entityClinicalSignificance);
+
+                                    if (JSON.stringify(dbEntityClinicalSignificance) === JSON.stringify(entityClinicalSignificance)) {
+                                        console.log("The same")
+                                    } else {
+                                        console.log("not the same3")
+                                        // console.log(JSON.stringify(entityClinicalSignificance));
+                                        // console.log(JSON.stringify(entityGene));
+                                        daoClinicalSignificance.update(entityClinicalSignificance);
+                                    }
                                 });
 
                             } else {
@@ -297,7 +378,16 @@ function updateVariant(variantId) {
                                     myVariantJSON.clinvar.rcv.review_status;
                                 entityClinicalSignificance.Update = Date.now;
 
-                                daoClinicalSignificance.update(entityClinicalSignificance);
+                                console.log(entityClinicalSignificance);
+
+                                if (JSON.stringify(dbEntityClinicalSignificance) === JSON.stringify(entityClinicalSignificance)) {
+                                    console.log("The same")
+                                } else {
+                                    console.log("not the same4")
+                                    // console.log(JSON.stringify(dbEntityGene));
+                                    // console.log(JSON.stringify(entityGene));
+                                    daoClinicalSignificance.update(entityClinicalSignificance);
+                                }
                             }
                         }
                     });
@@ -341,7 +431,16 @@ function updateVariant(variantId) {
                             myVariantJSON.clinvar.rcv.review_status;
                         entityClinicalSignificance.Update = Date.now;
 
-                        daoClinicalSignificance.update(entityClinicalSignificance);
+                        console.log(entityClinicalSignificance);
+
+                        if (JSON.stringify(dbEntityClinicalSignificance) === JSON.stringify(entityClinicalSignificance)) {
+                            console.log("The same")
+                        } else {
+                            console.log("not the same5")
+                            console.log(JSON.stringify(dbEntityClinicalSignificance));
+                            console.log(JSON.stringify(entityClinicalSignificance));
+                            daoClinicalSignificance.update(entityClinicalSignificance);
+                        }
                     });
                 }
             } else {
@@ -398,6 +497,9 @@ function updateVariant(variantId) {
                                             myVariantJSON.clinvar.rcv.review_status;
                                         entityClinicalSignificance.Update = Date.now;
 
+                                        console.log(entityClinicalSignificance);
+
+                                        //TODO change flag
                                         daoClinicalSignificance.create(entityClinicalSignificance);
                                     });
 
@@ -433,6 +535,9 @@ function updateVariant(variantId) {
                                         myVariantJSON.clinvar.rcv.review_status;
                                     entityClinicalSignificance.Update = Date.now;
 
+                                    console.log(entityClinicalSignificance);
+
+                                    //TODO change flag
                                     daoClinicalSignificance.create(entityClinicalSignificance);
                                 }
                             });
@@ -477,6 +582,9 @@ function updateVariant(variantId) {
                                         myVariantJSON.clinvar.rcv.review_status;
                                     entityClinicalSignificance.Update = Date.now;
 
+                                    console.log(entityClinicalSignificance);
+
+                                    //TODO change flag
                                     daoClinicalSignificance.create(entityClinicalSignificance);
                                 });
 
@@ -510,6 +618,9 @@ function updateVariant(variantId) {
                                     myVariantJSON.clinvar.rcv.review_status;
                                 entityClinicalSignificance.Update = Date.now;
 
+                                console.log(entityClinicalSignificance);
+
+                                //TODO change flag
                                 daoClinicalSignificance.create(entityClinicalSignificance);
                             }
                         }
@@ -555,6 +666,9 @@ function updateVariant(variantId) {
                             myVariantJSON.clinvar.rcv.review_status;
                         entityClinicalSignificance.Update = Date.now;
 
+                        console.log(entityClinicalSignificance);
+
+                        //TODO Change flag
                         daoClinicalSignificance.create(entityClinicalSignificance);
                     });
                 }
@@ -567,6 +681,7 @@ function updateVariant(variantId) {
 
         var statement = "SELECT * FROM GENETYLLIS_ALLELEFREQUENCY WHERE ALLELEFREQUENCY_VARIANTID = ?";
         var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
+        console.log(JSON.stringify(resultset[0]));
 
         if (resultset[0] !== undefined) {
             entityAlleleFrequency.Id = resultset[0].ALLELEFREQUENCY_VARIANTID;
@@ -582,24 +697,30 @@ function updateVariant(variantId) {
                 if (myVariantJSON.gnomad_genome.af.af !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af;
+
+                    console.log(entityAlleleFrequency);
+
                     daoAlleleFreqeuncy.update(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_bgr !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_bgr;
+                    console.log(entityAlleleFrequency);
                     daoAlleleFreqeuncy.update(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_male !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_male;
+                    console.log(entityAlleleFrequency);
                     daoAlleleFreqeuncy.update(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_female !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_female;
+                    console.log(entityAlleleFrequency);
                     daoAlleleFreqeuncy.update(entityAlleleFrequency);
                 }
             }
@@ -615,31 +736,50 @@ function updateVariant(variantId) {
 
             entityAlleleFrequency.Update = Date.now;
 
+
+            //TODO depending on the populationId or the GenderId change the corresponding field
             if (myVariantJSON.gnomad_genome !== undefined) {
                 if (myVariantJSON.gnomad_genome.af.af !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af;
+                    // console.log(entityAlleleFrequency);
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_bgr !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_bgr;
+                    // console.log(entityAlleleFrequency);
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_male !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_male;
+                    // console.log(entityAlleleFrequency);
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_female !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_female;
+                    // console.log(entityAlleleFrequency);
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
             }
         }
     }
+}
+
+function markChange(userId, variantId) {
+    var statement = "SELECT * FROM GENETYLLIS_NOTIFICATION WHERE NOTIFICATION_USERUSERID = ? AND NOTIFICATION_VARIANTID = ?";
+    var resultset = query.execute(statement, [userId, variantId], "local", "DefaultDB");
+    // console.log(JSON.stringify(resultset));
+
+    let entityNotification = {};
+    entityNotification.Id = resultset[0].NotificationId;
+    entityNotification.SeenFlag = false;
+    entityNotification.ChangeFlag = true;
+
+    daoNotification.update(entityNotification);
 }

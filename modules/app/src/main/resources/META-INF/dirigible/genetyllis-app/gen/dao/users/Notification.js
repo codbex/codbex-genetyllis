@@ -1,20 +1,10 @@
-/*
- * Copyright (c) 2022 codbex or an codbex affiliate company and contributors
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v20.html
- *
- * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
- * SPDX-License-Identifier: EPL-2.0
- */
 var query = require("db/v4/query");
 var producer = require("messaging/v4/producer");
 var daoApi = require("db/v4/dao");
+var EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
 
 var dao = daoApi.create({
-	table: "GENETYLLIS_NOTIFICATION",
+	table: "NOTIFICATION",
 	properties: [
 		{
 			name: "NotificationId",
@@ -30,21 +20,38 @@ var dao = daoApi.create({
 			name: "VariantId",
 			column: "NOTIFICATION_VARIANTID",
 			type: "INTEGER",
+		}, {
+			name: "SeenFlag",
+			column: "NOTIFICATION_SEENFLAG",
+			type: "BOOLEAN",
+		}, {
+			name: "ChangeFlag",
+			column: "NOTIFICATION_CHANGEFLAG",
+			type: "BOOLEAN",
 		}]
 });
 
 exports.list = function(settings) {
-	return dao.list(settings);
+	return dao.list(settings).map(function(e) {
+		EntityUtils.setBoolean(e, "SeenFlag");
+		EntityUtils.setBoolean(e, "ChangeFlag");
+		return e;
+	});
 };
 
 exports.get = function(id) {
-	return dao.find(id);
+	var entity = dao.find(id);
+	EntityUtils.setBoolean(entity, "SeenFlag");
+	EntityUtils.setBoolean(entity, "ChangeFlag");
+	return entity;
 };
 
 exports.create = function(entity) {
+	EntityUtils.setBoolean(entity, "SeenFlag");
+	EntityUtils.setBoolean(entity, "ChangeFlag");
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
-		table: "GENETYLLIS_NOTIFICATION",
+		table: "NOTIFICATION",
 		key: {
 			name: "NotificationId",
 			column: "NOTIFICATION_NOTIFICATIONID",
@@ -55,9 +62,11 @@ exports.create = function(entity) {
 };
 
 exports.update = function(entity) {
+	EntityUtils.setBoolean(entity, "SeenFlag");
+	EntityUtils.setBoolean(entity, "ChangeFlag");
 	dao.update(entity);
 	triggerEvent("Update", {
-		table: "GENETYLLIS_NOTIFICATION",
+		table: "NOTIFICATION",
 		key: {
 			name: "NotificationId",
 			column: "NOTIFICATION_NOTIFICATIONID",
@@ -69,7 +78,7 @@ exports.update = function(entity) {
 exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
-		table: "GENETYLLIS_NOTIFICATION",
+		table: "NOTIFICATION",
 		key: {
 			name: "NotificationId",
 			column: "NOTIFICATION_NOTIFICATIONID",
@@ -83,7 +92,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_NOTIFICATION");
+	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM NOTIFICATION");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
