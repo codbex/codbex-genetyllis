@@ -750,11 +750,11 @@
                     {
                         "calculatedPropertyExpression": "",
                         "dataAutoIncrement": "false",
-                        "dataLength": "20",
+                        "dataLength": "50",
                         "dataName": "GENE_GENEID",
                         "dataNullable": "true",
                         "dataPrimaryKey": "false",
-                        "dataType": "INTEGER",
+                        "dataType": "VARCHAR",
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "GeneId",
@@ -765,7 +765,7 @@
                     {
                         "calculatedPropertyExpression": "",
                         "dataAutoIncrement": "false",
-                        "dataLength": "20",
+                        "dataLength": "50",
                         "dataName": "GENE_NAME",
                         "dataNullable": "true",
                         "dataPrimaryKey": "false",
@@ -1828,8 +1828,8 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
-                "dataCount": "SELECT COUNT(*) AS COUNT FROM NOTIFICATION",
-                "dataName": "NOTIFICATION",
+                "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_NOTIFICATION",
+                "dataName": "GENETYLLIS_NOTIFICATION",
                 "dataQuery": "",
                 "icon": "file-o",
                 "layoutType": "MANAGE",
@@ -1892,8 +1892,8 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
-                "dataCount": "SELECT COUNT(*) AS COUNT FROM USER",
-                "dataName": "USER",
+                "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_USER",
+                "dataName": "GENETYLLIS_USER",
                 "dataQuery": "",
                 "icon": "file-o",
                 "layoutType": "MANAGE",
@@ -1945,6 +1945,12 @@
                 "label": "Analysis",
                 "icon": "ambulance",
                 "order": "50"
+            },
+            {
+                "name": "users",
+                "label": "users",
+                "icon": "globe",
+                "order": "100"
             }
         ],
         "sidebar": []
