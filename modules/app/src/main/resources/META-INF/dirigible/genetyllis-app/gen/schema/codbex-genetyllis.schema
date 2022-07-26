@@ -62,6 +62,12 @@
                         "length": 0,
                         "nullable": true,
                         "name": "GENETYLLIS_PATIENT_PHYSICIANID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "GENETYLLIS_PATIENT_POPULATIONID"
                     }
                 ]
             },
@@ -197,7 +203,7 @@
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 20,
+                        "length": 50,
                         "nullable": true,
                         "name": "GENETYLLIS_VARIANT_REGIONNUM"
                     },
@@ -284,14 +290,14 @@
                         "name": "GENE_ID"
                     },
                     {
-                        "type": "INTEGER",
-                        "length": 20,
+                        "type": "VARCHAR",
+                        "length": 50,
                         "nullable": true,
                         "name": "GENE_GENEID"
                     },
                     {
                         "type": "VARCHAR",
-                        "length": 20,
+                        "length": 50,
                         "nullable": true,
                         "name": "GENE_NAME"
                     },
@@ -658,6 +664,70 @@
                 ]
             },
             {
+                "name": "GENETYLLIS_NOTIFICATION",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "NOTIFICATION_NOTIFICATIONID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "NOTIFICATION_USERUSERID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "NOTIFICATION_VARIANTID"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "NOTIFICATION_SEENFLAG"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "NOTIFICATION_CHANGEFLAG"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_USER",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "USER_USERID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "USER_USERNAME"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "USER_PASSWORD"
+                    }
+                ]
+            },
+            {
                 "name": "Patient_Gender",
                 "type": "foreignKey",
                 "table": "GENETYLLIS_PATIENT",
@@ -674,6 +744,15 @@
                 "columns": "GENETYLLIS_PATIENT_PHYSICIANID",
                 "referencedTable": "GENETYLLIS_PHYSICIAN",
                 "referencedColumns": "PHYSICIAN_ID"
+            },
+            {
+                "name": "Patient_Population",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_PATIENT",
+                "constraintName": "Patient_Population",
+                "columns": "GENETYLLIS_PATIENT_POPULATIONID",
+                "referencedTable": "GENETYLLIS_POPULATION",
+                "referencedColumns": "POPULATION_ID"
             },
             {
                 "name": "ClinicalHistory_Patient",
@@ -854,6 +933,24 @@
                 "columns": "FAMILYHISTORY_FAMILYMEMBERID",
                 "referencedTable": "GENETYLLIS_PATIENT",
                 "referencedColumns": "PATIENT_ID"
+            },
+            {
+                "name": "Notification_User",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_NOTIFICATION",
+                "constraintName": "Notification_User",
+                "columns": "NOTIFICATION_USERUSERID",
+                "referencedTable": "GENETYLLIS_USER",
+                "referencedColumns": "USER_USERID"
+            },
+            {
+                "name": "Notification_Variant",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_NOTIFICATION",
+                "constraintName": "Notification_Variant",
+                "columns": "NOTIFICATION_VARIANTID",
+                "referencedTable": "GENETYLLIS_VARIANT",
+                "referencedColumns": "VARIANT_ID"
             }
         ]
     }

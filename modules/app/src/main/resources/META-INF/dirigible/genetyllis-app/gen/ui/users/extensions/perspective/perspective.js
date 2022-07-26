@@ -11,7 +11,7 @@
 exports.getPerspective = function(relativePath) {
 	return {
 		name: "users",
-		image: "files-o",
+		image: "globe",
 		link: relativePath + "services/v4/web/genetyllis-app/gen/ui/users/index.html",
 		order: 100,
 	};

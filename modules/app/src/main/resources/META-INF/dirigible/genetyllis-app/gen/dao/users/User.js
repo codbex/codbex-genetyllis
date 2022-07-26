@@ -3,7 +3,7 @@ var producer = require("messaging/v4/producer");
 var daoApi = require("db/v4/dao");
 
 var dao = daoApi.create({
-	table: "USER",
+	table: "GENETYLLIS_USER",
 	properties: [
 		{
 			name: "UserId",
@@ -33,7 +33,7 @@ exports.get = function(id) {
 exports.create = function(entity) {
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
-		table: "USER",
+		table: "GENETYLLIS_USER",
 		key: {
 			name: "UserId",
 			column: "USER_USERID",
@@ -46,7 +46,7 @@ exports.create = function(entity) {
 exports.update = function(entity) {
 	dao.update(entity);
 	triggerEvent("Update", {
-		table: "USER",
+		table: "GENETYLLIS_USER",
 		key: {
 			name: "UserId",
 			column: "USER_USERID",
@@ -58,7 +58,7 @@ exports.update = function(entity) {
 exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
-		table: "USER",
+		table: "GENETYLLIS_USER",
 		key: {
 			name: "UserId",
 			column: "USER_USERID",
@@ -72,7 +72,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM USER");
+	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_USER");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;

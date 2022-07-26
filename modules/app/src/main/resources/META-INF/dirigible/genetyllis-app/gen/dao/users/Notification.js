@@ -4,7 +4,7 @@ var daoApi = require("db/v4/dao");
 var EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
 
 var dao = daoApi.create({
-	table: "NOTIFICATION",
+	table: "GENETYLLIS_NOTIFICATION",
 	properties: [
 		{
 			name: "NotificationId",
@@ -51,7 +51,7 @@ exports.create = function(entity) {
 	EntityUtils.setBoolean(entity, "ChangeFlag");
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
-		table: "NOTIFICATION",
+		table: "GENETYLLIS_NOTIFICATION",
 		key: {
 			name: "NotificationId",
 			column: "NOTIFICATION_NOTIFICATIONID",
@@ -66,7 +66,7 @@ exports.update = function(entity) {
 	EntityUtils.setBoolean(entity, "ChangeFlag");
 	dao.update(entity);
 	triggerEvent("Update", {
-		table: "NOTIFICATION",
+		table: "GENETYLLIS_NOTIFICATION",
 		key: {
 			name: "NotificationId",
 			column: "NOTIFICATION_NOTIFICATIONID",
@@ -78,7 +78,7 @@ exports.update = function(entity) {
 exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
-		table: "NOTIFICATION",
+		table: "GENETYLLIS_NOTIFICATION",
 		key: {
 			name: "NotificationId",
 			column: "NOTIFICATION_NOTIFICATIONID",
@@ -92,7 +92,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM NOTIFICATION");
+	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_NOTIFICATION");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
