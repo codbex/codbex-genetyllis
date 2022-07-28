@@ -15,7 +15,7 @@ var dao = daoApi.create({
 		}, {
 			name: "GeneId",
 			column: "GENE_GENEID",
-			type: "INTEGER",
+			type: "VARCHAR",
 		}, {
 			name: "Name",
 			column: "GENE_NAME",

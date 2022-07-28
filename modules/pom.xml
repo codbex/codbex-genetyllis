@@ -19,6 +19,8 @@
 		<module>data</module>
 		<module>upload</module>
 		<module>pages</module>
+		<module>update</module>
+		<module>notification</module>
 	</modules>
 
 	<properties>

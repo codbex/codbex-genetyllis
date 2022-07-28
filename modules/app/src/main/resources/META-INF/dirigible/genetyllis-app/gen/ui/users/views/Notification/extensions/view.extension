@@ -1,0 +1,5 @@
+{
+	"description": "Notification view",
+	"extensionPoint": "launchpad-genetyllis-users-view",
+	"module": "genetyllis-app/gen/ui/users/views/Notification/extensions/view.js"
+}

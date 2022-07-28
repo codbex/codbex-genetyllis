@@ -98,43 +98,73 @@ function processVCFFile(fileName, content, patientId) {
             else
                 entityVariant.ConsequenceDetails = "";
 
-            if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
-                entityVariant.Region = "exon";
-                entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon);
-            }
-            else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
-                entityVariant.Region = "intron";
-                entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron);
-            }
-            else {
-                entityVariant.Region = "";
-                entityVariant.RegionNum = "";
-            }
+            // if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
+            //     entityVariant.Region = "exon";
+            //     entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon);
+            // }
+            // else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
+            //     entityVariant.Region = "intron";
+            //     entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron);
+            // }
+            // else {
+            //     entityVariant.Region = "";
+            //     entityVariant.RegionNum = "";
+            // }
 
             //GENE
             if (myVariantJSON.dbsnp !== undefined && myVariantJSON.dbsnp.gene !== undefined) {
                 console.log("GENE");
 
                 geneArray = myVariantJSON.dbsnp.gene;
-
+                console.log(JSON.stringify(geneArray));
+                console.log(geneArray.length);
                 if (geneArray.length !== undefined) {
-                    geneArray.forEach(gene => {
+                    for (let i = 0; i < geneArray.length; i++) {
+                        console.log("in array");
+                        // geneArray.forEach(gene => {
                         let entityGene = {};
-                        entityGene.GeneId = gene.geneid;
+                        entityGene.GeneId = geneArray[i].geneid;
                         //TODO change later to include full string
-                        entityGene.Name = JSON.stringify(gene.name).substring(0, 19);
-                        entityGene.Pseudo = gene.is_pseudo;
+                        entityGene.Name = JSON.stringify(geneArray[i].name).substring(0, 19);
+                        entityGene.Pseudo = geneArray[i].is_pseudo;
+
+                        if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
+                            entityVariant.Region = "exon";
+                            entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon[i]);
+                        }
+                        else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
+                            entityVariant.Region = "intron";
+                            entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron[i]);
+                        }
+                        else {
+                            entityVariant.Region = "";
+                            entityVariant.RegionNum = "";
+                        }
 
                         entityVariant.GeneId = daoGene.create(entityGene);
                         console.log("gene id" + entityVariant.GeneId);
                         daoVariant.update(entityVariant)
-                    });
+                    }
                 } else {
                     let entityGene = {};
+                    console.log("noit in array");
                     entityGene.GeneId = myVariantJSON.dbsnp.gene.geneid;
                     //TODO change later to include full string
                     entityGene.Name = JSON.stringify(myVariantJSON.dbsnp.gene.name).substring(0, 19);
                     entityGene.Pseudo = myVariantJSON.dbsnp.gene.is_pseudo;
+
+                    if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
+                        entityVariant.Region = "exon";
+                        entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon);
+                    }
+                    else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
+                        entityVariant.Region = "intron";
+                        entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron);
+                    }
+                    else {
+                        entityVariant.Region = "";
+                        entityVariant.RegionNum = "";
+                    }
 
                     entityVariant.GeneId = daoGene.create(entityGene);
                     console.log("gene id" + entityVariant.GeneId);
@@ -142,6 +172,9 @@ function processVCFFile(fileName, content, patientId) {
                 }
             }
             else {
+
+                entityVariant.Region = "";
+                entityVariant.RegionNum = "";
                 entityVariant.GeneId = null;
                 daoVariant.update(entityVariant);
             }
