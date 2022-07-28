@@ -14,17 +14,22 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
             console.log("patientsOptions", $scope.patientsOptions);
         });
 
-    $http.get(notificationApi)
-        .then(function (data) {
-            $scope.notifications = data.data.filter(el => el.UserUserId == 1 && el.SeenFlag == false);
+    function loadNotifications() {
+        $http.get(notificationApi)
+            .then(function (data) {
+                $scope.notifications = data.data.filter(el => el.UserUserId == 1 && el.SeenFlag == false);
 
-            angular.forEach($scope.notifications, function (value, key) {
-                console.log("value", value.VariantId);
-                getVariant(value.VariantId);
+                angular.forEach($scope.notifications, function (value, key) {
+                    console.log("value", value.VariantId);
+                    getVariant(value.VariantId);
+                });
+                console.log("notifications", $scope.notifications);
+
             });
-            console.log("notifications", $scope.notifications);
+    }
 
-        });
+    loadNotifications();
+
 
     function getVariant(variantId) {
         $http.get(variantApi)
@@ -46,8 +51,18 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
         $http.post(notificationController, JSON.stringify({ notificationId: $scope.notiId[0].NotificationId }))
             .then(data => {
                 console.log("asd", data);
+                $scope.refreshNotifications()
             })
             .catch(function (err) { console.log("err", err); });
+
+    }
+
+    $scope.refreshNotifications = function () {
+        // delete $scope.notifications;
+        delete $scope.variants;
+        $scope.variants = [];
+        loadNotifications();
+        // $scope.$apply();
     }
 
 
