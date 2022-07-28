@@ -1,0 +1,5 @@
+{
+	"module": "Home-page/perspective/home-page.js",
+	"extensionPoint": "ide-perspective",
+	"description": "home-page Perspective"
+}

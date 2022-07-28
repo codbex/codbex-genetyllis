@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+.wrapper {
+  background: #eee;
+  padding: 20px;
+}
+.headerContent {
+  display: flex;
+}
+.headerWrapper {
+  width: 50%;
+  margin: auto;
+}
+
+.headerWrapper ul {
+  display: flex;
+}
+
+.headerWrapper ul li {
+  list-style-type: none;
+  padding-right: 20px;
+}
+
+.headerWrapper ul li a {
+  text-decoration: none;
+  color: rgb(158, 152, 152);
+  font-size: 20px;
+}
+
+.headerWrapper ul li a:hover {
+
+  color: #000 !important;
+}
+.genHubLogo,
+.logOut a {
+  text-decoration: none;
+  color: #000;
+}

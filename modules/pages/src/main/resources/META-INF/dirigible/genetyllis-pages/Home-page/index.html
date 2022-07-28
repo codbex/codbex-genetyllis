@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018 SAP and others.
+  ~ All rights reserved. This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ http://www.eclipse.org/legal/epl-v20.html
+  ~ Contributors:
+  ~ SAP - initial API and implementation
+  -->
+
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Eclipse Dirigible &trade; | home-page </title>
+
+		<link rel="shortcut icon" type="image/png" href="/services/v4/web/resources/images/favicon.png" />
+
+		<!-- FontAwesome icon set -->
+		<link type="text/css" href="/webjars/fontawesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+		<!-- Twitter Bootstrap with Theme Support -->
+		<link type="text/css" rel="stylesheet" href="/services/v4/core/theme/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="css/patientContent.css" />
+		<!-- Twitter Bootstrap with Theme Support -->
+		<script type="text/javascript" src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+		<!-- AngularJS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+		<!-- GoldenLayout with Theme Support -->
+		<link type="text/css" rel="stylesheet"
+			href="/services/v4/web/resources/goldenlayout/1.5.9/goldenlayout-base.css" />
+		<link type="text/css" rel="stylesheet" href="/services/v4/core/theme/goldenlayout-theme.css" />
+		<link type="text/css" rel="stylesheet" href="css/style.css" />
+
+
+
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+			integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<!-- <script type="text/javascript" src="/webjars/jquery/3.6.0/jquery.min.js"></script> -->
+		<!-- Custom IDE Styles -->
+
+		<link type="text/css" rel="stylesheet" href="/services/v4/core/theme/ide.css" />
+
+	</head>
+
+
+	<!-- jQuery -->
+
+	<!-- Twitter Bootstrap with Theme Support -->
+	<script type="text/javascript" src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<!-- AngularJS -->
+	<script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
+	<script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.3/angular-route.min.js"
+		integrity="sha512-y1qD3hz/IAf8W4+/UMLZ+CN6LIoUGi7srWJ3r1R17Hid8x0yXe+1B5ZelkaL1Mjzedzu0Cg3HBvDG02SAgSzBw=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<!-- GoldenLayout with Theme Support -->
+	<script type="text/javascript" src="/services/v4/web/resources/goldenlayout/1.5.9/goldenlayout.min.js"></script>
+	<!-- 
+		<script type="text/javascript" src="../ide/ui/message-hub.js"></script>
+		<script type="text/javascript" src="../ide/ui/ui-layout.js"></script>
+		<script type="text/javascript" src="../ide/ui/ui-core-ng-modules.js"></script> -->
+
+	<script type="text/javascript" src="js/home-page.js"></script>
+	<script type="text/javascript" src="js/patientController.js"></script>
+
+
+	<body ng-app="home-page" ng-controller="homePageController">
+		<div ng-include="'../Home-page/partials/header.html'"></div>
+		<div ng-include="'../Home-page/partials/patientContent.html'"></div>
+
+	</body>
+
+</html>

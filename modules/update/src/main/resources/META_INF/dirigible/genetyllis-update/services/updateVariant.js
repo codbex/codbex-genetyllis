@@ -23,6 +23,7 @@ var daoNotification = require("genetyllis-app/gen/dao/users/Notification.js");
 
 exports.updateTrigger = function (variantId) {
     updateVariant(variantId);
+    markChangeForAllUsers(variantId);
 }
 
 //TODO make array with extracted info for every table and compare it to myvariantinfo array corresponding to id
@@ -81,39 +82,64 @@ function updateVariant(variantId) {
 
         if (JSON.stringify(dbEntityVariant) === JSON.stringify(entityVariant)) {
             console.log("The same")
-            console.log(daoVariant.update(entityVariant));
+            // console.log(daoVariant.update(entityVariant));
         } else {
             //TODO change flag
             console.log("not the same")
-            console.log(JSON.stringify(dbdbEntityVariantTest));
+            console.log(JSON.stringify(dbEntityVariant));
             console.log(JSON.stringify(entityVariant));
+
+            // this.markChangeForAllUsers(entityVariant.Id);
+            markChangeForAllUsers(variantId);
             daoVariant.update(entityVariant);
         }
 
         //GENE
-        if (myVariantJSON.dbsnp !== undefined && myVariantJSON.dbsnp.gene !== undefined) {
+        //TODO change geneId to string
+        if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.gene !== undefined) {
             console.log("GENE");
             var statement = "SELECT VARIANT_GENEID FROM GENETYLLIS_VARIANT WHERE VARIANT_ID = ?";
             var resultsetGeneId = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
+            // console.log(resultsetGeneId[0].VARIANT_GENEID);
 
-            var statement = "SELECT * FROM GENETYLLIS_GENE WHERE GENE_ID = ?";
-            var resultset = query.execute(statement, [resultsetGeneId[0].VARIANT_GENEID], "local", "DefaultDB");
 
-            console.log(JSON.stringify(resultset[0]));
+            // console.log(JSON.stringify(resultset[0]));
 
-            if (resultset[0] !== undefined) {
-                let dbEntityGene = { Id: resultset[0].GENE_ID, GeneId: resultset[0].GENE_GENEID, Name: resultset[0].GENE_NAME, Pseudo: resultset[0].GENE_PSEUDO };
+            if (resultsetGeneId[0].VARIANT_GENEID !== undefined) {
+                var statement = "SELECT * FROM GENETYLLIS_GENE WHERE GENE_ID = ?";
+                var resultset = query.execute(statement, [resultsetGeneId[0].VARIANT_GENEID], "local", "DefaultDB");
+
+                let dbEntityGene = { Id: resultset[0].GENE_ID, GeneId: resultset[0].GENE_GENEID, Name: resultset[0].GENE_NAME };
                 let entityGene = {};
                 entityGene.Id = resultset[0].GENE_ID;
 
-                geneArray = myVariantJSON.dbsnp.gene;
+                geneArray = myVariantJSON.cadd.gene;
                 if (geneArray.length !== undefined) {
                     geneArray.forEach(gene => {
+                        if (gene.gene_id !== undefined && gene.genename !== undefined) {
+                            entityGene.GeneId = gene.gene_id;
+                            //TODO change later to include full string
+                            entityGene.Name = JSON.stringify(gene.genename).substring(0, 19);
+                            // entityGene.Pseudo = gene.is_pseudo;
 
-                        entityGene.GeneId = gene.geneid;
+                            if (JSON.stringify(dbEntityGene) === JSON.stringify(entityGene)) {
+                                console.log("The same")
+                            } else {
+                                console.log("not the same")
+                                console.log(JSON.stringify(dbEntityGene));
+                                console.log(JSON.stringify(entityGene));
+                                markChangeForAllUsers(variantId);
+                                daoGene.update(entityGene);
+                            }
+                        }
+
+                    });
+                } else {
+                    if (gene.gene_id !== undefined && gene.genename !== undefined) {
+                        entityGene.GeneId = myVariantJSON.cadd.gene.gene_id;
                         //TODO change later to include full string
-                        entityGene.Name = JSON.stringify(gene.name).substring(0, 19);
-                        entityGene.Pseudo = gene.is_pseudo;
+                        entityGene.Name = JSON.stringify(myVariantJSON.cadd.gene.genename).substring(0, 19);
+                        // entityGene.Pseudo = myVariantJSON.cadd.gene.is_pseudo;
 
                         if (JSON.stringify(dbEntityGene) === JSON.stringify(entityGene)) {
                             console.log("The same")
@@ -121,57 +147,50 @@ function updateVariant(variantId) {
                             console.log("not the same")
                             console.log(JSON.stringify(dbEntityGene));
                             console.log(JSON.stringify(entityGene));
+                            markChangeForAllUsers(variantId);
                             daoGene.update(entityGene);
                         }
-                    });
-                } else {
-                    entityGene.GeneId = myVariantJSON.dbsnp.gene.geneid;
-                    //TODO change later to include full string
-                    entityGene.Name = JSON.stringify(myVariantJSON.dbsnp.gene.name).substring(0, 19);
-                    entityGene.Pseudo = myVariantJSON.dbsnp.gene.is_pseudo;
-
-                    if (JSON.stringify(dbEntityGene) === JSON.stringify(entityGene)) {
-                        console.log("The same")
-                    } else {
-                        console.log("not the same")
-                        console.log(JSON.stringify(dbEntityGene));
-                        console.log(JSON.stringify(entityGene));
-                        daoGene.update(entityGene);
                     }
                 }
             } else {
                 console.log("GENE create");
 
-                geneArray = myVariantJSON.dbsnp.gene;
+                geneArray = myVariantJSON.cadd.gene;
 
                 if (geneArray.length !== undefined) {
                     geneArray.forEach(gene => {
+                        if (gene.gene_id !== undefined && gene.genename !== undefined) {
+                            let entityGene = {};
+                            entityGene.GeneId = gene.gene_id;
+                            //TODO change later to include full string
+                            entityGene.Name = JSON.stringify(gene.genename).substring(0, 19);
+                            // entityGene.Pseudo = gene.is_pseudo;
+
+                            entityVariant.GeneId = daoGene.create(entityGene);
+                            console.log("gene id" + entityVariant.GeneId);
+
+                            console.log(JSON.stringify(entityGene));
+                            //TODO update flag in variant
+                            markChangeForAllUsers(variantId);
+                            daoVariant.update(entityVariant)
+                        }
+                    });
+                } else {
+                    if (myVariantJSON.cadd.gene.gene_id !== undefined && myVariantJSON.cadd.gene.genename !== undefined) {
                         let entityGene = {};
-                        entityGene.GeneId = gene.geneid;
+                        entityGene.GeneId = myVariantJSON.cadd.gene.gene_id;
                         //TODO change later to include full string
-                        entityGene.Name = JSON.stringify(gene.name).substring(0, 19);
-                        entityGene.Pseudo = gene.is_pseudo;
+                        entityGene.Name = JSON.stringify(myVariantJSON.cadd.gene.genename).substring(0, 19);
+                        // entityGene.Pseudo = myVariantJSON.cadd.gene.is_pseudo;
 
                         entityVariant.GeneId = daoGene.create(entityGene);
                         console.log("gene id" + entityVariant.GeneId);
 
                         console.log(JSON.stringify(entityGene));
                         //TODO update flag in variant
+                        markChangeForAllUsers(variantId);
                         daoVariant.update(entityVariant)
-                    });
-                } else {
-                    let entityGene = {};
-                    entityGene.GeneId = myVariantJSON.dbsnp.gene.geneid;
-                    //TODO change later to include full string
-                    entityGene.Name = JSON.stringify(myVariantJSON.dbsnp.gene.name).substring(0, 19);
-                    entityGene.Pseudo = myVariantJSON.dbsnp.gene.is_pseudo;
-
-                    entityVariant.GeneId = daoGene.create(entityGene);
-                    console.log("gene id" + entityVariant.GeneId);
-
-                    console.log(JSON.stringify(entityGene));
-                    //TODO update flag in variant
-                    daoVariant.update(entityVariant)
+                    }
                 }
             }
         }
@@ -248,6 +267,7 @@ function updateVariant(variantId) {
                                             console.log("not the same1")
                                             // console.log(JSON.stringify(entityClinicalSignificance));
                                             // console.log(JSON.stringify(entityGene));
+                                            markChangeForAllUsers(variantId);
                                             daoClinicalSignificance.update(entityClinicalSignificance);
                                         }
                                         // daoClinicalSignificance.update(entityClinicalSignificance);
@@ -291,6 +311,7 @@ function updateVariant(variantId) {
                                         console.log("not the same2")
                                         // console.log(JSON.stringify(entityClinicalSignificance));
                                         // console.log(JSON.stringify(entityGene));
+                                        markChangeForAllUsers(variantId);
                                         daoClinicalSignificance.update(entityClinicalSignificance);
                                     }
                                 }
@@ -344,6 +365,7 @@ function updateVariant(variantId) {
                                         console.log("not the same3")
                                         // console.log(JSON.stringify(entityClinicalSignificance));
                                         // console.log(JSON.stringify(entityGene));
+                                        markChangeForAllUsers(variantId);
                                         daoClinicalSignificance.update(entityClinicalSignificance);
                                     }
                                 });
@@ -386,6 +408,8 @@ function updateVariant(variantId) {
                                     console.log("not the same4")
                                     // console.log(JSON.stringify(dbEntityGene));
                                     // console.log(JSON.stringify(entityGene));
+
+                                    markChangeForAllUsers(variantId);
                                     daoClinicalSignificance.update(entityClinicalSignificance);
                                 }
                             }
@@ -439,6 +463,8 @@ function updateVariant(variantId) {
                             console.log("not the same5")
                             console.log(JSON.stringify(dbEntityClinicalSignificance));
                             console.log(JSON.stringify(entityClinicalSignificance));
+
+                            markChangeForAllUsers(variantId);
                             daoClinicalSignificance.update(entityClinicalSignificance);
                         }
                     });
@@ -500,6 +526,7 @@ function updateVariant(variantId) {
                                         console.log(entityClinicalSignificance);
 
                                         //TODO change flag
+                                        markChangeForAllUsers(variantId);
                                         daoClinicalSignificance.create(entityClinicalSignificance);
                                     });
 
@@ -538,6 +565,7 @@ function updateVariant(variantId) {
                                     console.log(entityClinicalSignificance);
 
                                     //TODO change flag
+                                    markChangeForAllUsers(variantId);
                                     daoClinicalSignificance.create(entityClinicalSignificance);
                                 }
                             });
@@ -585,6 +613,7 @@ function updateVariant(variantId) {
                                     console.log(entityClinicalSignificance);
 
                                     //TODO change flag
+                                    markChangeForAllUsers(variantId);
                                     daoClinicalSignificance.create(entityClinicalSignificance);
                                 });
 
@@ -621,6 +650,7 @@ function updateVariant(variantId) {
                                 console.log(entityClinicalSignificance);
 
                                 //TODO change flag
+                                markChangeForAllUsers(variantId);
                                 daoClinicalSignificance.create(entityClinicalSignificance);
                             }
                         }
@@ -669,6 +699,7 @@ function updateVariant(variantId) {
                         console.log(entityClinicalSignificance);
 
                         //TODO Change flag
+                        markChangeForAllUsers(variantId);
                         daoClinicalSignificance.create(entityClinicalSignificance);
                     });
                 }
@@ -677,11 +708,18 @@ function updateVariant(variantId) {
 
         //ALLELE FREQUENCY
         console.log("ALLELE FREQ");
+        //TODO see why date is not added
         let entityAlleleFrequency = {};
+
 
         var statement = "SELECT * FROM GENETYLLIS_ALLELEFREQUENCY WHERE ALLELEFREQUENCY_VARIANTID = ?";
         var resultset = query.execute(statement, [entityVariant.Id], "local", "DefaultDB");
         console.log(JSON.stringify(resultset[0]));
+
+        let dbEntityAlleleFreqeuncy = {
+            Id: resultset[0].ALLELEFREQUENCY_ID, VariantId: resultset[0].ALLELEFREQUENCY_VARIANTID, GenderId: resultset[0].ALLELEFREQUENCY_GENDERID, PopulationId: resultset[0].ALLELEFREQUENCY_POPULATIONID,
+            Freqeuncy: resultset[0].ALLELEFREQUENCY_FREQUENCY, Updated: resultset[0].ALLELEFREQUENCY_UPDATED
+        };
 
         if (resultset[0] !== undefined) {
             entityAlleleFrequency.Id = resultset[0].ALLELEFREQUENCY_VARIANTID;
@@ -695,33 +733,67 @@ function updateVariant(variantId) {
 
             if (myVariantJSON.gnomad_genome !== undefined) {
                 if (myVariantJSON.gnomad_genome.af.af !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.PopulationId = 18;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af;
 
-                    console.log(entityAlleleFrequency);
+                    if (JSON.stringify(dbEntityAlleleFreqeuncy) === JSON.stringify(entityAlleleFrequency)) {
+                        console.log("The same")
+                    } else {
+                        console.log("not the same")
+                        console.log(JSON.stringify(dbEntityAlleleFreqeuncy));
+                        console.log(JSON.stringify(entityAlleleFrequency));
 
-                    daoAlleleFreqeuncy.update(entityAlleleFrequency);
+                        markChangeForAllUsers(variantId);
+                        daoAlleleFreqeuncy.update(entityAlleleFrequency);
+                    }
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_bgr !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_bgr;
-                    console.log(entityAlleleFrequency);
-                    daoAlleleFreqeuncy.update(entityAlleleFrequency);
+
+                    if (JSON.stringify(dbEntityAlleleFreqeuncy) === JSON.stringify(entityAlleleFrequency)) {
+                        console.log("The same")
+                    } else {
+                        console.log("not the same")
+                        console.log(JSON.stringify(dbEntityAlleleFreqeuncy));
+                        console.log(JSON.stringify(entityAlleleFrequency));
+
+                        markChangeForAllUsers(variantId);
+                        daoAlleleFreqeuncy.update(entityAlleleFrequency);
+                    }
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_male !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.PopulationId = 11;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_male;
-                    console.log(entityAlleleFrequency);
-                    daoAlleleFreqeuncy.update(entityAlleleFrequency);
+
+                    if (JSON.stringify(dbEntityAlleleFreqeuncy) === JSON.stringify(entityAlleleFrequency)) {
+                        console.log("The same")
+                    } else {
+                        console.log("not the same")
+                        console.log(JSON.stringify(dbEntityAlleleFreqeuncy));
+                        console.log(JSON.stringify(entityAlleleFrequency));
+
+                        markChangeForAllUsers(variantId);
+                        daoAlleleFreqeuncy.update(entityAlleleFrequency);
+                    }
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_female !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.PopulationId = 11;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_female;
-                    console.log(entityAlleleFrequency);
-                    daoAlleleFreqeuncy.update(entityAlleleFrequency);
+
+                    if (JSON.stringify(dbEntityAlleleFreqeuncy) === JSON.stringify(entityAlleleFrequency)) {
+                        console.log("The same")
+                    } else {
+                        console.log("not the same")
+                        console.log(JSON.stringify(dbEntityAlleleFreqeuncy));
+                        console.log(JSON.stringify(entityAlleleFrequency));
+
+                        markChangeForAllUsers(variantId);
+                        daoAlleleFreqeuncy.update(entityAlleleFrequency);
+                    }
                 }
             }
         } else {
@@ -740,9 +812,11 @@ function updateVariant(variantId) {
             //TODO depending on the populationId or the GenderId change the corresponding field
             if (myVariantJSON.gnomad_genome !== undefined) {
                 if (myVariantJSON.gnomad_genome.af.af !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.PopulationId = 18;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af;
                     // console.log(entityAlleleFrequency);
+                    //TODO change flag
+                    markChangeForAllUsers(variantId);
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
 
@@ -750,20 +824,26 @@ function updateVariant(variantId) {
                     entityAlleleFrequency.PopulationId = 12;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_bgr;
                     // console.log(entityAlleleFrequency);
+                    //TODO change flag
+                    markChangeForAllUsers(variantId);
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_male !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.PopulationId = 11;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_male;
                     // console.log(entityAlleleFrequency);
+                    //TODO change flag
+                    markChangeForAllUsers(variantId);
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_female !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.PopulationId = 11;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_female;
                     // console.log(entityAlleleFrequency);
+                    //TODO change flag
+                    markChangeForAllUsers(variantId);
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
             }
@@ -771,15 +851,28 @@ function updateVariant(variantId) {
     }
 }
 
-function markChange(userId, variantId) {
-    var statement = "SELECT * FROM GENETYLLIS_NOTIFICATION WHERE NOTIFICATION_USERUSERID = ? AND NOTIFICATION_VARIANTID = ?";
-    var resultset = query.execute(statement, [userId, variantId], "local", "DefaultDB");
-    // console.log(JSON.stringify(resultset));
+function getUsersForVariantInterest(variantId) {
+    var statement = "SELECT * FROM GENETYLLIS_NOTIFICATION WHERE NOTIFICATION_VARIANTID = ?";
+    var resultset = query.execute(statement, [variantId], "local", "DefaultDB");
+    let users = resultset.map(notification => notification.NOTIFICATION_USERUSERID);
 
-    let entityNotification = {};
-    entityNotification.Id = resultset[0].NotificationId;
-    entityNotification.SeenFlag = false;
-    entityNotification.ChangeFlag = true;
+    return users;
+}
 
-    daoNotification.update(entityNotification);
+function markChangeForAllUsers(variantId) {
+    let userOfInterestArray = getUsersForVariantInterest(variantId);
+    console.log(userOfInterestArray);
+    userOfInterestArray.forEach(user => {
+        var statement = "SELECT * FROM GENETYLLIS_NOTIFICATION WHERE NOTIFICATION_USERUSERID = ? AND NOTIFICATION_VARIANTID = ?";
+        var resultset = query.execute(statement, [user, variantId], "local", "DefaultDB");
+
+        let entityNotification = {};
+        entityNotification.NotificationId = resultset[0].NOTIFICATION_NOTIFICATIONID;
+        entityNotification.SeenFlag = false;
+        entityNotification.ChangeFlag = true;
+
+        console.log(JSON.stringify(entityNotification));
+        daoNotification.update(entityNotification);
+    });
+
 }

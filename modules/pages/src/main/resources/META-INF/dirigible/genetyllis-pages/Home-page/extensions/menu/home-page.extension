@@ -1,0 +1,5 @@
+{
+	"module": "Home-page/perspective/menu/home-page",
+	"extensionPoint": "ide-home-page-menu",
+	"description": "home-page Menu"
+}

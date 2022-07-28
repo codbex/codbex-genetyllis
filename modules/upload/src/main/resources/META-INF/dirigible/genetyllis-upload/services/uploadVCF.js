@@ -112,29 +112,58 @@ function processVCFFile(fileName, content, patientId) {
             // }
 
             //GENE
-            if (myVariantJSON.dbsnp !== undefined && myVariantJSON.dbsnp.gene !== undefined) {
+            //TODO change gene input from cadd!
+            if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.gene !== undefined) {
                 console.log("GENE");
 
-                geneArray = myVariantJSON.dbsnp.gene;
+                geneArray = myVariantJSON.cadd.gene;
                 console.log(JSON.stringify(geneArray));
                 console.log(geneArray.length);
                 if (geneArray.length !== undefined) {
                     for (let i = 0; i < geneArray.length; i++) {
-                        console.log("in array");
-                        // geneArray.forEach(gene => {
-                        let entityGene = {};
-                        entityGene.GeneId = geneArray[i].geneid;
+                        if (geneArray[i].gene_id !== undefined) {
+                            console.log("in array");
+                            // geneArray.forEach(gene => {
+                            let entityGene = {};
+                            entityGene.GeneId = JSON.stringify(geneArray[i].gene_id).substring(0, 19);
+                            //TODO change later to include full string
+                            entityGene.Name = JSON.stringify(geneArray[i].genename).substring(0, 19);
+                            // entityGene.Pseudo = geneArray[i].is_pseudo;
+
+                            if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
+                                entityVariant.Region = "exon";
+                                entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon[i]);
+                            }
+                            else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
+                                entityVariant.Region = "intron";
+                                entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron[i]);
+                            }
+                            else {
+                                entityVariant.Region = "";
+                                entityVariant.RegionNum = "";
+                            }
+
+                            entityVariant.GeneId = daoGene.create(entityGene);
+                            console.log(JSON.stringify(entityGene));
+                            daoVariant.create(entityVariant)
+                        }
+                    }
+                } else {
+                    let entityGene = {};
+                    console.log("noit in array");
+                    if (myVariantJSON.cadd.gene.gene_id !== undefined) {
+                        entityGene.GeneId = JSON.stringify(myVariantJSON.cadd.gene.gene_id).substring(0, 19);
                         //TODO change later to include full string
-                        entityGene.Name = JSON.stringify(geneArray[i].name).substring(0, 19);
-                        entityGene.Pseudo = geneArray[i].is_pseudo;
+                        entityGene.Name = JSON.stringify(myVariantJSON.cadd.gene.genename).substring(0, 19);
+                        // entityGene.Pseudo = myVariantJSON.dbsnp.gene.is_pseudo;
 
                         if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
                             entityVariant.Region = "exon";
-                            entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon[i]);
+                            entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon);
                         }
                         else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
                             entityVariant.Region = "intron";
-                            entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron[i]);
+                            entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron);
                         }
                         else {
                             entityVariant.Region = "";
@@ -142,33 +171,9 @@ function processVCFFile(fileName, content, patientId) {
                         }
 
                         entityVariant.GeneId = daoGene.create(entityGene);
-                        console.log("gene id" + entityVariant.GeneId);
+                        console.log(JSON.stringify(entityGene));
                         daoVariant.update(entityVariant)
                     }
-                } else {
-                    let entityGene = {};
-                    console.log("noit in array");
-                    entityGene.GeneId = myVariantJSON.dbsnp.gene.geneid;
-                    //TODO change later to include full string
-                    entityGene.Name = JSON.stringify(myVariantJSON.dbsnp.gene.name).substring(0, 19);
-                    entityGene.Pseudo = myVariantJSON.dbsnp.gene.is_pseudo;
-
-                    if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
-                        entityVariant.Region = "exon";
-                        entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon);
-                    }
-                    else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
-                        entityVariant.Region = "intron";
-                        entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron);
-                    }
-                    else {
-                        entityVariant.Region = "";
-                        entityVariant.RegionNum = "";
-                    }
-
-                    entityVariant.GeneId = daoGene.create(entityGene);
-                    console.log("gene id" + entityVariant.GeneId);
-                    daoVariant.update(entityVariant)
                 }
             }
             else {
@@ -405,31 +410,36 @@ function processVCFFile(fileName, content, patientId) {
             var statement = "SELECT PATIENT_GENDERID FROM GENETYLLIS_PATIENT WHERE PATIENT_ID = ?";
             var resultset = query.execute(statement, [patientId], "local", "DefaultDB");
 
-            entityAlleleFrequency.GenderId = resultset.PATIENT_GENDERID;
-
-            entityAlleleFrequency.Update = Date.now;
-
+            entityAlleleFrequency.Update = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            //2022-07-27 07:19:42
+            // console.log("date");
+            // console.log(entityAlleleFrequency.Update);
+            // console.log(new Date().toISOString());
             if (myVariantJSON.gnomad_genome !== undefined) {
                 if (myVariantJSON.gnomad_genome.af.af !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.PopulationId = 18;
+                    entityAlleleFrequency.GenderId = 3;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af;
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_bgr !== undefined) {
                     entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.GenderId = 3;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_bgr;
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_male !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.PopulationId = 11;
+                    entityAlleleFrequency.GenderId = 1;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_male;
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }
 
                 if (myVariantJSON.gnomad_genome.af.af_nfe_female !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
+                    entityAlleleFrequency.PopulationId = 11;
+                    entityAlleleFrequency.GenderId = 2;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_female;
                     daoAlleleFreqeuncy.create(entityAlleleFrequency);
                 }

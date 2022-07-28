@@ -1,0 +1,82 @@
+/* Global for this page */
+.addPatientWrapper {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.formWrapper {
+  border: 2px solid #eee;
+  border-radius: 3px;
+  margin-bottom: 30px;
+}
+
+.header {
+  background: #eee;
+  padding: 7px 0 7px 10px;
+  margin-bottom: 40px;
+  margin-top: -1px;
+  margin-right: -1px;
+}
+
+.header h3 {
+  color: #999999;
+  padding: 0 0 0 20px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.flexForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-col {
+  display: flex;
+  justify-content: space-between;
+}
+
+.typeBtn {
+  background: #7a7a7a;
+  padding: 3px 20px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+/* patient details */
+.patient-details-form {
+  width: 60%;
+  margin: auto;
+}
+
+/* clinical and family history */
+.history-form {
+  width: 70%;
+  margin: auto;
+}
+
+.ageOfOnset {
+  max-width: 80px;
+}
+
+
+.familyHistoryList table {
+  width: 100%;
+}
+
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+
+  -webkit-appearance: "Always Show Up/Down Arrows";
+
+}
+
+.saveBtnWrapper {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.saveBtn {
+  margin-left: 100%;
+}
