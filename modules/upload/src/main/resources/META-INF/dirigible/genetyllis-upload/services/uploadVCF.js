@@ -40,7 +40,7 @@ if (request.getMethod() === "POST") {
 
                 var tempFile = files.createTempFile("genetyllis", ".vcf");
                 try {
-                    processVCFFile(tempFile, fileItem.getBytes(), patientId);
+                    processVCFFile(tempFile, fileItem.getBytes(), 3);
                 } finally {
                     files.deleteFile(tempFile);
                 }
@@ -56,7 +56,6 @@ if (request.getMethod() === "POST") {
 }
 
 function processVCFFile(fileName, content, patientId) {
-    patientId = 3;
     console.log("Temp file: " + fileName);
     files.writeBytes(fileName, content);
     var vcfReader = parser.createVCFFileReader(tempFile);
@@ -66,445 +65,317 @@ function processVCFFile(fileName, content, patientId) {
         let variantContext = iteratorVariants.next();
 
         //VARIANT
-        let entityVariant = {};
-        // <chr>+":"+"g."+<pos><ref allele>+">"+"alt allele" -> chr1:g.10316791A>C
-        //TODO replace %3E with > later
-        entityVariant.HGVS = variantContext.getContig() + ":" + "g."
-            + variantContext.getStart() + variantContext.getReferenceBaseString()
-            + "%3E" + variantContext.getAlternateAlleles()[0].getBaseString();
-        entityVariant.Chromosome = variantContext.getContig(); // chr1
-        entityVariant.Start = variantContext.getStart(); // 10316791
-        entityVariant.End = variantContext.getEnd(); // 10316791
-        entityVariant.DBSNP = variantContext.getID(); // rs1264383
-        entityVariant.Reference = variantContext.getReferenceBaseString(); // A
-        entityVariant.Alternative = variantContext.getAlternateAlleles()[0].getBaseString() // C
-
-        entityVariant.Id = daoVariant.create(entityVariant);
-
-        console.log(entityVariant.HGVS);
-
-        var httpResponse = httpClient.get("https://myvariant.info/v1/variant/" + entityVariant.HGVS);
-
-        const myVariantJSON = JSON.parse(httpResponse.text);
-
-        if (!myVariantJSON.error) {
-            if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.consequence !== undefined)
-                entityVariant.Consequence = JSON.stringify(myVariantJSON["cadd"]["consequence"]);
-            else
-                entityVariant.Consequence = "";
-
-            if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.consdetail !== undefined)
-                entityVariant.ConsequenceDetails = JSON.stringify(myVariantJSON.cadd.consdetail);
-            else
-                entityVariant.ConsequenceDetails = "";
-
-            // if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
-            //     entityVariant.Region = "exon";
-            //     entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon);
-            // }
-            // else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
-            //     entityVariant.Region = "intron";
-            //     entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron);
-            // }
-            // else {
-            //     entityVariant.Region = "";
-            //     entityVariant.RegionNum = "";
-            // }
-
-            //GENE
-            //TODO change gene input from cadd!
-            if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.gene !== undefined) {
-                console.log("GENE");
-
-                geneArray = myVariantJSON.cadd.gene;
-                console.log(JSON.stringify(geneArray));
-                console.log(geneArray.length);
-                if (geneArray.length !== undefined) {
-                    for (let i = 0; i < geneArray.length; i++) {
-                        if (geneArray[i].gene_id !== undefined) {
-                            console.log("in array");
-                            // geneArray.forEach(gene => {
-                            let entityGene = {};
-                            entityGene.GeneId = JSON.stringify(geneArray[i].gene_id).substring(0, 19);
-                            //TODO change later to include full string
-                            entityGene.Name = JSON.stringify(geneArray[i].genename).substring(0, 19);
-                            // entityGene.Pseudo = geneArray[i].is_pseudo;
-
-                            if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
-                                entityVariant.Region = "exon";
-                                entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon[i]);
-                            }
-                            else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
-                                entityVariant.Region = "intron";
-                                entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron[i]);
-                            }
-                            else {
-                                entityVariant.Region = "";
-                                entityVariant.RegionNum = "";
-                            }
-
-                            entityVariant.GeneId = daoGene.create(entityGene);
-                            console.log(JSON.stringify(entityGene));
-                            daoVariant.create(entityVariant)
-                        }
-                    }
-                } else {
-                    let entityGene = {};
-                    console.log("noit in array");
-                    if (myVariantJSON.cadd.gene.gene_id !== undefined) {
-                        entityGene.GeneId = JSON.stringify(myVariantJSON.cadd.gene.gene_id).substring(0, 19);
-                        //TODO change later to include full string
-                        entityGene.Name = JSON.stringify(myVariantJSON.cadd.gene.genename).substring(0, 19);
-                        // entityGene.Pseudo = myVariantJSON.dbsnp.gene.is_pseudo;
-
-                        if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
-                            entityVariant.Region = "exon";
-                            entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon);
-                        }
-                        else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
-                            entityVariant.Region = "intron";
-                            entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron);
-                        }
-                        else {
-                            entityVariant.Region = "";
-                            entityVariant.RegionNum = "";
-                        }
-
-                        entityVariant.GeneId = daoGene.create(entityGene);
-                        console.log(JSON.stringify(entityGene));
-                        daoVariant.update(entityVariant)
-                    }
-                }
-            }
-            else {
-
-                entityVariant.Region = "";
-                entityVariant.RegionNum = "";
-                entityVariant.GeneId = null;
-                daoVariant.update(entityVariant);
-            }
-
-            //CLINICAL SIGNIFICANCE
-            if (myVariantJSON.clinvar !== undefined && myVariantJSON.clinvar.rcv !== undefined) {
-                console.log("CLINSIG");
-
-                var rcvArray = myVariantJSON.clinvar.rcv;
-
-                if (rcvArray.length !== undefined) {
-                    rcvArray.forEach((rcv) => {
-                        // console.log("rcv array");
-                        // console.log(JSON.stringify(rcv));
-
-                        var conditionsArray = rcv.conditions;
-                        if (conditionsArray.length !== undefined) {
-                            conditionsArray.forEach((conditions) => {
-                                if (conditions.identifiers !== undefined) {
-                                    console.log("multiple conditions with identifiers");
-                                    var statement =
-                                        "SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?";
-                                    var resultset = query.execute(
-                                        statement,
-                                        [conditions.identifiers.medgen],
-                                        "local",
-                                        "DefaultDB"
-                                    );
-
-                                    resultset.forEach((clinsig) => {
-                                        let entityClinicalSignificance = {};
-                                        entityClinicalSignificance.VariantId = entityVariant.Id;
-                                        entityClinicalSignificance.PathologyId = clinsig.PATHOLOGY_ID;
-                                        switch (myVariantJSON.clinvar.rcv.clinical_significance) {
-                                            case "Pathogenic":
-                                                entityClinicalSignificance.Significance = 1;
-                                                break;
-                                            case "Likely pathogenic":
-                                                entityClinicalSignificance.Significance = 2;
-                                                break;
-                                            case "Uncertain":
-                                                entityClinicalSignificance.Significance = 3;
-                                                break;
-                                            case "Likely bening":
-                                                entityClinicalSignificance.Significance = 4;
-                                                break;
-                                            case "Bening":
-                                                entityClinicalSignificance.Significance = 5;
-                                                break;
-                                            default:
-                                                entityClinicalSignificance.Significance = null;
-                                        }
-
-                                        entityClinicalSignificance.Evaluated =
-                                            myVariantJSON.clinvar.rcv.last_evaluated;
-                                        entityClinicalSignificance.ReviewStatus =
-                                            myVariantJSON.clinvar.rcv.review_status;
-                                        entityClinicalSignificance.Update = Date.now;
-
-                                        daoClinicalSignificance
-                                            .create(entityClinicalSignificance);
-                                    });
-
-                                } else {
-                                    console.log("multiple conditions without identifiers");
-
-                                    let entityClinicalSignificance = {};
-
-                                    entityClinicalSignificance.VariantId = entityVariant.Id;
-                                    switch (myVariantJSON.clinvar.rcv.clinical_significance) {
-                                        case "Pathogenic":
-                                            entityClinicalSignificance.Significance = 1;
-                                            break;
-                                        case "Likely pathogenic":
-                                            entityClinicalSignificance.Significance = 2;
-                                            break;
-                                        case "Uncertain":
-                                            entityClinicalSignificance.Significance = 3;
-                                            break;
-                                        case "Likely bening":
-                                            entityClinicalSignificance.Significance = 4;
-                                            break;
-                                        case "Bening":
-                                            entityClinicalSignificance.Significance = 5;
-                                            break;
-                                        default:
-                                            entityClinicalSignificance.Significance = null;
-                                    }
-
-                                    entityClinicalSignificance.Evaluated =
-                                        myVariantJSON.clinvar.rcv.last_evaluated;
-                                    entityClinicalSignificance.ReviewStatus =
-                                        myVariantJSON.clinvar.rcv.review_status;
-                                    entityClinicalSignificance.Update = Date.now;
-
-                                    daoClinicalSignificance.create(entityClinicalSignificance);
-                                }
-                            });
-                        } else {
-                            if (rcv.conditions.identifiers !== undefined) {
-                                var statement =
-                                    "SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?";
-                                var resultset = query.execute(
-                                    statement,
-                                    [rcv.conditions.identifiers.medgen],
-                                    "local",
-                                    "DefaultDB"
-                                );
-
-                                resultset.forEach((clinsig) => {
-                                    let entityClinicalSignificance = {};
-                                    entityClinicalSignificance.VariantId = entityVariant.Id;
-                                    entityClinicalSignificance.PathologyId = clinsig.PATHOLOGY_ID;
-                                    switch (myVariantJSON.clinvar.rcv.clinical_significance) {
-                                        case "Pathogenic":
-                                            entityClinicalSignificance.Significance = 1;
-                                            break;
-                                        case "Likely pathogenic":
-                                            entityClinicalSignificance.Significance = 2;
-                                            break;
-                                        case "Uncertain":
-                                            entityClinicalSignificance.Significance = 3;
-                                            break;
-                                        case "Likely bening":
-                                            entityClinicalSignificance.Significance = 4;
-                                            break;
-                                        case "Bening":
-                                            entityClinicalSignificance.Significance = 5;
-                                            break;
-                                        default:
-                                            entityClinicalSignificance.Significance = null;
-                                    }
-
-                                    entityClinicalSignificance.Evaluated =
-                                        myVariantJSON.clinvar.rcv.last_evaluated;
-                                    entityClinicalSignificance.ReviewStatus =
-                                        myVariantJSON.clinvar.rcv.review_status;
-                                    entityClinicalSignificance.Update = Date.now;
-
-                                    daoClinicalSignificance.create(entityClinicalSignificance);
-                                });
-
-                            } else {
-                                let entityClinicalSignificance = {};
-
-                                entityClinicalSignificance.VariantId = entityVariant.Id;
-                                switch (myVariantJSON.clinvar.rcv.clinical_significance) {
-                                    case "Pathogenic":
-                                        entityClinicalSignificance.Significance = 1;
-                                        break;
-                                    case "Likely pathogenic":
-                                        entityClinicalSignificance.Significance = 2;
-                                        break;
-                                    case "Uncertain":
-                                        entityClinicalSignificance.Significance = 3;
-                                        break;
-                                    case "Likely bening":
-                                        entityClinicalSignificance.Significance = 4;
-                                        break;
-                                    case "Bening":
-                                        entityClinicalSignificance.Significance = 5;
-                                        break;
-                                    default:
-                                        entityClinicalSignificance.Significance = null;
-                                }
-
-                                entityClinicalSignificance.Evaluated =
-                                    myVariantJSON.clinvar.rcv.last_evaluated;
-                                entityClinicalSignificance.ReviewStatus =
-                                    myVariantJSON.clinvar.rcv.review_status;
-                                entityClinicalSignificance.Update = Date.now;
-
-                                daoClinicalSignificance.create(entityClinicalSignificance);
-                            }
-                        }
-                    });
-                } else {
-                    //if rcv is a single entity
-                    var statement =
-                        "SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?";
-                    var resultset = query.execute(
-                        statement,
-                        [myVariantJSON.clinvar.rcv.conditions.identifiers.medgen],
-                        "local",
-                        "DefaultDB"
-                    );
-
-                    resultset.forEach((clinsig) => {
-                        let entityClinicalSignificance = {};
-                        entityClinicalSignificance.VariantId = entityVariant.Id;
-                        entityClinicalSignificance.PathologyId = clinsig.PATHOLOGY_ID;
-                        switch (myVariantJSON.clinvar.rcv.clinical_significance) {
-                            case "Pathogenic":
-                                entityClinicalSignificance.Significance = 1;
-                                break;
-                            case "Likely pathogenic":
-                                entityClinicalSignificance.Significance = 2;
-                                break;
-                            case "Uncertain":
-                                entityClinicalSignificance.Significance = 3;
-                                break;
-                            case "Likely bening":
-                                entityClinicalSignificance.Significance = 4;
-                                break;
-                            case "Bening":
-                                entityClinicalSignificance.Significance = 5;
-                                break;
-                            default:
-                                entityClinicalSignificance.Significance = null;
-                        }
-
-                        entityClinicalSignificance.Evaluated =
-                            myVariantJSON.clinvar.rcv.last_evaluated;
-                        entityClinicalSignificance.ReviewStatus =
-                            myVariantJSON.clinvar.rcv.review_status;
-                        entityClinicalSignificance.Update = Date.now;
-
-                        daoClinicalSignificance.create(entityClinicalSignificance);
-                    });
-                }
-            }
-
-            //ALLELE FREQUENCY
-            console.log("ALLELE FREQ");
-            let entityAlleleFrequency = {};
-            entityAlleleFrequency.VariantId = entityVariant.Id;
-
-            var statement = "SELECT PATIENT_GENDERID FROM GENETYLLIS_PATIENT WHERE PATIENT_ID = ?";
-            var resultset = query.execute(statement, [patientId], "local", "DefaultDB");
-
-            entityAlleleFrequency.Update = new Date().toISOString().slice(0, 19).replace('T', ' ');
-            //2022-07-27 07:19:42
-            // console.log("date");
-            // console.log(entityAlleleFrequency.Update);
-            // console.log(new Date().toISOString());
-            if (myVariantJSON.gnomad_genome !== undefined) {
-                if (myVariantJSON.gnomad_genome.af.af !== undefined) {
-                    entityAlleleFrequency.PopulationId = 18;
-                    entityAlleleFrequency.GenderId = 3;
-                    entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af;
-                    daoAlleleFreqeuncy.create(entityAlleleFrequency);
-                }
-
-                if (myVariantJSON.gnomad_genome.af.af_nfe_bgr !== undefined) {
-                    entityAlleleFrequency.PopulationId = 12;
-                    entityAlleleFrequency.GenderId = 3;
-                    entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_bgr;
-                    daoAlleleFreqeuncy.create(entityAlleleFrequency);
-                }
-
-                if (myVariantJSON.gnomad_genome.af.af_nfe_male !== undefined) {
-                    entityAlleleFrequency.PopulationId = 11;
-                    entityAlleleFrequency.GenderId = 1;
-                    entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_male;
-                    daoAlleleFreqeuncy.create(entityAlleleFrequency);
-                }
-
-                if (myVariantJSON.gnomad_genome.af.af_nfe_female !== undefined) {
-                    entityAlleleFrequency.PopulationId = 11;
-                    entityAlleleFrequency.GenderId = 2;
-                    entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_female;
-                    daoAlleleFreqeuncy.create(entityAlleleFrequency);
-                }
-            }
-
-        }
-        else {
-            entityVariant.GeneId = null;
-            entityVariant.Region = "";
-            entityVariant.RegionNum = "";
-            entityVariant.Consequence = "";
-            entityVariant.ConsequenceDetails = "";
-
-            daoVariant.update(entityVariant);
-        }
+        entityVariant = addVariant(variantContext);
 
         //VARIANT RECORD
-        console.log("VAR REC");
-        let entityVariantRecord = {};
-        entityVariantRecord.PatientId = patientId;
-        entityVariantRecord.VariantId = entityVariant.Id;
-        entityVariantRecord.Quality = variantContext.getPhredScaledQual();
-
-        let genotypes = variantContext.getGenotypes();
-        if (genotypes[0].getAD().length == 2) {
-            var a = genotypes[0].getAD()[0];
-            var b = genotypes[0].getAD()[1];
-
-            if (a / (a + b) >= 0.8 || b / (a + b) >= 0.8)
-                entityVariantRecord.Homozygous = true;
-            else if (b / (a + b) > 0.2 && b / (a + b) < 0.8)
-                entityVariantRecord.Homozygous = false;
-        }
-        else if (genotypes[0].getAD().length == 3) {
-            var a = genotypes[0].getAD()[0];
-            var b = genotypes[0].getAD()[1];
-            var c = genotypes[0].getAD()[2];
-
-            if ((b / (a + b + c) >= 0.6 && a / (a + b + c) < 0.2 && c / (a + b + c) < 0.2) || (c / (a + b + c) >= 0.6 && a / (a + b + c) < 0.2) && b / (a + b + c) < 0.2)
-                entityVariantRecord.Homozygous = true;
-            else if ((b / (a + b + c) > 0.2 && b / (a + b + c) < 0.6 && a / (a + b + c) > 0.2 && a / (a + b + c) < 0.6) || (c / (a + b + c) > 0.2 && c / (a + b + c) < 0.6 && a / (a + b + c) > 0.2 && a / (a + b + c) < 0.6) || (b / (a + b + c) > 0.2 && b / (a + b + c) < 0.6 && c / (a + b + c) > 0.2 && c / (a + b + c) < 0.6))
-                entityVariantRecord.Homozygous = false;
-        }
-
-        // entityVariantRecord.Homozygous = true; // TODO to be calculated -> AD - a:b, a:b:c;
-        entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
-        entityVariantRecord.Depth = genotypes[0].getDP();
-        entityVariantRecord.AnalysisId = null;
-        var variantRecordId = daoVariantRecord.create(entityVariantRecord);
+        let variantRecordId = addVariantRecord(variantContext, patientId, entityVariant.Id, null);
 
         //FILTER
-        console.log("FILTER");
-        let entityFilter = {};
-        var filters = variantContext.getFilters();
-
-        //TODO should null filters be added to DB
-        filters.forEach(filter => {
-            if (filter) {
-                entityFilter.Name = filter;
-                entityFilter.VariantRecordId = variantRecordId;
-                daoFilter.create(entityFilter);
-            }
-        });
-
+        addVariantFilter(variantContext, variantRecordId);
 
         break;
     }
+}
+
+function addVariant(variantContext) {
+    let entityVariant = {};
+    // <chr>+":"+"g."+<pos><ref allele>+">"+"alt allele" -> chr1:g.10316791A>C
+    entityVariant.HGVS = variantContext.getContig() + ":" + "g."
+        + variantContext.getStart() + variantContext.getReferenceBaseString()
+        + ">" + variantContext.getAlternateAlleles()[0].getBaseString();
+    entityVariant.Chromosome = variantContext.getContig(); // chr1
+    entityVariant.Start = variantContext.getStart(); // 10316791
+    entityVariant.End = variantContext.getEnd(); // 10316791
+    entityVariant.DBSNP = variantContext.getID(); // rs1264383
+    entityVariant.Reference = variantContext.getReferenceBaseString(); // A
+    entityVariant.Alternative = variantContext.getAlternateAlleles()[0].getBaseString() // C
+
+    // entityVariant.Id = daoVariant.create(entityVariant);
+
+    console.log(entityVariant.HGVS);
+
+    var httpResponse = httpClient.get("https://myvariant.info/v1/variant/" + entityVariant.HGVS.replace(">", "%3E"));
+
+    const myVariantJSON = JSON.parse(httpResponse.text);
+
+    if (!myVariantJSON.error) {
+        if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.consequence !== undefined)
+            entityVariant.Consequence = JSON.stringify(myVariantJSON["cadd"]["consequence"]);
+        else
+            entityVariant.Consequence = "";
+
+        if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.consdetail !== undefined)
+            entityVariant.ConsequenceDetails = JSON.stringify(myVariantJSON.cadd.consdetail);
+        else
+            entityVariant.ConsequenceDetails = "";
+
+        //GENE
+        if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.gene !== undefined) {
+            entityVariantArray = addGene(myVariantJSON, entityVariant)
+        }
+        else {
+            entityVariant.Region = "";
+            entityVariant.RegionNum = "";
+            entityVariant.GeneId = null;
+            daoVariant.update(entityVariant);
+        }
+
+        entityVariantArray.forEach(variant => {
+            //CLINICAL SIGNIFICANCE
+            addClinicalSignificance(myVariantJSON, variant);
+
+            //ALLELE FREQUENCY
+            addAlleleFrequency(myVariantJSON, variant.Id);
+        })
+    } else {
+        entityVariant.GeneId = null;
+        entityVariant.Region = "";
+        entityVariant.RegionNum = "";
+        entityVariant.Consequence = "";
+        entityVariant.ConsequenceDetails = "";
+
+        daoVariant.update(entityVariant);
+    }
+
+    return entityVariant;
+}
+
+function addGene(myVariantJSON, entityVariant) {
+    console.log("GENE");
+    entityVariantArray = [];
+    geneArray = myVariantJSON.cadd.gene;
+    console.log(JSON.stringify(geneArray));
+    console.log(geneArray.length);
+    if (geneArray.length !== undefined) {
+        for (let i = 0; i < geneArray.length; i++) {
+            if (geneArray[i].gene_id !== undefined) {
+                var entityVariantBuff = Object.assign({}, entityVariant);
+                console.log("in array");
+
+                let entityGene = {};
+                entityGene.GeneId = JSON.stringify(geneArray[i].gene_id);
+                entityGene.Name = JSON.stringify(geneArray[i].genename);
+
+                if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
+                    entityVariant.Region = "exon";
+                    entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon[i]);
+                }
+                else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
+                    entityVariant.Region = "intron";
+                    entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron[i]);
+                }
+                else {
+                    entityVariant.Region = "";
+                    entityVariant.RegionNum = "";
+                }
+
+                entityVariant.GeneId = daoGene.create(entityGene);
+                console.log(JSON.stringify(entityGene));
+
+                entityVariantBuff.Id = daoVariant.create(entityVariantBuff)
+                entityVariantArray.push(entityVariantBuff);
+            }
+        }
+    } else {
+        let entityGene = {};
+        console.log("not in array");
+        if (myVariantJSON.cadd.gene.gene_id !== undefined) {
+            entityGene.GeneId = JSON.stringify(myVariantJSON.cadd.gene.gene_id);
+            entityGene.Name = JSON.stringify(myVariantJSON.cadd.gene.genename);
+
+            if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
+                entityVariant.Region = "exon";
+                entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon);
+            }
+            else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
+                entityVariant.Region = "intron";
+                entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron);
+            }
+            else {
+                entityVariant.Region = "";
+                entityVariant.RegionNum = "";
+            }
+
+            entityVariant.GeneId = daoGene.create(entityGene);
+            entityVariant.Id = daoVariant.create(entityVariant)
+            entityVariantArray.push(entityVariant);
+        }
+    }
+
+    return entityVariantArray;
+}
+
+function addClinicalSignificance(myVariantJSON, entityVariant) {
+    if (myVariantJSON.clinvar !== undefined && myVariantJSON.clinvar.rcv !== undefined) {
+        console.log("CLINSIG");
+
+        var rcvArray = myVariantJSON.clinvar.rcv;
+
+        if (rcvArray.length !== undefined) {
+            rcvArray.forEach((rcv) => {
+                var conditionsArray = rcv.conditions;
+                if (conditionsArray.length !== undefined) {
+                    conditionsArray.forEach((conditions) => {
+                        if (conditions.identifiers !== undefined) {
+                            console.log("multiple conditions with identifiers");
+                            let resultset = databaseQuery("SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?", [conditions.identifiers.medgen])
+
+                            resultset.forEach((clinsig) => {
+                                createClinicalSignificanceEntity(entityVariant.Id, clinsig.PATHOLOGY_ID, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
+                            });
+
+                        } else {
+                            console.log("multiple conditions without identifiers");
+                            createClinicalSignificanceEntity(entityVariant.Id, null, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
+                        }
+                    });
+                } else {
+                    if (rcv.conditions.identifiers !== undefined) {
+                        let resultset = databaseQuery("SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?", [rcv.conditions.identifiers.medgen])
+
+                        resultset.forEach((clinsig) => {
+                            createClinicalSignificanceEntity(entityVariant.Id, clinsig.PATHOLOGY_ID, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
+                        });
+
+                    } else {
+                        createClinicalSignificanceEntity(entityVariant.Id, null, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
+                    }
+                }
+            });
+        } else {
+            //if rcv is a single entity
+            let resultset = databaseQuery("SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?", [myVariantJSON.clinvar.rcv.conditions.identifiers.medgen])
+
+            resultset.forEach((clinsig) => {
+                createClinicalSignificanceEntity(entityVariant.Id, clinsig.PATHOLOGY_ID, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
+            });
+        }
+    }
+}
+
+function createClinicalSignificanceEntity(variantId, pathologyId, significance, evaluated, reviewSatus) {
+    let entityClinicalSignificance = {};
+
+    entityClinicalSignificance.VariantId = variantId;
+    entityClinicalSignificance.PathologyId = pathologyId;
+    entityClinicalSignificance.Significance = getSignificance(significance);
+    entityClinicalSignificance.Evaluated = evaluated;
+    entityClinicalSignificance.ReviewStatus = reviewSatus;
+    entityClinicalSignificance.Update = Date.now;
+
+    daoClinicalSignificance.create(entityClinicalSignificance);
+}
+
+//TODO names may be differently spelled
+function getSignificance(significance) {
+    switch (significance) {
+        case "Pathogenic":
+            return 1;
+        case "Likely pathogenic":
+            return 2;
+        case "Uncertain":
+            return 3;
+        case "Likely bening":
+            return 4;
+        case "Bening":
+            return 5;
+        default:
+            return null;
+    }
+}
+
+function addAlleleFrequency(myVariantJSON, variantId) {
+    console.log("ALLELE FREQ");
+
+    let entityAlleleFrequency = {};
+    entityAlleleFrequency.VariantId = variantId;
+
+    //2022-07-27 07:19:42
+    entityAlleleFrequency.Update = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    if (myVariantJSON.gnomad_genome !== undefined) {
+        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af, 11, 1);
+        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_bgr, 11, 1);
+        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_male, 11, 1);
+        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_female, 11, 2);
+    }
+}
+
+function setFrequencyField(entityAlleleFrequency, myVariantJSONFrequency, populationId, genderId) {
+    if (myVariantJSONFrequency !== undefined) {
+        entityAlleleFrequency.PopulationId = populationId;
+        entityAlleleFrequency.GenderId = genderId;
+        entityAlleleFrequency.Frequency = myVariantJSONFrequency;
+        daoAlleleFreqeuncy.create(entityAlleleFrequency);
+    }
+}
+
+//returns variant record id
+function addVariantRecord(variantContext, patientId, variantId, analysisId) {
+    console.log("VAR REC");
+    let entityVariantRecord = {};
+    entityVariantRecord.PatientId = patientId;
+    entityVariantRecord.VariantId = variantId;
+    entityVariantRecord.Quality = variantContext.getPhredScaledQual();
+
+    let genotypes = variantContext.getGenotypes();
+    entityVariantRecord.Homozygous = isHomozygous(genotypes);
+
+    // entityVariantRecord.Homozygous = true; // TODO to be calculated -> AD - a:b, a:b:c;
+    entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
+    entityVariantRecord.Depth = genotypes[0].getDP();
+    entityVariantRecord.AnalysisId = analysisId;
+
+    return daoVariantRecord.create(entityVariantRecord);
+}
+
+function isHomozygous(genotypes) {
+    if (genotypes[0].getAD().length == 2) {
+        var a = genotypes[0].getAD()[0];
+        var b = genotypes[0].getAD()[1];
+
+        if (a / (a + b) >= 0.8 || b / (a + b) >= 0.8)
+            return true;
+        else if (b / (a + b) > 0.2 && b / (a + b) < 0.8)
+            return false;
+    }
+    else if (genotypes[0].getAD().length == 3) {
+        var a = genotypes[0].getAD()[0];
+        var b = genotypes[0].getAD()[1];
+        var c = genotypes[0].getAD()[2];
+
+        if ((b / (a + b + c) >= 0.6 && a / (a + b + c) < 0.2 && c / (a + b + c) < 0.2) || (c / (a + b + c) >= 0.6 && a / (a + b + c) < 0.2) && b / (a + b + c) < 0.2)
+            return true;
+        else if ((b / (a + b + c) > 0.2 && b / (a + b + c) < 0.6 && a / (a + b + c) > 0.2 && a / (a + b + c) < 0.6) || (c / (a + b + c) > 0.2 && c / (a + b + c) < 0.6 && a / (a + b + c) > 0.2 && a / (a + b + c) < 0.6) || (b / (a + b + c) > 0.2 && b / (a + b + c) < 0.6 && c / (a + b + c) > 0.2 && c / (a + b + c) < 0.6))
+            return false;
+    }
+}
+
+function addVariantFilter(variantContext, variantRecordId) {
+    console.log("FILTER");
+    let entityFilter = {};
+    var filters = variantContext.getFilters();
+
+    //TODO should null filters be added to DB
+    filters.forEach(filter => {
+        if (filter) {
+            entityFilter.Name = filter;
+            entityFilter.VariantRecordId = variantRecordId;
+            daoFilter.create(entityFilter);
+        } else {
+            entityFilter.Name = "Pass";
+            entityFilter.VariantRecordId = variantRecordId;
+            daoFilter.create(entityFilter);
+        }
+    });
+}
+
+function databaseQuery(statement, args) {
+    //args must be array
+    return query.execute(
+        statement,
+        args,
+        "local",
+        "DefaultDB"
+    );
 }
