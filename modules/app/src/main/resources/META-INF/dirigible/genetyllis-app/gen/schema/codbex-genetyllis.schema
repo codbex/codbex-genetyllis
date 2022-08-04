@@ -348,6 +348,12 @@
                         "name": "CLINICALSIGNIFICANCE_ID"
                     },
                     {
+                        "type": "VARCHAR",
+                        "length": 50,
+                        "nullable": true,
+                        "name": "GENETYLLIS_CLINICALSIGNIFICANCE_ACCESSION"
+                    },
+                    {
                         "type": "INTEGER",
                         "length": 0,
                         "nullable": true,

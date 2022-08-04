@@ -217,33 +217,36 @@ function addClinicalSignificance(myVariantJSON, entityVariant) {
                 if (conditionsArray.length !== undefined) {
                     conditionsArray.forEach((conditions) => {
                         if (conditions.identifiers !== undefined) {
-                            console.log("multiple conditions with identifiers");
+                            // console.log("multiple conditions with identifiers");
                             let resultset = databaseQuery("SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?", [conditions.identifiers.medgen])
 
                             resultset.forEach((clinsig) => {
-                                createClinicalSignificanceEntity(entityVariant.Id, clinsig.PATHOLOGY_ID, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
+                                createClinicalSignificanceEntity(entityVariant.Id, clinsig.PATHOLOGY_ID, clinvar.rcv.clinical_significance, rcv.last_evaluated, rcv.review_status)
                             });
 
                         } else {
-                            console.log("multiple conditions without identifiers");
-                            createClinicalSignificanceEntity(entityVariant.Id, null, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
+                            // console.log("multiple conditions without identifiers");
+                            createClinicalSignificanceEntity(entityVariant.Id, null, rcv.clinical_significance, rcv.last_evaluated, rcv.review_status)
                         }
                     });
                 } else {
                     if (rcv.conditions.identifiers !== undefined) {
+                        // console.log("single condition with identifiers");
                         let resultset = databaseQuery("SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?", [rcv.conditions.identifiers.medgen])
 
                         resultset.forEach((clinsig) => {
-                            createClinicalSignificanceEntity(entityVariant.Id, clinsig.PATHOLOGY_ID, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
+                            console.log(JSON.stringify(rcv.last_evaluated))
+                            createClinicalSignificanceEntity(entityVariant.Id, clinsig.PATHOLOGY_ID, rcv.clinical_significance, rcv.last_evaluated, rcv.review_status)
                         });
 
                     } else {
-                        createClinicalSignificanceEntity(entityVariant.Id, null, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
+                        // console.log("single condition without identifiers");
+                        createClinicalSignificanceEntity(entityVariant.Id, null, rcv.clinical_significance, rcv.last_evaluated, rcv.review_status)
                     }
                 }
             });
         } else {
-            //if rcv is a single entity
+            // console.log("rcv is a single entity");
             let resultset = databaseQuery("SELECT PATHOLOGY_ID FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI = ?", [myVariantJSON.clinvar.rcv.conditions.identifiers.medgen])
 
             resultset.forEach((clinsig) => {
@@ -258,10 +261,10 @@ function createClinicalSignificanceEntity(variantId, pathologyId, significance, 
 
     entityClinicalSignificance.VariantId = variantId;
     entityClinicalSignificance.PathologyId = pathologyId;
-    entityClinicalSignificance.Significance = getSignificance(significance);
+    entityClinicalSignificance.SignificanceId = getSignificance(significance);
     entityClinicalSignificance.Evaluated = evaluated;
     entityClinicalSignificance.ReviewStatus = reviewSatus;
-    entityClinicalSignificance.Update = Date.now;
+    entityClinicalSignificance.Updated = new Date().toISOString().slice(0, 19);;
 
     daoClinicalSignificance.create(entityClinicalSignificance);
 }
@@ -273,11 +276,11 @@ function getSignificance(significance) {
             return 1;
         case "Likely pathogenic":
             return 2;
-        case "Uncertain":
+        case "Uncertain significance":
             return 3;
         case "Likely bening":
             return 4;
-        case "Bening":
+        case "Benign":
             return 5;
         default:
             return null;
@@ -291,11 +294,12 @@ function addAlleleFrequency(myVariantJSON, variantId) {
     entityAlleleFrequency.VariantId = variantId;
 
     //2022-07-27 07:19:42
-    entityAlleleFrequency.Update = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    entityAlleleFrequency.Updated = new Date().toISOString().slice(0, 19);
+    console.log(entityAlleleFrequency.Updated)
 
     if (myVariantJSON.gnomad_genome !== undefined) {
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af, 11, 1);
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_bgr, 11, 1);
+        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af, 18, 1);
+        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_bgr, 12, 1);
         setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_male, 11, 1);
         setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_female, 11, 2);
     }
@@ -321,7 +325,7 @@ function addVariantRecord(variantContext, patientId, variantId, analysisId) {
     let genotypes = variantContext.getGenotypes();
     entityVariantRecord.Homozygous = isHomozygous(genotypes);
 
-    // entityVariantRecord.Homozygous = true; // TODO to be calculated -> AD - a:b, a:b:c;
+    console.log(genotypes[0].getAD())
     entityVariantRecord.AlleleDepth = genotypes[0].getAD[1]; // TODO to be created new variant if more than 2 AD elements are presents
     entityVariantRecord.Depth = genotypes[0].getDP();
     entityVariantRecord.AnalysisId = analysisId;
@@ -356,7 +360,6 @@ function addVariantFilter(variantContext, variantRecordId) {
     let entityFilter = {};
     var filters = variantContext.getFilters();
 
-    //TODO should null filters be added to DB
     filters.forEach(filter => {
         if (filter) {
             entityFilter.Name = filter;

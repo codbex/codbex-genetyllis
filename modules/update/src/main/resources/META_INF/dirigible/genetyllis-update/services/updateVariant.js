@@ -24,10 +24,21 @@ var daoNotification = require("genetyllis-app/gen/dao/users/Notification.js");
 exports.updateTrigger = function (variantId) {
     console.log("update ", variantId)
     updateVariant(variantId);
+    // var hgvs = databaseQuery("SELECT VARIANT_HGVS FROM GENETYLLIS_VARIANT WHERE VARIANT_ID = ?", [variantId])
+    // console.log(JSON.stringify(hgvs[0]))
+    // getIdFromHGVS(hgvs[0]);
     markChangeForAllUsers(variantId);
 }
 
+// function getIdFromHGVS(hgvs) {
+//     var variantIdArray = databaseQuery("SELECT VARIANT_ID FROM GENETYLLIS_VARIANT WHERE VARIANT_HGVS = ?", [hgvs])
+//     variantIdArray.forEach(variantHGVS => {
+//         console.log(JSON.stringify(variantHGVS));
+//     })
+// }
+
 function updateVariant(variantId) {
+
     console.log(variantId);
     if (!variantId) {
         console.log("VariantId has to be set as a parameter in the URL");
@@ -92,6 +103,7 @@ function updateVariant(variantId) {
             daoVariant.update(entityVariant);
         }
 
+
         //GENE
         checkGene(myVariantJSON, entityVariant);
 
@@ -103,11 +115,13 @@ function updateVariant(variantId) {
     }
 }
 
+//TODO make array of genes
 function checkGene(myVariantJSON, entityVariant) {
+
     console.log("GENE");
     if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.gene !== undefined) {
         var resultsetGeneId = databaseQuery("SELECT VARIANT_GENEID FROM GENETYLLIS_VARIANT WHERE VARIANT_ID = ?", [entityVariant.Id])
-
+        console.log(JSON.stringify(resultsetGeneId));
         if (resultsetGeneId[0].VARIANT_GENEID !== undefined) {
             updateGene(myVariantJSON, resultsetGeneId, entityVariant)
         } else {
@@ -118,7 +132,6 @@ function checkGene(myVariantJSON, entityVariant) {
 
 function createGene(myVariantJSON, entityVariant) {
     console.log("GENE create");
-
     geneArray = myVariantJSON.cadd.gene;
 
     if (geneArray.length !== undefined) {
@@ -149,6 +162,7 @@ function createGene(myVariantJSON, entityVariant) {
 }
 
 function updateGene(myVariantJSON, resultsetGeneId, entityVariant) {
+    var geneArray = [];
     var resultset = databaseQuery("SELECT * FROM GENETYLLIS_GENE WHERE GENE_ID = ?", [resultsetGeneId[0].VARIANT_GENEID])
 
     let dbEntityGene = { Id: resultset[0].GENE_ID, GeneId: resultset[0].GENE_GENEID, Name: resultset[0].GENE_NAME };
@@ -167,7 +181,7 @@ function updateGene(myVariantJSON, resultsetGeneId, entityVariant) {
 
         });
     } else {
-        if (gene.gene_id !== undefined && gene.genename !== undefined) {
+        if (myVariantJSON.cadd.gene.gene_id !== undefined && myVariantJSON.cadd.gene.genename !== undefined) {
             entityGene.GeneId = myVariantJSON.cadd.gene.gene_id;
             entityGene.Name = JSON.stringify(myVariantJSON.cadd.gene.genename).substring(0, 19);
 
@@ -276,7 +290,6 @@ function checkClinicalSignificance(myVariantJSON, entityVariant) {
                     createClinicalSignificanceEntity(entityVariant.Id, clinsig.PATHOLOGY_ID, myVariantJSON.clinvar.rcv.clinical_significance, myVariantJSON.clinvar.rcv.last_evaluated, myVariantJSON.clinvar.rcv.review_status)
                     markChangeForAllUsers(variantId);
                 });
-
             }
         }
     }
@@ -287,10 +300,10 @@ function createClinicalSignificanceEntity(variantId, pathologyId, significance, 
 
     entityClinicalSignificance.VariantId = variantId;
     entityClinicalSignificance.PathologyId = pathologyId;
-    entityClinicalSignificance.Significance = getSignificance(significance);
+    entityClinicalSignificance.SignificanceId = getSignificance(significance);
     entityClinicalSignificance.Evaluated = evaluated;
     entityClinicalSignificance.ReviewStatus = reviewSatus;
-    entityClinicalSignificance.Update = Date.now;
+    entityClinicalSignificance.Updated = new Date().toISOString().slice(0, 19);
 
     daoClinicalSignificance.create(entityClinicalSignificance);
 }
@@ -329,7 +342,7 @@ function getSignificance(significance) {
 function checkAlleleFrequency(myVariantJSON, entityVariant, patientId) {
     //ALLELE FREQUENCY
     console.log("ALLELE FREQ");
-    //TODO see why date is not added
+    //TODO dates will never be the same, find a workaround
     let entityAlleleFrequency = {};
 
     var resultset = databaseQuery("SELECT * FROM GENETYLLIS_ALLELEFREQUENCY WHERE ALLELEFREQUENCY_VARIANTID = ?", [entityVariant.Id]);
@@ -338,7 +351,7 @@ function checkAlleleFrequency(myVariantJSON, entityVariant, patientId) {
         resultset.forEach(result => {
             let dbEntityAlleleFreqeuncy = {
                 Id: result.ALLELEFREQUENCY_ID, VariantId: result.ALLELEFREQUENCY_VARIANTID, GenderId: result.ALLELEFREQUENCY_GENDERID, PopulationId: result.ALLELEFREQUENCY_POPULATIONID,
-                Freqeuncy: result.ALLELEFREQUENCY_FREQUENCY, Updated: result.ALLELEFREQUENCY_UPDATED
+                Freqeuncy: result.ALLELEFREQUENCY_FREQUENCY
             };
 
             console.log(JSON.stringify(dbEntityAlleleFreqeuncy))
@@ -349,9 +362,7 @@ function checkAlleleFrequency(myVariantJSON, entityVariant, patientId) {
             var resultsetGene = databaseQuery("SELECT PATIENT_GENDERID FROM GENETYLLIS_PATIENT WHERE PATIENT_ID = ?", [patientId]);
 
             entityAlleleFrequency.GenderId = resultsetGene.PATIENT_GENDERID;
-
-            //TODO add later when date is added to database
-            // entityAlleleFrequency.Update = Date.now;
+            entityAlleleFrequency.Updated = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
             if (myVariantJSON.gnomad_genome !== undefined) {
                 if (myVariantJSON.gnomad_genome.af.af !== undefined) {
@@ -378,6 +389,7 @@ function checkAlleleFrequency(myVariantJSON, entityVariant, patientId) {
                 if (myVariantJSON.gnomad_genome.af.af_nfe_female !== undefined) {
                     entityAlleleFrequency.PopulationId = 11;
                     entityAlleleFrequency.Frequency = myVariantJSON.gnomad_genome.af.af_nfe_female;
+                    //updateAlleleFrequency should return object that we pass to updateEntity
                     updateAlleleFrequency(myVariantJSON, entityAlleleFrequency, entityVariant.Id)
                     updateEntity(daoAlleleFreqeuncy, dbEntityAlleleFreqeuncy, entityAlleleFrequency, entityVariant);
                 }
@@ -389,37 +401,31 @@ function checkAlleleFrequency(myVariantJSON, entityVariant, patientId) {
         let entityAlleleFrequency = {};
         entityAlleleFrequency.VariantId = entityVariant.Id;
         createAlleleFrequency(myVariantJSON, entityAlleleFrequency, entityVariant.Id)
-        addAlleleFrequency(myVariantJSON, entityAlleleFrequency, entityVariant.Id)
     }
 }
 
 
 function createAlleleFrequency(myVariantJSON, entityAlleleFrequency, variantId) {
-    console.log("ALLELE FREQ");
     entityAlleleFrequency.VariantId = variantId;
-
-    //2022-07-27 07:19:42
-    // entityAlleleFrequency.Update = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    entityAlleleFrequency.Updated = new Date().toISOString().slice(0, 19);
 
     if (myVariantJSON.gnomad_genome !== undefined) {
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af, 11, 1);
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_bgr, 11, 1);
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_male, 11, 1);
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_female, 11, 2);
+        daoAlleleFreqeuncy.create(setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af, 18, 1));
+        daoAlleleFreqeuncy.create(setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_bgr, 12, 1));
+        daoAlleleFreqeuncy.create(setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_male, 11, 1));
+        daoAlleleFreqeuncy.create(setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_female, 11, 2));
     }
 }
 
 function updateAlleleFrequency(myVariantJSON, entityAlleleFrequency, variantId) {
     entityAlleleFrequency.VariantId = variantId;
-
-    //2022-07-27 07:19:42
-    // entityAlleleFrequency.Update = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    entityAlleleFrequency.Updated = new Date().toISOString().slice(0, 19);
 
     if (myVariantJSON.gnomad_genome !== undefined) {
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af, 11, 1);
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_bgr, 11, 1);
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_male, 11, 1);
-        setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_female, 11, 2);
+        daoAlleleFreqeuncy.update(setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af, 11, 1));
+        daoAlleleFreqeuncy.update(setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_bgr, 11, 1));
+        daoAlleleFreqeuncy.update(setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_male, 11, 1));
+        daoAlleleFreqeuncy.update(setFrequencyField(entityAlleleFrequency, myVariantJSON.gnomad_genome.af.af_nfe_female, 11, 2));
     }
 }
 
@@ -428,7 +434,8 @@ function setFrequencyField(entityAlleleFrequency, myVariantJSONFrequency, popula
         entityAlleleFrequency.PopulationId = populationId;
         entityAlleleFrequency.GenderId = genderId;
         entityAlleleFrequency.Frequency = myVariantJSONFrequency;
-        daoAlleleFreqeuncy.create(entityAlleleFrequency);
+
+        return entityAlleleFrequency;
     }
 }
 
@@ -466,7 +473,6 @@ function markChangeForAllUsers(variantId) {
         console.log(JSON.stringify(entityNotification));
         daoNotification.update(entityNotification);
     });
-
 }
 
 function databaseQuery(statement, args) {
@@ -478,3 +484,10 @@ function databaseQuery(statement, args) {
         "DefaultDB"
     );
 }
+
+const objectsEqual = (o1, o2) =>
+    Object.keys(o1).length === Object.keys(o2).length
+    && Object.keys(o1).every(p => o1[p] === o2[p]);
+
+const arraysEqual = (a1, a2) =>
+    a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
