@@ -52,7 +52,7 @@
 
     <!-- GoldenLayout with Theme Support -->
     <script type="text/javascript" src="/services/v4/web/resources/goldenlayout/1.5.9/goldenlayout.min.js"></script>
-    <!-- 
+    <!--
 		<script type="text/javascript" src="../ide/ui/message-hub.js"></script>
 		<script type="text/javascript" src="../ide/ui/ui-layout.js"></script>
 		<script type="text/javascript" src="../ide/ui/ui-core-ng-modules.js"></script> -->
@@ -152,6 +152,25 @@
                     </textarea>
                     <br>
                     <input type="submit" value="Add entry" ng-click="addEntryClinicalHistory()" class="typeBtn">
+
+                    <table fd-table display-mode="compact">
+                        <thead fd-table-header sticky="true">
+                            <tr fd-table-row>
+                                <th fd-table-header-cell>Concept ID</th>
+                                <th fd-table-header-cell>Age of Onset</th>
+                                <th fd-table-header-cell>Addition Info</th>
+                                <th fd-table-header-cell>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody fd-table-body>
+                            <tr fd-table-row ng-repeat="next in clinicalHistoryDataArray" hoverable="true">
+                                <td fd-table-cell>{{next.PathologyId}}</td>
+                                <td fd-table-cell>{{next.AgeOnset}}</td>
+                                <td fd-table-cell>{{next.Notes}}</td>
+                                <td><button id="remove" ng-click="deleteClinicalHistory(next)">DELETE</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!-- Family History -->
@@ -163,11 +182,12 @@
                     <div class="form-col">
                         <div class="form-group">
                             <input type="text" placeholder="LabId" class="form-control"
-                                ng-model="familyHistoryData.LabId" ng-blur="getPatientsId()" />
+                               ng-model="familyClinicalHistoryDataArray.LabId" ng-blur="getPatientsId()" />
                         </div>
                         <div class="form-group">
                             <input list="relationList" ng-change="getRelationId()" ng-click="resetGetRelationId($event)"
-                                ng-model='relationId' class="form-control" placeholder="Relation" />
+                               ng-model='familyClinicalHistoryDataArray.RelationId' class="form-control"
+                               placeholder="Relation" />
                             <datalist id="relationList">
                                 <option ng-repeat="x in relationData">{{x.RelationType}}</option>
                             </datalist>
@@ -192,44 +212,64 @@
                         <div class="form-group">
                             <div class="ageOfOnset">
                                 <input type="number" value="5" class="form-control"
-                                    ng-model="familyHistoryData.AgeOnset">
+                                    ng-model="familyClinicalHistoryData.AgeOnset">
                                 <p>Age of onset</p>
                             </div>
                         </div>
                     </div>
                     <textarea rows=" 4" cols="50" placeholder="Additional info ..." class="form-control"
-                        ng-model="familyHistoryData.Notes">
+                        ng-model="familyClinicalHistoryData.Notes">
                     </textarea>
                     <br>
                     <input type="submit" value="Add entry" ng-click="addEntryFamilyHistory()" class="typeBtn">
 
                     <div class="familyHistoryList">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Concept ID</th>
-                                    <th>Disease</th>
-                                    <th>Age of onset</th>
-                                    <th>Info</th>
+                        <table fd-table display-mode="compact">
+                            <thead fd-table-header sticky="true">
+                                <tr fd-table-row>
+                                    <th fd-table-header-cell>Concept ID</th>
+                                    <th fd-table-header-cell>Age of Onset</th>
+                                    <th fd-table-header-cell>Addition Info</th>
+                                    <th fd-table-header-cell>Action</th>
                                 </tr>
-
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>item.Id</td>
-                                    <td>item.BirthDate</td>
-                                    <td>item.GenderId</td>
-                                    <td>item.GenderId</td>
+                            <tbody fd-table-body>
+                                <tr fd-table-row
+                                    ng-repeat="next in familyClinicalHistoryDataArray.ClinicalHistoryDataArray"
+                                    hoverable="true">
+                                    <td fd-table-cell>{{next.PathologyId}}</td>
+                                    <td fd-table-cell>{{next.AgeOnset}}</td>
+                                    <td fd-table-cell>{{next.Notes}}</td>
+                                    <td><button id="remove" ng-click="deleteFamilyHistory(next)">DELETE</button></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <input type="submit" value="Add family member" ng-click="addFamilyMember()" class="typeBtn">
+
+                        <input type="submit" value="Add family member" ng-click="addEntryFamilyMember()"
+                               class="typeBtn">
+
+                        <table fd-table display-mode="compact">
+                            <thead fd-table-header sticky="true">
+                                <tr fd-table-row>
+                                    <th fd-table-header-cell>Lab ID</th>
+                                    <th fd-table-header-cell>Relation</th>
+                                    <th fd-table-header-cell>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody fd-table-body>
+                                <tr fd-table-row ng-repeat="next in familyMembersArray" hoverable="true">
+                                    <td fd-table-cell>{{next.LabId}}</td>
+                                    <td fd-table-cell>{{next.RelationId}}</td>
+                                    <td><button id="remove" ng-click="deleteFamilyMember(next)">DELETE</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <form action="../index.html" class="saveBtnWrapper">
-                <input type="submit" ng-click="create()" value="Save" class="typeBtn saveBtn" />
-            </form>
+            <!-- <form action="../index.html" class="saveBtnWrapper"> -->
+            <input type="submit" ng-click="create()" value="Save" class="typeBtn saveBtn" />
+            <!-- </form> -->
         </div>
 
         <!-- Family history -->
