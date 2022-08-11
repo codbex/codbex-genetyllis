@@ -130,14 +130,15 @@
                             <!-------------------------------------------------------------------------------------->
 
                             <div>
-                                <input list="dataList" ng-change="getPathologyId()" ng-model='pathologyId'
-                                    class="form-control" placeholder="Concept ID" />
+                                <input list="dataList" ng-change="setPatientPathology(clinicalHistoryData.PathologyId)"
+                                       ng-model='clinicalHistoryData.PathologyId' class="form-control"
+                                       placeholder="Concept ID" />
                                 <datalist id="dataList">
                                     <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
                                 </datalist>
                             </div>
                             <div>
-                                <input value="{{pathologyName[0].PATHOLOGY_NAME}}" placeholder="Disease"
+                                <input ng-model='clinicalHistoryData.PathologyName' placeholder="Disease"
                                     class="form-control" />
                             </div>
                             <div class="ageOfOnset">
@@ -157,17 +158,21 @@
                         <thead fd-table-header sticky="true">
                             <tr fd-table-row>
                                 <th fd-table-header-cell>Concept ID</th>
+                                <th fd-table-header-cell>Disease</th>
                                 <th fd-table-header-cell>Age of Onset</th>
                                 <th fd-table-header-cell>Addition Info</th>
-                                <th fd-table-header-cell>Action</th>
+                                <th fd-table-header-cell></th>
+                                <th fd-table-header-cell></th>
                             </tr>
                         </thead>
                         <tbody fd-table-body>
                             <tr fd-table-row ng-repeat="next in clinicalHistoryDataArray" hoverable="true">
                                 <td fd-table-cell>{{next.PathologyId}}</td>
+                                <td fd-table-cell>{{next.PathologyName}}</td>
                                 <td fd-table-cell>{{next.AgeOnset}}</td>
                                 <td fd-table-cell>{{next.Notes}}</td>
                                 <td><button id="remove" ng-click="deleteClinicalHistory(next)">DELETE</button></td>
+                                <td><button id="edit">EDIT</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -182,11 +187,12 @@
                     <div class="form-col">
                         <div class="form-group">
                             <input type="text" placeholder="LabId" class="form-control"
-                               ng-model="familyClinicalHistoryDataArray.LabId" ng-blur="getPatientsId()" />
+                                ng-model="familyClinicalHistoryDataArray.LabId" ng-blur="getPatientsId()" />
                         </div>
                         <div class="form-group">
-                            <input list="relationList" ng-change="getRelationId()" ng-click="resetGetRelationId($event)"
-                               ng-model='familyClinicalHistoryDataArray.RelationId' class="form-control"
+                            <input list="relationList"
+                               ng-change="setFamilyRelation(familyClinicalHistoryDataArray.RelationName)"
+                               ng-model='familyClinicalHistoryDataArray.RelationName' class="form-control"
                                placeholder="Relation" />
                             <datalist id="relationList">
                                 <option ng-repeat="x in relationData">{{x.RelationType}}</option>
@@ -196,8 +202,10 @@
                     <!-- ---------------------------------------------------------------------------------- -->
                     <div class="form-col">
                         <div class="form-group">
-                            <input list="FamilydataList" ng-change="getFamilyPathologyId()" ng-model='familyPathologyId'
-                                class="form-control" placeholder="Concept ID" />
+                            <input list="FamilydataList"
+                                   ng-change="setFamilyPathology(familyClinicalHistoryData.PathologyId)"
+                                   ng-model='familyClinicalHistoryData.PathologyId' class="form-control"
+                                   placeholder="Concept ID" />
                             <!-- <input list="FamilydataList" class="form-control" placeholder="Concept ID" /> -->
                             <datalist id="FamilydataList">
                                 <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
@@ -206,7 +214,7 @@
                         <div class="form-group">
                             <div class="">
                                 <input placeholder="Disease" class="form-control"
-                                    value="{{familyPathologyName[0].PATHOLOGY_NAME}}" />
+                                    ng-model='familyClinicalHistoryData.PathologyName' />
                             </div>
                         </div>
                         <div class="form-group">
@@ -228,9 +236,11 @@
                             <thead fd-table-header sticky="true">
                                 <tr fd-table-row>
                                     <th fd-table-header-cell>Concept ID</th>
+                                    <th fd-table-header-cell>Disease</th>
                                     <th fd-table-header-cell>Age of Onset</th>
                                     <th fd-table-header-cell>Addition Info</th>
-                                    <th fd-table-header-cell>Action</th>
+                                    <th fd-table-header-cell></th>
+                                    <th fd-table-header-cell></th>
                                 </tr>
                             </thead>
                             <tbody fd-table-body>
@@ -238,9 +248,11 @@
                                     ng-repeat="next in familyClinicalHistoryDataArray.ClinicalHistoryDataArray"
                                     hoverable="true">
                                     <td fd-table-cell>{{next.PathologyId}}</td>
+                                    <td fd-table-cell>{{next.PathologyName}}</td>
                                     <td fd-table-cell>{{next.AgeOnset}}</td>
                                     <td fd-table-cell>{{next.Notes}}</td>
                                     <td><button id="remove" ng-click="deleteFamilyHistory(next)">DELETE</button></td>
+                                    <td><button id="edit">EDIT</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -253,14 +265,34 @@
                                 <tr fd-table-row>
                                     <th fd-table-header-cell>Lab ID</th>
                                     <th fd-table-header-cell>Relation</th>
-                                    <th fd-table-header-cell>Action</th>
+                                    <th fd-table-header-cell>Clinical History</th>
+                                    <th fd-table-header-cell></th>
+                                    <th fd-table-header-cell></th>
                                 </tr>
                             </thead>
                             <tbody fd-table-body>
                                 <tr fd-table-row ng-repeat="next in familyMembersArray" hoverable="true">
                                     <td fd-table-cell>{{next.LabId}}</td>
-                                    <td fd-table-cell>{{next.RelationId}}</td>
+                                    <td fd-table-cell>{{next.RelationName}}</td>
+                                    <td fd-table-cell>
+                                        <table fd-table display-mode="compact">
+                                            <thead fd-table-header sticky="true">
+                                                <tr fd-table-row>
+                                                    <th fd-table-header-cell>Disease</th>
+                                                    <th fd-table-header-cell>Age of Onset</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody fd-table-body>
+                                                <tr fd-table-row ng-repeat="hsitory in next.ClinicalHistoryDataArray"
+                                                    hoverable="true">
+                                                    <td fd-table-cell>{{hsitory.PathologyName}}</td>
+                                                    <td fd-table-cell>{{hsitory.AgeOnset}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
                                     <td><button id="remove" ng-click="deleteFamilyMember(next)">DELETE</button></td>
+                                    <td><button id="edit">EDIT</button></td>
                                 </tr>
                             </tbody>
                         </table>
