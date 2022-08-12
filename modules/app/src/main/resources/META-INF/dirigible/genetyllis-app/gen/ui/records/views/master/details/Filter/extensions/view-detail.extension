@@ -1,5 +1,0 @@
-{
-	"description": "Filter view",
-	"extensionPoint": "launchpad-genetyllis-records-VariantRecord-view",
-	"module": "genetyllis-app/gen/ui/records/views/master/details/Filter/extensions/view.js"
-}

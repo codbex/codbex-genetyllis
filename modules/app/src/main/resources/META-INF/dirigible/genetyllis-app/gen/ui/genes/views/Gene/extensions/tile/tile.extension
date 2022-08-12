@@ -1,5 +1,0 @@
-{
-	"description": "genes tiles",
-	"extensionPoint": "launchpad-genetyllis-tiles",
-	"module": "genetyllis-app/gen/ui/genes/views/Gene/extensions/tile/tile.js"
-}

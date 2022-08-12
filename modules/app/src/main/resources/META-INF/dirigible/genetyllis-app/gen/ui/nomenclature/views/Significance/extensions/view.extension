@@ -1,5 +1,0 @@
-{
-	"description": "Significance view",
-	"extensionPoint": "launchpad-genetyllis-nomenclature-view",
-	"module": "genetyllis-app/gen/ui/nomenclature/views/Significance/extensions/view.js"
-}

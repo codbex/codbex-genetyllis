@@ -1,5 +1,0 @@
-{
-	"description": "variants tiles",
-	"extensionPoint": "launchpad-genetyllis-tiles",
-	"module": "genetyllis-app/gen/ui/variants/views/Variant/extensions/tile/tile.js"
-}

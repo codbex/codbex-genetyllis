@@ -1,5 +1,0 @@
-{
-	"description": "Analysis view",
-	"extensionPoint": "launchpad-genetyllis-analysis-view",
-	"module": "genetyllis-app/gen/ui/analysis/views/Analysis/extensions/view.js"
-}
