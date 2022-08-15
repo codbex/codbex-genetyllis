@@ -1,0 +1,5 @@
+{
+	"description": "Population view",
+	"extensionPoint": "launchpad-genetyllis-nomenclature-view",
+	"module": "genetyllis-app/gen/ui/nomenclature/views/Population/extensions/view.js"
+}

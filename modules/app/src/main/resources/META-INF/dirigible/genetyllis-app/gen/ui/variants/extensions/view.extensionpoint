@@ -1,0 +1,4 @@
+{
+	"description": "Extension Point for the variants View Providers",
+	"name": "launchpad-genetyllis-variants-view"
+}

@@ -1,0 +1,5 @@
+{
+	"description": "ClinicalHistory view",
+	"extensionPoint": "launchpad-genetyllis-patients-Patient-view",
+	"module": "genetyllis-app/gen/ui/patients/views/master/details/ClinicalHistory/extensions/view.js"
+}

@@ -1,0 +1,5 @@
+{
+	"description": "Institution view",
+	"extensionPoint": "launchpad-genetyllis-analysis-view",
+	"module": "genetyllis-app/gen/ui/analysis/views/Institution/extensions/view.js"
+}

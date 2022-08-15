@@ -1,0 +1,5 @@
+{
+	"description": "Platform view",
+	"extensionPoint": "launchpad-genetyllis-analysis-view",
+	"module": "genetyllis-app/gen/ui/analysis/views/Platform/extensions/view.js"
+}

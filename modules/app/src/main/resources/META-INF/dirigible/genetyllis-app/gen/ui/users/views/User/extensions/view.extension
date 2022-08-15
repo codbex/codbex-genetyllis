@@ -1,0 +1,5 @@
+{
+	"description": "User view",
+	"extensionPoint": "launchpad-genetyllis-users-view",
+	"module": "genetyllis-app/gen/ui/users/views/User/extensions/view.js"
+}
