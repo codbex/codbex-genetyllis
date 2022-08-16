@@ -181,7 +181,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
         $http.get(patientsOptionsApi)
             .then(function (data) {
                 $scope.patientsOptions = data.data;
-                console.log($scope.patientsOptions)
+                console.log($scope.patientsOptions, "hello")
 
             });
     }

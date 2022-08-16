@@ -132,6 +132,7 @@
                             <div>
                                 <input list="dataList" ng-change="getPathologyId()" ng-model='pathologyId'
                                     class="form-control" placeholder="Concept ID" />
+
                                 <datalist id="dataList">
                                     <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
                                 </datalist>
@@ -182,12 +183,12 @@
                     <div class="form-col">
                         <div class="form-group">
                             <input type="text" placeholder="LabId" class="form-control"
-                               ng-model="familyClinicalHistoryDataArray.LabId" ng-blur="getPatientsId()" />
+                                ng-model="familyClinicalHistoryDataArray.LabId" ng-blur="getPatientsId()" />
                         </div>
                         <div class="form-group">
                             <input list="relationList" ng-change="getRelationId()" ng-click="resetGetRelationId($event)"
-                               ng-model='familyClinicalHistoryDataArray.RelationId' class="form-control"
-                               placeholder="Relation" />
+                                ng-model='familyClinicalHistoryDataArray.RelationId' class="form-control"
+                                placeholder="Relation" />
                             <datalist id="relationList">
                                 <option ng-repeat="x in relationData">{{x.RelationType}}</option>
                             </datalist>
@@ -246,7 +247,7 @@
                         </table>
 
                         <input type="submit" value="Add family member" ng-click="addEntryFamilyMember()"
-                               class="typeBtn">
+                            class="typeBtn">
 
                         <table fd-table display-mode="compact">
                             <thead fd-table-header sticky="true">
@@ -267,9 +268,9 @@
                     </div>
                 </div>
             </div>
-            <!-- <form action="../index.html" class="saveBtnWrapper"> -->
-            <input type="submit" ng-click="create()" value="Save" class="typeBtn saveBtn" />
-            <!-- </form> -->
+            <form action="../index.html" class="formControl">
+                <input type="submit" ng-click="create()" value="Save" class="typeBtn saveBtn" />
+            </form>
         </div>
 
         <!-- Family history -->
