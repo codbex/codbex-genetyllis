@@ -51,7 +51,7 @@ var dao = daoApi.create({
 });
 
 exports.list = function(settings) {
-	return dao.list(settings).map(function(e) {
+	return dao.list(settings).map(function (e) {
 		EntityUtils.setLocalDate(e, "BirthDate");
 		return e;
 	});
@@ -59,11 +59,12 @@ exports.list = function(settings) {
 
 exports.get = function(id) {
 	var entity = dao.find(id);
-	EntityUtils.setLocalDate(entity, "BirthDate");
+	// TODO this produces 500
+	// EntityUtils.setLocalDate(entity, "BirthDate");
 	return entity;
 };
 
-exports.create = function(entity) {
+exports.create = function (entity) {
 	EntityUtils.setLocalDate(entity, "BirthDate");
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
@@ -77,7 +78,7 @@ exports.create = function(entity) {
 	return id;
 };
 
-exports.update = function(entity) {
+exports.update = function (entity) {
 	EntityUtils.setLocalDate(entity, "BirthDate");
 	dao.update(entity);
 	triggerEvent("Update", {
@@ -90,7 +91,7 @@ exports.update = function(entity) {
 	});
 };
 
-exports.delete = function(id) {
+exports.delete = function (id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
 		table: "GENETYLLIS_PATIENT",
@@ -102,11 +103,11 @@ exports.delete = function(id) {
 	});
 };
 
-exports.count = function() {
+exports.count = function () {
 	return dao.count();
 };
 
-exports.customDataCount = function() {
+exports.customDataCount = function () {
 	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATIENT");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
@@ -117,6 +118,22 @@ exports.customDataCount = function() {
 	}
 	return 0;
 };
+
+exports.getPatientByLabId = function (labId) {
+	paramArr = [];
+	paramArr.push(labId)
+	var resultSet = query.execute("SELECT * FROM GENETYLLIS_PATIENT WHERE GENETYLLIS_PATIENT_LABID = ? LIMIT 1", paramArr);
+	return resultSet;
+}
+
+exports.getPatientAndHistoryByLabId = function (labId) {
+	paramArr = [];
+	paramArr.push(labId)
+	var resultSet = query.execute("SELECT * FROM GENETYLLIS_PATIENT GP " +
+		"JOIN GENETYLLIS_CLINICALHISTORY GC ON GP.PATIENT_ID = GC.CLINICALHISTORY_PATIENTID " +
+		"JOIN GENETYLLIS_FAMILYHISTORY GF ON GP.PATIENT_ID = GF.FAMILYHISTORY_FAMILYMEMBERID  WHERE GENETYLLIS_PATIENT_LABID = ?", paramArr);
+	return resultSet;
+}
 
 function triggerEvent(operation, data) {
 	producer.queue("genetyllis-app/patients/Patient/" + operation).send(JSON.stringify(data));

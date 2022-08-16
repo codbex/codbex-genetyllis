@@ -72,7 +72,8 @@
                             <div class="labId">
                                 <!-- <i class="bi bi-person"></i> -->
                                 <input type="text" class="form-control" placeholder="Enter LabId"
-                                    ng-model="entity.LabId" required>
+                                       ng-model="entity.LabId" required ng-blur="existsLabId()"
+                                       style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -187,9 +188,9 @@
                     <div class="form-col">
                         <div class="form-group">
                             <input type="text" placeholder="LabId" class="form-control"
-                                ng-model="familyClinicalHistoryDataArray.LabId" ng-blur="getPatientsId()" />
+                                ng-model="familyClinicalHistoryDataArray.LabId" ng-blur="loadFamilyMemberByLabId()" />
                         </div>
-                        <div class="form-group">
+                        <div class=" form-group">
                             <input list="relationList"
                                ng-change="setFamilyRelation(familyClinicalHistoryDataArray.RelationName)"
                                ng-model='familyClinicalHistoryDataArray.RelationName' class="form-control"
