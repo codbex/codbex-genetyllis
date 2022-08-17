@@ -221,25 +221,34 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     $scope.loadFamilyMemberByLabId = function () {
         $http.get(patientsOptionsApi + "/loadPatientHistory/" + $scope.familyClinicalHistoryDataArray.LabId.toString())
             .then(data => {
-                var familyMemberPatient = {
-                    ClinicalHistoryDataArray: []
-                };
-                data.data.forEach(element => {
-                    familyMemberPatient.Id = element.FAMILYHISTORY_ID;
-                    familyMemberPatient.LabId = element.GENETYLLIS_PATIENT_LABID;
-                    familyMemberPatient.RelationId = element.Id;
-                    familyMemberPatient.RelationName = $scope.relationData.find(el => el.Id == element.FAMILYHISTORY_RELATIONID).RelationType;
-                    familyMemberPatient.PatientId = element.FAMILYHISTORY_PATIENTID;
-                    familyMemberPatient.FamilyMemberId = element.FAMILYHISTORY_FAMILYMEMBERID;
-                    var clinicalHistory = {};
-                    clinicalHistory.PathologyId = element.CLINICALHISTORY_PATHOLOGYID;
-                    clinicalHistory.PathologyName = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == element.CLINICALHISTORY_PATHOLOGYID).PATHOLOGY_NAME;
-                    clinicalHistory.Notes = element.GENETYLLIS_CLINICALHISTORY_NOTES;
-                    clinicalHistory.AgeOnset = element.GENETYLLIS_CLINICALHISTORY_AGEONSET;
-                    familyMemberPatient.ClinicalHistoryDataArray.push(angular.copy(clinicalHistory));
-                });
-                $scope.familyMembersArray.push(angular.copy(familyMemberPatient));
+                if (isFamilyMemberValid(data.data[0])) {
+                    data.data.forEach(element => {
+                        $scope.familyClinicalHistoryDataArray.Id = element.FAMILYHISTORY_ID;
+                        $scope.familyClinicalHistoryDataArray.LabId = element.GENETYLLIS_PATIENT_LABID;
+                        $scope.familyClinicalHistoryDataArray.RelationId = element.Id;
+                        $scope.familyClinicalHistoryDataArray.RelationName = $scope.relationData.find(el => el.Id == element.FAMILYHISTORY_RELATIONID).RelationType;
+                        $scope.familyClinicalHistoryDataArray.PatientId = element.FAMILYHISTORY_PATIENTID;
+                        $scope.familyClinicalHistoryDataArray.FamilyMemberId = element.FAMILYHISTORY_FAMILYMEMBERID;
+                        var clinicalHistory = {};
+                        clinicalHistory.PathologyId = element.CLINICALHISTORY_PATHOLOGYID;
+                        // clinicalHistory.PathologyName = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == element.CLINICALHISTORY_PATHOLOGYID).PATHOLOGY_NAME;
+                        clinicalHistory.Notes = element.GENETYLLIS_CLINICALHISTORY_NOTES;
+                        clinicalHistory.AgeOnset = element.GENETYLLIS_CLINICALHISTORY_AGEONSET;
+                        $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.push(angular.copy(clinicalHistory));
+                    });
+                }
             })
+    }
+
+    function isFamilyMemberValid(familyMember) {
+        if (!familyMember
+            || !familyMember.FAMILYHISTORY_ID
+            || $scope.familyMembersArray.some(e => e.Id === familyMember.FAMILYHISTORY_ID)
+            || $scope.familyClinicalHistoryDataArray.Id === familyMember.FAMILYHISTORY_ID) {
+
+            return false;
+        }
+        return true;
     }
 
     function relationsLoad() {
