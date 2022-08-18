@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="variant">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <link type="text/css" rel="stylesheet" href="/services/v4/core/theme/bootstrap.min.css">
+        <link type="text/css" rel="stylesheet" href="/webjars/fontawesome/4.7.0/css/font-awesome.min.css">
+        <link type="text/css" rel="stylesheet" href="css/style.css">
+
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+
+    </head>
+
+    <body ng-controller="VariantController">
+        <div class="variantWrapper">
+            <div class="variantFilter">
+                <div class="holder">
+                    <div class="col-form ">
+                        <div class="col-2">
+                            <h4>Chromosome</h4>
+                        </div>
+                        <div class="col-2">
+                            <input type="number" min="0" class="inputNumber" />
+                        </div>
+                    </div>
+                </div>
+                <div class="holder">
+                    <div class="col-form">
+                        <div class="col-2">
+                            <h4>Position</h4>
+                        </div>
+                        <div class="col-2">
+                            <input type="number" min="0" class="inputNumber" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="holder">
+                    <div class="col-form">
+                        <div class="col-2">
+                            <select name="Ref" id="">
+                                <option value="ref" selected>Ref</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <select name="Ref" id="">
+                                <option value="alt" selected>Alt</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="holder">
+                    <div class="col-form selectWrapper">
+                        <div class="col-2">
+                            <h4>Gene</h4>
+                        </div>
+                        <div class="col-2">
+                            <select name="" id="">
+                                <option value="FLCN" selected>FLCN</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="holder">
+                    <div class="col-form">
+                        <h4>Consequence</h4>
+                    </div>
+                </div>
+                <div class="holder">
+                    <div class="col-form">
+                        <div class="col-2">
+                            <input type="checkbox" name="intron" id="intron" />
+                            <label for="intron">intron</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="checkbox" name="exon" id="exon" />
+                            <label for="exon">exon</label>
+                        </div>
+                    </div>
+                    <div class="col-form">
+                        <div class="col-2">
+                            <input type="checkbox" name="intragenic" id="intragenic" />
+                            <label for="intragenic">intragenic</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="checkbox" name="regulatory" id="regulatory" />
+                            <label for="regulatory">regulatory</label>
+                        </div>
+                    </div>
+                    <div class="col-form">
+                        <div class="col-2">
+                            <input type="checkbox" name="stop" id="stop" />
+                            <label for="stop">stop</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="checkbox" name="synonymous" id="synonymous" />
+                            <label for="synonymous">synonymous</label>
+                        </div>
+                    </div>
+                    <div class="col-form">
+                        <div class="col-2">
+                            <input type="checkbox" name="coding" id="coding" />
+                            <label for="coding">coding</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="checkbox" name="non-coding" id="non-coding" />
+                            <label for="non-coding">non-coding</label>
+                        </div>
+                    </div>
+                    <div class="col-form">
+                        <div class="col-2">
+                            <input type="checkbox" name="splice" id="splice" />
+                            <label for="splice">splice</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="checkbox" name="other" id="other" />
+                            <label for="other">other</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="holder">
+                    <div class="col-form">
+                        <div class="col-2">
+                            <h4>
+                                Pathology
+                            </h4>
+                        </div>
+                        <div class="col-2">
+                            <select name="" id="">
+                                <option value="" selected>BHD</option>
+                                <option value="">1</option>
+                                <option value="">2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-form">
+                        <div class="col-2">
+                            <input type="checkbox" name="Benign" id="Benign" />
+                            <label for="Benign">Benign</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="checkbox" name="Likely benign" id="Likely benign" />
+                            <label for="Likely benign">Likely benign</label>
+                        </div>
+                    </div>
+                    <div class="col-form">
+                        <div class="col-2">
+                            <input type="checkbox" name="Pathogenic" id="Pathogenic" />
+                            <label for="Pathogenic">Pathogenic</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="checkbox" name="Likely pathogenic" id="Likely pathogenic" />
+                            <label for="Likely pathogenic">Likely pathogenic</label>
+                        </div>
+                    </div>
+                    <div class="col-form">
+                        <div class="col-2">
+                            <input type="checkbox" name="VUS" id="VUS" />
+                            <label for="VUS">VUS</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="holder">
+                    <div class="col-form">
+                        <div class="col-2" style="display: flex;">
+                            <h4>From</h4>
+                            <input type="number" style="width: 40px;">
+                        </div>
+                        <div class="col-2" style="display: flex;">
+                            <h4>to</h4>
+                            <input type="number" style="width: 40px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-form">
+                    <div class="col-2">
+                        <button ng-click="handleAction()">Clear</button>
+                    </div>
+                    <div class="col-2">
+                        <button ng-click="handleAction()">Filter</button>
+                    </div>
+                </div>
+            </div>
+            <div class="variantTable">
+                <table border="1px solid #000" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                HGVS
+                            </th>
+                            <th>
+                                Gene
+                            </th>
+                            <th>
+                                Consequence
+                            </th>
+                            <th>
+                                Pathologies
+                            </th>
+                            <th>
+                                Clinical significance
+                            </th>
+                            <th>
+                                Allele frequency
+                            </th>
+                            <th>
+                                Patients
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in variants">
+                            <td>{{data.Chromosome}}</td>
+                            <td>{{data.HGVS}}</td>
+                            <td>{{data.DBSNP}}</td>
+                            <td>{{data.GeneId}}</td>
+                            <td>{{data.Reference}}</td>
+                            <td>{{data.Alternative}}</td>
+                            <td>{{data.Start}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <script type="text/javascript" src="js/index.js"></script>
+
+    </body>
+
+</html>
