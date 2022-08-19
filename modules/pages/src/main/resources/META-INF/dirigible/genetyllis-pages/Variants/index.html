@@ -8,9 +8,11 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <link type="text/css" rel="stylesheet" href="/services/v4/core/theme/bootstrap.min.css">
         <link type="text/css" rel="stylesheet" href="/webjars/fontawesome/4.7.0/css/font-awesome.min.css">
-        <link type="text/css" rel="stylesheet" href="css/style.css">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="../css/style.css">
 
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
@@ -21,217 +23,286 @@
         <div class="variantWrapper">
             <div class="variantFilter">
                 <div class="holder">
-                    <div class="col-form ">
-                        <div class="col-2">
-                            <h4>Chromosome</h4>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h5>Chromosome</h5>
+                            </div>
+                            <div class="col">
+                                <h5>Position</h5>
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <input type="number" min="0" class="inputNumber" />
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <input type="number" min="0" class="form-control" />
+                            </div>
+                            <div class="col">
+                                <input type="number" min="0" class="form-control" />
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="holder">
-                    <div class="col-form">
-                        <div class="col-2">
-                            <h4>Position</h4>
-                        </div>
-                        <div class="col-2">
-                            <input type="number" min="0" class="inputNumber" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="holder">
-                    <div class="col-form">
-                        <div class="col-2">
-                            <select name="Ref" id="">
-                                <option value="ref" selected>Ref</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
-                        <div class="col-2">
-                            <select name="Ref" id="">
-                                <option value="alt" selected>Alt</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="holder">
-                    <div class="col-form selectWrapper">
-                        <div class="col-2">
-                            <h4>Gene</h4>
-                        </div>
-                        <div class="col-2">
-                            <select name="" id="">
-                                <option value="FLCN" selected>FLCN</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="holder">
-                    <div class="col-form">
-                        <h4>Consequence</h4>
-                    </div>
-                </div>
-                <div class="holder">
-                    <div class="col-form">
-                        <div class="col-2">
-                            <input type="checkbox" name="intron" id="intron" />
-                            <label for="intron">intron</label>
-                        </div>
-                        <div class="col-2">
-                            <input type="checkbox" name="exon" id="exon" />
-                            <label for="exon">exon</label>
-                        </div>
-                    </div>
-                    <div class="col-form">
-                        <div class="col-2">
-                            <input type="checkbox" name="intragenic" id="intragenic" />
-                            <label for="intragenic">intragenic</label>
-                        </div>
-                        <div class="col-2">
-                            <input type="checkbox" name="regulatory" id="regulatory" />
-                            <label for="regulatory">regulatory</label>
-                        </div>
-                    </div>
-                    <div class="col-form">
-                        <div class="col-2">
-                            <input type="checkbox" name="stop" id="stop" />
-                            <label for="stop">stop</label>
-                        </div>
-                        <div class="col-2">
-                            <input type="checkbox" name="synonymous" id="synonymous" />
-                            <label for="synonymous">synonymous</label>
-                        </div>
-                    </div>
-                    <div class="col-form">
-                        <div class="col-2">
-                            <input type="checkbox" name="coding" id="coding" />
-                            <label for="coding">coding</label>
-                        </div>
-                        <div class="col-2">
-                            <input type="checkbox" name="non-coding" id="non-coding" />
-                            <label for="non-coding">non-coding</label>
-                        </div>
-                    </div>
-                    <div class="col-form">
-                        <div class="col-2">
-                            <input type="checkbox" name="splice" id="splice" />
-                            <label for="splice">splice</label>
-                        </div>
-                        <div class="col-2">
-                            <input type="checkbox" name="other" id="other" />
-                            <label for="other">other</label>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <select class="form-select form-control">
+                                    <option selected>Select</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            >
+                            <div class="col">
+                                <select class="form-select form-control">
+                                    <option selected>Select menu</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="holder">
-                    <div class="col-form">
-                        <div class="col-2">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h5>Gene</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-select form-control">
+                                    <option selected>Select</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="holder">
+                    <div class="container">
+                        <div class="row">
+                            <h5>Consequence</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-select form-control">
+                                    <option selected>Select</option>
+                                    <option value="intron">intron</option>
+                                    <option value="exon">exon</option>
+                                    <option value="intragenic">intragenic</option>
+                                    <option value="regulatory">regulatory</option>
+                                    <option value="stop">stop</option>
+                                    <option value="synonymous">synonymous</option>
+                                    <option value="coding">coding</option>
+                                    <option value="non-coding">non-coding</option>
+                                    <option value="splice">splice</option>
+                                    <option value="other">other</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="holder">
+                    <div class="container">
+                        <div class="row">
                             <h4>
                                 Pathology
                             </h4>
                         </div>
-                        <div class="col-2">
-                            <select name="" id="">
-                                <option value="" selected>BHD</option>
-                                <option value="">1</option>
-                                <option value="">2</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-form">
-                        <div class="col-2">
-                            <input type="checkbox" name="Benign" id="Benign" />
-                            <label for="Benign">Benign</label>
-                        </div>
-                        <div class="col-2">
-                            <input type="checkbox" name="Likely benign" id="Likely benign" />
-                            <label for="Likely benign">Likely benign</label>
-                        </div>
-                    </div>
-                    <div class="col-form">
-                        <div class="col-2">
-                            <input type="checkbox" name="Pathogenic" id="Pathogenic" />
-                            <label for="Pathogenic">Pathogenic</label>
-                        </div>
-                        <div class="col-2">
-                            <input type="checkbox" name="Likely pathogenic" id="Likely pathogenic" />
-                            <label for="Likely pathogenic">Likely pathogenic</label>
-                        </div>
-                    </div>
-                    <div class="col-form">
-                        <div class="col-2">
-                            <input type="checkbox" name="VUS" id="VUS" />
-                            <label for="VUS">VUS</label>
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-select form-control">
+                                    <option selected>Select</option>
+                                    <option value="intron">intron</option>
+                                    <option value="exon">exon</option>
+                                    <option value="intragenic">intragenic</option>
+                                    <option value="regulatory">regulatory</option>
+                                    <option value="stop">stop</option>
+                                    <option value="synonymous">synonymous</option>
+                                    <option value="coding">coding</option>
+                                    <option value="non-coding">non-coding</option>
+                                    <option value="splice">splice</option>
+                                    <option value="other">other</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="holder">
-                    <div class="col-form">
-                        <div class="col-2" style="display: flex;">
-                            <h4>From</h4>
-                            <input type="number" style="width: 40px;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="benign">
+                                    <label class="form-check-label" for="benign">
+                                        Benign
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="likely-benign">
+                                    <label class="form-check-label" for="likely-benign">
+                                        Likely-benign
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-2" style="display: flex;">
-                            <h4>to</h4>
-                            <input type="number" style="width: 40px;">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="pathogenic">
+                                    <label class="form-check-label" for="pathogenic">
+                                        Pathogenic
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="likely-pathogenic">
+                                    <label class="form-check-label" for="likely-pathogenic">
+                                        Likely pathogenic
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="vus">
+                                    <label class="form-check-label" for="vus">
+                                        VUS
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-form">
-                    <div class="col-2">
-                        <button ng-click="handleAction()">Clear</button>
+                <div class="holder">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h5>Lellee frequency</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 align-paragraph">
+                                <p>From</p>
+                            </div>
+                            <div class="col ">
+                                <input type="number" min="0" class="form-control" />
+                            </div>
+                            <div class="col-2 align-paragraph">
+                                <p>to</p>
+                            </div>
+                            <div class="col">
+                                <div class="col">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-2">
-                        <button ng-click="handleAction()">Filter</button>
+                </div>
+                <div class="holder">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-link">Clear all filter</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary filterBtn addFilter">Filter</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="variantTable">
-                <table border="1px solid #000" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>
-                                HGVS
-                            </th>
-                            <th>
-                                Gene
-                            </th>
-                            <th>
-                                Consequence
-                            </th>
-                            <th>
-                                Pathologies
-                            </th>
-                            <th>
-                                Clinical significance
-                            </th>
-                            <th>
-                                Allele frequency
-                            </th>
-                            <th>
-                                Patients
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="data in variants">
-                            <td>{{data.Chromosome}}</td>
-                            <td>{{data.HGVS}}</td>
-                            <td>{{data.DBSNP}}</td>
-                            <td>{{data.GeneId}}</td>
-                            <td>{{data.Reference}}</td>
-                            <td>{{data.Alternative}}</td>
-                            <td>{{data.Start}}</td>
-                        </tr>
-
-                    </tbody>
-                </table>
+                <div class="holder">
+                    <div class="row">
+                        <div class="paging">
+                            <div class="select-columns">
+                                <select class="form-select form-control">
+                                    <option selected>Columns</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <div class="per-page">
+                                <div class="align-paragraph">
+                                    <p class="">Showing 120 of 500</p>
+                                </div>
+                                <div class="export">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                                <div class="align-paragraph">
+                                    <p>per page</p>
+                                </div>
+                                <div class="">
+                                    <button type="button" class="btn btn-primary filterBtn">Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="holder">
+                    <table border="1px solid #000" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    HGVS
+                                </th>
+                                <th>
+                                    Gene
+                                </th>
+                                <th>
+                                    Consequence
+                                </th>
+                                <th>
+                                    Pathologies
+                                </th>
+                                <th>
+                                    Clinical significance
+                                </th>
+                                <th>
+                                    Allele frequency
+                                </th>
+                                <th>
+                                    Patients
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in variants">
+                                <td>{{data.Chromosome}}</td>
+                                <td>{{data.HGVS}}</td>
+                                <td>{{data.DBSNP}}</td>
+                                <td>{{data.GeneId}}</td>
+                                <td>{{data.Reference}}</td>
+                                <td>{{data.Alternative}}</td>
+                                <td>{{data.Start}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

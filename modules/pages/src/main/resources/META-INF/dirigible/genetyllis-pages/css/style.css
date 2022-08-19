@@ -1,0 +1,42 @@
+.filterBtn {
+  width: 100%;
+}
+
+.addFilter {
+  background: #001F38;
+}
+
+.paging {
+  display: flex;
+  justify-content: space-between;
+}
+
+.per-page {
+  display: flex;
+}
+
+.per-page > div {
+  padding-left: 15px;
+}
+
+.export {
+  width: 70px;
+}
+
+.align-paragraph p {
+  margin: 0;
+  padding: 0;
+
+}
+
+.align-paragraph {
+  display: flex;
+  align-items: center;
+}
+
+.variantTable table thead th,
+.variantTable table td {
+  padding: 5px 5px;
+  width: 11.1111%;
+  word-break: break-word;
+}
