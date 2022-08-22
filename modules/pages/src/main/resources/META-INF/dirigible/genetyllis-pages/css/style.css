@@ -1,11 +1,19 @@
 .filterBtn {
   width: 100%;
+  background: #E5E5E5;
+  color: #001F38;
 }
+
+
 
 .addFilter {
   background: #001F38;
+  color: #fff;
 }
 
+.variantTable .addFilter {
+  width: 125px;
+}
 .paging {
   display: flex;
   justify-content: space-between;
@@ -37,6 +45,89 @@
 .variantTable table thead th,
 .variantTable table td {
   padding: 5px 5px;
-  width: 11.1111%;
-  word-break: break-word;
+  border: 1px solid;
+  text-align: center;
+}
+
+.patient-wrapper {
+  width: 90%;
+  margin: auto;
+}
+.header {
+  background: #1DB9C3;
+  border-bottom: 1px solid;
+
+}
+
+.header h4 {
+  padding: 0;
+  margin: 0;
+}
+
+.patient-info {
+  display: flex;
+  width: 100%;
+  justify-content: space-between
+}
+
+.patient-info-wrapper {
+  width: 25%;
+
+}
+
+.border-content {
+  border-radius: 5px;
+  border: 1px solid;
+}
+
+.content {
+  padding: 20px 0 20px 20px;
+}
+.patient-history {
+  width: 72%;
+  display: flex;
+  justify-content: space-between
+}
+
+.clinical-history {
+  width: 35%;
+}
+
+.family-history {
+  width: 61.5%;
+}
+
+.history-table table {
+  width: 100%;
+}
+
+.history-table table th,
+.history-table table td {
+  padding: 5px 0;
+}
+
+.table-head {
+  background: #E5E5E5;
+  padding: 0;
+
+}
+
+
+.table-responsive {
+  max-height: 130px;
+  overflow: auto;
+}
+
+.patient-info {
+  margin-bottom: 40px;
+}
+
+.patient-filter {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+
+.patient-info .variantTable {
+  width: 72%;
 }
