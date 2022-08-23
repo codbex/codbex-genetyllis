@@ -131,9 +131,10 @@
                             <!-------------------------------------------------------------------------------------->
 
                             <div>
-                                <input list="dataList" ng-change="setPatientPathology(clinicalHistoryData.PathologyId)"
+                                <input list="dataList" ng-model-options="{ debounce: 2000 }"
+                                       ng-change="setPatientPathology(clinicalHistoryData.PathologyId)"
                                        ng-model='clinicalHistoryData.PathologyId' class="form-control"
-                                       placeholder="Concept ID" />
+                                       ng-keypress="suggestPathology()" placeholder="Concept ID" />
                                 <datalist id="dataList">
                                     <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
                                 </datalist>

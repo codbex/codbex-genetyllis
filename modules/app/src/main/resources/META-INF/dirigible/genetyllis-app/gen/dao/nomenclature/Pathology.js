@@ -94,6 +94,13 @@ exports.customDataCount = function() {
 	return 0;
 };
 
+exports.filterPathology = function(cui) {
+	paramArr = [];
+	paramArr.push('%' + cui + '%')
+	var resultSet = query.execute("SELECT * FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI LIKE ? LIMIT 10", paramArr);
+	return resultSet;
+}
+
 function triggerEvent(operation, data) {
 	producer.queue("genetyllis-app/nomenclature/Pathology/" + operation).send(JSON.stringify(data));
 }

@@ -61,6 +61,13 @@ rs.service()
 
         sendResponseOk(entities);
     })
+    .resource('filterPathology/{cui}')
+    .get(function (ctx) {
+        var cui = ctx.pathParameters.cui;
+        var entities = dao.filterPathology(cui);
+
+        sendResponseOk(entities);
+    })
     .resource('{id}')
     .get(function (ctx) {
         var id = ctx.pathParameters.id;

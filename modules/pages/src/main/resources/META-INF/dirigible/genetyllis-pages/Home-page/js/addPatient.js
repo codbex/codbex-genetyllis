@@ -265,4 +265,13 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     $scope.setFamilyRelation = function (relationName) {
         $scope.familyClinicalHistoryDataArray.RelationId = $scope.relationData.find(el => el.RelationType == relationName).Id;
     }
+
+    $scope.suggestPathology = function () {
+        $http.get(pathologyApi + "/filterPathology/" + $scope.clinicalHistoryData.PathologyId)
+            .then(data => {
+                console.log('FILTER PATHOLOGY')
+                console.log(data)
+                $scope.pathologyDatas = data.data
+            })
+    }
 }]);
