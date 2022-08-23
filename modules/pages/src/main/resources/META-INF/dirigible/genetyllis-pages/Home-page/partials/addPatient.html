@@ -53,9 +53,9 @@
     <!-- GoldenLayout with Theme Support -->
     <script type="text/javascript" src="/services/v4/web/resources/goldenlayout/1.5.9/goldenlayout.min.js"></script>
     <!--
-		<script type="text/javascript" src="../ide/ui/message-hub.js"></script>
-		<script type="text/javascript" src="../ide/ui/ui-layout.js"></script>
-		<script type="text/javascript" src="../ide/ui/ui-core-ng-modules.js"></script> -->
+        <script type="text/javascript" src="../ide/ui/message-hub.js"></script>
+        <script type="text/javascript" src="../ide/ui/ui-layout.js"></script>
+        <script type="text/javascript" src="../ide/ui/ui-core-ng-modules.js"></script> -->
 
 
 
@@ -82,7 +82,7 @@
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Date of birth" ng-model="entity.BirthDate"
-                            onfocus="(this.type='date')" onblur="(this.type='text')" required>
+                               onfocus="(this.type='date')" onblur="(this.type='text')" required>
                     </div>
                     <div class="form-group">
                         <div class="form-col">
@@ -131,21 +131,21 @@
                             <!-------------------------------------------------------------------------------------->
 
                             <div>
-                                <input list="dataList" ng-model-options="{ debounce: 2000 }"
-                                       ng-change="setPatientPathology(clinicalHistoryData.PathologyId)"
-                                       ng-model='clinicalHistoryData.PathologyId' class="form-control"
-                                       ng-keypress="suggestPathology()" placeholder="Concept ID" />
+                                <input list="dataList" ng-change="setPatientPathology(clinicalHistoryData.PathologyCui)"
+                                       ng-model='clinicalHistoryData.PathologyCui' class="form-control"
+                                       ng-keyup="suggestPatientPathology(clinicalHistoryData.PathologyCui)"
+                                       placeholder="Concept ID" />
                                 <datalist id="dataList">
                                     <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
                                 </datalist>
                             </div>
                             <div>
                                 <input ng-model='clinicalHistoryData.PathologyName' placeholder="Disease"
-                                    class="form-control" />
+                                       class="form-control" />
                             </div>
                             <div class="ageOfOnset">
                                 <input type="number" placeholder="0" value="5" ng-model="clinicalHistoryData.AgeOnset"
-                                    class="form-control">
+                                       class="form-control">
                                 <p>Age of onset</p>
                             </div>
                         </div>
@@ -169,7 +169,7 @@
                         </thead>
                         <tbody fd-table-body>
                             <tr fd-table-row ng-repeat="next in clinicalHistoryDataArray" hoverable="true">
-                                <td fd-table-cell>{{next.PathologyId}}</td>
+                                <td fd-table-cell>{{next.PathologyCui}}</td>
                                 <td fd-table-cell>{{next.PathologyName}}</td>
                                 <td fd-table-cell>{{next.AgeOnset}}</td>
                                 <td fd-table-cell>{{next.Notes}}</td>
@@ -205,8 +205,9 @@
                     <div class="form-col">
                         <div class="form-group">
                             <input list="FamilydataList"
-                                   ng-change="setFamilyPathology(familyClinicalHistoryData.PathologyId)"
-                                   ng-model='familyClinicalHistoryData.PathologyId' class="form-control"
+                                   ng-change="setFamilyPathology(familyClinicalHistoryData.PathologyCui)"
+                                   ng-model='familyClinicalHistoryData.PathologyCui' class="form-control"
+                                   ng-keyup="suggestFamilyPathology(familyClinicalHistoryData.PathologyCui)"
                                    placeholder="Concept ID" />
                             <!-- <input list="FamilydataList" class="form-control" placeholder="Concept ID" /> -->
                             <datalist id="FamilydataList">
@@ -216,13 +217,13 @@
                         <div class="form-group">
                             <div class="">
                                 <input placeholder="Disease" class="form-control"
-                                    ng-model='familyClinicalHistoryData.PathologyName' />
+                                       ng-model='familyClinicalHistoryData.PathologyName' />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="ageOfOnset">
                                 <input type="number" value="5" class="form-control"
-                                    ng-model="familyClinicalHistoryData.AgeOnset">
+                                       ng-model="familyClinicalHistoryData.AgeOnset">
                                 <p>Age of onset</p>
                             </div>
                         </div>
@@ -249,7 +250,7 @@
                                 <tr fd-table-row
                                     ng-repeat="next in familyClinicalHistoryDataArray.ClinicalHistoryDataArray"
                                     hoverable="true">
-                                    <td fd-table-cell>{{next.PathologyId}}</td>
+                                    <td fd-table-cell>{{next.PathologyCui}}</td>
                                     <td fd-table-cell>{{next.PathologyName}}</td>
                                     <td fd-table-cell>{{next.AgeOnset}}</td>
                                     <td fd-table-cell>{{next.Notes}}</td>

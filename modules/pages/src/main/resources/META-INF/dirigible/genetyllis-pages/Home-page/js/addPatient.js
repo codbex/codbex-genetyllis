@@ -28,7 +28,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
         BirthDate: '',
         GenderId: ''
     }
-    $scope.pathologyDatas = {}
+    $scope.pathologyDatas = []
     $scope.clinicalHistoryData = {};
     $scope.clinicalHistoryDataArray = [];
     $scope.familyClinicalHistoryData = {};
@@ -110,21 +110,6 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
             });
     }
 
-    // function load() {
-    //     $http.get(api)
-    //         .then(function (data) {
-    //             $scope.data = data.data;
-    //             $scope.data.map(el => {
-    //                 if (el.GenderId === 1) {
-    //                     el.GenderId = "Male";
-    //                 } else {
-    //                     el.GenderId = "Female";
-    //                 }
-    //             })
-    //         });
-    // }
-    // load();
-
     function patientsLoad() {
         $http.get(patientsOptionsApi)
             .then(function (data) {
@@ -134,23 +119,20 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     }
     patientsLoad();
 
-    function pathologyLoad() {
-        $http.get(pathologyApi)
-            .then(function (data) {
-                console.log(data)
-                $scope.pathologyDatas = data.data;
-            });
-    }
-    pathologyLoad();
-
     $scope.setPatientPathology = function (selectedPathology) {
-        let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
-        $scope.clinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
+        if ($scope.pathologyDatas.length > 0) {
+            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+            $scope.clinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
+            $scope.clinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
+        }
     }
 
     $scope.setFamilyPathology = function (selectedPathology) {
-        let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
-        $scope.familyClinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
+        if ($scope.pathologyDatas.length > 0) {
+            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+            $scope.familyClinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
+            $scope.familyClinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
+        }
     }
 
     // Clinical History
@@ -202,15 +184,6 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
         };
     };
 
-    function familyHistroryLoad() {
-
-        $http.get(familyHistroryApi)
-            .then(function (data) {
-            })
-
-    }
-    familyHistroryLoad();
-
     $scope.existsLabId = function () {
         $http.get(patientsOptionsApi + "/getPatientByLabId/" + $scope.entity.LabId.toString())
             .then(data => {
@@ -231,7 +204,11 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
                         $scope.familyClinicalHistoryDataArray.FamilyMemberId = element.FAMILYHISTORY_FAMILYMEMBERID;
                         var clinicalHistory = {};
                         clinicalHistory.PathologyId = element.CLINICALHISTORY_PATHOLOGYID;
-                        // clinicalHistory.PathologyName = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == element.CLINICALHISTORY_PATHOLOGYID).PATHOLOGY_NAME;
+                        console.log('Loading family member')
+                        console.log(element.CLINICALHISTORY_PATHOLOGYID)
+                        clinicalHistory.PathologyId = element.CLINICALHISTORY_PATHOLOGYID;
+                        clinicalHistory.PathologyCui = element.PATHOLOGY_CUI;
+                        clinicalHistory.PathologyName = element.PATHOLOGY_NAME;
                         clinicalHistory.Notes = element.GENETYLLIS_CLINICALHISTORY_NOTES;
                         clinicalHistory.AgeOnset = element.GENETYLLIS_CLINICALHISTORY_AGEONSET;
                         $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.push(angular.copy(clinicalHistory));
@@ -254,10 +231,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     function relationsLoad() {
         $http.get(relationApi)
             .then(function (data) {
-                // let gosho = data.data.map(el=>el.find)
                 $scope.relationData = data.data;
-                console.log('Relation Data')
-                console.log($scope.relationData)
             });
     }
     relationsLoad();
@@ -266,12 +240,24 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
         $scope.familyClinicalHistoryDataArray.RelationId = $scope.relationData.find(el => el.RelationType == relationName).Id;
     }
 
-    $scope.suggestPathology = function () {
-        $http.get(pathologyApi + "/filterPathology/" + $scope.clinicalHistoryData.PathologyId)
-            .then(data => {
-                console.log('FILTER PATHOLOGY')
-                console.log(data)
-                $scope.pathologyDatas = data.data
-            })
+    function suggestPathology(pathologyId) {
+        if (validateSuggestion(pathologyId)) {
+            $http.get(pathologyApi + "/filterPathology/" + pathologyId)
+                .then(data => {
+                    $scope.pathologyDatas = data.data
+                })
+        }
+    }
+
+    $scope.suggestPatientPathology = function (pathologyId) {
+        suggestPathology(pathologyId);
+    }
+
+    $scope.suggestFamilyPathology = function (pathologyId) {
+        suggestPathology(pathologyId);
+    }
+
+    function validateSuggestion(suggestion) {
+        return suggestion.length > 3;
     }
 }]);
