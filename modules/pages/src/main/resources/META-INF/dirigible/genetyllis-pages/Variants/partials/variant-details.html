@@ -1,4 +1,4 @@
-<html lang="en" ng-app="patientDetails">
+<html lang="en" ng-app="variantDetails">
 
     <head>
         <meta charset="UTF-8">
@@ -13,14 +13,16 @@
         <title>Document</title>
     </head>
 
-    <body ng-controller="patientDetailsController">
+
+
+    <body ng-controller="variantDetailsController">
         <div class="patient-wrapper">
             <div class="patient-info">
                 <div class="patient-info-wrapper border-content">
                     <div class="header content">
                         <div class="container">
                             <h4>
-                                Personal info
+                                Characterics
                             </h4>
                         </div>
                     </div>
@@ -28,39 +30,36 @@
                         <div class="container">
                             <div class="column">
                                 <div class="col">
-                                    <h4>Date of birth: <span>08/12/2007</span></h4>
+                                    <h6>
+                                        dbSNP: <a href="">rs34322</a>
+                                    </h6>
                                 </div>
                             </div>
                             <div class="col">
-                                <h4>Age: <span>14</span></h4>
+                                <h6>Gene: <i>consequence</i></h6>
                             </div>
                             <div class="col">
-                                <h4>Gender: <span>male</span></h4>
-                            </div>
-                            <div class="col">
-                                <h4>Ethnicity: <span>Bulgarian</span></h4>
+                                <h6><a href="">FLCN</a>: <i>intron</i></h6>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="patient-history">
-                    <div class="clinical-history border-content">
+                    <div class="family-history border-content">
                         <div class="header content">
                             <div class="container">
-                                <h4>
+                                <h6>
                                     Clinical history
-                                </h4>
+                                </h6>
                             </div>
-                        </div>
-                        <div class="history-table">
 
+                        </div>
+
+                        <div class="history-table">
                             <table class="table table-bordered" border="1px solid">
                                 <thead class="table-head">
                                     <tr>
-                                        <th>Age of onset</th>
-                                        <th>Pathology</th>
-                                        <th>Notes</th>
-
+                                        <th ng-repeat="i in clinicalSignificance">{{i}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -68,9 +67,6 @@
                                         <td>0</td>
                                         <td>Cystic fibrosis</td>
                                         <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
                                         <td>Cystic fibrosis</td>
                                         <td>6 mth</td>
                                     </tr>
@@ -78,14 +74,27 @@
                                         <td>0</td>
                                         <td>Cystic fibrosis</td>
                                         <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
                                         <td>Cystic fibrosis</td>
                                         <td>6 mth</td>
                                     </tr>
                                     <tr>
                                         <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
                                         <td>Cystic fibrosis</td>
                                         <td>6 mth</td>
                                     </tr>
@@ -94,67 +103,36 @@
 
                         </div>
                     </div>
-
-                    <div class="family-history border-content">
+                    <div class="clinical-history border-content">
                         <div class="header content">
                             <div class="container">
-                                <h4>
-                                    Family history
-                                </h4>
+                                <h6>
+                                    Allele frequency
+                                </h6>
                             </div>
-
                         </div>
-
                         <div class="history-table">
-                            <table class="table table-bordered" border="1px solid">
-                                <thead class="table-head">
-                                    <tr>
-                                        <th>PID</th>
-                                        <th>Relation</th>
-                                        <th>Age of onset</th>
-                                        <th>Pathology</th>
-                                        <th>Notes</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
+                            <div class=" content">
+                                <div class="container">
+                                    <div class="column">
+                                        <div class="col">
+                                            <h6>
+                                                GnomAD
+                                            </h6>
+                                        </div>
+                                        <p>alternative allele</p>
+                                        <h6>All: <span>0.214002</span></h6>
+                                    </div>
+                                    <div style="display:flex;justify-content: space-between">
+                                        <h6>Male: <span>0.214002</span></h6>
+                                        <h6>Female: <span>0.214002</span></h6>
+                                    </div>
+                                    <div style="display:flex;justify-content: space-between">
+                                        <h6>European: <span>0.214002</span></h6>
+                                        <h6>Bulgarian: <span>0.214002</span></h6>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,18 +143,9 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" value="" id="highlighted-variants" checked>
-                                        <label class="form-check-label" for="highlighted-variants">
-                                            Highlighted-variants
-                                        </label>
-                                    </div>
+                                    <h5>LabID</h5>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="holder">
-                        <div class="container">
                             <div class="row">
                                 <div class="col-8">
                                     <select class="form-select form-control">
@@ -197,10 +166,23 @@
                             <div class="row">
                                 <div class="col">
                                     <h5>
-                                        Date of analysis
+                                        Date of birth
                                     </h5>
                                 </div>
-                                <div class="col">
+                            </div>
+                            <div class="row">
+                                <div class="col-2 align-paragraph">
+                                    <p>From</p>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
+                                </div>
+                                <div class="col-2 align-paragraph">
+                                    <p>to</p>
+                                </div>
+                                <div class="col-4">
                                     <input type="text" class="form-control" placeholder="Date"
                                         ng-model="entity.BirthDate" onfocus="(this.type='date')"
                                         onblur="(this.type='text')" required>
@@ -212,10 +194,145 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col">
+                                    <h5>
+                                        Population
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="highlighted-variants" checked>
-                                        <label class="form-check-label" for="highlighted-variants">
+                                        <input class="form-check-input" type="checkbox" checked id="male">
+                                        <label class="form-check-label" for="male">
+                                            Male
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="female">
+                                        <label class="form-check-label" for="female">
+                                            Female
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="nonspecifed-gender">
+                                        <label class="form-check-label" for="nonspecifed-gender">
+                                            Nonspecifed gender
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="bulgarian">
+                                        <label class="form-check-label" for="bulgarian">
+                                            Bulgarian
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="other-ethnicity">
+                                        <label class="form-check-label" for="other-ethnicity">
+                                            Other ethnicity
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Clinical history
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 align-paragraph">
+                                    <p>Onset from</p>
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                                <div class="col-1 align-paragraph">to</div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Family history
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 align-paragraph">
+                                    <p>Onset from</p>
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                                <div class="col-1 align-paragraph">to</div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="male" checked>
+                                        <label class="form-check-label" for="male">
                                             Whole Genome Sequencing (WGS)
                                         </label>
                                     </div>
@@ -223,263 +340,34 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="holder">
                         <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <h5>
-                                        Variant
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-8">
-                                    <select class="form-select form-control">
-                                        <option selected>Select</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <h5>
-                                        Filter
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            PASS
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="col-5">
-                                    <div class="select-columns">
-                                        <select class="form-select form-control">
-                                            <option selected>Columns</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <h5>
-                                        Gene
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-8">
-                                    <select class="form-select form-control">
-                                        <option selected>Select</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            pseudo
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            not pseudo
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <h5>
-                                        Consequence
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-8">
-                                    <select class="form-select form-control">
-                                        <option selected>Select</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            Homozygous
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            Heterozygous
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <h5>
-                                        Phatology
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-8">
-                                    <select class="form-select form-control">
-                                        <option selected>Select</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            Benign
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            Likely benign
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            Pathogenic
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            Likely pathogenic
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            VUS
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <h5>Allele frequency</h5>
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="col-2 align-paragraph">
                                     <p>From</p>
                                 </div>
-                                <div class="col ">
-                                    <input type="number" min="0" class="form-control" />
+                                <div class="col-4">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
                                 </div>
                                 <div class="col-2 align-paragraph">
                                     <p>to</p>
                                 </div>
-                                <div class="col">
-                                    <div class="col">
-                                        <input type="number" min="0" class="form-control" />
-                                    </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="holder">
                         <div class="container">
                             <div class="row">
                                 <div class="col">
-                                    <button type="button" class="btn btn-link">Clear all filters</button>
+                                    <button type="button" class="btn btn-link">Clear all filter</button>
                                 </div>
                                 <div class="col">
                                     <button type="button" class="btn btn-primary filterBtn addFilter">Filter</button>
@@ -488,6 +376,42 @@
                         </div>
                     </div>
                 </div>
+                <!-- <div class="holder">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h5>
+                                    Variant
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-select form-control">
+                                    <option selected>Select</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="holder">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-link">Clear all filter</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary filterBtn addFilter">Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
                 <div class="variantTable">
                     <div class="holder">
                         <div class="row">
@@ -512,7 +436,7 @@
                                     </div>
                                     <div class="">
                                         <button type="button"
-                                            class="btn btn-primary filterBtn addFilter">Filter</button>
+                                            class="btn btn-primary filterBtn addFilter">Export</button>
                                     </div>
                                 </div>
                             </div>
@@ -597,8 +521,9 @@
                 </div>
             </div>
         </div>
+        </div>
 
-        <script type="text/javascript" src="../js/patient-details.js"></script>
+        <script type="text/javascript" src="../js/variant-details.js"></script>
     </body>
 
 </html>

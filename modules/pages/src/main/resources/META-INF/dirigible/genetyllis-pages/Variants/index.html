@@ -22,6 +22,21 @@
     <body ng-controller="VariantController">
         <div class="variantWrapper">
             <div class="variantFilter">
+
+                <div class="holder">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="benign">
+                                    <label class="form-check-label" for="benign">
+                                        Flagged for tracking
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="holder">
                     <div class="container">
                         <div class="row">
@@ -151,7 +166,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="benign">
+                                    <input class="form-check-input" type="checkbox" checked value="" id="benign">
                                     <label class="form-check-label" for="benign">
                                         Benign
                                     </label>
@@ -159,7 +174,7 @@
                             </div>
                             <div class="col">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="likely-benign">
+                                    <input class="form-check-input" type="checkbox" checked value="" id="likely-benign">
                                     <label class="form-check-label" for="likely-benign">
                                         Likely-benign
                                     </label>
@@ -169,7 +184,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="pathogenic">
+                                    <input class="form-check-input" type="checkbox" checked value="" id="pathogenic">
                                     <label class="form-check-label" for="pathogenic">
                                         Pathogenic
                                     </label>
@@ -177,7 +192,8 @@
                             </div>
                             <div class="col">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="likely-pathogenic">
+                                    <input class="form-check-input" type="checkbox" checked value=""
+                                        id="likely-pathogenic">
                                     <label class="form-check-label" for="likely-pathogenic">
                                         Likely pathogenic
                                     </label>
@@ -187,7 +203,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="vus">
+                                    <input class="form-check-input" type="checkbox" checked value="" id="vus">
                                     <label class="form-check-label" for="vus">
                                         VUS
                                     </label>
@@ -257,7 +273,7 @@
                                     <p>per page</p>
                                 </div>
                                 <div class="">
-                                    <button type="button" class="btn btn-primary filterBtn">Filter</button>
+                                    <button type="button" class="btn btn-primary filterBtn addFilter">Export</button>
                                 </div>
                             </div>
                         </div>

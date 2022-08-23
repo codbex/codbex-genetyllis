@@ -20,6 +20,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', functi
     //     $scope.variants.splice(index, 1);
 
     // }
+    $scope.addColumns = ["", "HGVS", "Filter", "Gene", "Pseudo", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele Freq", "Af (men)", "AF (Bulgarian)", "Analysis"]
 }]);
-
 

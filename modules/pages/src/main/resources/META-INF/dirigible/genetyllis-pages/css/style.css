@@ -41,7 +41,9 @@
   display: flex;
   align-items: center;
 }
-
+.variantTable table {
+  width: 100%;
+}
 .variantTable table thead th,
 .variantTable table td {
   padding: 5px 5px;
