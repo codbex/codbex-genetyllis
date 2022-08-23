@@ -45,6 +45,17 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     $scope.familyMembersArray = [];
     $scope.isLabIdTaken = false;
 
+    const relationsMap = new Map([
+        [2, 1], // Return Parent when Child
+        [1, 2], // Return Child when Parent
+        [3, 3], // Return Sibling when Sibling
+        [4, 4], // Return Cousin when Cousin
+        [10, 5], // Return Grandparent when Grandchild
+        [9, 6], // Return Uncle when Nephew, Aunt handled separately
+        [6, 9], // Return Nephew when Uncle, Niece handled separately
+        [5, 10], // Return Grandchild when Grandparent
+    ]);
+
     $scope.create = function () {
         if ($scope.entity.GenderId == 'male') $scope.entity.GenderId = 1
         else if ($scope.entity.GenderId == 'female') $scope.entity.GenderId = 2
@@ -100,6 +111,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
             FamilyMemberId: ''
         }
 
+        // Patient to Family Member relation
         familyHistory.PatientId = $scope.entity.Id;
         familyHistory.RelationId = familyMemberRelationId;
         familyHistory.FamilyMemberId = familyMemberId;
@@ -108,13 +120,33 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
                 familyHistory.Id = response.data.Id
             }, function (response) {
             });
+
+        // Family Member to Patient relation
+        familyHistory.PatientId = familyMemberId;
+        familyHistory.RelationId = getOppositeRelation(familyMemberRelationId);
+        console.log(getOppositeRelation(familyMemberRelationId));
+        familyHistory.FamilyMemberId = $scope.entity.Id;
+        $http.post(familyHistroryApi, JSON.stringify(familyHistory))
+            .then(function (response) {
+                familyHistory.Id = response.data.Id
+            }, function (response) {
+            });
+    }
+
+    function getOppositeRelation(relationId) {
+        if ($scope.entity.GenderId === 2 && (relationId === 6 || relationId === 7)) {
+            return 8;
+        } else if ($scope.entity.GenderId === 2 && (relationId === 8 || relationId === 9)) {
+            return 7;
+        } else {
+            return relationsMap.get(relationId);
+        }
     }
 
     function patientsLoad() {
         $http.get(patientsOptionsApi)
             .then(function (data) {
                 $scope.patientsOptions = data.data;
-                console.log($scope.patientsOptions)
             });
     }
     patientsLoad();
@@ -204,8 +236,6 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
                         $scope.familyClinicalHistoryDataArray.FamilyMemberId = element.FAMILYHISTORY_FAMILYMEMBERID;
                         var clinicalHistory = {};
                         clinicalHistory.PathologyId = element.CLINICALHISTORY_PATHOLOGYID;
-                        console.log('Loading family member')
-                        console.log(element.CLINICALHISTORY_PATHOLOGYID)
                         clinicalHistory.PathologyId = element.CLINICALHISTORY_PATHOLOGYID;
                         clinicalHistory.PathologyCui = element.PATHOLOGY_CUI;
                         clinicalHistory.PathologyName = element.PATHOLOGY_NAME;
