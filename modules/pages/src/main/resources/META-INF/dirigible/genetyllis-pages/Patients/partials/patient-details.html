@@ -1,0 +1,604 @@
+<html lang="en" ng-app="patientDetails">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../Variants/css/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../../css/style.css">
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+
+        <title>Document</title>
+    </head>
+
+    <body ng-controller="patientDetailsController">
+        <div class="patient-wrapper">
+            <div class="patient-info">
+                <div class="patient-info-wrapper border-content">
+                    <div class="header content">
+                        <div class="container">
+                            <h4>
+                                Personal info
+                            </h4>
+                        </div>
+                    </div>
+                    <div class=" content">
+                        <div class="container">
+                            <div class="column">
+                                <div class="col">
+                                    <h4>Date of birth: <span>08/12/2007</span></h4>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h4>Age: <span>14</span></h4>
+                            </div>
+                            <div class="col">
+                                <h4>Gender: <span>male</span></h4>
+                            </div>
+                            <div class="col">
+                                <h4>Ethnicity: <span>Bulgarian</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="patient-history">
+                    <div class="clinical-history border-content">
+                        <div class="header content">
+                            <div class="container">
+                                <h4>
+                                    Clinical history
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="history-table">
+
+                            <table class="table table-bordered" border="1px solid">
+                                <thead class="table-head">
+                                    <tr>
+                                        <th>Age of onset</th>
+                                        <th>Pathology</th>
+                                        <th>Notes</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="family-history border-content">
+                        <div class="header content">
+                            <div class="container">
+                                <h4>
+                                    Family history
+                                </h4>
+                            </div>
+
+                        </div>
+
+                        <div class="history-table">
+                            <table class="table table-bordered" border="1px solid">
+                                <thead class="table-head">
+                                    <tr>
+                                        <th>PID</th>
+                                        <th>Relation</th>
+                                        <th>Age of onset</th>
+                                        <th>Pathology</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="patient-info">
+                <div class="patient-info-wrapper border-content content">
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            id="highlighted-variants" checked>
+                                        <label class="form-check-label" for="highlighted-variants">
+                                            Highlighted-variants
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Date of analysis
+                                    </h5>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            id="highlighted-variants" checked>
+                                        <label class="form-check-label" for="highlighted-variants">
+                                            Whole Genome Sequencing (WGS)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Variant
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Filter
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            PASS
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-5">
+                                    <div class="select-columns">
+                                        <select class="form-select form-control">
+                                            <option selected>Columns</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Gene
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            pseudo
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            not pseudo
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Consequence
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            Homozygous
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            Heterozygous
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Phatology
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            Benign
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            Likely benign
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            Pathogenic
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            Likely pathogenic
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            VUS
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Allele frequency</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 align-paragraph">
+                                    <p>From</p>
+                                </div>
+                                <div class="col ">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                                <div class="col-2 align-paragraph">
+                                    <p>to</p>
+                                </div>
+                                <div class="col">
+                                    <div class="col">
+                                        <input type="number" min="0" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-link">Clear all filters</button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-primary filterBtn addFilter">Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="variantTable">
+                    <div class="holder">
+                        <div class="row">
+                            <div class="paging">
+                                <div class="select-columns">
+                                    <select class="form-select form-control">
+                                        <option selected>Columns</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="per-page">
+                                    <div class="align-paragraph">
+                                        <p class="">Showing 120 of 500</p>
+                                    </div>
+                                    <div class="export">
+                                        <input type="number" min="0" class="form-control" />
+                                    </div>
+                                    <div class="align-paragraph">
+                                        <p>per page</p>
+                                    </div>
+                                    <div class="">
+                                        <button type="button"
+                                            class="btn btn-primary filterBtn addFilter">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="bla">
+
+                            <table border="1px solid #000" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>
+
+                                        </th>
+                                        <th>
+                                            HGVS
+                                        </th>
+                                        <th>
+                                            Filter
+                                        </th>
+                                        <th>
+                                            Gene
+                                        </th>
+                                        <th>
+                                            Pseudo
+                                        </th>
+                                        <th>
+                                            Consequence
+                                        </th>
+                                        <th>
+                                            Homozygous
+                                        </th>
+                                        <th>
+                                            Pathology
+                                        </th>
+                                        <th>
+                                            Clinical significance
+                                        </th>
+                                        <th>
+                                            Allele Freq
+                                        </th>
+                                        <th>
+                                            Af (men)
+                                        </th>
+                                        <th>
+                                            AF (Bulgarian)
+                                        </th>
+                                        <th>
+                                            Analysis
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="data in variants">
+                                        <td>
+                                            <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
+            cursor: pointer" /> -->
+                                            <image ng-click="photo.clicked = !photo.clicked ;imageHandler($index)"
+                                                ng-src="{{photo.clicked ? clickedUrl : notClickedUrl}}" style="height: 20px; width: 20px;
+            cursor: pointer" />
+                                        </td>
+                                        <td>
+                                            {{data.HGVS}}
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="../js/patient-details.js"></script>
+    </body>
+
+</html>
