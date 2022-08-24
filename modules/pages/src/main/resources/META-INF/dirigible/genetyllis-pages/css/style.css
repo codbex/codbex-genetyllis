@@ -1,3 +1,12 @@
+.col-6 {
+  margin-bottom: 30px;
+}
+.holder {
+  padding-bottom: 15px;
+}
+.content-end {
+  justify-content: end;
+}
 .filterBtn {
   width: 100%;
   background: #E5E5E5;
@@ -132,4 +141,9 @@
 
 .patient-info .variantTable {
   width: 72%;
+}
+
+
+.patientDetails {
+  margin-bottom: 20px;
 }

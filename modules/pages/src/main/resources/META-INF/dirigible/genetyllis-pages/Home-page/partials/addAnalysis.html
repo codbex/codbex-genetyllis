@@ -8,181 +8,110 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Eclipse Dirigible &trade; | home-page </title>
-
-
-        <!-- FontAwesome icon set -->
-        <link type="text/css" href="/webjars/fontawesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-        <!-- Twitter Bootstrap with Theme Support -->
-        <link type="text/css" rel="stylesheet" href="/services/v4/core/theme/bootstrap.min.css">
-
-        <!-- GoldenLayout with Theme Support -->
-        <link type="text/css" rel="stylesheet"
-            href="/services/v4/web/resources/goldenlayout/1.5.9/goldenlayout-base.css" />
-        <link type="text/css" rel="stylesheet" href="/services/v4/core/theme/goldenlayout-theme.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
         <link type="text/css" rel="stylesheet" href="../css/addPatient.css" />
-        <link type="text/css" rel="stylesheet" href="../css/style.css" />
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <!-- <script type="text/javascript" src="/webjars/jquery/3.6.0/jquery.min.js"></script> -->
-        <!-- Custom IDE Styles -->
-
-        <link type="text/css" rel="stylesheet" href="/services/v4/core/theme/ide.css" />
-
+        <link type="text/css" rel="stylesheet" href="../../css/style.css" />
     </head>
-
-
-    <!-- jQuery -->
-
-    <!-- Twitter Bootstrap with Theme Support -->
-    <script type="text/javascript" src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <!-- AngularJS -->
-    <script type="text/javascript" src="../import/angular-file-upload.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-    <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.3/angular-route.min.js"
-        integrity="sha512-y1qD3hz/IAf8W4+/UMLZ+CN6LIoUGi7srWJ3r1R17Hid8x0yXe+1B5ZelkaL1Mjzedzu0Cg3HBvDG02SAgSzBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!--                                                           -->
-    <!-- GoldenLayout with Theme Support -->
-    <script type="text/javascript" src="/services/v4/web/resources/goldenlayout/1.5.9/goldenlayout.min.js"></script>
-    <!--
-		<script type="text/javascript" src="../ide/ui/message-hub.js"></script>
-		<script type="text/javascript" src="../ide/ui/ui-layout.js"></script>
-		<script type="text/javascript" src="../ide/ui/ui-core-ng-modules.js"></script> -->
-    </script>
 
     <body ng-controller='addAnalysisController'>
 
-        <div class="addPatientWrapper">
-            <div class="formWrapper">
-                <div class="header ">
-                    <div class="verticalPos">
-                        <h3>Details</h3>
-                    </div>
-                </div>
-                <div class="verticalPos">
-                    <div class="form-col">
-                        <div class="form-group col-3">
-                            <select class="form-control" aria-label=".form-select-lg example">
-                                <option selected>Select Provider</option>
-                                <option ng-repeat="data in providerData">
-                                    {{data.Name}}
-                                </option>
-
-                            </select>
-                        </div>
-                        <div class="form-group col-3">
-                            <select class="form-control " aria-label=".form-select-lg example">
-                                <option selected>Select Platform</option>
-                                <option ng-repeat="data in platformData">
-                                    {{data.Name}}
-                                </option>
-
-                            </select>
-                        </div>
-                        <div class="form-group col-3">
-                            <input type="text" class="form-control" placeholder="Date of birth"
-                                ng-model="entity.BirthDate" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                required>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- Result -->
-            <div class="formWrapper">
-                <div class="header verticalPos">
-                    <div class="verticalPos">
-                        <h3>Results</h3>
-                    </div>
-                </div>
-                <div class="verticalPos">
-                    <div class="form-col">
-                        <div class="form-group col-2">
-                            <div>
-                                <div>
-                                    OK
+        <div class="patient-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 ">
+                        <div class="border-content patientDetails">
+                            <div class="header content">
+                                <div class="container">
+                                    <h4>Details</h4>
                                 </div>
-                                <div>
-                                    <!-- todo -->
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <select class="form-control" aria-label=".form-select-lg example">
+                                                <option selected>Select Provider</option>
+                                                <option ng-repeat="data in providerData">
+                                                    {{data.Name}}
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <select class="form-control " aria-label=".form-select-lg example">
+                                                <option selected>Select Platform</option>
+                                                <option ng-repeat="data in platformData">
+                                                    {{data.Name}}
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Date of birth"
+                                                ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                                onblur="(this.type='text')" required>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group col-2">
-                            <div>
-                                <div class="vcfFiles" ng-repeat="name in vcfNames">
-                                    {{name.name}} <span>Details</span>
+                        <div class="border-content patientDetails">
+                            <div class="header content">
+                                <div class="container">
+                                    <h4>Patient</h4>
                                 </div>
-
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Enter LabId"
+                                                ng-model="entity.LabId" required>
+                                        </div>
+                                        <div class="col">
+                                            <a ng-href="../{{entity.LabId}}" ng-repeat="labId in labIds">{{labId}}</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- <input type="file" /> -->
-                </div>
-            </div>
-            <!-- Patient -->
-            <div class="formWrapper">
-                <div class="header">
-                    <div class="verticalPos">
-                        <h3>Patient</h3>
-                    </div>
-                </div>
-                <div class="verticalPos">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <div class="labId">
-                                <!-- <i class="bi bi-person"></i> -->
-                                <input type="text" class="form-control" placeholder="Enter LabId"
-                                    ng-model="entity.LabId" required>
-                                <button ng-click="getLabId()">></button>
+                    <div class="col-6 ">
+                        <div class="border-content patientDetails">
+                            <div class="header content">
+                                <div class="container">
+                                    <h4>Results</h4>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <a ng-href="../{{entity.LabId}}" ng-repeat="labId in labIds">{{labId}}</a>
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="formControl">
-                <form action="../index.html" class="formControl">
-                    <input type="submit" ng-click="create()" value="Submit" class="typeBtn saveBtn" />
-                </form>
-                <form action="../index.html" class="formControl">
-                    <input type="submit" ng-click="addAnotherAnalysis()" value="Аdd another analysis"
-                        class="typeBtn saveBtn" />
-                </form>
-
-            </div>
-
         </div>
-        <div ng-view>
-            <div />
 
-            <style>
-                /* Chrome, Safari, Edge, Opera */
-                input::-webkit-outer-spin-button,
-                input::-webkit-inner-spin-button {
-                    -webkit-appearance: none;
-                    margin: 0;
-                }
 
-                /* Firefox */
-                input[type=number] {
-                    -moz-appearance: textfield;
-                }
+        <style>
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
 
-            </style>
+            /* Firefox */
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
 
-            <script src="../js/addAnalysis.js"></script>
-            <script src="../import/import.js"></script>
-            <script type="text/javascript" src="../import/controller.js"></script>
+        </style>
+
+        <script src="../js/addAnalysis.js"></script>
+        <script src="../import/import.js"></script>
+        <script type="text/javascript" src="../import/controller.js"></script>
 
     </body>
 

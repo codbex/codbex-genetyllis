@@ -10,7 +10,20 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 var addPatient = angular.module("addPatient", []);
-
+addPatient.directive('ngConfirmClick', [
+    function () {
+        return {
+            link: function (scope, element, attr) {
+                var msg = attr.ngConfirmClick || "Are you sure?";
+                var clickAction = attr.confirmedClick;
+                element.bind('click', function (event) {
+                    if (window.confirm(msg)) {
+                        scope.$eval(clickAction)
+                    }
+                });
+            }
+        };
+    }])
 addPatient.controller('addPatientController', ['$scope', '$http', function ($scope, $http) {
 
     var api = "/services/v4/js/Home-page/services/patientInfo.js";
@@ -185,11 +198,16 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     $scope.deleteFamilyHistory = function (history) {
         const index = this.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.indexOf(history);
         this.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.splice(index, 1);
+
+        if ($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.length === 0) $scope.isEmptyTableFamilyHistory = false;
+
     }
 
     $scope.deleteFamilyMember = function (member) {
         const index = this.familyMembersArray.indexOf(member);
         this.familyMembersArray.splice(index, 1);
+        if ($scope.familyMembersArray.length === 0) $scope.isEmptyTableFamilyMember = false;
+
     }
 
     $scope.addEntryClinicalHistory = function () {
@@ -197,10 +215,16 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
         $scope.clinicalHistoryData = {};
     };
 
+
+    $scope.isEmptyTableFamilyHistory = false;
     $scope.addEntryFamilyHistory = function () {
+        $scope.isEmptyTableFamilyHistory = true;
         $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.push($scope.familyClinicalHistoryData);
+
+        if ($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.lenght === 0) $scope.isEmptyTableFamilyHistory = false;
         $scope.familyClinicalHistoryData = {};
     };
+    $scope.isEmptyTableFamilyMember = false;
 
     $scope.addEntryFamilyMember = function () {
         $scope.familyMembersArray.push(angular.copy($scope.familyClinicalHistoryDataArray));
@@ -214,6 +238,8 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
             FamilyMemberId: '',
             ClinicalHistoryDataArray: []
         };
+        $scope.isEmptyTableFamilyMember = true;
+
     };
 
     $scope.existsLabId = function () {
