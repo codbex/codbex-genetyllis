@@ -14,6 +14,9 @@ var producer = require("messaging/v4/producer");
 var daoApi = require("db/v4/dao");
 var EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
 
+var filterSql = "";
+var filterSqlParams = [];
+
 var dao = daoApi.create({
 	table: "GENETYLLIS_PATIENT",
 	properties: [
@@ -50,14 +53,14 @@ var dao = daoApi.create({
 		}]
 });
 
-exports.list = function(settings) {
+exports.list = function (settings) {
 	return dao.list(settings).map(function (e) {
 		EntityUtils.setLocalDate(e, "BirthDate");
 		return e;
 	});
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	var entity = dao.find(id);
 	// TODO this produces 500
 	// EntityUtils.setLocalDate(entity, "BirthDate");
@@ -133,6 +136,102 @@ exports.getPatientAndHistoryByLabId = function (labId) {
 		"JOIN GENETYLLIS_CLINICALHISTORY GC ON GP.PATIENT_ID = GC.CLINICALHISTORY_PATIENTID " +
 		"JOIN GENETYLLIS_FAMILYHISTORY GF ON GP.PATIENT_ID = GF.FAMILYHISTORY_FAMILYMEMBERID  WHERE GENETYLLIS_PATIENT_LABID = ?", paramArr);
 	return resultSet;
+}
+
+exports.filterPatients = function (patient) {
+	initFilterSql();
+
+	buildFilterSql(patient.GENETYLLIS_PATIENT);
+	buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY);
+	buildFilterSql(patient.GENETYLLIS_FAMILYHISTORY);
+	buildFilterSql(patient.GENETYLLIS_VARIANT);
+
+	filterSql += " LIMIT " + patient.perPage + " OFFSET " + patient.currentPage;
+
+	var resultSet = query.execute(filterSql, filterSqlParams);
+
+	filterSql = "";
+	return resultSet;
+}
+
+function buildFilterSql(object) {
+	var keys = Object.keys(object);
+	var firstTime = true;
+	for (var i = 0; i < keys.length; i++) {
+		var val = object[keys[i]];
+		if (val !== undefined && val !== '' && val.length > 0) {
+			if (firstTime) {
+				filterSql += " WHERE ";
+			} else {
+				filterSql += " AND ";
+			}
+
+			condition = '';
+
+			if (Array.isArray(val)) {
+				condition = keys[i] + addArrayValuesToSql(val);
+
+			} else if (keys[i].toString().endsWith('_TO')) {
+				condition = keys[i].slice(0, -3) + "<= ?";
+				addFilterParam(val);
+
+			} else if (keys[i].toString().endsWith('_FROM')) {
+				condition = keys[i].slice(0, -5) + ">= ?";
+				addFilterParam(val);
+
+			} else {
+				condition = keys[i] + " = ?";
+				addFilterParam(val);
+			}
+
+			filterSql += condition;
+			firstTime = false;
+		}
+	}
+
+	return filterSql;
+}
+
+//TODO add array support in dirigible
+function addArrayValuesToSql(array) {
+	var inStatement = ' IN (';
+	var firstTime = true;
+	array.forEach(element => {
+
+		if (!firstTime) {
+			inStatement += ', ';
+		}
+
+		if (isNaN(element)) {
+			inStatement += "'" + element + "'";
+		} else {
+			inStatement += element;
+		}
+
+		firstTime = false;
+	})
+
+	inStatement += ')';
+
+	return inStatement;
+}
+
+function initFilterSql() {
+	filterSqlParams = [];
+	filterSql = "SELECT * FROM GENETYLLIS_PATIENT GP " +
+		"LEFT JOIN GENETYLLIS_CLINICALHISTORY GC ON GP.PATIENT_ID = GC.CLINICALHISTORY_PATIENTID " +
+		"LEFT JOIN GENETYLLIS_FAMILYHISTORY GF ON GP.PATIENT_ID = GF.FAMILYHISTORY_FAMILYMEMBERID " +
+		"LEFT JOIN GENETYLLIS_PATHOLOGY GPT ON GC.CLINICALHISTORY_PATHOLOGYID = GPT.PATHOLOGY_ID " +
+		"LEFT JOIN GENETYLLIS_VARIANTRECORD GVR ON GP.PATIENT_ID = GVR.VARIANTRECORD_PATIENTID " +
+		"LEFT JOIN GENETYLLIS_VARIANT GV ON GVR.VARIANTRECORD_VARIANTID = GV.VARIANT_ID";
+}
+
+function addFilterParam(param) {
+	if (isNaN(param)) {
+		filterSqlParams.push(param.toString());
+	} else {
+		filterSqlParams.push(param);
+	}
 }
 
 function triggerEvent(operation, data) {
