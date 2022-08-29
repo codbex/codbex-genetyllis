@@ -11,6 +11,7 @@
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
         <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../Variants/css/style.css">
 
         <title>Document</title>
     </head>
@@ -27,16 +28,26 @@
                         </div>
                         <div class="row">
                             <div class="col-8">
+                                <input type=" text" class="form-control" placeholder="Enter LabId" ng-model="LabId"
+                                    required ng-blur="existsLabId()"
+                                    style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
                                 <input list="dataList" ng-model='selectedLabId' class="form-control"
                                     placeholder="LabID" />
                                 <datalist id="dataList">
                                     <option ng-repeat="x in labIds">{{x}}</option>
                                 </datalist>
                             </div>
+
                             <div class="col-4">
+                                <button type="button" class="btn btn-secondary filterBtn"
+                                    ng-click="addLabId()">Add</button>
                                 <button type="button" class="btn btn-secondary filterBtn"
                                     ng-click=addLabIdFilter(selectedLabId)>Add</button>
                             </div>
+                        </div>
+                        <div class="addedText">
+                            <span ng-repeat="i in addedLabId track by $index"
+                                ng-click="removeLabId($index)">{{i}}</span>
                         </div>
                     </div>
                 </div>
@@ -81,6 +92,8 @@
                         <div class="row">
                             <div class="col-3">
                                 <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="male"
+                                        [checked]="isMaleChecked">
                                     <input type="radio" ng-model="GENETYLLIS_PATIENT.PATIENT_GENDERID" name="drone"
                                         value="1" id="male">
                                     <label class="form-check-label" for="male">
@@ -90,6 +103,11 @@
                             </div>
                             <div class="col-3">
                                 <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" [checked]="isFemaleChecked"
+                                        ng-click="checkedV()" value="" id="female">
+                                    <label class="form-check-label" for="female">
+                                        Female
+                                    </label>
                                     <input type="radio" id="female" name="drone" value="2"
                                         ng-model="GENETYLLIS_PATIENT.PATIENT_GENDERID">
                                     <label for="female">Female</label>
@@ -97,6 +115,11 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" [checked]="isOtherGenderChecked"
+                                        value="" id="nonspecifed-gender">
+                                    <label class="form-check-label" for="nonspecifed-gender">
+                                        Nonspecifed gender
+                                    </label>
                                     <input type="radio" id="other" name="drone" value="3"
                                         ng-model="GENETYLLIS_PATIENT.PATIENT_GENDERID">
                                     <label for="other">Other</label>
@@ -143,6 +166,9 @@
                         </div>
                         <div class="row">
                             <div class="col-8">
+                                <input type=" text" class="form-control" placeholder="Enter Id"
+                                    ng-model="ClinicalHistoryId" required ng-blur="exists()"
+                                    style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
                                 <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
                                     placeholder="Concept ID" />
                                 <datalist id="dataList">
@@ -150,6 +176,12 @@
                                 </datalist>
                             </div>
                             <div class="col-4">
+                                <button type="button" class="btn btn-secondary filterBtn"
+                                    ng-click="addClinicalHistoryId()">Add</button>
+                            </div>
+                            <div class="addedText">
+                                <span ng-repeat="i in addedClinicalHistoryId track by $index"
+                                    ng-click="removeClinicalHistoryId($index)">{{i}}</span>
                                 <button type="button" class="btn btn-secondary filterBtn"
                                     ng-click=addClinicalHistoryCuiFilter(selectedPatientConceptId)>Add</button>
                             </div>
@@ -183,6 +215,9 @@
                         </div>
                         <div class="row">
                             <div class="col-8">
+                                <input type=" text" class="form-control" placeholder="Enter Id"
+                                    ng-model="FamiliHistoryId" required ng-blur="existsLabId()"
+                                    style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
                                 <input list="dataList" ng-model='selectedFamilyConceptId' class="form-control"
                                        placeholder="Concept ID" />
                                 <datalist id="dataList">
@@ -190,6 +225,12 @@
                                 </datalist>
                             </div>
                             <div class="col-4">
+                                <button type="button" class="btn btn-secondary filterBtn"
+                                    ng-click="addFamilyHistoryId()">Add</button>
+                            </div>
+                            <div class="addedText">
+                                <span ng-repeat="i in addedFamilyHistoryId track by $index"
+                                    ng-click="removeFamilyHistoryId($index)">{{i}}</span>
                                 <button type="button" class="btn btn-secondary filterBtn"
                                     ng-click=addFamilyHistoryCuiFilter(selectedFamilyConceptId)>Add</button>
                             </div>
@@ -239,7 +280,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="holder">
+                <!-- <div class="holder">
                     <div class="container">
                         <div class="row">
                             <div class="col">
@@ -250,15 +291,49 @@
                         </div>
                         <div class="row">
                             <div class="col-8">
-                                <input list="dataList" ng-model='selectedHgvs' class="form-control"
-                                       placeholder="HGVS" />
-                                <datalist id="dataList">
-                                    <option ng-repeat="x in hgvs">{{x}}</option>
-                                </datalist>
+                                <input type=" text" class="form-control" placeholder="Enter Id" ng-model="VariantId"
+                                    required ng-blur="existsLabId()"
+                                    style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
                             </div>
                             <div class="col-4">
-                                <button type="button" class="btn btn-secondary filterBtn"
-                                        ng-click=addVariantHgvsFilter(selectedHgvs)>Add</button>
+                                <button ng-click="addVariantId()" type="button"
+                                    class="btn btn-secondary filterBtn">Add</button>
+                            </div>
+                            <div class="addedText">
+                                <span ng-repeat="i in addedVariantId track by $index"
+                                    ng-click="removeVariantId($index)">{{i}}</span>
+                            </div>
+                            <select class="form-select form-control" ng-click="addVariantId($index)"
+                                ng-model="selectedVariant" data-error="Select a Product!" tabindex="1">
+                                <option selected>Columns</option>
+                                <option ng-repeat=" chrom in chromList" ng-model="chrom">{{chrom}}</option>
+                            </select>
+                            <div class="addedText">
+                                <span ng-repeat="i in addedVariantId track by $index"
+                                    ng-click="removeVariantId($index)">{{i}}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> -->
+                <div class="holder">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h5>Chromosome</h5>
+                            </div>
+                            <div class="col">
+                                <h5>Position</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <input type="number" min="0" class="form-control" />
+                            </div>
+                            <div class="col">
+                                <input type="number" min="0" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -267,7 +342,41 @@
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                <button type="button" class="btn btn-link">Clear all filters</button>
+                                <select class="form-select form-control">
+                                    <option selected>Select</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                                <input list="dataList" ng-model='selectedHgvs' class="form-control"
+                                       placeholder="HGVS" />
+                                <datalist id="dataList">
+                                    <option ng-repeat="x in hgvs">{{x}}</option>
+                                </datalist>
+                            </div>
+                            <div class="align-paragraph col-1">
+                                <p class="">></p>
+                            </div>
+                            <div class="col">
+                                <select class="form-select form-control">
+                                    <option selected>Select</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-secondary filterBtn"
+                                        ng-click=addVariantHgvsFilter(selectedHgvs)>Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" holder">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <button ng-click="clearAllFilters()" type="button" class="btn btn-link">Clear all
+                                    filters</button>
                             </div>
                             <div class="col">
                                 <button ng-click="filter()" type="button"
@@ -312,6 +421,7 @@
                 </div>
             </div>
         </div>
+
 
 
         <script type="text/javascript" src="js/index.js"></script>
