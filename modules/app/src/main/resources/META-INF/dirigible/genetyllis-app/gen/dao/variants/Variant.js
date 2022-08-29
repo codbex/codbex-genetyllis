@@ -15,6 +15,7 @@ var daoApi = require("db/v4/dao");
 
 var filterSql = "";
 var filterSqlParams = [];
+var useWhere = true;
 
 var dao = daoApi.create({
 	table: "GENETYLLIS_VARIANT",
@@ -156,11 +157,10 @@ exports.filterVariants = function (variant) {
 
 function buildFilterSql(object) {
 	var keys = Object.keys(object);
-	var firstTime = true;
 	for (var i = 0; i < keys.length; i++) {
 		var val = object[keys[i]];
 		if (val !== undefined && val !== '' && val.length > 0) {
-			if (firstTime) {
+			if (useWhere) {
 				filterSql += " WHERE ";
 			} else {
 				filterSql += " AND ";
@@ -185,7 +185,7 @@ function buildFilterSql(object) {
 			}
 
 			filterSql += condition;
-			firstTime = false;
+			useWhere = false;
 		}
 	}
 
@@ -217,6 +217,7 @@ function addArrayValuesToSql(array) {
 }
 
 function initFilterSql() {
+	useWhere = true;
 	filterSqlParams = [];
 	filterSql = "SELECT * FROM GENETYLLIS_VARIANT GV " +
 		"LEFT JOIN GENETYLLIS_GENE GG ON GV.VARIANT_GENEID = GG.GENE_ID " +

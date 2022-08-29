@@ -16,6 +16,7 @@ var EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
 
 var filterSql = "";
 var filterSqlParams = [];
+var useWhere = true;
 
 var dao = daoApi.create({
 	table: "GENETYLLIS_PATIENT",
@@ -156,11 +157,10 @@ exports.filterPatients = function (patient) {
 
 function buildFilterSql(object) {
 	var keys = Object.keys(object);
-	var firstTime = true;
 	for (var i = 0; i < keys.length; i++) {
 		var val = object[keys[i]];
 		if (val !== undefined && val !== '' && val.length > 0) {
-			if (firstTime) {
+			if (useWhere) {
 				filterSql += " WHERE ";
 			} else {
 				filterSql += " AND ";
@@ -185,7 +185,7 @@ function buildFilterSql(object) {
 			}
 
 			filterSql += condition;
-			firstTime = false;
+			useWhere = false;
 		}
 	}
 
@@ -217,6 +217,7 @@ function addArrayValuesToSql(array) {
 }
 
 function initFilterSql() {
+	useWhere = true;
 	filterSqlParams = [];
 	filterSql = "SELECT * FROM GENETYLLIS_PATIENT GP " +
 		"LEFT JOIN GENETYLLIS_CLINICALHISTORY GC ON GP.PATIENT_ID = GC.CLINICALHISTORY_PATIENTID " +
