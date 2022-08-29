@@ -13,6 +13,9 @@ var query = require("db/v4/query");
 var producer = require("messaging/v4/producer");
 var daoApi = require("db/v4/dao");
 
+var filterSql = "";
+var filterSqlParams = [];
+
 var dao = daoApi.create({
 	table: "GENETYLLIS_VARIANT",
 	properties: [
@@ -73,15 +76,15 @@ var dao = daoApi.create({
 		}]
 });
 
-exports.list = function(settings) {
+exports.list = function (settings) {
 	return dao.list(settings);
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	return dao.find(id);
 };
 
-exports.create = function(entity) {
+exports.create = function (entity) {
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
 		table: "GENETYLLIS_VARIANT",
@@ -94,7 +97,7 @@ exports.create = function(entity) {
 	return id;
 };
 
-exports.update = function(entity) {
+exports.update = function (entity) {
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_VARIANT",
@@ -106,7 +109,7 @@ exports.update = function(entity) {
 	});
 };
 
-exports.delete = function(id) {
+exports.delete = function (id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
 		table: "GENETYLLIS_VARIANT",
@@ -118,11 +121,11 @@ exports.delete = function(id) {
 	});
 };
 
-exports.count = function() {
+exports.count = function () {
 	return dao.count();
 };
 
-exports.customDataCount = function() {
+exports.customDataCount = function () {
 	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_VARIANT");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
@@ -133,6 +136,103 @@ exports.customDataCount = function() {
 	}
 	return 0;
 };
+
+exports.filterVariants = function (variant) {
+	initFilterSql();
+
+	buildFilterSql(variant.GENETYLLIS_VARIANT);
+	buildFilterSql(variant.GENETYLLIS_GENE);
+	buildFilterSql(variant.GENETYLLIS_PATHOLOGY);
+	buildFilterSql(variant.GENETYLLIS_SIGNIFICANCE);
+	buildFilterSql(variant.GENETYLLIS_ALLELEFREQUENCY);
+
+	filterSql += " LIMIT " + variant.perPage + " OFFSET " + variant.currentPage;
+
+	var resultSet = query.execute(filterSql, filterSqlParams);
+
+	filterSql = "";
+	return resultSet;
+}
+
+function buildFilterSql(object) {
+	var keys = Object.keys(object);
+	var firstTime = true;
+	for (var i = 0; i < keys.length; i++) {
+		var val = object[keys[i]];
+		if (val !== undefined && val !== '' && val.length > 0) {
+			if (firstTime) {
+				filterSql += " WHERE ";
+			} else {
+				filterSql += " AND ";
+			}
+
+			condition = '';
+
+			if (Array.isArray(val)) {
+				condition = keys[i] + addArrayValuesToSql(val);
+
+			} else if (keys[i].toString().endsWith('_TO')) {
+				condition = keys[i].slice(0, -3) + "<= ?";
+				addFilterParam(val);
+
+			} else if (keys[i].toString().endsWith('_FROM')) {
+				condition = keys[i].slice(0, -5) + ">= ?";
+				addFilterParam(val);
+
+			} else {
+				condition = keys[i] + " = ?";
+				addFilterParam(val);
+			}
+
+			filterSql += condition;
+			firstTime = false;
+		}
+	}
+
+	return filterSql;
+}
+
+//TODO add array support in dirigible
+function addArrayValuesToSql(array) {
+	var inStatement = ' IN (';
+	var firstTime = true;
+	array.forEach(element => {
+
+		if (!firstTime) {
+			inStatement += ', ';
+		}
+
+		if (isNaN(element)) {
+			inStatement += "'" + element + "'";
+		} else {
+			inStatement += element;
+		}
+
+		firstTime = false;
+	})
+
+	inStatement += ')';
+
+	return inStatement;
+}
+
+function initFilterSql() {
+	filterSqlParams = [];
+	filterSql = "SELECT * FROM GENETYLLIS_VARIANT GV " +
+		"LEFT JOIN GENETYLLIS_GENE GG ON GV.VARIANT_GENEID = GG.GENE_ID " +
+		"LEFT JOIN GENETYLLIS_CLINICALSIGNIFICANCE GC ON GV.VARIANT_ID = GC.CLINICALSIGNIFICANCE_VARIANTID " +
+		"LEFT JOIN GENETYLLIS_PATHOLOGY GP ON GC.CLINICALSIGNIFICANCE_PATHOLOGYID = GP.PATHOLOGY_ID " +
+		"LEFT JOIN GENETYLLIS_SIGNIFICANCE GS ON GC.CLINICALSIGNIFICANCE_SIGNIFICANCEID = GS.SIGNIFICANCE_ID " +
+		"LEFT JOIN GENETYLLIS_ALLELEFREQUENCY GA ON GV.VARIANT_ID = GA.ALLELEFREQUENCY_VARIANTID";
+}
+
+function addFilterParam(param) {
+	if (isNaN(param)) {
+		filterSqlParams.push(param.toString());
+	} else {
+		filterSqlParams.push(param);
+	}
+}
 
 function triggerEvent(operation, data) {
 	producer.queue("genetyllis-app/variants/Variant/" + operation).send(JSON.stringify(data));
