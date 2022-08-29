@@ -9,7 +9,10 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-var addPatient = angular.module("addPatient", []);
+
+
+
+var addPatient = angular.module("addPatient", ["ngAnimate", 'dx']);
 addPatient.directive('ngConfirmClick', [
     function () {
         return {
@@ -24,6 +27,7 @@ addPatient.directive('ngConfirmClick', [
             }
         };
     }])
+
 addPatient.controller('addPatientController', ['$scope', '$http', function ($scope, $http) {
 
     var api = "/services/v4/js/Home-page/services/patientInfo.js";
@@ -89,6 +93,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     };
 
     function persistClinicalHistory(clinicalHistoryDataArray, patientId) {
+
         clinicalHistoryDataArray.forEach(clinicalHistory => {
             clinicalHistory.PatientId = patientId;
             $http.post(clinicalHistroryApi, JSON.stringify(clinicalHistory))
@@ -181,6 +186,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     }
 
     // Clinical History
+
     function clinicalHistroryLoad() {
 
         $http.get(clinicalHistroryApi)
@@ -193,6 +199,8 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     $scope.deleteClinicalHistory = function (history) {
         const index = this.clinicalHistoryDataArray.indexOf(history);
         this.clinicalHistoryDataArray.splice(index, 1);
+        if ($scope.clinicalHistoryDataArray.length === 0) $scope.isEmptyTableClinicalHistory = false
+        console.log($scope.clinicalHistoryDataArray.length)
     }
 
     $scope.deleteFamilyHistory = function (history) {
@@ -209,9 +217,17 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
         if ($scope.familyMembersArray.length === 0) $scope.isEmptyTableFamilyMember = false;
 
     }
-
+    // add Entry Clinical history || check is empty
+    $scope.isEmptyTableClinicalHistory = false
     $scope.addEntryClinicalHistory = function () {
         $scope.clinicalHistoryDataArray.push($scope.clinicalHistoryData);
+        if ($scope.clinicalHistoryDataArray.length === 0) {
+            $scope.isEmptyTableClinicalHistory = false
+
+        }
+
+
+        $scope.isEmptyTableClinicalHistory = true
         $scope.clinicalHistoryData = {};
     };
 
@@ -221,6 +237,15 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
         $scope.isEmptyTableFamilyHistory = true;
         $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.push($scope.familyClinicalHistoryData);
 
+
+        // editFamilyHistoryEntry
+
+        $scope.editFamilyHistoryEntry = function (index) {
+            console.log(index);
+            console.log($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray[index]);
+
+        }
+
         if ($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.lenght === 0) $scope.isEmptyTableFamilyHistory = false;
         $scope.familyClinicalHistoryData = {};
     };
@@ -229,6 +254,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     $scope.addEntryFamilyMember = function () {
         $scope.familyMembersArray.push(angular.copy($scope.familyClinicalHistoryDataArray));
         $scope.familyClinicalHistoryData = {};
+
         $scope.familyClinicalHistoryDataArray = {
             Id: '',
             LabId: '',
@@ -238,7 +264,12 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
             FamilyMemberId: '',
             ClinicalHistoryDataArray: []
         };
+        console.log($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray)
+        if ($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.length === 0) {
+            $scope.isEmptyTableFamilyHistory = false
+        }
         $scope.isEmptyTableFamilyMember = true;
+
 
     };
 
@@ -316,4 +347,81 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     function validateSuggestion(suggestion) {
         return suggestion.length > 3;
     }
+
+
+    $scope.dataGridOptionsClinicalHistory = {
+        dataSource: $scope.clinicalHistoryDataArray,
+        showBorders: true,
+        paging: {
+            enabled: false,
+        },
+        editing: {
+            mode: 'row',
+            allowUpdating: true,
+            allowDeleting: true,
+            allowAdding: true,
+        },
+        columns: [
+            {
+                dataField: 'PathologyCui',
+                caption: 'Concept ID',
+            },
+            {
+                dataField: 'PathologyName',
+                caption: 'Disease',
+            }, {
+                caption: 'Age of Onset',
+                dataField: 'AgeOnset',
+            },
+            {
+                caption: 'Addition Info',
+                dataField: 'Notes',
+            },
+
+        ],
+        onEditingStart() {
+        },
+        onInitNewRow() {
+        },
+        onRowInserting() {
+        },
+        onRowInserted() {
+        },
+        onRowUpdating() {
+        },
+        onRowUpdated() {
+        },
+        onRowRemoving() {
+        },
+        onRowRemoved() {
+            isEmptyTableClinicalHistory = false;
+            console.log(isEmptyTableClinicalHistory)
+            console.log("pesho")
+        },
+        onSaving() {
+        },
+        onSaved() {
+        },
+        onEditCanceling() {
+        },
+        onEditCanceled() {
+        },
+
+    };
+
+    $("#clinical-history-entry").on("click", function () {
+        $("#gridContainer").dxDataGrid("instance").refresh();
+
+        console.log($scope.clinicalHistoryDataArray.length)
+    });
+
+    $(".dx-link-delete").on('click',
+        function () {
+            console.log("PEsh")
+            // var btns = $('.dx-dialog-button');
+            // btns.last().text('No thanks');
+            // btns.first().text('Yes please');
+        }
+    );
 }]);
+

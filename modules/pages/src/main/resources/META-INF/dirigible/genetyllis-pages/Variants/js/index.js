@@ -20,4 +20,5 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
             $scope.variants = data.data;
             console.log("Hello", $scope.variants)
         });
+
 }]);

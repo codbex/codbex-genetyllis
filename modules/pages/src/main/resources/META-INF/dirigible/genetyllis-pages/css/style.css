@@ -147,3 +147,26 @@
 .patientDetails {
   margin-bottom: 20px;
 }
+
+.addedText span {
+  color: #c7c2bb;
+  position: relative;
+  padding-right: 5px;
+}
+
+.addedText span:hover {
+  color: #928f8c;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.addedText span:hover:after {
+  content: " x";
+  font-size: 10px;
+  top: -4px;
+  right: 0;
+  position: absolute;
+}
+.addedText span:not(:first-child):before {
+  content: ", ";
+}

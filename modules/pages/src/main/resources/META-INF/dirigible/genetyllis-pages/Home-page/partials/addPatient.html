@@ -14,13 +14,17 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+        <script src="https://code.angularjs.org/1.8.2/angular-animate.js"></script>
         <link type="text/css" rel="stylesheet" href="../css/addPatient.css" />
         <link type="text/css" rel="stylesheet" href="../../css/style.css" />
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/22.1.4/css/dx.common.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/22.1.4/css/dx.light.css" />
+        <script src="https://cdn3.devexpress.com/jslib/22.1.4/js/dx.all.js"></script>
 
     </head>
 
-    <body ng-controller='addPatientController'>
+    <body ng-controller='addPatientController' class="dx-viewport">
         <div class="patient-wrapper">
             <div class="container">
                 <div class="row">
@@ -137,15 +141,58 @@
                                     <div class="row">
                                         <div class="col-3">
                                             <input type="submit" value="Add entry" ng-click="addEntryClinicalHistory()"
-                                                class="btn btn-primary filterBtn addFilter">
+                                                class="btn btn-primary filterBtn addFilter" id="clinical-history-entry">
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder" ng-show="isEmptyTableClinicalHistory">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <!-- <table fd-table display-mode="compact" class="table table-bordered">
+                                                <thead fd-table-header sticky="true">
+                                                    <tr fd-table-row>
+                                                        <th fd-table-header-cell>Concept ID</th>
+                                                        <th fd-table-header-cell>Disease</th>
+                                                        <th fd-table-header-cell>Age of Onset</th>
+                                                        <th fd-table-header-cell>Addition Info</th>
+                                                        <th fd-table-header-cell colspan="2"></th>
+                                                    </tr>
+                                                </thead> -->
+
+                                            <!-- TODO editable table ---------------------------------------- -->
+                                            <!-- <tbody fd-table-body>
+                                                    <tr fd-table-row ng-repeat="next in clinicalHistoryDataArray"
+                                                        hoverable="true">
+                                                        <td fd-table-cell>{{next.PathologyCui}}</td>
+                                                        <td fd-table-cell>{{next.PathologyName}}</td>
+                                                        <td fd-table-cell>{{next.AgeOnset}}</td>
+                                                        <td fd-table-cell>{{next.Notes}}</td>
+                                                        <td><button id="remove"
+                                                                ng-click="deleteClinicalHistory(next)">DELETE</button>
+                                                        </td>
+                                                        <td><button id="edit"
+                                                                ng-click="editClinicalHistoryEntry($index)">EDIT</button>
+                                                        </td>                                                      
+                                                    </tr>
+                                                </tbody>
+                                            </table> -->
+                                            <div ng-show="isEmptyTableClinicalHistory" id="gridContainer"
+                                                dx-data-grid="dataGridOptionsClinicalHistory">
+                                            </div>
+                                            <ul>
+                                                <!-- <li ng-repeat="event in events track by $index">{{event}}</li> -->
+                                                <!-- <li ng-repeat="event in testFamilyHistory">{{event}}</li> -->
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    <!-- --------------------------------------------------- -->
                     <div class="col-6">
                         <div class="border-content">
                             <div class="header content">
@@ -256,7 +303,9 @@
                                                         <td><button id="remove"
                                                                 ng-click="deleteFamilyHistory(next)">DELETE</button>
                                                         </td>
-                                                        <td><button id="edit">EDIT</button></td>
+                                                        <td><button id="edit"
+                                                                ng-click="editFamilyHistoryEntry($index)">EDIT</button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -267,7 +316,8 @@
                                                     class="btn btn-primary filterBtn addFilter">
                                             </div>
 
-                                            <table fd-table display-mode="compact" ng-show="isEmptyTableFamilyMember">
+                                            <table fd-table display-mode="compact" ng-show="isEmptyTableFamilyMember"
+                                                class="table table-bordered">
                                                 <thead fd-table-header sticky="true">
                                                     <tr fd-table-row>
                                                         <th fd-table-header-cell>Lab ID</th>
@@ -306,8 +356,10 @@
                                                             </table>
                                                         </td>
                                                         <td><button id="remove"
-                                                                ng-click="deleteFamilyMember(next)">DELETE</button></td>
-                                                        <td><button id="edit">EDIT</button></td>
+                                                                ng-click="deleteFamilyMember(next)">DELETE</button>
+                                                        </td>
+                                                        <td><button id="edit">EDIT</button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -345,10 +397,6 @@
                 </div>
             </div>
         </div>
-        <!-- Patient Details -->
-
-
-
 
         <style>
             /* Chrome, Safari, Edge, Opera */
@@ -365,6 +413,9 @@
 
         </style>
         <script src="../js/addPatient.js"></script>
+        <script type="text/javascript">
+
+        </script>
     </body>
 
 </html>
