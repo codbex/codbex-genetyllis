@@ -159,24 +159,24 @@ function buildFilterSql(object) {
 	var keys = Object.keys(object);
 	for (var i = 0; i < keys.length; i++) {
 		var val = object[keys[i]];
-		if (val !== undefined && val !== '' && val.length > 0) {
+		if (Array.isArray(val) ? (val.length > 0) : (val !== undefined && val !== '' && val !== null)) {
 			if (useWhere) {
 				filterSql += " WHERE ";
 			} else {
 				filterSql += " AND ";
 			}
 
-			condition = '';
+			condition = "";
 
 			if (Array.isArray(val)) {
 				condition = keys[i] + addArrayValuesToSql(val);
 
 			} else if (keys[i].toString().endsWith('_TO')) {
-				condition = keys[i].slice(0, -3) + "<= ?";
+				condition = keys[i].slice(0, -3) + " <= ?";
 				addFilterParam(val);
 
 			} else if (keys[i].toString().endsWith('_FROM')) {
-				condition = keys[i].slice(0, -5) + ">= ?";
+				condition = keys[i].slice(0, -5) + " >= ?";
 				addFilterParam(val);
 
 			} else {
@@ -192,26 +192,15 @@ function buildFilterSql(object) {
 	return filterSql;
 }
 
-//TODO add array support in dirigible
 function addArrayValuesToSql(array) {
-	var inStatement = ' IN (';
-	var firstTime = true;
+	var inStatement = " IN (";
 	array.forEach(element => {
-
-		if (!firstTime) {
-			inStatement += ', ';
-		}
-
-		if (isNaN(element)) {
-			inStatement += "'" + element + "'";
-		} else {
-			inStatement += element;
-		}
-
-		firstTime = false;
+		inStatement += "?,";
+		addFilterParam(element);
 	})
 
-	inStatement += ')';
+	inStatement = inStatement.slice(0, -1)
+	inStatement += ")";
 
 	return inStatement;
 }
