@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../Variants/css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -13,6 +12,11 @@
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../Variants/css/style.css">
 
+        <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap.js"></script>
+
+        <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.5/pagination.min.js"></script>
         <title>Document</title>
     </head>
 
@@ -28,9 +32,6 @@
                         </div>
                         <div class="row">
                             <div class="col-8">
-                                <input type=" text" class="form-control" placeholder="Enter LabId" ng-model="LabId"
-                                    required ng-blur="existsLabId()"
-                                    style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
                                 <input list="dataList" ng-model='selectedLabId' class="form-control"
                                     placeholder="LabID" />
                                 <datalist id="dataList">
@@ -40,42 +41,40 @@
 
                             <div class="col-4">
                                 <button type="button" class="btn btn-secondary filterBtn"
-                                    ng-click="addLabId()">Add</button>
-                                <button type="button" class="btn btn-secondary filterBtn"
                                     ng-click=addLabIdFilter(selectedLabId)>Add</button>
                             </div>
                         </div>
                         <div class="addedText">
-                            <span ng-repeat="i in addedLabId track by $index"
+                            <span ng-repeat="i in GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID track by $index"
                                 ng-click="removeLabId($index)">{{i}}</span>
                         </div>
                     </div>
                 </div>
                 <div class="holder">
                     <div class="container">
-                        <div class="row">
+                        <div class="row ">
                             <div class="col">
                                 <h5>
                                     Date of birth
                                 </h5>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row date-of-birth">
                             <div class="col-2 align-paragraph">
                                 <p>From</p>
                             </div>
                             <div class="col-4">
                                 <input type="text" class="form-control" placeholder="Date"
-                                   ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_FROM" onfocus="(this.type='date')"
-                                   onblur="(this.type='text')" required>
+                                    ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_FROM" onfocus="(this.type='date')"
+                                    onblur="(this.type='text')" required ng-change="dateFrom()">
                             </div>
                             <div class="col-2 align-paragraph">
                                 <p>to</p>
                             </div>
                             <div class="col-4">
                                 <input type="text" class="form-control" placeholder="Date"
-                                   ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_TO" onfocus="(this.type='date')"
-                                   onblur="(this.type='text')" required>
+                                    ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_TO" onfocus="(this.type='date')"
+                                    onblur="(this.type='text')" required ng-change="dateTo()">
                             </div>
                         </div>
                     </div>
@@ -85,202 +84,187 @@
                         <div class="row">
                             <div class="col">
                                 <h5>
-                                    Gender
+                                    Population
                                 </h5>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="male"
-                                        [checked]="isMaleChecked">
-                                    <input type="radio" ng-model="GENETYLLIS_PATIENT.PATIENT_GENDERID" name="drone"
-                                        value="1" id="male">
-                                    <label class="form-check-label" for="male">
+                                    <input class="form-check-input" type="checkbox" ng-click="maleFunc()"" ng-model="
+                                        maleCheckbox" id="male">
+                                    <label class="form-check-label" for="male" ">
                                         Male
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" [checked]="isFemaleChecked"
-                                        ng-click="checkedV()" value="" id="female">
-                                    <label class="form-check-label" for="female">
-                                        Female
-                                    </label>
-                                    <input type="radio" id="female" name="drone" value="2"
-                                        ng-model="GENETYLLIS_PATIENT.PATIENT_GENDERID">
-                                    <label for="female">Female</label>
+                            <div class=" col-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="female"
+                                                ng-click="femaleFunc()" ng-model="femaleCheckbox">
+                                            <label class="form-check-label" for="female">
+                                                Female
+                                            </label>
+                                        </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" ng-click="otherGenderFunc()"
+                                            ng-model="otherGender" value="" id="nonspecifed-gender">
+                                        <label class="form-check-label" for="nonspecifed-gender">
+                                            Nonspecifed gender
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" [checked]="isOtherGenderChecked"
-                                        value="" id="nonspecifed-gender">
-                                    <label class="form-check-label" for="nonspecifed-gender">
-                                        Nonspecifed gender
-                                    </label>
-                                    <input type="radio" id="other" name="drone" value="3"
-                                        ng-model="GENETYLLIS_PATIENT.PATIENT_GENDERID">
-                                    <label for="other">Other</label>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked value="" id="bulgarian"
+                                            ng-model="bulgarian" ng-click="bulgarianFunc()">
+                                        <label class="form-check-label" for="bulgarian">
+                                            Bulgarian
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <h5>
-                                    Ethnicity
-                                </h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-check">
-                                    <input type="radio" value="12" name="drone2" id="bulgarian"
-                                        ng-model="GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID">
-                                    <label for="bulgarian">
-                                        Bulgarian
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-check">
-                                    <input type="radio" value="18" name="drone2" id="other-ethnicity"
-                                        ng-model="GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID">
-                                    <label for="other-ethnicity">
-                                        Other ethnicity
-                                    </label>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked value=""
+                                            id="other-ethnicity" ng-click="otherEthnicityFunc()"
+                                            ng-model="otherEthnicity">
+                                        <label class="form-check-label" for="other-ethnicity">
+                                            Other ethnicity
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <h5>
-                                    Clinical history
-                                </h5>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Clinical history
+                                    </h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8">
-                                <input type=" text" class="form-control" placeholder="Enter Id"
-                                    ng-model="ClinicalHistoryId" required ng-blur="exists()"
-                                    style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
-                                <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
-                                    placeholder="Concept ID" />
-                                <datalist id="dataList">
-                                    <option ng-repeat="x in conceptIds">{{x}}</option>
-                                </datalist>
-                            </div>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-secondary filterBtn"
-                                    ng-click="addClinicalHistoryId()">Add</button>
-                            </div>
-                            <div class="addedText">
-                                <span ng-repeat="i in addedClinicalHistoryId track by $index"
-                                    ng-click="removeClinicalHistoryId($index)">{{i}}</span>
-                                <button type="button" class="btn btn-secondary filterBtn"
-                                    ng-click=addClinicalHistoryCuiFilter(selectedPatientConceptId)>Add</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-4 align-paragraph">
-                                <p>Onset from</p>
-                            </div>
-                            <div class="col-3">
-                                <input type="number" min="0" class="form-control" />
-                            </div>
-                            <div class="col-1 align-paragraph">to</div>
-                            <div class="col-3">
-                                <input type="number" min="0" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <h5>
-                                    Family history
-                                </h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8">
-                                <input type=" text" class="form-control" placeholder="Enter Id"
-                                    ng-model="FamiliHistoryId" required ng-blur="existsLabId()"
-                                    style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
-                                <input list="dataList" ng-model='selectedFamilyConceptId' class="form-control"
-                                       placeholder="Concept ID" />
-                                <datalist id="dataList">
-                                    <option ng-repeat="x in conceptIds">{{x}}</option>
-                                </datalist>
-                            </div>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-secondary filterBtn"
-                                    ng-click="addFamilyHistoryId()">Add</button>
-                            </div>
-                            <div class="addedText">
-                                <span ng-repeat="i in addedFamilyHistoryId track by $index"
-                                    ng-click="removeFamilyHistoryId($index)">{{i}}</span>
-                                <button type="button" class="btn btn-secondary filterBtn"
-                                    ng-click=addFamilyHistoryCuiFilter(selectedFamilyConceptId)>Add</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-4 align-paragraph">
-                                <p>Onset from</p>
-                            </div>
-                            <div class="col-3">
-                                <input type="number" min="0" class="form-control" />
-                            </div>
-                            <div class="col-1 align-paragraph">to</div>
-                            <div class="col-3">
-                                <input type="number" min="0" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" checked value="" id="male" checked>
-                                    <label class="form-check-label" for="male">
-                                        Whole Genome Sequencing (WGS)
-                                    </label>
+                            <div class="row">
+                                <div class="col-8">
+                                    <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
+                                        placeholder="Concept ID" />
+                                    <datalist id="dataList">
+                                        <option ng-repeat="x in conceptIds">{{x}}</option>
+                                    </datalist>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn"
+                                        ng-click="addClinicalHistoryId()">Add</button>
+                                </div>
+                                <div class="addedText">
+                                    <span ng-repeat="i in GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI track by $index"
+                                        ng-click="removeClinicalHistoryId($index)">{{i}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <p>Date of analysis</p>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" placeholder="Date" ng-model="entity.BirthDate"
-                                    onfocus="(this.type='date')" onblur="(this.type='text')" required>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row date-of-birth">
+                                <div class="col-3 align-paragraph">
+                                    <p>Onset from</p>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" min="0" class="form-control"
+                                        ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM"
+                                        ng-change="ageFrom()" />
+                                </div>
+                                <div class="col-1 align-paragraph">to</div>
+                                <div class="col-4">
+                                    <input type="number" min="0" class="form-control"
+                                        ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO"
+                                        ng-change="ageTO()" />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- <div class="holder">
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Family history
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+
+                                    <input list="dataList" ng-model="selectedFamilyConceptId" class="form-control"
+                                        placeholder="Concept ID" />
+                                    <datalist id="dataList">
+                                        <option ng-repeat="x in conceptIds">{{x}}</option>
+                                    </datalist>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn"
+                                        ng-click="addFamilyHistoryId()">Add</button>
+                                </div>
+                                <div class="addedText">
+                                    <span ng-repeat="i in GENETYLLIS_FAMILYHISTORY.PATHOLOGY_CUI track by $index"
+                                        ng-click="removeFamilyHistoryId($index)">{{i}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 align-paragraph">
+                                    <p>Onset from</p>
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control"
+                                        ng-model="GENETYLLIS_FAMILYHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM" />
+                                </div>
+                                <div class="col-1 align-paragraph">to</div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control"
+                                        ng-model="GENETYLLIS_FAMILYHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked value="" id="male"
+                                            checked>
+                                        <label class="form-check-label" for="male">
+                                            Whole Genome Sequencing (WGS)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <p>Date of analysis</p>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="holder">
                     <div class="container">
                         <div class="row">
                             <div class="col">
@@ -316,115 +300,108 @@
                         </div>
                     </div>
                 </div> -->
-                <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <h5>Chromosome</h5>
-                            </div>
-                            <div class="col">
-                                <h5>Position</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <input type="number" min="0" class="form-control" />
-                            </div>
-                            <div class="col">
-                                <input type="number" min="0" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <select class="form-select form-control">
-                                    <option selected>Select</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                                <input list="dataList" ng-model='selectedHgvs' class="form-control"
-                                       placeholder="HGVS" />
-                                <datalist id="dataList">
-                                    <option ng-repeat="x in hgvs">{{x}}</option>
-                                </datalist>
-                            </div>
-                            <div class="align-paragraph col-1">
-                                <p class="">></p>
-                            </div>
-                            <div class="col">
-                                <select class="form-select form-control">
-                                    <option selected>Select</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-secondary filterBtn"
-                                        ng-click=addVariantHgvsFilter(selectedHgvs)>Add</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class=" holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <button ng-click="clearAllFilters()" type="button" class="btn btn-link">Clear all
-                                    filters</button>
-                            </div>
-                            <div class="col">
-                                <button ng-click="filter()" type="button"
-                                        class="btn btn-primary filterBtn addFilter">Filter</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="variantTable">
-                <div class="holder">
-                    <div class="row">
-                        <div class="paging">
-                            <div class="select-columns">
-                                <select class="form-select form-control">
-                                    <option selected>Columns</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <div class="per-page">
-                                <div class="align-paragraph">
-                                    <p class="">Showing 120 of 500</p>
+
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Chromosome</h5>
                                 </div>
-                                <div class="export">
+                                <div class="col">
+                                    <h5>Position</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
                                     <input type="number" min="0" class="form-control" />
                                 </div>
-                                <div class="align-paragraph">
-                                    <p>per page</p>
+                                <div class="col">
+                                    <input type="number" min="0" class="form-control" />
                                 </div>
-                                <div class="">
-                                    <button type="button" class="btn btn-primary filterBtn addFilter">Export</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                >
+                                <div class="col">
+                                    <select class="form-select form-control">
+                                        <option selected>Select menu</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="benign">
+                                        <label class="form-check-label" for="benign">
+                                            Flagged for tracking
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="holder">
-                    <div ng-include="'../components/table.html'"></div>
+                <div class="variantTable">
+                    <div class="holder">
+                        <div class="row">
+                            <div class="paging">
+                                <div class="select-columns">
+                                    <select class="form-select form-control">
+                                        <option selected>Columns</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="per-page">
+                                    <div class="align-paragraph">
+                                        <p class="">Showing 120 of 500</p>
+                                    </div>
+                                    <div class="export">
+                                        <input type="number" min="0" class="form-control" />
+                                    </div>
+                                    <div class="align-paragraph">
+                                        <p>per page</p>
+                                    </div>
+                                    <div class="">
+                                        <button type="button"
+                                            class="btn btn-primary filterBtn addFilter">Export</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div ng-include="'../components/table.html'"></div>
 
+                    </div>
+                    <pagination total-items="10" items-per-page="pageSize">10</pagination>
                 </div>
             </div>
-        </div>
 
 
 
-        <script type="text/javascript" src="js/index.js"></script>
+            <script type="text/javascript" src="js/index.js"></script>
     </body>
 
 </html>

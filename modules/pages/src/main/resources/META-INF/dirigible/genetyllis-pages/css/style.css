@@ -170,3 +170,9 @@
 .addedText span:not(:first-child):before {
   content: ", ";
 }
+
+.date-of-birth > div {
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}

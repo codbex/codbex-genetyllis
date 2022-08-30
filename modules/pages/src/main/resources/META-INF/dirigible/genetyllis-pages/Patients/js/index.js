@@ -1,4 +1,4 @@
-var patients = angular.module('patients', []);
+var patients = angular.module('patients', ['ui.bootstrap']);
 
 patients.controller('patientsController', ['$scope', '$http', function ($scope, $http) {
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
@@ -32,8 +32,8 @@ patients.controller('patientsController', ['$scope', '$http', function ($scope, 
         GENETYLLIS_PATIENT_LABID: [],
         PATIENT_AGE_FROM: '',
         PATIENT_AGE_TO: '',
-        PATIENT_GENDERID: '',
-        GENETYLLIS_PATIENT_POPULATIONID: ''
+        PATIENT_GENDERID: [],
+        GENETYLLIS_PATIENT_POPULATIONID: []
     }
 
     $scope.GENETYLLIS_CLINICALHISTORY = {
@@ -90,7 +90,6 @@ patients.controller('patientsController', ['$scope', '$http', function ($scope, 
             });
     }
 
-    $scope.variants
     $http.get(variantDetailsApi)
         .then(function (data) {
             // $scope.pathologyDatas = data.data;
@@ -105,45 +104,59 @@ patients.controller('patientsController', ['$scope', '$http', function ($scope, 
         })
 
 
-
-
-
-
     // LabID
 
-    $scope.addLabId = function () {
+    $scope.addLabIdFilter = function (args) {
 
-        if ($scope.addedLabId.includes($scope.LabId) || $scope.LabId == undefined) return
-        $scope.addedLabId.push($scope.LabId);
+        if ($scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.includes($scope.selectedLabId) || $scope.selectedLabId == '') return
+        $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.push($scope.selectedLabId);
+        console.log($scope.GENETYLLIS_PATIENT);
+        console.log($scope.GENETYLLIS_CLINICALHISTORY);
+        console.log($scope.GENETYLLIS_FAMILYHISTORY);
+
     }
 
     $scope.removeLabId = function (i) {
-        $scope.addedLabId.splice(i, 1);
+        $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.splice(i, 1);
     }
 
     // Clinical History ID
     $scope.removeClinicalHistoryId = function (i) {
-        $scope.addedClinicalHistoryId.splice(i, 1);
+        console.log($scope.GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI, i)
+        $scope.GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI.splice(i, 1);
 
     }
     $scope.addClinicalHistoryId = function () {
 
 
-        if ($scope.addedClinicalHistoryId.includes($scope.ClinicalHistoryId) || $scope.ClinicalHistoryId == undefined) return
 
-        $scope.addedClinicalHistoryId.push($scope.ClinicalHistoryId);
+        if ($scope.GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI.includes($scope.selectedPatientConceptId) || $scope.selectedPatientConceptId == '') return
+
+        $scope.GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI.push($scope.selectedPatientConceptId);
+        console.log($scope.GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI)
     }
 
     // Family History ID
-    $scope.addFamilyHistoryId = function () {
-
-        if ($scope.addedFamilyHistoryId.includes($scope.FamiliHistoryId) || $scope.FamiliHistoryId == undefined) return
-
-        $scope.addedFamilyHistoryId.push($scope.FamiliHistoryId);
-    }
     $scope.removeFamilyHistoryId = function (i) {
-        $scope.addedFamilyHistoryId.splice(i, 1);
+        console.log($scope.GENETYLLIS_FAMILYHISTORY.PATHOLOGY_CUI, i)
+        $scope.GENETYLLIS_FAMILYHISTORY.PATHOLOGY_CUI.splice(i, 1);
+
     }
+    $scope.addFamilyHistoryId = function () {
+        if ($scope.GENETYLLIS_FAMILYHISTORY.PATHOLOGY_CUI.includes($scope.selectedFamilyConceptId) || $scope.selectedFamilyConceptId == '') return
+
+        $scope.GENETYLLIS_FAMILYHISTORY.PATHOLOGY_CUI.push($scope.selectedFamilyConceptId);
+        console.log($scope.GENETYLLIS_FAMILYHISTORY.PATHOLOGY_CUI)
+    }
+    // $scope.addFamilyHistoryId = function () {
+
+    //     if ($scope.addedFamilyHistoryId.includes($scope.FamiliHistoryId) || $scope.FamiliHistoryId == undefined) return
+
+    //     $scope.addedFamilyHistoryId.push($scope.FamiliHistoryId);
+    // }
+    // $scope.removeFamilyHistoryId = function (i) {
+    //     $scope.addedFamilyHistoryId.splice(i, 1);
+    // }
     // Variant
 
     $scope.addVariantId = function (index) {
@@ -163,7 +176,7 @@ patients.controller('patientsController', ['$scope', '$http', function ($scope, 
     }
     $scope.chromList.push(`chrX`)
     $scope.chromList.push(`chrY`)
-    console.log($scope.chromList)
+
 
 
 
@@ -172,10 +185,77 @@ patients.controller('patientsController', ['$scope', '$http', function ($scope, 
         $scope.addedClinicalHistoryId = [];
         $scope.addedFamilyHistoryId = [];
         $scope.addedVariantId = [];
-        $scope.isFemaleChecked = false
+        $scope.maleCheckbox = false;
+        $scope.femaleCheckbox = false;
+        $scope.otherGender = false;
+        $scope.otherEthnicity = false;
+        $scope.bulgarian = false;
     }
-    $scope.checkedV = function () {
-        console.log($scope.isFemaleChecked)
+
+    if ($scope.maleCheckbox == undefined) $scope.maleCheckbox = false;
+    if ($scope.femaleCheckbox == undefined) $scope.femaleCheckbox = false;
+    if ($scope.otherGender == undefined) $scope.otherGender = false;
+    if ($scope.bulgarian == undefined) $scope.bulgarian = false;
+    if ($scope.otherEthnicity == undefined) $scope.otherEthnicity = false;
+    $scope.maleFunc = function () {
+        console.log($scope.maleCheckbox)
+
+        if (!$scope.maleCheckbox) {
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(0)
+        } else {
+            var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(0);
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
+        }
+
     }
+    $scope.femaleFunc = function () {
+        if (!$scope.femaleCheckbox) {
+
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(1)
+        } else {
+            var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(1);
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
+
+        }
+
+    }
+
+    $scope.otherGenderFunc = function () {
+        if (!$scope.otherGender) {
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(2)
+        } else {
+            var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(2);
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
+        }
+
+    }
+
+
+    $scope.bulgarianFunc = function () {
+        if (!$scope.bulgarian) {
+            $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.push(12)
+        } else {
+            // $scope.GENETYLLIS_PATIENT_POPULATIONID.splice(0, 1);
+
+            var index = $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.indexOf(12);
+            $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.splice(index, 1)
+        }
+    }
+
+    $scope.otherEthnicityFunc = function () {
+        if (!$scope.otherEthnicity) {
+            $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.push(18)
+        } else {
+            var index = $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.indexOf(12);
+            $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.splice(index, 1)
+        }
+    }
+
+
+
 }]);
+
+patients.filter('startFrom', function () {
+
+})
 
