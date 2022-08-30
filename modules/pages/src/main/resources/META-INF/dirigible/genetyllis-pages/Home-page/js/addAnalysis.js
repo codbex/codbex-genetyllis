@@ -19,12 +19,17 @@ var addAnalysis = angular.module("addAnalysis", ['ngRoute']);
 //     $locationProvider.html5Mode({ enabled: true, requireBase: false });
 // }])
 addAnalysis.controller('addAnalysisController', ['$scope', '$http', function ($scope, $http) {
+
     const providereDetailsApi = '/services/v4/js/genetyllis-pages/Home-page/services/provider.js';
     const platformDetailsApi = '/services/v4/js/genetyllis-pages/Home-page/services/platform.js';
+    const patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
+
     $scope.providerData;
     $scope.platformData;
     $scope.labIds = []
+    $scope.entity = {};
     $scope.vcfNames = [{ name: "gi" }, { name: "gu" }]
+
     $http.get(providereDetailsApi)
         .then(function (data) {
             // $scope.pathologyDatas = data.data;
@@ -40,5 +45,24 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', function ($s
 
     $scope.getLabId = function () {
         $scope.labIds.push($scope.entity.LabId)
+    }
+
+    $scope.suggestLabId = function (labId) {
+        if (validateSuggestion(labId)) {
+            fetchSimilarLabIds(labId);
+        }
+    }
+
+    function fetchSimilarLabIds(labId) {
+        $http.get(patientsOptionsApi + "/suggestLabIds/" + labId)
+            .then(data => {
+                $scope.labIds = data.data
+            })
+    }
+
+    fetchSimilarLabIds('%');
+
+    function validateSuggestion(suggestion) {
+        return suggestion.length > 3;
     }
 }])

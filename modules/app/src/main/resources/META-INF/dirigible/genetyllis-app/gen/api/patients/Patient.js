@@ -107,6 +107,26 @@ rs.service()
 			http.sendInternalServerError(error.message);
 		}
 	})
+	.resource("suggestLabIds/{labId}")
+	.get(function (ctx) {
+		var labId = ctx.pathParameters.labId;
+		var result = dao.suggestLabIds(labId);
+		if (result) {
+			http.sendResponseOk(result);
+		} else {
+			http.sendResponseNotFound("LabId not found!");
+		}
+	})
+	.produces(["application/json"])
+	.catch(function (ctx, error) {
+		if (error.name === "ForbiddenError") {
+			http.sendForbiddenRequest(error.message);
+		} else if (error.name === "ValidationError") {
+			http.sendResponseBadRequest(error.message);
+		} else {
+			http.sendInternalServerError(error.message);
+		}
+	})
 	.resource("filterPatients")
 	.post(function (ctx, request, response) {
 		var patient = request.getJSON();

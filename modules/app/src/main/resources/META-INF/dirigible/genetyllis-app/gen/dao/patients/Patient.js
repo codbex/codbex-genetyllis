@@ -140,6 +140,13 @@ exports.getPatientAndHistoryByLabId = function (labId) {
 	return resultSet;
 }
 
+exports.suggestLabIds = function (labId) {
+	paramArr = [];
+	paramArr.push('%' + labId + '%')
+	var resultSet = query.execute("SELECT * FROM GENETYLLIS_PATIENT WHERE GENETYLLIS_PATIENT_LABID LIKE ? LIMIT 10", paramArr);
+	return resultSet;
+}
+
 exports.filterPatients = function (patient) {
 	initFilterSql();
 
