@@ -9,8 +9,11 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-var page = angular.module("variant", []);
 
+var page = angular.module("variant", ['ngStorage', 'angularUtils.directives.dirPagination']);
+page.config(function (paginationTemplateProvider) {
+    paginationTemplateProvider.setPath('../components/pagination.html');
+});
 page.controller('VariantController', ['$scope', '$http', function ($scope, $http) {
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';

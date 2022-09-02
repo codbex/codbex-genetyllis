@@ -9,7 +9,7 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-var addAnalysis = angular.module("addAnalysis", ['ngRoute']);
+var addAnalysis = angular.module("addAnalysis", []);
 
 // addAnalysis.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 //     console.log($routeProvider)
@@ -17,7 +17,7 @@ var addAnalysis = angular.module("addAnalysis", ['ngRoute']);
 //     $routeProvider.otherwise({ redirectTo: 'services/v4/web/genetyllis-pages/Home-page/partials/addAnalysis.html' })
 
 //     $locationProvider.html5Mode({ enabled: true, requireBase: false });
-// }])
+// }])z
 addAnalysis.controller('addAnalysisController', ['$scope', '$http', function ($scope, $http) {
     const providereDetailsApi = '/services/v4/js/genetyllis-pages/Home-page/services/provider.js';
     const platformDetailsApi = '/services/v4/js/genetyllis-pages/Home-page/services/platform.js';
@@ -41,4 +41,7 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', function ($s
     $scope.getLabId = function () {
         $scope.labIds.push($scope.entity.LabId)
     }
+
+
 }])
+

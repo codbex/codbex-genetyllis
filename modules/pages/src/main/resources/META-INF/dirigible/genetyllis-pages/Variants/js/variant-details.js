@@ -1,4 +1,8 @@
-var variantDetails = angular.module("variantDetails", []);
+
+var variantDetails = angular.module("variantDetails", ['ngStorage', 'angularUtils.directives.dirPagination']);
+variantDetails.config(function (paginationTemplateProvider) {
+    paginationTemplateProvider.setPath('../../components/pagination.html');
+});
 
 variantDetails.controller('variantDetailsController', ['$scope', '$http', function ($scope, $http) {
     $scope.addColumns = ["PID", "LabID", "DOB", "Gender", "Ethnicity", "Clinical history", "Family history", "Analysis", "Date", "Filter"]

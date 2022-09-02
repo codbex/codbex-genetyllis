@@ -1,4 +1,4 @@
-body {
+/* body {
   margin: 0;
   padding: 0;
 }
@@ -7,7 +7,7 @@ body {
   padding: 0;
 }
 .wrapper {
-  background: #eee;
+  background: #001F38;
   padding: 20px;
 }
 .headerContent {
@@ -29,16 +29,18 @@ body {
 
 .headerWrapper ul li a {
   text-decoration: none;
-  color: rgb(158, 152, 152);
+  color: #fff;
   font-size: 20px;
 }
 
-.headerWrapper ul li a:hover {
-
-  color: #000 !important;
+.headerWrapper ul li a:hover,
+.logOut a:hover {
+  color: #1DB9C3 !important;
 }
-.genHubLogo,
+
 .logOut a {
   text-decoration: none;
-  color: #000;
-}
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+} */
