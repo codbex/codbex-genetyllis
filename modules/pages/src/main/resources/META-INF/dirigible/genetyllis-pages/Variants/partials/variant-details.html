@@ -4,11 +4,19 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../../Variants/css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../../css/style.css">
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+        <link rel="stylesheet" href="../../Variants/css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js">
+        </script>
+
+        <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js"></script>
+
+        <link rel="stylesheet" href="../../css/pagination.css">
 
         <title>Document</title>
     </head>
@@ -16,7 +24,34 @@
 
 
     <body ng-controller="variantDetailsController">
-        <div class="patient-wrapper">
+        <div class="wrapper">
+            <div class="header-wrapper">
+                <div class="genHubLogo">
+                    <img src="../../images/logo.svg" width="120px"></img>
+                </div>
+                <div class="nav-header">
+                    <ul>
+                        <li>
+                            <a href="../../../web/genetyllis-pages/Home-page/index.html">Home</a>
+                        </li>
+                        <li>
+                            <a href="../../../web/genetyllis-pages/Patients/index.html">Patients</a>
+                        </li>
+
+                        <li>
+                            <a href="../../../web/genetyllis-pages/Variants/index.html">Variants</a>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="logOut">
+                    <a href="">
+                        Log out
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="patient-details">
             <div class="patient-info">
                 <div class="patient-info-wrapper border-content">
                     <div class="header content">
@@ -48,14 +83,14 @@
                     <div class="family-history border-content">
                         <div class="header content">
                             <div class="container">
-                                <h6>
+                                <h4>
                                     Clinical history
-                                </h6>
+                                </h4>
                             </div>
 
                         </div>
 
-                        <div class="history-table">
+                        <div class="history-table table-holder">
                             <table class="table table-bordered" border="1px solid">
                                 <thead class="table-head">
                                     <tr>
@@ -106,9 +141,9 @@
                     <div class="clinical-history border-content">
                         <div class="header content">
                             <div class="container">
-                                <h6>
+                                <h4>
                                     Allele frequency
-                                </h6>
+                                </h4>
                             </div>
                         </div>
                         <div class="history-table">
@@ -376,42 +411,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <h5>
-                                    Variant
-                                </h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8">
-                                <select class="form-select form-control">
-                                    <option selected>Select</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-secondary filterBtn">Add</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="holder">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <button type="button" class="btn btn-link">Clear all filter</button>
-                            </div>
-                            <div class="col">
-                                <button type="button" class="btn btn-primary filterBtn addFilter">Filter</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+
                 <div class="variantTable">
                     <div class="holder">
                         <div class="row">
@@ -443,55 +443,18 @@
                         </div>
                     </div>
                     <div class="holder">
-                        <div class="bla">
+                        <div class="table-holder">
 
                             <table border="1px solid #000" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th ng-repeat="i in addColumns">{{i}}</th>
-                                        <!-- <th>
 
-                                        </th>
-                                        <th>
-                                            HGVS
-                                        </th>
-                                        <th>
-                                            Filter
-                                        </th>
-                                        <th>
-                                            Gene
-                                        </th>
-                                        <th>
-                                            Pseudo
-                                        </th>
-                                        <th>
-                                            Consequence
-                                        </th>
-                                        <th>
-                                            Homozygous
-                                        </th>
-                                        <th>
-                                            Pathology
-                                        </th>
-                                        <th>
-                                            Clinical significance
-                                        </th>
-                                        <th>
-                                            Allele Freq
-                                        </th>
-                                        <th>
-                                            Af (men)
-                                        </th>
-                                        <th>
-                                            AF (Bulgarian)
-                                        </th>
-                                        <th>
-                                            Analysis
-                                        </th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="data in variants">
+                                    <tr dir-paginate="data in variants | itemsPerPage:1">
+
                                         <td>
                                             <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
             cursor: pointer" /> -->
@@ -516,6 +479,11 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <div class="text-center other-controller">
+                                <dir-pagination-controls boundary-links="true"
+                                    on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+                            </div>
                         </div>
                     </div>
                 </div>

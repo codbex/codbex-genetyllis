@@ -9,7 +9,7 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-var addAnalysis = angular.module("addAnalysis", ['ngRoute']);
+var addAnalysis = angular.module("addAnalysis", []);
 
 // addAnalysis.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 //     console.log($routeProvider)

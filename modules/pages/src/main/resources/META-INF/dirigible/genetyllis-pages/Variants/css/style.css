@@ -39,9 +39,3 @@
   margin: auto;
   border-collapse: unset
 }
-
-.variantTable table thead {
-  padding: 15px 0;
-  background: #E5E5E5;
-  border: 1px solid #E5E5E5;
-}

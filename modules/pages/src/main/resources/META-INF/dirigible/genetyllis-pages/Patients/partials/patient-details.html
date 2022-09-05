@@ -9,12 +9,48 @@
         <link rel="stylesheet" href="../../css/style.css">
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js">
+        </script>
+        <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js">
+        </script>
 
+        <link rel="stylesheet" href="../../css/pagination.css">
+        </script>
         <title>Document</title>
     </head>
 
     <body ng-controller="patientDetailsController">
-        <div class="patient-wrapper">
+        <div class="wrapper">
+
+            <div class="header-wrapper">
+                <div class="genHubLogo">
+                    <img src="../../images/logo.svg" width="120px"></img>
+                </div>
+                <div class="nav-header">
+                    <ul>
+                        <li>
+                            <a href="../../../genetyllis-pages/Home-page/index.html">Home</a>
+                        </li>
+                        <li>
+                            <a href="../../../genetyllis-pages/Patients/index.html">Patients</a>
+                        </li>
+
+                        <li>
+                            <a href="../../../genetyllis-pages/Variants/index.html">Variants</a>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="logOut">
+                    <a href="">
+                        Log out
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="patient-details">
+            <h4>{{patientsDetails.Id}} ({{patientsDetails.GenderId}})</h4>
             <div class="patient-info">
                 <div class="patient-info-wrapper border-content">
                     <div class="header content">
@@ -52,47 +88,42 @@
                                 </h4>
                             </div>
                         </div>
-                        <div class="history-table">
+                        <div class="table-holder">
 
-                            <table class="table table-bordered" border="1px solid">
-                                <thead class="table-head">
+                            <table border="1px solid #000" cellspacing="0">
+                                <thead>
                                     <tr>
-                                        <th>Age of onset</th>
-                                        <th>Pathology</th>
-                                        <th>Notes</th>
+                                        <th>
+                                            Age of onset
+                                        </th>
+                                        <th>
+                                            Pathology
+                                        </th>
+                                        <th>
+                                            Notes
+                                        </th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
+                                    <tr ng-repeat="data in variants">
+                                        <td>
+                                            <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
+            cursor: pointer" /> -->
+                                            <image ng-click="photo.clicked = !photo.clicked ;imageHandler($index)"
+                                                ng-src="{{photo.clicked ? clickedUrl : notClickedUrl}}" style="height: 20px; width: 20px;
+            cursor: pointer" />
+                                        </td>
+                                        <td>
+                                            {{data.HGVS}}
+                                        </td>
+                                        <td></td>
+
                                     </tr>
                                 </tbody>
                             </table>
-
                         </div>
+
                     </div>
 
                     <div class="family-history border-content">
@@ -102,59 +133,48 @@
                                     Family history
                                 </h4>
                             </div>
-
                         </div>
-
-                        <div class="history-table">
-                            <table class="table table-bordered" border="1px solid">
-                                <thead class="table-head">
+                        <div class="table-holder">
+                            <table border="1px solid #000" cellspacing="0">
+                                <thead>
                                     <tr>
-                                        <th>PID</th>
-                                        <th>Relation</th>
-                                        <th>Age of onset</th>
-                                        <th>Pathology</th>
-                                        <th>Notes</th>
+                                        <th>
+                                            PID
+                                        </th>
+                                        <th>
+                                            Relation
+                                        </th>
+                                        <th>
+                                            Age of onset
+                                        </th>
+                                        <th>
+                                            Pathology
+                                        </th>
+                                        <th>
+                                            Notes
+                                        </th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                    </tr>
-                                    <tr>
-                                        <td>0</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
-                                        <td>Cystic fibrosis</td>
-                                        <td>6 mth</td>
+                                    <tr ng-repeat="data in variants">
+                                        <td>
+                                            <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
+            cursor: pointer" /> -->
+                                            <image ng-click="photo.clicked = !photo.clicked ;imageHandler($index)"
+                                                ng-src="{{photo.clicked ? clickedUrl : notClickedUrl}}" style="height: 20px; width: 20px;
+            cursor: pointer" />
+                                        </td>
+                                        <td>
+                                            {{data.HGVS}}
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+
                                     </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -519,55 +539,17 @@
                         </div>
                     </div>
                     <div class="holder">
-                        <div class="bla">
+                        <div class="table-holder">
 
                             <table border="1px solid #000" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th ng-repeat="i in addColumns">{{i}}</th>
-                                        <!-- <th>
 
-                                        </th>
-                                        <th>
-                                            HGVS
-                                        </th>
-                                        <th>
-                                            Filter
-                                        </th>
-                                        <th>
-                                            Gene
-                                        </th>
-                                        <th>
-                                            Pseudo
-                                        </th>
-                                        <th>
-                                            Consequence
-                                        </th>
-                                        <th>
-                                            Homozygous
-                                        </th>
-                                        <th>
-                                            Pathology
-                                        </th>
-                                        <th>
-                                            Clinical significance
-                                        </th>
-                                        <th>
-                                            Allele Freq
-                                        </th>
-                                        <th>
-                                            Af (men)
-                                        </th>
-                                        <th>
-                                            AF (Bulgarian)
-                                        </th>
-                                        <th>
-                                            Analysis
-                                        </th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="data in variants">
+                                    <tr dir-paginate="data in variants | itemsPerPage:1">
                                         <td>
                                             <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
             cursor: pointer" /> -->
@@ -588,10 +570,15 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <!-- <td></td> -->
+
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <div class="text-center other-controller">
+                                <dir-pagination-controls boundary-links="true"
+                                    on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+                            </div>
                         </div>
                     </div>
                 </div>

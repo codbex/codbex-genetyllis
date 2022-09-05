@@ -12,74 +12,206 @@
 <html lang="en">
 
 	<head>
-		<meta charset="utf-8">
+		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-		<title>Eclipse Dirigible &trade; | home-page </title>
-
-		<link rel="shortcut icon" type="image/png" href="/services/v4/web/resources/images/favicon.png" />
-
-		<!-- FontAwesome icon set -->
-		<link type="text/css" href="/webjars/fontawesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-		<!-- Twitter Bootstrap with Theme Support -->
-		<link type="text/css" rel="stylesheet" href="/services/v4/core/theme/bootstrap.min.css">
-		<link type="text/css" rel="stylesheet" href="css/patientContent.css" />
-		<!-- Twitter Bootstrap with Theme Support -->
-		<script type="text/javascript" src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-		<!-- AngularJS -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" type="text/css"
-			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
+		<script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
 
-		<!-- GoldenLayout with Theme Support -->
-		<link type="text/css" rel="stylesheet"
-			href="/services/v4/web/resources/goldenlayout/1.5.9/goldenlayout-base.css" />
-		<link type="text/css" rel="stylesheet" href="/services/v4/core/theme/goldenlayout-theme.css" />
-		<link type="text/css" rel="stylesheet" href="css/style.css" />
+		<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap.js"></script>
 
+		<script type="text/javascript"
+			src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js"></script>
 
+		<link rel="stylesheet" href="../css/pagination.css">
+		<link rel="stylesheet" href="../css/style.css">
+		<link rel="stylesheet" href="../Variants/css/style.css">
+		<link rel="stylesheet" href="../Home-page/css/style.css">
 
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-			integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-		<!-- <script type="text/javascript" src="/webjars/jquery/3.6.0/jquery.min.js"></script> -->
-		<!-- Custom IDE Styles -->
-
-		<link type="text/css" rel="stylesheet" href="/services/v4/core/theme/ide.css" />
+		<title>Document</title>
 
 	</head>
 
-
-	<!-- jQuery -->
-
-	<!-- Twitter Bootstrap with Theme Support -->
-	<script type="text/javascript" src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-	<!-- AngularJS -->
-	<script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
-	<script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.3/angular-route.min.js"
-		integrity="sha512-y1qD3hz/IAf8W4+/UMLZ+CN6LIoUGi7srWJ3r1R17Hid8x0yXe+1B5ZelkaL1Mjzedzu0Cg3HBvDG02SAgSzBw=="
-		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-	<!-- GoldenLayout with Theme Support -->
-	<script type="text/javascript" src="/services/v4/web/resources/goldenlayout/1.5.9/goldenlayout.min.js"></script>
-	<!-- 
-		<script type="text/javascript" src="../ide/ui/message-hub.js"></script>
-		<script type="text/javascript" src="../ide/ui/ui-layout.js"></script>
-		<script type="text/javascript" src="../ide/ui/ui-core-ng-modules.js"></script> -->
-
-	<script type="text/javascript" src="js/home-page.js"></script>
-	<script type="text/javascript" src="js/patientController.js"></script>
-
-
 	<body ng-app="home-page" ng-controller="homePageController">
-		<div ng-include="'../Home-page/partials/header.html'"></div>
-		<div ng-include="'../Home-page/partials/patientContent.html'"></div>
+		<div class="wrapper">
+			<div class="header-wrapper">
+				<div class="genHubLogo">
+					<img src="../../../web/genetyllis-pages/images/logo.svg" width="120px"></img>
+				</div>
+				<div class="nav-header">
+					<ul>
+						<li>
+							<a href="../../../web/genetyllis-pages/Home-page/index.html">Home</a>
+						</li>
+						<li>
+							<a href="../../../web/genetyllis-pages/Patients/index.html">Patients</a>
+						</li>
 
+						<li>
+							<a href="../../../web/genetyllis-pages/Variants/index.html">Variants</a>
+
+						</li>
+					</ul>
+				</div>
+				<div class="logOut">
+					<a href="">
+						Log out
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="patient-wrapper">
+			<div class="analysis-wrapper">
+				<div class="border-content patientDetails">
+					<div class="header content">
+						<div class="container">
+							<h4>Analysis</h4>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<input type="text" class="form-control" placeholder="Date"
+										onfocus="(this.type='date')" onblur="(this.type='text')" required>
+								</div>
+								<div class="col">
+									<input type="search" placeholder="LabID" class="form-control" ng-model="search">
+
+								</div>
+								<div class="col">
+									<form action="partials/addPatient.html">
+										<input type="submit" value="Add patient" ng-click="addFamilyMember()"
+											class="btn btn-primary filterBtn addFilter">
+									</form>
+								</div>
+								<div class="col">
+									<form action="partials/addAnalysis.html">
+										<input type="submit" value="Add analysis"
+											class="btn btn-primary filterBtn addFilter">
+									</form>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container">
+
+							<div class="row">
+								<div class="paging">
+									<div class="select-columns">
+										<select class="form-select form-control">
+											<option selected>Columns</option>
+											<option value="1">One</option>
+											<option value="2">Two</option>
+											<option value="3">Three</option>
+										</select>
+									</div>
+									<div class="per-page">
+										<div class="align-paragraph">
+											<p class="">Showing {{perPage}} of 500</p>
+										</div>
+										<div class="export">
+											<input type="number" min="0" class="form-control" ng-model="perPage"
+												ng-blur="setItemsPerPage()" />
+										</div>
+										<div class="align-paragraph">
+											<p>per page</p>
+										</div>
+										<div class="">
+											<button type="button"
+												class="btn btn-primary filterBtn addFilter">Export</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="holder table-holder" ng-controller="listData">
+						<div class="container">
+							<table border="1px solid #000 " cellspacing="0">
+								<thead>
+									<tr>
+										<th ng-repeat="i in homePageTable">
+											{{i}}
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr dir-paginate="data in patientsDetail | itemsPerPage:perPage">
+										<td>{{data.Id}}</td>
+										<td>{{data.BirthDate}}</td>
+										<td>{{data.GenderId}}</td>
+										<td>{{data.Info}}</td>
+										<td>{{data.LabId}}</td>
+										<!--    <td>{{data.Alternative}}</td>
+                                    <td>{{data.Start}}</td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="holder">
+							<div class="text-center other-controller">
+								<dir-pagination-controls boundary-links="true"
+									on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="notifications-wrapper">
+				<div class="border-content patientDetails">
+					<div class="header content">
+						<div class="container">
+							<h4>Notifications</h4>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container notification">
+							<h5>New ACMG standards published</h5>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container notification-content">
+							<div class="row">
+								<div class="col-10"><a href="">source</a></div>
+								<div class="col-2">
+									<p>1d</p>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container notification">
+							<h5>Clinical significance interpretation for variant rs16545 update. See affected records
+							</h5>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container notification-content">
+							<div class="row">
+								<div class="col-10"><a href="">source</a></div>
+								<div class="col-2">
+									<p>1d</p>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="js/home-page.js"></script>
+		<script type="text/javascript" src="js/patientController.js"></script>
 	</body>
 
 </html>

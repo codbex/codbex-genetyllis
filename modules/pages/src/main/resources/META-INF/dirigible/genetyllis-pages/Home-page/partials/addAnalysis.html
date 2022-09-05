@@ -13,12 +13,42 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="../css/addPatient.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-file-upload/2.6.1/angular-file-upload.min.js">
+        </script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload-shim.min.js">
+        </script>
         <link type="text/css" rel="stylesheet" href="../../css/style.css" />
     </head>
 
     <body ng-controller='addAnalysisController'>
+        <div class="wrapper">
+            <div class="header-wrapper">
+                <div class="genHubLogo">
+                    <img src="../../../../web/genetyllis-pages/images/logo.svg" width="120px"></img>
+                </div>
+                <div class="nav-header">
+                    <ul>
+                        <li>
+                            <a href="../../../genetyllis-pages/Home-page/index.html">Home</a>
+                        </li>
+                        <li>
+                            <a href="../../../genetyllis-pages/Patients/index.html">Patients</a>
+                        </li>
 
+                        <li>
+                            <a href="../../../genetyllis-pages/Variants/index.html">Variants</a>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="logOut">
+                    <a href="">
+                        Log out
+                    </a>
+                </div>
+            </div>
+        </div>
         <div class="patient-wrapper">
             <div class="container">
                 <div class="row">
@@ -89,11 +119,18 @@
                                 <div class="container">
                                     <h4>Results</h4>
                                 </div>
+
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
 
@@ -114,7 +151,6 @@
 
         <script src="../js/addAnalysis.js"></script>
         <script src="../import/import.js"></script>
-        <script type="text/javascript" src="../import/controller.js"></script>
 
     </body>
 

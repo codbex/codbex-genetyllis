@@ -9,9 +9,27 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-let homePage = angular.module("home-page", ['ngRoute']);
 
+
+let homePage = angular.module("home-page", ['angularUtils.directives.dirPagination']);
+
+homePage.config(function (paginationTemplateProvider) {
+    paginationTemplateProvider.setPath('../components/pagination.html');
+});
+
+homePage.controller("listData", ['$scope', "$http", function ($scope, $http) {
+    var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
+    $scope.patientsDetail = []
+    $http.get(patientsOptionsApi)
+        .then(function (data) {
+            $scope.patientsDetail = data.data;
+            console.log("patientsDetail", $scope.patientsDetail);
+        });
+    console.log("Hello");
+}])
 homePage.controller("homePageController", ['$scope', '$http', function ($scope, $http) {
+    $scope.perPage = 5;
+    $scope.homePageTable = ["AID", "Date", "Patient", "Analysis", "Platform", "Provider", "Status"]
     var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
     var notificationApi = '/services/v4/js/genetyllis-app/gen/api/users/Notification.js';
     var variantApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';
@@ -22,7 +40,6 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
     $http.get(patientsOptionsApi)
         .then(function (data) {
             $scope.patientsOptions = data.data;
-            console.log("patientsOptions", $scope.patientsOptions);
         });
 
     function loadNotifications() {
@@ -82,13 +99,5 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
 
     }
 
-}]);
-homePage.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider
-        .when('/homePage', {
-            templateUrl: 'Home-page/partials/homePage.html'
-        })
-        .otherwise({
-            redirectTo: '/home'
-        });
+
 }]);

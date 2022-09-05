@@ -1,6 +1,15 @@
+*,
+ol,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+}
 .col-6 {
   margin-bottom: 30px;
 }
+
+
 .holder {
   padding-bottom: 15px;
 }
@@ -50,11 +59,19 @@
   display: flex;
   align-items: center;
 }
-.variantTable table {
+
+.table-holder table {
   width: 100%;
+
 }
-.variantTable table thead th,
-.variantTable table td {
+.table-holder table thead {
+  padding: 15px 0;
+  background: #E5E5E5;
+  border: 1px solid #E5E5E5;
+}
+
+.table-holder table thead th,
+.table-holder table td {
   padding: 5px 5px;
   border: 1px solid;
   text-align: center;
@@ -67,6 +84,11 @@
 .header {
   background: #1DB9C3;
   border-bottom: 1px solid;
+  color: #ffffff;
+  margin-bottom: 40px;
+}
+.header h4 {
+  font-size: 24px !important;
 
 }
 
@@ -175,4 +197,96 @@
   padding: 0;
   align-items: center;
   justify-content: center;
+}
+
+/* header */
+.header-wrapper {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 20px;
+  background: #001F38;
+}
+/* .nav-header {
+  display: flex;
+  align-items: flex-end;
+} */
+.nav-header ul {
+  display: flex;
+}
+.nav-header ul li a,
+.logOut a {
+  text-decoration: none;
+  color: #ffffff;
+  border-radius: 5px;
+}
+.nav-header ul li {
+  display: flex;
+  padding-right: 20px;
+}
+.nav-header ul li a {
+  font-size: 18px;
+  padding: 20px 40px;
+}
+
+.nav-header ul li a:hover {
+  color: #1DB9C3;
+  background-color: #ffffff;
+  /* home-page */
+
+}
+.patient-wrapper {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.analysis-wrapper {
+  width: 54%;
+}
+
+.notifications-wrapper {
+  width: 44%;
+}
+
+.notification h5 {
+  color: #c7c2bb;
+  font-weight: 400;
+}
+
+.notification-content p {
+  color: #c7c2bb;
+}
+
+.logOut {
+  display: flex;
+  align-items: center;
+}
+
+.patient-details {
+  width: 90%;
+  margin: auto;
+}
+.patient-details .header {
+  border: unset;
+  margin: unset;
+}
+
+
+.file-drop-zone {
+  border: 2px dashed #ddd;
+  padding: 30px;
+  text-align: center;
+  width: 250px;
+}
+
+.file-drop-zone-over {
+  background-color: #928f8c;
+  width: 500px;
+}
+
+.image-container {
+  width: 250px;
+  margin: 30px;
 }
