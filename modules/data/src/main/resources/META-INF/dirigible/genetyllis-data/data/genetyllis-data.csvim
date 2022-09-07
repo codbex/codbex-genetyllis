@@ -58,5 +58,35 @@
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
     "keys": []
+  },
+  {
+    "table": "GENETYLLIS_VARIANT",
+    "file": "/genetyllis-data/data/GENETYLLIS_VARIANT.csv",
+    "header": false,
+    "useHeaderNames": false,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
+  },
+  {
+    "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
+    "file": "/genetyllis-data/data/GENETYLLIS_CLINICALSIGNIFICANCE.csv",
+    "header": false,
+    "useHeaderNames": false,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
+  },
+  {
+    "table": "GENETYLLIS_ALLELEFREQUENCY",
+    "file": "/genetyllis-data/data/GENETYLLIS_ALLELEFREQUENCY.csv",
+    "header": false,
+    "useHeaderNames": false,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
   }
 ]
