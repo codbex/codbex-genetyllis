@@ -136,7 +136,7 @@ function addVariant(dbHgvsEntries, variantContext) {
                 entityVariant.Region = "";
                 entityVariant.RegionNum = "";
                 entityVariant.GeneId = null;
-                daoVariant.create(entityVariant);
+                entityVariant.Id = daoVariant.create(entityVariant);
                 entityVariantArray.push(entityVariant)
             }
 
@@ -154,7 +154,7 @@ function addVariant(dbHgvsEntries, variantContext) {
             entityVariant.Consequence = "";
             entityVariant.ConsequenceDetails = "";
 
-            daoVariant.create(entityVariant);
+            entityVariant.Id = daoVariant.create(entityVariant);
             entityVariantArray.push(entityVariant);
         }
 

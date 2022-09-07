@@ -22,11 +22,11 @@ var daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequenc
 var daoNotification = require("genetyllis-app/gen/dao/users/Notification.js");
 
 exports.updateTrigger = function (variantId) {
-    console.log("update ", variantId)
+    // console.log("update ", variantId)
     updateVariant(variantId);
+
     markChangeForAllUsers(variantId);
 }
-
 
 function updateVariant(variantId) {
 
@@ -35,7 +35,6 @@ function updateVariant(variantId) {
         console.log("VariantId has to be set as a parameter in the URL");
         return;
     }
-    patientId = 1;
 
     //VARIANT
     let entityVariant = {};
@@ -68,19 +67,6 @@ function updateVariant(variantId) {
         else
             entityVariant.ConsequenceDetails = "";
 
-        // if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.exon !== undefined) {
-        //     entityVariant.Region = "exon";
-        //     entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.exon);
-        // }
-        // else if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.intron !== undefined) {
-        //     entityVariant.Region = "intron";
-        //     entityVariant.RegionNum = JSON.stringify(myVariantJSON.cadd.intron);
-        // }
-        // else {
-        //     entityVariant.Region = "";
-        //     entityVariant.RegionNum = "";
-        // }
-
         if (JSON.stringify(dbEntityVariant) === JSON.stringify(entityVariant)) {
             console.log("The same")
             // console.log(daoVariant.update(entityVariant));
@@ -98,7 +84,7 @@ function updateVariant(variantId) {
         checkClinicalSignificance(myVariantJSON, entityVariant)
 
         //ALLELE FREQUENCY
-        checkAlleleFrequency(myVariantJSON, entityVariant, patientId)
+        checkAlleleFrequency(myVariantJSON, entityVariant)
     }
 }
 
@@ -260,7 +246,7 @@ function getSignificance(significance) {
     }
 }
 
-function checkAlleleFrequency(myVariantJSON, entityVariant, patientId) {
+function checkAlleleFrequency(myVariantJSON, entityVariant) {
     //ALLELE FREQUENCY
     console.log("ALLELE FREQ");
     let entityAlleleFrequency = {};
