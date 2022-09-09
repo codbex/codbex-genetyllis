@@ -13,12 +13,10 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-file-upload/2.6.1/angular-file-upload.min.js">
-        </script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload-shim.min.js">
-        </script>
+        <script src="../js/file-uploader.js"> </script>
+        <script type="text/javascript" src="/services/v4/web/ide-core/ui/message-hub.js"></script>
         <link type="text/css" rel="stylesheet" href="../../css/style.css" />
+
     </head>
 
     <body ng-controller='addAnalysisController'>
@@ -52,7 +50,7 @@
         <div class="patient-wrapper">
             <div class="container">
                 <div class="row">
-                    <div class="col-6 ">
+                    <div class="col-6  align-items ">
                         <div class="border-content patientDetails">
                             <div class="header content">
                                 <div class="container">
@@ -63,7 +61,7 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col">
-                                            <select class="form-control" aria-label=".form-select-lg example">
+                                            <select class="form-control" aria-label="form-select-lg example">
                                                 <option selected>Select Provider</option>
                                                 <option ng-repeat="data in providerData">
                                                     {{data.Name}}
@@ -100,7 +98,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <input list="dataList" ng-model='entity.LabId' class="form-control"
-                                                   ng-keyup="suggestLabId(entity.LabId)" placeholder="Enter LabId" />
+                                                ng-keyup="suggestLabId(entity.LabId)" placeholder="Enter LabId" />
                                             <datalist id="dataList">
                                                 <option ng-repeat="x in labIds">{{x}}</option>
                                             </datalist>
@@ -113,8 +111,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 ">
-                        <div class="border-content patientDetails">
+                    <div class="col-6 align-items ">
+                        <div class="border-content patientDetails" style="    height: 100%;">
                             <div class="header content">
                                 <div class="container">
                                     <h4>Results</h4>
@@ -123,7 +121,75 @@
                             </div>
                             <div class="holder">
                                 <div class="container">
+                                    <div class="container" nv-file-drop="" uploader="uploader"
+                                        filters="queueLimit, customFilter">
 
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+                                                <input type="file" nv-file-select="" uploader="uploader"
+                                                    placeholder="pes" multiple /><br />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" style="margin-bottom: 40px">
+
+
+                                                <div ng-repeat="item in uploader.queue"
+                                                    style="display:flex; justify-content: space-between; align-items: center;">
+                                                    <h6>{{ item.file.name }}</h6>
+
+                                                    <h6 ng-show="uploader.isHTML5">
+                                                        <div class="progress" style="margin-bottom: 0;">
+                                                            <div class="progress-bar" role="progressbar"
+                                                                ng-style="{ 'width': item.progress + '%' }">
+                                                            </div>
+                                                        </div>
+                                                    </h6>
+                                                    <h6 class="text-center">
+                                                        <span ng-show="item.isSuccess"><i
+                                                                class="fa fa-check"></i></span>
+                                                        <span ng-show="item.isCancel"><i class="fa fa-close"></i></span>
+                                                        <span ng-show="item.isError"><i
+                                                                class="fa fa-warning"></i></span>
+                                                    </h6>
+                                                    <h6>
+                                                        <button type="button" class="btn btn-danger btn-xs"
+                                                            ng-click="item.remove()">
+                                                            <span class="fa fa-trash"></span> Remove
+                                                        </button>
+                                                    </h6>
+                                                </div>
+
+                                                <div>
+                                                    <div>
+                                                        Queue progress:
+                                                        <div class="progress" style="">
+                                                            <div class="progress-bar" role="progressbar"
+                                                                ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="uploaderBtns">
+                                                        <button type="button" class="btn btn-success btn-s"
+                                                            ng-click="uploader.uploadAll()"
+                                                            ng-disabled="!uploader.getNotUploadedItems().length">
+                                                            <span class="fa fa-upload"></span> Upload All
+                                                        </button>
+                                                        <button type="button" class="btn btn-warning btn-s"
+                                                            ng-click="uploader.cancelAll()"
+                                                            ng-disabled="!uploader.isUploading">
+                                                            <span class="fa fa-close"></span> Cancel All
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-s"
+                                                            ng-click="uploader.clearQueue()"
+                                                            ng-disabled="!uploader.queue.length">
+                                                            <span class="fa fa-trash"></span> Remove All
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +199,7 @@
 
         </div>
 
-
+        <script src="../js/addAnalysis.js"> </script>
         <style>
             /* Chrome, Safari, Edge, Opera */
             input::-webkit-outer-spin-button,
@@ -149,8 +215,6 @@
 
         </style>
 
-        <script src="../js/addAnalysis.js"></script>
-        <script src="../import/import.js"></script>
 
     </body>
 

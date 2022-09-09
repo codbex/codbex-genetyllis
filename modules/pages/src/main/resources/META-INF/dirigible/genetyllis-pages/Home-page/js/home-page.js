@@ -11,25 +11,45 @@
  */
 
 
-let homePage = angular.module("home-page", ['angularUtils.directives.dirPagination']);
+let homePage = angular.module("home-page", ['angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
 
 homePage.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
 
-homePage.controller("listData", ['$scope', "$http", function ($scope, $http) {
+homePage.controller("homePageController", ['$scope', '$http', function ($scope, $http) {
     var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
     $scope.patientsDetail = []
     $http.get(patientsOptionsApi)
         .then(function (data) {
             $scope.patientsDetail = data.data;
-            console.log("patientsDetail", $scope.patientsDetail);
+            $scope.patientsInfo = data.data
+            console.log($scope.homePageTable, "homePageTable")
+            console.log($scope.patientsDetail, 'patientsDetail')
         });
-    console.log("Hello");
-}])
-homePage.controller("homePageController", ['$scope', '$http', function ($scope, $http) {
+    // _|_
+    $scope.example1model = [];
+    // $scope.example1data = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
+    $scope.example1data = [{ id: 5, label: "Platform" }, { id: 6, label: "Info" }, { id: 7, label: "PopulationId" }];
+    $scope.setting2 = {
+        scrollableHeight: '200px',
+        scrollable: true,
+        enableSearch: true
+    };
+
+    $scope.selectFucn = function () {
+        $scope.homePageTable = ["Id", "Date", "Patient", "Analysis"];
+        for (let x = 0; x < $scope.example1model.length; x++) {
+            let value = $scope.example1data.find(e => e.id == $scope.example1model[x].id)
+            $scope.homePageTable.push(value.label);
+        }
+    }
+
+    $scope.homePageTable = ["Id", "Date", "Patient", "Analysis"]
+    // _|_
+
     $scope.perPage = 5;
-    $scope.homePageTable = ["AID", "Date", "Patient", "Analysis", "Platform", "Provider", "Status"]
+
     var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
     var notificationApi = '/services/v4/js/genetyllis-app/gen/api/users/Notification.js';
     var variantApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';
@@ -48,10 +68,8 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
                 $scope.notifications = data.data.filter(el => el.UserUserId == 1 && el.SeenFlag == false);
 
                 angular.forEach($scope.notifications, function (value, key) {
-                    console.log("value", value.VariantId);
                     getVariant(value.VariantId);
                 });
-                console.log("notifications", $scope.notifications);
 
             });
     }
@@ -63,7 +81,6 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
         $http.get(variantApi)
             .then(function (data) {
                 $scope.variants.push(data.data.filter(el => el.Id == variantId)[0]);
-                console.log("variants", $scope.variants);
             });
     }
 
@@ -78,7 +95,6 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
 
         $http.post(notificationController, JSON.stringify({ notificationId: $scope.notiId[0].NotificationId }))
             .then(data => {
-                console.log("asd", data);
                 $scope.refreshNotifications()
             })
             .catch(function (err) { console.log("err", err); });
@@ -95,7 +111,6 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
 
 
     $scope.addPatient = function () {
-        console.log("Helo")
 
     }
 

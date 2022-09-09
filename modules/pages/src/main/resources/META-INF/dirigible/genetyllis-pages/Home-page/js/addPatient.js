@@ -29,6 +29,7 @@ addPatient.directive('ngConfirmClick', [
     }])
 
 addPatient.controller('addPatientController', ['$scope', '$http', function ($scope, $http) {
+    $scope.dataGridOptionsFamilyHistory = {}
 
     var api = "/services/v4/js/Home-page/services/patientInfo.js";
     var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
@@ -112,7 +113,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
             $http.post(patientsOptionsApi, JSON.stringify(familyMemberPatient))
                 .then(function (response) {
                     familyMember.Id = response.data.Id
-
+                    console.log(response, "response")
                     persistClinicalHistory(familyMember.ClinicalHistoryDataArray, familyMember.Id);
 
                     persistFamilyHistory(familyMember.Id, familyMember.RelationId);
@@ -236,7 +237,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     $scope.addEntryFamilyHistory = function () {
         $scope.isEmptyTableFamilyHistory = true;
         $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.push($scope.familyClinicalHistoryData);
-
+        $scope.familyData = $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray
 
         // editFamilyHistoryEntry
 
@@ -253,8 +254,9 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
 
     $scope.addEntryFamilyMember = function () {
         $scope.familyMembersArray.push(angular.copy($scope.familyClinicalHistoryDataArray));
-        $scope.familyClinicalHistoryData = {};
+        $scope.familyMemberData = $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray;
 
+        $scope.familyClinicalHistoryData = {};
         $scope.familyClinicalHistoryDataArray = {
             Id: '',
             LabId: '',
@@ -264,12 +266,14 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
             FamilyMemberId: '',
             ClinicalHistoryDataArray: []
         };
-        console.log($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray)
+
+        console.log($scope.familyMembersArray)
+
         if ($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.length === 0) {
             $scope.isEmptyTableFamilyHistory = false
         }
         $scope.isEmptyTableFamilyMember = true;
-
+        $scope.familyData = []
 
     };
 
@@ -411,17 +415,144 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
 
     $("#clinical-history-entry").on("click", function () {
         $("#gridContainer").dxDataGrid("instance").refresh();
-
-        console.log($scope.clinicalHistoryDataArray.length)
     });
 
-    $(".dx-link-delete").on('click',
-        function () {
-            console.log("PEsh")
-            // var btns = $('.dx-dialog-button');
-            // btns.last().text('No thanks');
-            // btns.first().text('Yes please');
-        }
-    );
-}]);
+    $scope.familyData = $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray
+    $scope.dataGridOptionsFamilyHistory = {
+        bindingOptions: {
+            dataSource: "familyData"
+        },
+        // dataSource: $scope.familyData,
+        showBorders: true,
+        paging: {
+            enabled: false,
+        },
+        editing: {
+            mode: 'row',
+            allowUpdating: true,
+            allowDeleting: true,
+            allowAdding: true,
+        },
+        columns: [
+            {
+                dataField: 'PathologyCui',
+                caption: 'Concept ID',
+            },
+            {
+                dataField: 'PathologyName',
+                caption: 'Disease',
+            }, {
+                caption: 'Age of Onset',
+                dataField: 'AgeOnset',
+            },
+            {
+                caption: 'Addition Info',
+                dataField: 'Notes',
+            },
 
+        ],
+        onEditingStart() {
+        },
+        onInitNewRow() {
+        },
+        onRowInserting() {
+        },
+        onRowInserted() {
+        },
+        onRowUpdating() {
+        },
+        onRowUpdated() {
+        },
+        onRowRemoving() {
+        },
+        onRowRemoved() {
+
+        },
+        onSaving() {
+        },
+        onSaved() {
+        },
+        onEditCanceling() {
+        },
+        onEditCanceled() {
+        },
+    };
+
+    $("#familyGridContainer").on("click", function () {
+        $("#familyGridContainer").dxDataGrid("instance").refresh();
+
+        console.log($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray, "ASLKJlkjas")
+
+    });
+
+    $scope.familyMemberData = [];
+    $scope.dataGridOptionsFamilyMember = {
+        bindingOptions: {
+            dataSource: "familyMemberData"
+        },
+        showBorders: true,
+        paging: {
+            enabled: false,
+        },
+        editing: {
+            mode: 'row',
+            allowUpdating: true,
+            allowDeleting: true,
+            allowAdding: true,
+        },
+        columns: [
+            {
+                dataField: 'LabId',
+                caption: 'Lab ID',
+            },
+            {
+                dataField: 'RelationName',
+                caption: 'Relation',
+            }, {
+                dataField: 'Disease',
+                caption: 'Disease',
+            },
+            {
+                dataField: 'Notes',
+                caption: 'Age of Onset',
+            },
+
+        ],
+        onEditingStart() {
+        },
+        onInitNewRow() {
+        },
+        onRowInserting() {
+        },
+        onRowInserted() {
+        },
+        onRowUpdating() {
+        },
+        onRowUpdated() {
+        },
+        onRowRemoving() {
+        },
+        onRowRemoved() {
+            isEmptyTableClinicalHistory = false;
+            console.log(isEmptyTableClinicalHistory)
+            console.log("pesho")
+        },
+        onSaving() {
+        },
+        onSaved() {
+        },
+        onEditCanceling() {
+        },
+        onEditCanceled() {
+        },
+
+    };
+
+    $("#familyMemberGrid").on("click", function () {
+        $("#familyMemberGrid").dxDataGrid("instance").refresh();
+
+        console.log($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray, "ASLKJlkjas")
+
+    });
+
+}]);
