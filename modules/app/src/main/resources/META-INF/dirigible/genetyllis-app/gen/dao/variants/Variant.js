@@ -141,6 +141,8 @@ exports.customDataCount = function () {
 exports.filterVariants = function (variant) {
 	initFilterSql();
 
+	var response = {};
+
 	buildFilterSql(variant.GENETYLLIS_VARIANT);
 	buildFilterSql(variant.GENETYLLIS_GENE);
 	buildFilterSql(variant.GENETYLLIS_PATHOLOGY);
@@ -151,8 +153,17 @@ exports.filterVariants = function (variant) {
 
 	var resultSet = query.execute(filterSql, filterSqlParams);
 
+	filterSql = filterSql.replace('*', 'COUNT(*)');
+
+	var resultSetCount = query.execute(filterSql, filterSqlParams);
+
+	response.data = resultSet;
+	response.totalItems = resultSetCount[0]["COUNT(*)"];
+	response.totalPages = Math.floor(response.totalItems / patient.perPage) + (response.totalItems % patient.perPage == 0 ? 0 : 1);
+
 	filterSql = "";
-	return resultSet;
+
+	return response;
 }
 
 function buildFilterSql(object) {

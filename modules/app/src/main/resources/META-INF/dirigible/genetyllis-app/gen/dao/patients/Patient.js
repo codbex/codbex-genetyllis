@@ -150,6 +150,8 @@ exports.suggestLabIds = function (labId) {
 exports.filterPatients = function (patient) {
 	initFilterSql();
 
+	var response = {};
+
 	filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
 	filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY, filterSql);
 	filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT, filterSql);
@@ -159,8 +161,17 @@ exports.filterPatients = function (patient) {
 
 	var resultSet = query.execute(filterSql, filterSqlParams);
 
+	filterSql = filterSql.replace('*', 'COUNT(*)');
+
+	var resultSetCount = query.execute(filterSql, filterSqlParams);
+
+	response.data = resultSet;
+	response.totalItems = resultSetCount[0]["COUNT(*)"];
+	response.totalPages = Math.floor(response.totalItems / patient.perPage) + (response.totalItems % patient.perPage == 0 ? 0 : 1);
+
 	filterSql = "";
-	return resultSet;
+
+	return response;
 }
 
 function buildFilterSql(object, sql) {
