@@ -1,0 +1,497 @@
+<html lang="en" ng-app="variantDetails">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+        <link rel="stylesheet" href="../../Variants/css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js">
+        </script>
+
+        <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js"></script>
+
+        <link rel="stylesheet" href="../../css/pagination.css">
+
+        <title>Document</title>
+    </head>
+
+
+
+    <body ng-controller="variantDetailsController">
+        <div class="wrapper">
+            <div class="header-wrapper">
+                <div class="genHubLogo">
+                    <img src="../../images/logo.svg" width="120px"></img>
+                </div>
+                <div class="nav-header">
+                    <ul>
+                        <li>
+                            <a href="../../../web/genetyllis-pages/Home-page/index.html">Home</a>
+                        </li>
+                        <li>
+                            <a href="../../../web/genetyllis-pages/Patients/index.html">Patients</a>
+                        </li>
+
+                        <li>
+                            <a href="../../../web/genetyllis-pages/Variants/index.html">Variants</a>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="logOut">
+                    <a href="">
+                        Log out
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="patient-details">
+            <div class="patient-info">
+                <div class="patient-info-wrapper border-content">
+                    <div class="header content">
+                        <div class="container">
+                            <h4>
+                                Characterics
+                            </h4>
+                        </div>
+                    </div>
+                    <div class=" content">
+                        <div class="container">
+                            <div class="column">
+                                <div class="col">
+                                    <h6>
+                                        dbSNP: <a href="">rs34322</a>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h6>Gene: <i>consequence</i></h6>
+                            </div>
+                            <div class="col">
+                                <h6><a href="">FLCN</a>: <i>intron</i></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="patient-history">
+                    <div class="family-history border-content">
+                        <div class="header content">
+                            <div class="container">
+                                <h4>
+                                    Clinical history
+                                </h4>
+                            </div>
+
+                        </div>
+
+                        <div class="history-table table-holder">
+                            <table class="table table-bordered" border="1px solid">
+                                <thead class="table-head">
+                                    <tr>
+                                        <th ng-repeat="i in clinicalSignificance">{{i}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                        <td>Cystic fibrosis</td>
+                                        <td>6 mth</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="clinical-history border-content">
+                        <div class="header content">
+                            <div class="container">
+                                <h4>
+                                    Allele frequency
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="history-table">
+                            <div class=" content">
+                                <div class="container">
+                                    <div class="column">
+                                        <div class="col">
+                                            <h6>
+                                                GnomAD
+                                            </h6>
+                                        </div>
+                                        <p>alternative allele</p>
+                                        <h6>All: <span>0.214002</span></h6>
+                                    </div>
+                                    <div style="display:flex;justify-content: space-between">
+                                        <h6>Male: <span>0.214002</span></h6>
+                                        <h6>Female: <span>0.214002</span></h6>
+                                    </div>
+                                    <div style="display:flex;justify-content: space-between">
+                                        <h6>European: <span>0.214002</span></h6>
+                                        <h6>Bulgarian: <span>0.214002</span></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="patient-info">
+                <div class="patient-info-wrapper border-content content">
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>LabID</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Date of birth
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 align-paragraph">
+                                    <p>From</p>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
+                                </div>
+                                <div class="col-2 align-paragraph">
+                                    <p>to</p>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Population
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="male">
+                                        <label class="form-check-label" for="male">
+                                            Male
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="female">
+                                        <label class="form-check-label" for="female">
+                                            Female
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="nonspecifed-gender">
+                                        <label class="form-check-label" for="nonspecifed-gender">
+                                            Nonspecifed gender
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="bulgarian">
+                                        <label class="form-check-label" for="bulgarian">
+                                            Bulgarian
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="other-ethnicity">
+                                        <label class="form-check-label" for="other-ethnicity">
+                                            Other ethnicity
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Clinical history
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 align-paragraph">
+                                    <p>Onset from</p>
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                                <div class="col-1 align-paragraph">to</div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Family history
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <select class="form-select form-control">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 align-paragraph">
+                                    <p>Onset from</p>
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                                <div class="col-1 align-paragraph">to</div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="male" checked>
+                                        <label class="form-check-label" for="male">
+                                            Whole Genome Sequencing (WGS)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-2 align-paragraph">
+                                    <p>From</p>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
+                                </div>
+                                <div class="col-2 align-paragraph">
+                                    <p>to</p>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-link">Clear all filter</button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-primary filterBtn addFilter">Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="variantTable">
+                    <div class="holder">
+                        <div class="row">
+                            <div class="paging">
+                                <div class="select-columns">
+                                    <select class="form-select form-control">
+                                        <option selected>Columns</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="per-page">
+                                    <div class="align-paragraph">
+                                        <p class="">Showing 120 of 500</p>
+                                    </div>
+                                    <div class="export">
+                                        <input type="number" min="0" class="form-control" />
+                                    </div>
+                                    <div class="align-paragraph">
+                                        <p>per page</p>
+                                    </div>
+                                    <div class="">
+                                        <button type="button"
+                                            class="btn btn-primary filterBtn addFilter">Export</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="table-holder">
+
+                            <table border="1px solid #000" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th ng-repeat="i in addColumns">{{i}}</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="data in variants | itemsPerPage:1">
+
+                                        <td>
+                                            <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
+            cursor: pointer" /> -->
+                                            <image ng-click="photo.clicked = !photo.clicked ;imageHandler($index)"
+                                                ng-src="{{photo.clicked ? clickedUrl : notClickedUrl}}" style="height: 20px; width: 20px;
+            cursor: pointer" />
+                                        </td>
+                                        <td>
+                                            {{data.HGVS}}
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <!-- <td></td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="text-center other-controller">
+                                <dir-pagination-controls boundary-links="true"
+                                    on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <script type="text/javascript" src="../js/variant-details.js"></script>
+    </body>
+
+</html>

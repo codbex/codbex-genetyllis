@@ -1,5 +1,0 @@
-{
-	"description": "FamilyHistory view",
-	"extensionPoint": "launchpad-genetyllis-Entities-view",
-	"module": "genetyllis-app/gen/ui/Entities/views/FamilyHistory/extensions/view.js"
-}

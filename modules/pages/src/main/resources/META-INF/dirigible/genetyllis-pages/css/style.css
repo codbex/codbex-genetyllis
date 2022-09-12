@@ -1,0 +1,409 @@
+*,
+ol,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+}
+.col-6 {
+  margin-bottom: 30px;
+}
+
+
+.holder {
+  padding-bottom: 15px;
+}
+.content-end {
+  justify-content: end;
+}
+.align-items {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.filterBtn {
+  width: 100%;
+  background: #E5E5E5;
+  color: #001F38;
+}
+
+
+
+.addFilter {
+  background: #001F38;
+  color: #fff;
+}
+
+.variantTable .addFilter {
+  width: 125px;
+}
+.paging {
+  display: flex;
+  justify-content: space-between;
+}
+
+.per-page {
+  display: flex;
+}
+
+.per-page > div {
+  padding-left: 15px;
+}
+
+.export {
+  width: 70px;
+}
+
+.align-paragraph p {
+  margin: 0;
+  padding: 0;
+
+}
+
+.align-paragraph {
+  display: flex;
+  align-items: center;
+}
+
+.table-holder table {
+  width: 100%;
+
+}
+.table-holder table thead {
+  padding: 15px 0;
+  background: #E5E5E5;
+  border: 1px solid #E5E5E5;
+}
+
+.table-holder table thead th,
+.table-holder table td {
+  padding: 5px 5px;
+  border: 1px solid;
+  text-align: center;
+}
+
+.patient-wrapper {
+  width: 90%;
+  margin: auto;
+}
+.header {
+  background: #1DB9C3;
+  border-bottom: 1px solid;
+  color: #ffffff;
+  margin-bottom: 40px;
+}
+.header h4 {
+  font-size: 24px !important;
+
+}
+
+.header h4 {
+  padding: 0;
+  margin: 0;
+}
+
+.patient-info {
+  display: flex;
+  width: 100%;
+  justify-content: space-between
+}
+
+.patient-info-wrapper {
+  width: 25%;
+
+}
+
+.border-content {
+  border-radius: 5px;
+  border: 1px solid;
+}
+
+.content {
+  padding: 20px 0 20px 20px;
+}
+.patient-history {
+  width: 72%;
+  display: flex;
+  justify-content: space-between
+}
+
+.clinical-history {
+  width: 35%;
+}
+
+.family-history {
+  width: 61.5%;
+}
+
+.history-table table {
+  width: 100%;
+}
+
+.history-table table th,
+.history-table table td {
+  padding: 5px 0;
+}
+
+.table-head {
+  background: #E5E5E5;
+  padding: 0;
+
+}
+
+
+.table-responsive {
+  max-height: 130px;
+  overflow: auto;
+}
+
+.patient-info {
+  margin-bottom: 40px;
+}
+
+.patient-filter {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+
+.patient-info .variantTable {
+  width: 72%;
+}
+
+
+.patientDetails {
+  margin-bottom: 20px;
+}
+
+.addedText span {
+  color: #c7c2bb;
+  position: relative;
+  padding-right: 5px;
+}
+
+.addedText span:hover {
+  color: #928f8c;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.addedText span:hover:after {
+  content: " x";
+  font-size: 10px;
+  top: -4px;
+  right: 0;
+  position: absolute;
+}
+.addedText span:not(:first-child):before {
+  content: ", ";
+}
+
+.date-of-birth > div {
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+/* header */
+.header-wrapper {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 20px;
+  background: #001F38;
+}
+/* .nav-header {
+  display: flex;
+  align-items: flex-end;
+} */
+.nav-header ul {
+  display: flex;
+}
+.nav-header ul li a,
+.logOut a {
+  text-decoration: none;
+  color: #ffffff;
+  border-radius: 5px;
+}
+.nav-header ul li {
+  display: flex;
+  padding-right: 20px;
+}
+.nav-header ul li a {
+  font-size: 18px;
+  padding: 20px 40px;
+}
+
+.nav-header ul li a:hover {
+  color: #1DB9C3;
+  background-color: #ffffff;
+  /* home-page */
+
+}
+.patient-wrapper {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.analysis-wrapper {
+  width: 54%;
+}
+
+.notifications-wrapper {
+  width: 44%;
+}
+
+.notification h5 {
+  color: #c7c2bb;
+  font-weight: 400;
+}
+
+.notification-content p {
+  color: #c7c2bb;
+}
+
+.logOut {
+  display: flex;
+  align-items: center;
+}
+
+.patient-details {
+  width: 90%;
+  margin: auto;
+}
+.patient-details .header {
+  border: unset;
+  margin: unset;
+}
+
+
+.file-drop-zone {
+  border: 2px dashed #ddd;
+  padding: 30px;
+  text-align: center;
+  width: 250px;
+}
+
+.file-drop-zone-over {
+  background-color: #928f8c;
+  width: 500px;
+}
+
+.image-container {
+  width: 250px;
+  margin: 30px;
+}
+
+.uploaderBtns {
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
+}
+
+.uploaderBtns > button {
+  margin-left: 20px;
+}
+
+
+.dataGrid table {
+  text-align-last: left;
+}
+
+.dataGrid table td {
+  text-align-last: left;
+}
+
+
+#gridContainer table td,
+#familyGridContainer table td,
+#familyMemberGrid table td {
+  text-align: left !important;
+}
+
+
+
+/* multiselect */
+
+.multiselect-wrap .multiselect-parent {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+.multiselect-wrap .btn-default {
+
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  padding: 0.375rem 2rem;
+}
+
+.multiselect-wrap .dropdown-menu.dropdown-menu-form.ng-scope {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgb(0 0 0 / 18%);
+  box-shadow: 0 6px 12px rgb(0 0 0 / 18%);
+
+}
+.multiselect-wrap .dropdown-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap
+}
+
+.multiselect-wrap a {
+  text-decoration: none;
+}
+
+.multiselect-wrap .dropdown-menu .divider {
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #262626;
+  text-decoration: none;
+  background-color: #f5f5f5;
+}
+
+
+.multiselect-wrap .glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.multiselect-wrap .glyphicon-ok:before {
+  content: "\e013";
+}

@@ -1,0 +1,7 @@
+// in expression remove gmt from hour for accurate timing
+{
+    "expression": "0 0 20 ? * *",
+    "group": "dirigible-defined",
+    "handler": "genetyllis-update/services/update-handler.js",
+    "description": "filename Job"
+}

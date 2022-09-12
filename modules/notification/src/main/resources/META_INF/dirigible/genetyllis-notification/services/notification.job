@@ -1,0 +1,6 @@
+{
+    "expression": "10 0 0 * * ?",
+    "group": "dirigible-defined",
+    "handler": "genetyllis-notification/services/notification.js",
+    "description": "filename Job"
+}

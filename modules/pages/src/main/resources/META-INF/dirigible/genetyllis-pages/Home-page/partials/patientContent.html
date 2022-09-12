@@ -1,0 +1,66 @@
+<div class="home-page-wrapper form-col">
+    <div class="formWrapper">
+        <div class="formControl">
+            <div class="form-col">
+                <div class="form-group searchInput">
+                    <input type="search" placeholder="LabID" class="form-control" ng-model="search">
+                </div>
+                <div class="form-group">
+                    <div class="form-col addButtons">
+                        <form action="partials/addPatient.html">
+                            <input type="submit" value="Add patient" ng-click="addFamilyMember()"
+                                class="typeBtn form-control">
+                        </form>
+                        <form action="partials/addAnalysis.html">
+                            <input type="submit" value="Add analysis" class="typeBtn form-control">
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="familyHistoryList">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Added</th>
+                            <th>Analysis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in patientsOptions | filter: search">
+                            <td>{{item.Id}}</td>
+                            <td>{{item.BirthDate}}</td>
+                            <td>{{item.GenderId}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="formWrapper">
+        <div class="notificationsWrapper">
+            <div class="header-notification">
+                <h2>Notifications</h2>
+                <div class="familyHistoryList">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>HGVS</th>
+                                <th>DbSnp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="variant in variants">
+                                <td>{{variant.HGVS}}</td>
+                                <td>{{variant.DBSNP}}</td>
+                                <td><input ng-click="markSeenNotification(variant.Id);" type="button" value="Confirm"
+                                        class="typeBtn form-control" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

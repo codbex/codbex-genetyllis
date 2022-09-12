@@ -85,7 +85,7 @@ angular
 		uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
 		};
 		uploader.onAfterAddingFile = function (fileItem) {
-			console.log("Patient: " + $scope.PatientId);
+			console.log("Patient: " + $scope.PatientId, fileItem);
 		};
 		uploader.onAfterAddingAll = function (addedFileItems) {
 		};

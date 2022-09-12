@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app='addAnalysis'>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Eclipse Dirigible &trade; | home-page </title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+        <script src="../js/file-uploader.js"> </script>
+        <script type="text/javascript" src="/services/v4/web/ide-core/ui/message-hub.js"></script>
+        <link type="text/css" rel="stylesheet" href="../../css/style.css" />
+
+    </head>
+
+    <body ng-controller='addAnalysisController'>
+        <div class="wrapper">
+            <div class="header-wrapper">
+                <div class="genHubLogo">
+                    <img src="../../../../web/genetyllis-pages/images/logo.svg" width="120px"></img>
+                </div>
+                <div class="nav-header">
+                    <ul>
+                        <li>
+                            <a href="../../../genetyllis-pages/Home-page/index.html">Home</a>
+                        </li>
+                        <li>
+                            <a href="../../../genetyllis-pages/Patients/index.html">Patients</a>
+                        </li>
+
+                        <li>
+                            <a href="../../../genetyllis-pages/Variants/index.html">Variants</a>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="logOut">
+                    <a href="">
+                        Log out
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="patient-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6  align-items ">
+                        <div class="border-content patientDetails">
+                            <div class="header content">
+                                <div class="container">
+                                    <h4>Details</h4>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <select class="form-control" aria-label="form-select-lg example">
+                                                <option selected>Select Provider</option>
+                                                <option ng-repeat="data in providerData">
+                                                    {{data.Name}}
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <select class="form-control " aria-label=".form-select-lg example">
+                                                <option selected>Select Platform</option>
+                                                <option ng-repeat="data in platformData">
+                                                    {{data.Name}}
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Date of birth"
+                                                ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                                onblur="(this.type='text')" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-content patientDetails">
+                            <div class="header content">
+                                <div class="container">
+                                    <h4>Patient</h4>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <input list="dataList" ng-model='entity.LabId' class="form-control"
+                                                ng-keyup="suggestLabId(entity.LabId)" placeholder="Enter LabId" />
+                                            <datalist id="dataList">
+                                                <option ng-repeat="x in labIds">{{x}}</option>
+                                            </datalist>
+                                        </div>
+                                        <div class="col">
+                                            <a ng-href="../{{entity.LabId}}" ng-repeat="labId in labIds">{{labId}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 align-items ">
+                        <div class="border-content patientDetails" style="    height: 100%;">
+                            <div class="header content">
+                                <div class="container">
+                                    <h4>Results</h4>
+                                </div>
+
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="container" nv-file-drop="" uploader="uploader"
+                                        filters="queueLimit, customFilter">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+                                                <input type="file" nv-file-select="" uploader="uploader"
+                                                    placeholder="pes" multiple /><br />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" style="margin-bottom: 40px">
+
+
+                                                <div ng-repeat="item in uploader.queue"
+                                                    style="display:flex; justify-content: space-between; align-items: center;">
+                                                    <h6>{{ item.file.name }}</h6>
+
+                                                    <h6 ng-show="uploader.isHTML5">
+                                                        <div class="progress" style="margin-bottom: 0;">
+                                                            <div class="progress-bar" role="progressbar"
+                                                                ng-style="{ 'width': item.progress + '%' }">
+                                                            </div>
+                                                        </div>
+                                                    </h6>
+                                                    <h6 class="text-center">
+                                                        <span ng-show="item.isSuccess"><i
+                                                                class="fa fa-check"></i></span>
+                                                        <span ng-show="item.isCancel"><i class="fa fa-close"></i></span>
+                                                        <span ng-show="item.isError"><i
+                                                                class="fa fa-warning"></i></span>
+                                                    </h6>
+                                                    <h6>
+                                                        <button type="button" class="btn btn-danger btn-xs"
+                                                            ng-click="item.remove()">
+                                                            <span class="fa fa-trash"></span> Remove
+                                                        </button>
+                                                    </h6>
+                                                </div>
+
+                                                <div>
+                                                    <div>
+                                                        Queue progress:
+                                                        <div class="progress" style="">
+                                                            <div class="progress-bar" role="progressbar"
+                                                                ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="uploaderBtns">
+                                                        <button type="button" class="btn btn-success btn-s"
+                                                            ng-click="uploader.uploadAll()"
+                                                            ng-disabled="!uploader.getNotUploadedItems().length">
+                                                            <span class="fa fa-upload"></span> Upload All
+                                                        </button>
+                                                        <button type="button" class="btn btn-warning btn-s"
+                                                            ng-click="uploader.cancelAll()"
+                                                            ng-disabled="!uploader.isUploading">
+                                                            <span class="fa fa-close"></span> Cancel All
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-s"
+                                                            ng-click="uploader.clearQueue()"
+                                                            ng-disabled="!uploader.queue.length">
+                                                            <span class="fa fa-trash"></span> Remove All
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script src="../js/addAnalysis.js"> </script>
+        <style>
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            /* Firefox */
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
+
+        </style>
+
+
+    </body>
+
+</html>

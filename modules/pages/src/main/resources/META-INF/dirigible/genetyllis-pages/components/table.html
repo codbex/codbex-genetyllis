@@ -1,0 +1,13 @@
+<table border="1px solid #000" cellspacing="0">
+    <thead>
+        <tr>
+            <th ng-repeat="i in addColumns">{{i}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="data in variants">
+
+            <td ng-repeat="i in addColumns">{{data[i]}}</td>
+        </tr>
+    </tbody>
+</table>

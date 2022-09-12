@@ -1,0 +1,5 @@
+{
+	"description": "users tiles",
+	"extensionPoint": "launchpad-genetyllis-tiles",
+	"module": "genetyllis-app/gen/ui/users/views/Notification/extensions/tile/tile.js"
+}

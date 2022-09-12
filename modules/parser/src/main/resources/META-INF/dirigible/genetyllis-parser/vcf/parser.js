@@ -564,13 +564,19 @@ exports.VCFVariantContext = function () {
 		return list;
 	};
 
+	// this.getFilters = function () {
+	// 	const list = new Array();
+	// 	const nativeList = this.native.getFilters();
+	// 	console.log(JSON.stringify(nativeList));
+	// 	for (let i in nativeList) {
+	// 		list.push(nativeList[i]);
+	// 	}
+	// 	return list;
+	// };
+
 	this.getFilters = function () {
-		const list = new Array();
 		const nativeList = this.native.getFilters();
-		for (let i in nativeList) {
-			list.push(nativeList[i]);
-		}
-		return list;
+		return nativeList;
 	};
 
 	this.getGenotypes = function () {

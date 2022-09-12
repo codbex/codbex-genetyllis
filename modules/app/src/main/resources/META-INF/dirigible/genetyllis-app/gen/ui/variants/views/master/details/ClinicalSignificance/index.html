@@ -27,6 +27,7 @@
 				<tr>
 					<th>#</th>
 					<th class="text-capitalize">Id</th>
+					<th class="text-capitalize">Accession</th>
 					<th class="text-capitalize">VariantId</th>
 					<th class="text-capitalize">PathologyId</th>
 					<th class="text-capitalize">SignificanceId</th>
@@ -40,6 +41,7 @@
 				<tr ng-repeat="next in data">
 					<td>{{(dataPage - 1) * dataLimit + $index + 1}}</td>
 					<td>{{next.Id}}</td>
+					<td>{{next.Accession}}</td>
 					<td>{{pathologyidOptionValue(next.PathologyId)}}</td>
 					<td>{{significanceidOptionValue(next.SignificanceId)}}</td>
 					<td>{{next.Evaluated | date:dateFormat}}</td>
@@ -67,6 +69,10 @@
 				</div>
 				<div class="modal-body">
 					<form name="entityForm" ng-hide="actionType === 'delete'">
+						<div class="form-group">
+							<label>Accession</label>
+							<input   type="text"  maxlength="20" class="form-control" placeholder="Enter accession" ng-model="entity.Accession" ng-change="updateCalculatedProperties()">
+						</div>
 						<div class="form-group">
 							<label>PathologyId</label>
 							<select  class="form-control" ng-options="o.Id as o.Name for o in pathologyidOptions" ng-model="entity.PathologyId" ng-change="updateCalculatedProperties()"></select>

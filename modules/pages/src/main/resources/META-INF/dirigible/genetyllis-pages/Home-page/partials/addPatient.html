@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app='addPatient'>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Eclipse Dirigible &trade; | home-page </title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+        <script src="https://code.angularjs.org/1.8.2/angular-animate.js"></script>
+        <link type="text/css" rel="stylesheet" href="../../css/style.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/22.1.4/css/dx.common.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/22.1.4/css/dx.light.css" />
+        <script src="https://cdn3.devexpress.com/jslib/22.1.4/js/dx.all.js"></script>
+        <script src="../js/addPatient.js"></script>
+
+
+    </head>
+
+    <body ng-controller='addPatientController' class="dx-viewport">
+        <div class="wrapper">
+            <div class="header-wrapper">
+                <div class="genHubLogo">
+                    <img src="../../../../web/genetyllis-pages/images/logo.svg" width="120px"></img>
+                </div>
+                <div class="nav-header">
+                    <ul>
+                        <li>
+                            <a href="../../../genetyllis-pages/Home-page/index.html">Home</a>
+                        </li>
+                        <li>
+                            <a href="../../../genetyllis-pages/Patients/index.html">Patients</a>
+                        </li>
+
+                        <li>
+                            <a href="../../../genetyllis-pages/Variants/index.html">Variants</a>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="logOut">
+                    <a href="">
+                        Log out
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="holder">
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">
+                        <input type="submit" value="Add entry" ng-click="addEntryFamilyHistory()"
+                            class="btn btn-primary filterBtn addFilter" id="family-history-entry">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="holder">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div id="gridContainer" dx-data-grid="dataGridOptionsFamilyHistory">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="patient-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 align-items ">
+                        <div class="border-content patientDetails">
+                            <div class="header content">
+                                <div class="container">
+                                    <h4>Patients Details</h4>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Enter LabId"
+                                                ng-model="entity.LabId" required ng-blur="existsLabId()"
+                                                style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Initials"
+                                                ng-model="entity.Info">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Gender:</h5>
+                                        </div>
+                                        <div class="col">
+                                            <input type="radio" id="male" name="drone" value="male"
+                                                ng-model="entity.GenderId">
+                                            <label for="male">Male</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="radio" id="female" name="drone" value="female"
+                                                ng-model="entity.GenderId">
+                                            <label for="female">Female</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="radio" id="other" name="drone" value="other" checked>
+                                            <label for="other">Other</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Ethnicity:</h5>
+                                        </div>
+                                        <div class="col">
+                                            <input type="radio" id="bulgarian" name="Ethnicity" value="bulgarian">
+                                            <label for="bulgarian">Bulgarian</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="radio" id="otherEthnicity" name="Ethnicity"
+                                                value="otherEthnicity" checked>
+                                            <label for="otherEthnicity">Other</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-content">
+                            <div class="header content">
+                                <div class="container">
+                                    <h4> Clinical History</h4>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <input list="dataList"
+                                                ng-change="setPatientPathology(clinicalHistoryData.PathologyCui)"
+                                                ng-model='clinicalHistoryData.PathologyCui' class="form-control"
+                                                ng-keyup="suggestPatientPathology(clinicalHistoryData.PathologyCui)"
+                                                placeholder="Concept ID" />
+                                            <datalist id="dataList">
+                                                <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
+                                            </datalist>
+
+                                        </div>
+                                        <div class="col-5">
+                                            <input ng-model='clinicalHistoryData.PathologyName' placeholder="Disease"
+                                                class="form-control" />
+
+                                        </div>
+                                        <div class="col-3">
+                                            <input type="number" placeholder="0" value="5"
+                                                ng-model="clinicalHistoryData.AgeOnset" class="form-control">
+                                            <p>Age of onset</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <textarea rows=" 4" cols="50" placeholder="Additional info ..."
+                                                ng-model="clinicalHistoryData.Notes" class="form-control">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <input type="submit" value="Add entry" ng-click="addEntryClinicalHistory()"
+                                                class="btn btn-primary filterBtn addFilter" id="clinical-history-entry">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="gridContainer" dx-data-grid="dataGridOptionsClinicalHistory">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- --------------------------------------------------- -->
+                    <div class="col-6 align-items">
+                        <div class="border-content" style="height: 100%;">
+                            <div class="header content">
+                                <div class="container">
+                                    <h4> Family History</h4>
+                                </div>
+
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="text" placeholder="LabId" class="form-control"
+                                                ng-model="familyClinicalHistoryDataArray.LabId"
+                                                ng-blur="loadFamilyMemberByLabId()" />
+                                        </div>
+                                        <div class="col">
+                                            <input list="relationList"
+                                                ng-change="setFamilyRelation(familyClinicalHistoryDataArray.RelationName)"
+                                                ng-model='familyClinicalHistoryDataArray.RelationName'
+                                                class="form-control" placeholder="Relation" />
+                                            <datalist id="relationList">
+                                                <option ng-repeat="x in relationData">{{x.RelationType}}</option>
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <input list="FamilydataList"
+                                                ng-change="setFamilyPathology(familyClinicalHistoryData.PathologyCui)"
+                                                ng-model='familyClinicalHistoryData.PathologyCui' class="form-control"
+                                                ng-keyup="suggestFamilyPathology(familyClinicalHistoryData.PathologyCui)"
+                                                placeholder="Concept ID" />
+                                            <datalist id="FamilydataList">
+                                                <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
+                                            </datalist>
+                                        </div>
+                                        <div class="col-5">
+                                            <input placeholder="Disease" class="form-control"
+                                                ng-model='familyClinicalHistoryData.PathologyName' />
+                                        </div>
+                                        <div class="col-3">
+                                            <input type="number" value="5" class="form-control"
+                                                ng-model="familyClinicalHistoryData.AgeOnset">
+                                            <p>Age of onset</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <textarea rows=" 4" cols="50" placeholder="Additional info ..."
+                                                class="form-control" ng-model="familyClinicalHistoryData.Notes">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <input type="submit" value="Add entry" ng-click="addEntryFamilyHistory()"
+                                                class="btn btn-primary filterBtn addFilter" id="family-history-entry">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="familyGridContainer" dx-data-grid="dataGridOptionsFamilyHistory">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <input type="submit" value="Add family member"
+                                                ng-click="addEntryFamilyMember()"
+                                                class="btn btn-primary filterBtn addFilter">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="familyMemberGrid" dx-data-grid="dataGridOptionsFamilyMember">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class=" holder">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="col-4">
+
+                                            </div>
+
+                                            <table fd-table display-mode="compact" ng-show="isEmptyTableFamilyMember"
+                                                class="table table-bordered">
+                                                <thead fd-table-header sticky="true">
+                                                    <tr fd-table-row>
+                                                        <th fd-table-header-cell>Lab ID</th>
+                                                        <th fd-table-header-cell>Relation</th>
+                                                        <th fd-table-header-cell>Disease</th>
+                                                        <th fd-table-header-cell>Age of Onset</th>
+                                                        <th fd-table-header-cell></th>
+                                                        <th fd-table-header-cell></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody fd-table-body>
+                                                    <tr fd-table-row ng-repeat="next in familyMembersArray"
+                                                        hoverable="true">
+                                                        <td fd-table-cell>{{next.LabId}}</td>
+                                                        <td fd-table-cell>{{next.RelationName}}</td>
+                                                        <td fd-table-cell>
+                                                            <table fd-table display-mode="compact">
+                                                                <tbody fd-table-body>
+                                                                    <tr fd-table-row
+                                                                        ng-repeat="hsitory in next.ClinicalHistoryDataArray"
+                                                                        hoverable="true">
+                                                                        <td fd-table-cell>
+                                                                            {{hsitory.PathologyName}}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td fd-table-cell>
+                                                            <table fd-table display-mode="compact">
+                                                                <tbody fd-table-body>
+                                                                    <tr fd-table-row
+                                                                        ng-repeat="hsitory in next.ClinicalHistoryDataArray"
+                                                                        hoverable="true">
+                                                                        <td fd-table-cell>
+                                                                            {{hsitory.AgeOnset}}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td><button id="remove"
+                                                                ng-click="deleteFamilyMember(next)">DELETE</button>
+                                                        </td>
+                                                        <td><button id="edit">EDIT</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-form">
+                    <div class="holder">
+                        <div class="row">
+                            <div class="col-2">
+
+                                <button class="btn btn-sm btn-danger"
+                                    ng-confirm-click="Are you sure to delete this record ?"
+                                    confirmed-click="removeUser($index)">Delete patient</button>
+                            </div>
+
+                            <div class="col">
+                                <div class="row content-end">
+                                    <div class="col-2">
+                                        <input type="submit" ng-click="create()" value="Save"
+                                            class="btn btn-primary filterBtn addFilter" />
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="submit" ng-click="addAnalysis()" value="Add analysis"
+                                            class="btn btn-primary filterBtn addFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <style>
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            /* Firefox */
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
+
+        </style>
+        <script type="text/javascript">
+
+        </script>
+    </body>
+
+</html>

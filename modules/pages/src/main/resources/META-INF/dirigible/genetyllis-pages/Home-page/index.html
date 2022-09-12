@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018 SAP and others.
+  ~ All rights reserved. This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ http://www.eclipse.org/legal/epl-v20.html
+  ~ Contributors:
+  ~ SAP - initial API and implementation
+  -->
+
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/webjars/angularjs/1.8.2/angular.min.js"></script>
+		<script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
+		<script
+			src="https://rawgit.com/myforce/angularjs-dropdown-multiselect/master/src/angularjs-dropdown-multiselect.js"
+			type="text/javascript"></script>
+		<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap.js"></script>
+
+
+		<script type="text/javascript"
+			src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js"></script>
+
+
+		<!-- <link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" /> -->
+		<script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.9/angular.js" data-semver="1.4.9">
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
+
+		<link rel="stylesheet" href="../css/pagination.css">
+		<link rel="stylesheet" href="../css/style.css">
+
+		<title>Document</title>
+
+	</head>
+
+
+	<body ng-app="home-page" ng-controller="homePageController">
+		<div class="wrapper">
+			<div class="header-wrapper">
+				<div class="genHubLogo">
+					<img src="../../../web/genetyllis-pages/images/logo.svg" width="120px"></img>
+				</div>
+				<div class="nav-header">
+					<ul>
+						<li>
+							<a href="../../../web/genetyllis-pages/Home-page/index.html">Home</a>
+						</li>
+						<li>
+							<a href="../../../web/genetyllis-pages/Patients/index.html">Patients</a>
+						</li>
+
+						<li>
+							<a href="../../../web/genetyllis-pages/Variants/index.html">Variants</a>
+
+						</li>
+					</ul>
+				</div>
+				<div class="logOut">
+					<a href="">
+						Log out
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="patient-wrapper">
+			<div class="analysis-wrapper border-content">
+				<div class=" patientDetails align-items">
+					<div class="header content">
+						<div class="container">
+							<h4>Analysis</h4>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<input type="text" class="form-control" placeholder="Date"
+										onfocus="(this.type='date')" onblur="(this.type='text')" required>
+								</div>
+								<div class="col">
+									<input type="search" placeholder="LabID" class="form-control" ng-model="search">
+
+								</div>
+								<div class="col">
+									<form action="partials/addPatient.html">
+										<input type="submit" value="Add patient" ng-click="addFamilyMember()"
+											class="btn btn-primary filterBtn addFilter">
+									</form>
+								</div>
+								<div class="col">
+									<form action="partials/addAnalysis.html">
+										<input type="submit" value="Add analysis"
+											class="btn btn-primary filterBtn addFilter">
+									</form>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container">
+
+							<div class="row">
+								<div class="paging">
+									<div class="select-columns">
+										<div ng-dropdown-multiselect="" options="example1data" extra-settings="setting2"
+											selected-model="example1model" class="multiselect-wrap"
+											ng-click="selectFucn()"></div>
+									</div>
+									<div class="per-page">
+										<div class="align-paragraph">
+											<p class="">Showing {{perPage}} of 500</p>
+										</div>
+										<div class="export">
+											<input type="number" min="0" class="form-control" ng-model="perPage"
+												ng-blur="setItemsPerPage()" />
+										</div>
+										<div class="align-paragraph">
+											<p>per page</p>
+										</div>
+										<div class="">
+											<button type="button"
+												class="btn btn-primary filterBtn addFilter">Export</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="holder table-holder">
+						<div class="container">
+							<table border="1px solid #000 " cellspacing="0">
+								<thead>
+									<tr>
+										<th ng-repeat="i in homePageTable">
+											{{i}}
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr dir-paginate="data in patientsDetail | itemsPerPage:perPage">
+										<!-- <td>{{data.Id}}</td>
+										<td>{{data.BirthDate}}</td>
+										<td>{{data.GenderId}}</td>
+										<td>{{data.Info}}</td> -->
+										<td ng-repeat="i in homePageTable">{{data[i]}}</td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="holder">
+							<div class="text-center other-controller">
+								<dir-pagination-controls boundary-links="true"
+									on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="notifications-wrapper border-content">
+				<div class=" patientDetails align-items">
+					<div class="header content">
+						<div class="container">
+							<h4>Notifications</h4>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container notification">
+							<h5>New ACMG standards published</h5>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container notification-content">
+							<div class="row">
+								<div class="col-10"><a href="">source</a></div>
+								<div class="col-2">
+									<p>1d</p>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container notification">
+							<h5>Clinical significance interpretation for variant rs16545 update. See affected records
+							</h5>
+						</div>
+					</div>
+					<div class="holder">
+						<div class="container notification-content">
+							<div class="row">
+								<div class="col-10"><a href="">source</a></div>
+								<div class="col-2">
+									<p>1d</p>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="js/home-page.js"></script>
+		<script type="text/javascript" src="js/patientController.js"></script>
+	</body>
+
+</html>
