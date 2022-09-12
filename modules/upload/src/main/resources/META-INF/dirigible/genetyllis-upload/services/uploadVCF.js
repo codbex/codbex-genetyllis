@@ -9,20 +9,21 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-var upload = require("http/v4/upload");
-var request = require("http/v4/request");
-var query = require("db/v4/query");
-var parser = require("genetyllis-parser/vcf/parser");
-var files = require("io/v4/files");
-var httpClient = require("http/v4/client");
-var database = require("db/v4/database");
-var daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
-var daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
-var daoGene = require("genetyllis-app/gen/dao/genes/Gene");
-var daoFilter = require("genetyllis-app/gen/dao/records/Filter");
-var daoClinicalSignificance = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
-var daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
-var daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
+const upload = require("http/v4/upload");
+const request = require("http/v4/request");
+const query = require("db/v4/query");
+const parser = require("genetyllis-parser/vcf/parser");
+const files = require("io/v4/files");
+const httpClient = require("http/v4/client");
+const database = require("db/v4/database");
+const daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
+const daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
+const daoGene = require("genetyllis-app/gen/dao/genes/Gene");
+const daoFilter = require("genetyllis-app/gen/dao/records/Filter");
+const daoClinicalSignificance = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
+const daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
+const daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
+const myVariantInfoUrl = "https://myvariant.info/v1/variant/";
 
 if (request.getMethod() === "POST") {
     if (upload.isMultipartContent()) {
@@ -113,7 +114,7 @@ function addVariant(dbHgvsEntries, variantContext) {
 
         console.log(entityVariant.HGVS);
 
-        var httpResponse = httpClient.get("https://myvariant.info/v1/variant/" + entityVariant.HGVS.replace(">", "%3E"));
+        var httpResponse = httpClient.get(myVariantInfoUrl + entityVariant.HGVS.replace(">", "%3E"));
 
         const myVariantJSON = JSON.parse(httpResponse.text);
 

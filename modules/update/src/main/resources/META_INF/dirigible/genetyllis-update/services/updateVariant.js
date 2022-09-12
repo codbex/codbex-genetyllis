@@ -10,16 +10,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-var query = require("db/v4/query");
-var httpClient = require("http/v4/client");
-var daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
-var daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
-var daoGene = require("genetyllis-app/gen/dao/genes/Gene");
-var daoFilter = require("genetyllis-app/gen/dao/records/Filter");
-var daoClinicalSignificance = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
-var daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
-var daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
-var daoNotification = require("genetyllis-app/gen/dao/users/Notification.js");
+const query = require("db/v4/query");
+const httpClient = require("http/v4/client");
+const daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
+const daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
+const daoGene = require("genetyllis-app/gen/dao/genes/Gene");
+const daoFilter = require("genetyllis-app/gen/dao/records/Filter");
+const daoClinicalSignificance = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
+const daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
+const daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
+const daoNotification = require("genetyllis-app/gen/dao/users/Notification.js");
+const myVariantInfoUrl = "https://myvariant.info/v1/variant/";
 
 exports.updateTrigger = function (variantId) {
     // console.log("update ", variantId)
@@ -53,7 +54,7 @@ function updateVariant(variantId) {
     entityVariant.GeneId = resultset[0].VARIANT_GENEID;
     console.log(entityVariant.HGVS);
 
-    var httpResponse = httpClient.get("https://myvariant.info/v1/variant/" + entityVariant.HGVS.replace(">", "%3E"));
+    var httpResponse = httpClient.get(myVariantInfoUrl + entityVariant.HGVS.replace(">", "%3E"));
     const myVariantJSON = JSON.parse(httpResponse.text);
 
     if (!myVariantJSON.error) {
