@@ -151,27 +151,80 @@ exports.filterPatients = function (patient) {
 	initFilterSql();
 
 	var response = {};
+	var countSql = "";
 
 	filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
 	filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY, filterSql);
 	filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT, filterSql);
 	buildFamilyHistoryFilterSql(patient.GENETYLLIS_FAMILYHISTORY);
 
+	countSql += filterSql;
+
 	filterSql += " LIMIT " + patient.perPage + " OFFSET " + patient.currentPage;
 
 	var resultSet = query.execute(filterSql, filterSqlParams);
 
-	filterSql = filterSql.replace('*', 'COUNT(*)');
+	countSql = "SELECT COUNT(DISTINCT GP.PATIENT_ID)" + countSql.slice(20);
 
-	var resultSetCount = query.execute(filterSql, filterSqlParams);
+	var resultSetCount = query.execute(countSql, filterSqlParams);
 
 	response.data = resultSet;
-	response.totalItems = resultSetCount[0]["COUNT(*)"];
+	response.totalItems = resultSetCount[0]["COUNT(DISTINCT GP.PATIENT_ID)"];
 	response.totalPages = Math.floor(response.totalItems / patient.perPage) + (response.totalItems % patient.perPage == 0 ? 0 : 1);
+
+	response.data.forEach(patientResult => {
+		var params = [];
+		params.push(patientResult.PATIENT_ID)
+
+		patientResult.clinicalHistory = loadClinicalHistoryAndPathology(params);
+		patientResult.familyHistory = loadFamilyMembersHistory(params);
+		patientResult.variantRecords = loadVariantRecords(params);
+		patientResult.analysis = loadAnalysis(params);
+	})
 
 	filterSql = "";
 
 	return response;
+}
+
+function loadFamilyMembersHistory(params) {
+	var familyHistory = query.execute("SELECT * FROM GENETYLLIS_FAMILYHISTORY WHERE FAMILYHISTORY_PATIENTID = ?", params);
+	familyHistory.forEach(familyMember => {
+		var familyParams = [];
+		familyParams.push(familyMember.FAMILYHISTORY_FAMILYMEMBERID);
+		familyMember.patients = query.execute("SELECT * FROM GENETYLLIS_PATIENT WHERE PATIENT_ID = ?", familyParams);
+		familyMember.patients.forEach(familyPatient => {
+			familyPatient.clinicalHistory = loadClinicalHistoryAndPathology(familyParams);
+		})
+	})
+
+	return familyHistory;
+}
+
+function loadClinicalHistoryAndPathology(params) {
+	var clinicalHistories = query.execute("SELECT * FROM GENETYLLIS_CLINICALHISTORY WHERE CLINICALHISTORY_PATIENTID = ?", params);
+	clinicalHistories.forEach(clinicalHistory => {
+		var historyParams = [];
+		historyParams.push(clinicalHistory.CLINICALHISTORY_PATHOLOGYID)
+		clinicalHistory.pathology = query.execute("SELECT * FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_ID = ?", historyParams);
+	})
+
+	return clinicalHistories;
+}
+
+function loadVariantRecords(params) {
+	var variantRecords = query.execute("SELECT * FROM GENETYLLIS_VARIANTRECORD WHERE VARIANTRECORD_PATIENTID = ?", params);
+	variantRecords.forEach(variantRecord => {
+		var variantParams = [];
+		variantParams.push(variantRecord.VARIANTRECORD_VARIANTID);
+		variantRecord.variants = query.execute("SELECT * FROM GENETYLLIS_VARIANT WHERE VARIANT_ID = ?", variantParams);
+	})
+
+	return variantRecords;
+}
+
+function loadAnalysis(params) {
+	return query.execute("SELECT * FROM GENETYLLIS_ANALYSIS WHERE GENETYLLIS_ANALYSIS_PATIENTID = ?", params);
 }
 
 function buildFilterSql(object, sql) {
@@ -241,7 +294,7 @@ function addArrayValuesToSql(array) {
 function initFilterSql() {
 	useWhere = true;
 	filterSqlParams = [];
-	filterSql = "SELECT * FROM GENETYLLIS_PATIENT GP " +
+	filterSql = "SELECT DISTINCT GP.* FROM GENETYLLIS_PATIENT GP " +
 		"LEFT JOIN GENETYLLIS_CLINICALHISTORY GC ON GP.PATIENT_ID = GC.CLINICALHISTORY_PATIENTID " +
 		"LEFT JOIN GENETYLLIS_FAMILYHISTORY GF ON GP.PATIENT_ID = GF.FAMILYHISTORY_PATIENTID " +
 		"LEFT JOIN GENETYLLIS_PATHOLOGY GPT ON GC.CLINICALHISTORY_PATHOLOGYID = GPT.PATHOLOGY_ID " +
