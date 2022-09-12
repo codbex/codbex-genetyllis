@@ -93,8 +93,9 @@
                                                 style="{{isLabIdTaken ?  'border: 1px solid #f00;' : 'border: 1px solid #ccc;' }}">
                                         </div>
                                         <div class="col">
-                                            <input type="text" class="form-control" placeholder="Initials"
-                                                ng-model="entity.Info">
+                                            <input type="text" class="form-control" placeholder="Date"
+                                                onfocus="(this.type='date')" onblur="(this.type='text')" required
+                                                ng-model="entity.BirthDate">
                                         </div>
                                     </div>
                                 </div>

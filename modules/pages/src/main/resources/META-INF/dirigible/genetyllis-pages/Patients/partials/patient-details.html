@@ -50,7 +50,22 @@
             </div>
         </div>
         <div class="patient-details">
-            <h4>{{patientsDetails.Id}} ({{patientsDetails.GenderId}})</h4>
+            <div class="editPatients">
+                <div class="row">
+                    <div class="col">
+                        <h4>{{fromData.LabId}}(PID:{{fromData.Id}})</h4>
+                    </div>
+                    <div class="col">
+                        <form action="../../Home-page/partials/addPatient.html">
+                            <input type="submit" ng-click="editPatients()" class="btn btn-primary filterBtn addFilter"
+                                value="Edit" />
+                        </form>
+
+
+                    </div>
+                </div>
+
+            </div>
             <div class="patient-info">
                 <div class="patient-info-wrapper border-content">
                     <div class="header content">
@@ -64,17 +79,18 @@
                         <div class="container">
                             <div class="column">
                                 <div class="col">
-                                    <h4>Date of birth: <span>08/12/2007</span></h4>
+                                    <h4>Date of birth: <span>{{day}}/{{month}}/{{year}}</span></h4>
                                 </div>
                             </div>
                             <div class="col">
-                                <h4>Age: <span>14</span></h4>
+                                <h4>Age: <span ng-if="(age != 'undefined' || null)? true :false"> {{age}}</span>
+                                </h4>
                             </div>
                             <div class="col">
-                                <h4>Gender: <span>male</span></h4>
+                                <h4>Gender: <span>{{gender}}</span></h4>
                             </div>
                             <div class="col">
-                                <h4>Ethnicity: <span>Bulgarian</span></h4>
+                                <h4>Ethnicity: <span>{{population}}</span></h4>
                             </div>
                         </div>
                     </div>

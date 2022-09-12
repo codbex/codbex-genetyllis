@@ -25,9 +25,9 @@
             type="text/javascript"></script>
         <script type="text/javascript"
             src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js"></script>
-
+        <!-- 
         <script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.9/angular.js" data-semver="1.4.9">
-        </script>
+        </script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
 
         <link rel="stylesheet" href="../css/pagination.css">
@@ -445,7 +445,14 @@
                                     </thead>
                                     <tbody>
                                         <tr dir-paginate="data in patientsDetails | itemsPerPage:perPage">
-                                            <td ng-repeat="i in homePageTable">{{data[i]}}</td>
+                                            <td ng-repeat="i in homePageTableInfo">
+
+                                                <a href="http://localhost:8088/services/v4/web/genetyllis-pages/Patients/partials/patient-details.html"
+                                                    ng-if="checkColumn(i)"
+                                                    ng-click="redirectPatients(data)">{{data[i]}}<a>
+
+                                                        <span ng-if="notLink(i)">{{data[i]}}</span>
+                                            </td>
 
                                         </tr>
                                     </tbody>
