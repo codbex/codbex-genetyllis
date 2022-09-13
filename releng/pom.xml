@@ -16,6 +16,7 @@
 	<modules>
 		<module>genetyllis-platform</module>
 		<module>genetyllis-platform-keycloack</module>
+		<module>genetyllis-platform-keycloack-runtime</module>
 	</modules>
 
 	<build>
