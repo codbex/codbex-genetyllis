@@ -7,8 +7,9 @@ To build the docker image:
     docker build -t codbex-genetyllis-keycloack-runtime:latest .
 
 To run a container:
-odbe
-    docker run --name genetyllis --rm -p 8080:8080 -p 8081:8081 codbex-genetyllis-keycloack-runtime:latest
+
+    docker run --name genetyllis --rm -p 8080:8080 -p 8081:8081 codbex-genetyllis-platform-runtime:latest
+
     
 To stop the container:
 
