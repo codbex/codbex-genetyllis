@@ -107,16 +107,16 @@
                                 </div>
                                 <div class="col-4">
                                     <input type="text" class="form-control" placeholder="Date"
-                                        ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_FROM" onfocus="(this.type='date')"
-                                        onblur="(this.type='text')" required ng-change="dateFrom()">
+                                       ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_FROM" onfocus="(this.type='date')"
+                                       onblur="(this.type='text')" required ng-change="dateFrom()">
                                 </div>
                                 <div class="col-2 align-paragraph">
                                     <p>to</p>
                                 </div>
                                 <div class="col-4">
                                     <input type="text" class="form-control" placeholder="Date"
-                                        ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_TO" onfocus="(this.type='date')"
-                                        onblur="(this.type='text')" required ng-change="dateTo()">
+                                       ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_TO" onfocus="(this.type='date')"
+                                       onblur="(this.type='text')" required ng-change="dateTo()">
                                 </div>
                             </div>
                         </div>
@@ -134,266 +134,268 @@
                                 <div class="col-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox"
-                                            ng-click="maleFunc()"" ng-model=" maleCheckbox" id="male">
-                                        <label class="form-check-label" for="male" ">
+                                            ng-click="maleFunc()" ng-model=" maleCheckbox" id="male">
+                                        <label class="form-check-label" for="male">
                                         Male
-                                    </label>
-                                </div>
-                            </div>
-                            <div class=" col-3">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="female"
-                                                    ng-click="femaleFunc()" ng-model="femaleCheckbox">
-                                                <label class="form-check-label" for="female">
-                                                    Female
-                                                </label>
-                                            </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" ng-click="otherGenderFunc()"
-                                                ng-model="otherGender" value="" id="nonspecifed-gender">
-                                            <label class="form-check-label" for="nonspecifed-gender">
-                                                Nonspecifed gender
-                                            </label>
-                                        </div>
+                                        </label>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" checked value=""
-                                                id="bulgarian" ng-model="bulgarian" ng-click="bulgarianFunc()">
-                                            <label class="form-check-label" for="bulgarian">
-                                                Bulgarian
-                                            </label>
-                                        </div>
+                                <div class=" col-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="female"
+                                            ng-click="femaleFunc()" ng-model="femaleCheckbox">
+                                        <label class="form-check-label" for="female">
+                                            Female
+                                        </label>
                                     </div>
-                                    <div class="col">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" checked value=""
-                                                id="other-ethnicity" ng-click="otherEthnicityFunc()"
-                                                ng-model="otherEthnicity">
-                                            <label class="form-check-label" for="other-ethnicity">
-                                                Other ethnicity
-                                            </label>
-                                        </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" ng-click="otherGenderFunc()"
+                                            ng-model="otherGender" value="" id="nonspecifed-gender">
+                                        <label class="form-check-label" for="nonspecifed-gender">
+                                            Nonspecifed gender
+                                        </label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="holder">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>
-                                            Clinical history
-                                        </h5>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked value=""
+                                            id="bulgarian" ng-model="bulgarian" ng-click="bulgarianFunc()">
+                                        <label class="form-check-label" for="bulgarian">
+                                            Bulgarian
+                                        </label>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-8">
-                                        <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
-                                            placeholder="Concept ID" />
-                                        <datalist id="dataList">
-                                            <option ng-repeat="x in conceptIds">{{x}}</option>
-                                        </datalist>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-secondary filterBtn"
-                                            ng-click="addClinicalHistoryId()">Add</button>
-                                    </div>
-                                    <div class="addedText">
-                                        <span ng-repeat="i in GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI track by $index"
-                                            ng-click="removeClinicalHistoryId($index)">{{i}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="holder">
-                            <div class="container">
-                                <div class="row date-of-birth">
-                                    <div class="col-3 align-paragraph">
-                                        <p>Onset from</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="number" min="0" class="form-control"
-                                            ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM"
-                                            ng-change="ageFrom()" />
-                                    </div>
-                                    <div class="col-1 align-paragraph">to</div>
-                                    <div class="col-4">
-                                        <input type="number" min="0" class="form-control"
-                                            ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO"
-                                            ng-change="ageTO()" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="holder">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>
-                                            Family history
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-8">
-
-                                        <input list="dataList" ng-model="selectedFamilyConceptId" class="form-control"
-                                            placeholder="Concept ID" />
-                                        <datalist id="dataList">
-                                            <option ng-repeat="x in conceptIds">{{x}}</option>
-                                        </datalist>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-secondary filterBtn"
-                                            ng-click="addFamilyHistoryId()">Add</button>
-                                    </div>
-                                    <div class="addedText">
-                                        <span ng-repeat="i in GENETYLLIS_FAMILYHISTORY.PATHOLOGY_CUI track by $index"
-                                            ng-click="removeFamilyHistoryId($index)">{{i}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="holder">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-4 align-paragraph">
-                                        <p>Onset from</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="number" min="0" class="form-control"
-                                            ng-model="GENETYLLIS_FAMILYHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM" />
-                                    </div>
-                                    <div class="col-1 align-paragraph">to</div>
-                                    <div class="col-3">
-                                        <input type="number" min="0" class="form-control"
-                                            ng-model="GENETYLLIS_FAMILYHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="holder">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" checked value="" id="WGS"
-                                                checked>
-                                            <label class="form-check-label" for="WGS">
-                                                Whole Genome Sequencing (WGS)
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="holder">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <p>Date of analysis</p>
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" placeholder="Date"
-                                            ng-model="entity.BirthDate" onfocus="(this.type='date')"
-                                            onblur="(this.type='text')" required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="holder">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Chromosome</h5>
-                                    </div>
-                                    <div class="col">
-                                        <h5>Position</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <input type="number" min="0" class="form-control"
-                                            ng-model="GENETYLLIS_VARIANT.VARIANT_CHROMOSOME" />
-                                    </div>
-                                    <div class="col">
-                                        <input type="number" min="0" class="form-control"
-                                            ng-model="GENETYLLIS_VARIANT.VARIANT_POSITION" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="holder">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <input list="dataListRef" ng-model='GENETYLLIS_VARIANT.VARIANT_REF'
-                                            class="form-control" placeholder="Ref" ng-change="variantRefFunc()" />
-                                        <datalist id="dataListRef">
-                                            <option ng-repeat="i in variantsRef">{{i}}</option>
-                                        </datalist>
-                                    </div>
-                                    >
-                                    <div class="col">
-                                        <input type="text" ng-model='GENETYLLIS_VARIANT.VARIANT_ALT'
-                                            class="form-control" placeholder="Alt" ng-blur="variantAltFunc()" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="holder">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="benign">
-                                            <label class="form-check-label" for="benign">
-                                                Flagged for tracking
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" holder">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <button ng-click="clearAllFilters()" type="button" class="btn btn-link">Clear
-                                            all
-                                            filters</button>
-                                    </div>
-                                    <div class="col">
-                                        <button ng-click="filter()" type="button"
-                                            class="btn btn-primary filterBtn addFilter">Filter</button>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked value=""
+                                           id="other-ethnicity" ng-click="otherEthnicityFunc()"
+                                           ng-model="otherEthnicity">
+                                        <label class="form-check-label" for="other-ethnicity">
+                                            Other ethnicity
+                                        </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="variantTable">
-                        <div class="holder">
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Clinical history
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
+                                        placeholder="Concept ID" />
+                                    <datalist id="dataList">
+                                        <option ng-repeat="x in conceptIds">{{x}}</option>
+                                    </datalist>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn"
+                                        ng-click="addClinicalHistoryId()">Add</button>
+                                </div>
+                                <div class="addedText">
+                                    <span ng-repeat="i in GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI track by $index"
+                                        ng-click="removeClinicalHistoryId($index)">{{i}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row date-of-birth">
+                                <div class="col-3 align-paragraph">
+                                    <p>Onset from</p>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" min="0" class="form-control"
+                                       ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM"
+                                       ng-change="ageFrom()" />
+                                </div>
+                                <div class="col-1 align-paragraph">to</div>
+                                <div class="col-4">
+                                    <input type="number" min="0" class="form-control"
+                                       ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO"
+                                       ng-change="ageTO()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                        Family history
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+
+                                    <input list="dataList" ng-model="selectedFamilyConceptId" class="form-control"
+                                        placeholder="Concept ID" />
+                                    <datalist id="dataList">
+                                        <option ng-repeat="x in conceptIds">{{x}}</option>
+                                    </datalist>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary filterBtn"
+                                        ng-click="addFamilyHistoryId()">Add</button>
+                                </div>
+                                <div class="addedText">
+                                    <span ng-repeat="i in GENETYLLIS_FAMILYHISTORY.PATHOLOGY_CUI track by $index"
+                                        ng-click="removeFamilyHistoryId($index)">{{i}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 align-paragraph">
+                                    <p>Onset from</p>
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control"
+                                        ng-model="GENETYLLIS_FAMILYHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM" />
+                                </div>
+                                <div class="col-1 align-paragraph">to</div>
+                                <div class="col-3">
+                                    <input type="number" min="0" class="form-control"
+                                        ng-model="GENETYLLIS_FAMILYHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked value="" id="WGS"
+                                               checked>
+                                        <label class="form-check-label" for="WGS">
+                                            Whole Genome Sequencing (WGS)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <p>Date of analysis</p>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" placeholder="Date"
+                                       ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                       onblur="(this.type='text')" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Chromosome</h5>
+                                </div>
+                                <div class="col">
+                                    <h5>Position</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <input type="number" min="0" class="form-control"
+                                        ng-model="GENETYLLIS_VARIANT.VARIANT_CHROMOSOME" />
+                                </div>
+                                <div class="col">
+                                    <input type="number" min="0" class="form-control"
+                                        ng-model="GENETYLLIS_VARIANT.VARIANT_POSITION" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <input list="dataListRef" ng-model='GENETYLLIS_VARIANT.VARIANT_REF'
+                                        class="form-control" placeholder="Ref" ng-change="variantRefFunc()" />
+                                    <datalist id="dataListRef">
+                                        <option ng-repeat="i in variantsRef">{{i}}</option>
+                                    </datalist>
+                                </div>
+                                >
+                                <div class="col">
+                                    <input type="text" ng-model='GENETYLLIS_VARIANT.VARIANT_ALT'
+                                        class="form-control" placeholder="Alt" ng-blur="variantAltFunc()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="benign">
+                                        <label class="form-check-label" for="benign">
+                                            Flagged for tracking
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" holder">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <button ng-click="clearAllFilters()" type="button" class="btn btn-link">Clear
+                                        all
+                                        filters</button>
+                                </div>
+                                <div class="col">
+                                    <button ng-click="filter()" type="button"
+                                        class="btn btn-primary filterBtn addFilter">Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="variantTable">
+                    <div class="holder">
+                        <div class="container">
                             <div class="row">
                                 <div class="paging">
                                     <div class="select-columns">
-                                        <div ng-dropdown-multiselect="" options="example1data" extra-settings="setting2"
-                                            selected-model="example1model" class="multiselect-wrap"
-                                            ng-click="selectFucn()"></div>
+                                        <div ng-dropdown-multiselect="" options="example1data"
+                                             extra-settings="setting2" selected-model="example1model"
+                                             class="multiselect-wrap" ng-click="selectFucn()"></div>
                                     </div>
                                     <div class="per-page">
                                         <div class="align-paragraph">
-                                            <p class="">Showing {{perPage}} of 500</p>
+                                            <p class="">Showing {{selectedPerPage}} of 500</p>
                                         </div>
                                         <div class="export">
-                                            <input type="number" min="1" class="form-control" ng-model="perPage"
-                                                ng-blur="setItemsPerPage()" />
+                                            <select ng-model="selectedPerPage" ng-options="x for x in perPageData"
+                                                class="form-control">
+                                            </select>
                                         </div>
                                         <div class="align-paragraph">
                                             <p>per page</p>
@@ -406,74 +408,48 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="holder">
-                            <div class="table-holder">
-                                <table border="1px solid #000" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th ng-repeat="i in addColumns">{{i}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                    </div>
+                    <div class="holder table-holder">
+                        <div class="container">
+                            <table border="1px solid #000 " cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th ng-repeat="i in homePageTable">
+                                            {{i}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="data in patientsDetails | itemsPerPage:selectedPerPage">
+                                        <td ng-repeat="i in homePageTableInfo">
 
-                                        <tr dir-paginate="data in variants | itemsPerPage:perPage">
-                                            <td ng-repeat="data in patientsDetails track by $index">
-                                                <a href="partials/patient-details.html" ng-model="patientId"
-                                                    ng-click="getLocation(data)">{{data.Id}}</a>
-                                                </th>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                            <a href="http://localhost:8088/services/v4/web/genetyllis-pages/Patients/partials/patient-details.html"
+                                               ng-if="checkColumn(i)"
+                                               ng-click="redirectPatients(data)">{{data[i]}}</a>
 
-                            </div>
-
+                                                <span ng-if="notLink(i)">{{data[i]}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="holder">
                             <div class="text-center other-controller">
                                 <dir-pagination-controls boundary-links="true"
                                     on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
-                            </div>
-                        </div> -->
 
-                        <div class="holder table-holder">
-                            <div class="container">
-                                <table border="1px solid #000 " cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th ng-repeat="i in homePageTable">
-                                                {{i}}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr dir-paginate="data in patientsDetails | itemsPerPage:perPage">
-                                            <td ng-repeat="i in homePageTableInfo">
-
-                                                <a href="http://localhost:8088/services/v4/web/genetyllis-pages/Patients/partials/patient-details.html"
-                                                    ng-if="checkColumn(i)"
-                                                    ng-click="redirectPatients(data)">{{data[i]}}<a>
-
-                                                        <span ng-if="notLink(i)">{{data[i]}}</span>
-                                            </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="holder">
-                                <div class="text-center other-controller">
-                                    <dir-pagination-controls boundary-links="true"
-                                        on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
-
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="footerWrapper"></div>
-
                 </div>
+                <div class="footerWrapper"></div>
+
+            </div>
 
 
 
-                <script type="text/javascript" src="js/index.js"></script>
+            <script type="text/javascript" src="js/index.js"></script>
+        </div>
     </body>
 
 </html>

@@ -19,12 +19,6 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
 
     const patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
     $scope.patientsDetail = []
-    $http.get(patientsOptionsApi)
-        .then(function (data) {
-            $scope.patientsDetail = data.data;
-            $scope.patientsInfo = data.data
-            console.log($scope.patientsDetail, 'patientsDetail')
-        });
     // _|_
     $scope.example1model = [];
     // $scope.example1data = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
@@ -141,23 +135,35 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
         query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
         query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        query.perPage = 20;
-        query.currentPage = (($scope.currentPage - 1) * $scope.perPage);
+        query.perPage = $scope.selectedPerPage;
+        query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
 
         $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
             .then(function (response) {
-                console.log('response')
-                console.log(response.data)
+
+                console.log(response.data);
+                response.data.data.forEach(patientResult => {
+                    let patientObject = {};
+                    patientObject.Id = patientResult.PATIENT_ID;
+                    patientObject.LabId = patientResult.GENETYLLIS_PATIENT_LABID;
+                    patientObject.BirthDate = patientResult.PATIENT_AGE;
+                    patientObject["Clinical history"] = patientResult.clinicalHistory;
+                    patientObject.Analysis = patientResult.analysis;
+                    patientObject.Dates = patientResult.clinicalHistory.GENETYLLIS_CLINICALHISTORY_AGEONSET;
+
+                    $scope.patientsDetails.push(patientObject);
+                })
 
             }, function (response) {
             });
     }
-    $http.get(patientsOptionsApi)
-        .then(function (data) {
-            // $scope.pathologyDatas = data.data;
-            $scope.patientsDetails = data.data;
-            console.log(patientsOptionsApi, 'patientsOptionsApi')
-        });
+
+    $scope.pageChangeHandler = function (curPage) {
+        $scope.currentPage = curPage;
+        $scope.filter()
+    }
+
+    $scope.filter();
 
     $http.get(variantDetailsApi)
         .then(function (data) {
@@ -284,33 +290,30 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     $scope.maleFunc = function () {
 
         if (!$scope.maleCheckbox) {
-            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(0)
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(1)
         } else {
             var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(0);
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
         }
-
     }
     $scope.femaleFunc = function () {
         if (!$scope.femaleCheckbox) {
 
-            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(1)
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(2)
         } else {
             var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(1);
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
 
         }
-
     }
 
     $scope.otherGenderFunc = function () {
         if (!$scope.otherGender) {
-            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(2)
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(3)
         } else {
             var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(2);
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
         }
-
     }
 
 
