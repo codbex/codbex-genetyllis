@@ -84,6 +84,11 @@ li {
   text-align: center;
 }
 
+.table-holder a {
+  display: flex;
+  justify-content: space-around;
+}
+
 .patient-wrapper {
   width: 90%;
   margin: auto;
@@ -406,4 +411,10 @@ li {
 
 .multiselect-wrap .glyphicon-ok:before {
   content: "\e013";
+}
+
+
+.editPatients {
+  display: flex;
+  margin: unset;
 }

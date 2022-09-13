@@ -23,7 +23,6 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         .then(function (data) {
             $scope.patientsDetail = data.data;
             $scope.patientsInfo = data.data
-            console.log($scope.homePageTable, "homePageTable")
             console.log($scope.patientsDetail, 'patientsDetail')
         });
     // _|_
@@ -37,18 +36,29 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     };
 
     $scope.selectFucn = function () {
+        $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
         $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
         for (let x = 0; x < $scope.example1model.length; x++) {
             let value = $scope.example1data.find(e => e.id == $scope.example1model[x].id)
             $scope.homePageTable.push(value.label);
+            $scope.homePageTableInfo.push(value.label);
+
         }
     }
 
+    $scope.checkColumn = function (e) {
+        return e == 'Id'
+    }
+    $scope.notLink = function (e) {
+        return e != 'Id'
+    }
+
+    $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
     $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
     // _|_
 
     // $scope.perPage = 5;
-    console.log($scope.perPage)
+    // console.log($scope.perPage)
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/Patients/services/alleleFr.js';
     $scope.patientsDetails = []
@@ -327,6 +337,16 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
             x: s
         });
     }
+
+    $scope.redirectPatients = function (data) {
+        console.log(data, "data");
+        $localStorage.$default({
+            key: data
+        });
+        // $localStorage.setItem('key', data);
+    }
+
+
 
 }]);
 

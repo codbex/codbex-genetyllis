@@ -287,6 +287,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     $scope.loadFamilyMemberByLabId = function () {
         $http.get(patientsOptionsApi + "/loadPatientHistory/" + $scope.familyClinicalHistoryDataArray.LabId.toString())
             .then(data => {
+
                 if (isFamilyMemberValid(data.data[0])) {
                     data.data.forEach(element => {
                         $scope.familyClinicalHistoryDataArray.Id = element.FAMILYHISTORY_ID;
@@ -332,6 +333,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     }
 
     function suggestPathology(pathologyId) {
+        console.log(pathologyId, "pathologyId")
         if (validateSuggestion(pathologyId)) {
             $http.get(pathologyApi + "/filterPathology/" + pathologyId)
                 .then(data => {
@@ -349,6 +351,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     }
 
     function validateSuggestion(suggestion) {
+        console.log(suggestion)
         return suggestion.length > 3;
     }
 
