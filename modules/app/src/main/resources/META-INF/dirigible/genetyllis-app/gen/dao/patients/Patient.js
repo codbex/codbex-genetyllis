@@ -156,7 +156,10 @@ exports.filterPatients = function (patient) {
 	filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
 	filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY, filterSql);
 	filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT, filterSql);
-	buildFamilyHistoryFilterSql(patient.GENETYLLIS_FAMILYHISTORY);
+
+	if (!isFamilyHsistoryEmpty(patient.GENETYLLIS_FAMILYHISTORY)) {
+		buildFamilyHistoryFilterSql(patient.GENETYLLIS_FAMILYHISTORY);
+	}
 
 	countSql += filterSql;
 
@@ -185,6 +188,12 @@ exports.filterPatients = function (patient) {
 	filterSql = "";
 
 	return response;
+}
+
+function isFamilyHsistoryEmpty(object) {
+	return (!object.PATHOLOGY_CUI || object.PATHOLOGY_CUI.length === 0)
+		&& !object.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM
+		&& !object.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO;
 }
 
 function loadFamilyMembersHistory(params) {
