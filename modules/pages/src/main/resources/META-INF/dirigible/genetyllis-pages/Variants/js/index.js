@@ -18,8 +18,8 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';
 
-    $scope.perPage = 20;
-    $scope.currentPage = 1;
+    $scope.selectedPerPage = 10;
+    $scope.perPageData = [10, 20, 50, 100];
 
     $scope.geneIds = [];
     $scope.selectedGeneId = '';

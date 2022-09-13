@@ -46,7 +46,8 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
 
     $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
     // _|_
-
+    $scope.selectedPerPage = 10;
+    $scope.perPageData = [10, 20, 50, 100]
     // $scope.perPage = 5;
     console.log($scope.perPage)
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
