@@ -25,7 +25,7 @@
             type="text/javascript"></script>
         <script type="text/javascript"
             src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js"></script>
-        <!-- 
+        <!--
         <script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.9/angular.js" data-semver="1.4.9">
         </script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
@@ -415,7 +415,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       
+
                                         <tr dir-paginate="data in variants | itemsPerPage:perPage">
                                             <td ng-repeat="data in patientsDetails track by $index">
                                                 <a href="partials/patient-details.html" ng-model="patientId"

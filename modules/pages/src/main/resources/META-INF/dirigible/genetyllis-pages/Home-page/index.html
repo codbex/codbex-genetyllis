@@ -121,11 +121,12 @@
 									</div>
 									<div class="per-page">
 										<div class="align-paragraph">
-											<p class="">Showing {{perPage}} of 500</p>
+											<p class="">Showing {{selectedPerPage}} of 500</p>
 										</div>
 										<div class="export">
-											<input type="number" min="0" class="form-control" ng-model="perPage"
-												ng-blur="setItemsPerPage()" />
+											<select ng-model="selectedPerPage" ng-options="x for x in perPageData"
+												class="form-control">
+											</select>
 										</div>
 										<div class="align-paragraph">
 											<p>per page</p>
@@ -150,7 +151,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr dir-paginate="data in patientsDetail | itemsPerPage:perPage">
+									<tr dir-paginate="data in patientsDetail | itemsPerPage:selectedPerPage">
 										<!-- <td>{{data.Id}}</td>
 										<td>{{data.BirthDate}}</td>
 										<td>{{data.GenderId}}</td>
