@@ -8,7 +8,7 @@ To build the docker image:
 
 To run a container:
 
-    docker run --name genetyllis --rm -p 8080:8080 -p 8081:8081 codbex-genetyllis-platform:latest
+    docker run --name genetyllis --rm -p 8080:8080 -p 8081:8081 codbex-genetyllis-platform-runtime:latest
     
 To stop the container:
 
@@ -16,12 +16,12 @@ To stop the container:
 
 To tag the image:
 
-    docker tag codbex-genetyllis-platform codbex.jfrog.io/codbex-docker/codbex-genetyllis-platform:latest
+    docker tag codbex-genetyllis-platform codbex.jfrog.io/codbex-docker/codbex-genetyllis-platform-runtime:latest
 
 To push to JFrog Container Registry:
 
-    docker push codbex.jfrog.io/codbex-docker/codbex-genetyllis-platform:latest
+    docker push codbex.jfrog.io/codbex-docker/codbex-genetyllis-platform-runtime:latest
 
 To pull from JFrog Container Registry:
 
-    docker pull codbex.jfrog.io/codbex-docker/codbex-genetyllis-platform:latest
+    docker pull codbex.jfrog.io/codbex-docker/codbex-genetyllis-platform-runtime:latest
