@@ -38,9 +38,3 @@ jobs:
           docker build . -t ${{secrets.DOCKER_REGISTRY}}/codbex/codbex-genetyllis-keycloack:latest
           docker push ${{secrets.DOCKER_REGISTRY}}/codbex/codbex-genetyllis-keycloack:latest
           cd ../../
-      - name: Docker Image - Keycloack - Runtime
-        run: |
-          cd releng/genetyllis-platform-keycloack-runtime
-          docker build . -t ${{secrets.DOCKER_REGISTRY}}/codbex/codbex-genetyllis-keycloack-runtime:latest
-          docker push ${{secrets.DOCKER_REGISTRY}}/codbex/codbex-genetyllis-keycloack-runtime:latest
-          cd ../../
