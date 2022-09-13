@@ -107,16 +107,16 @@
                                 </div>
                                 <div class="col-4">
                                     <input type="text" class="form-control" placeholder="Date"
-                                       ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_FROM" onfocus="(this.type='date')"
-                                       onblur="(this.type='text')" required ng-change="dateFrom()">
+                                        ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_FROM" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required ng-change="dateFrom()">
                                 </div>
                                 <div class="col-2 align-paragraph">
                                     <p>to</p>
                                 </div>
                                 <div class="col-4">
                                     <input type="text" class="form-control" placeholder="Date"
-                                       ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_TO" onfocus="(this.type='date')"
-                                       onblur="(this.type='text')" required ng-change="dateTo()">
+                                        ng-model="GENETYLLIS_PATIENT.PATIENT_AGE_TO" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required ng-change="dateTo()">
                                 </div>
                             </div>
                         </div>
@@ -133,10 +133,10 @@
                             <div class="row">
                                 <div class="col-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox"
-                                            ng-click="maleFunc()" ng-model=" maleCheckbox" id="male">
+                                        <input class="form-check-input" type="checkbox" ng-click="maleFunc()"
+                                            ng-model=" maleCheckbox" id="male">
                                         <label class="form-check-label" for="male">
-                                        Male
+                                            Male
                                         </label>
                                     </div>
                                 </div>
@@ -162,8 +162,8 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" checked value=""
-                                            id="bulgarian" ng-model="bulgarian" ng-click="bulgarianFunc()">
+                                        <input class="form-check-input" type="checkbox" checked value="" id="bulgarian"
+                                            ng-model="bulgarian" ng-click="bulgarianFunc()">
                                         <label class="form-check-label" for="bulgarian">
                                             Bulgarian
                                         </label>
@@ -172,8 +172,8 @@
                                 <div class="col">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" checked value=""
-                                           id="other-ethnicity" ng-click="otherEthnicityFunc()"
-                                           ng-model="otherEthnicity">
+                                            id="other-ethnicity" ng-click="otherEthnicityFunc()"
+                                            ng-model="otherEthnicity">
                                         <label class="form-check-label" for="other-ethnicity">
                                             Other ethnicity
                                         </label>
@@ -218,14 +218,14 @@
                                 </div>
                                 <div class="col-4">
                                     <input type="number" min="0" class="form-control"
-                                       ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM"
-                                       ng-change="ageFrom()" />
+                                        ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM"
+                                        ng-change="ageFrom()" />
                                 </div>
                                 <div class="col-1 align-paragraph">to</div>
                                 <div class="col-4">
                                     <input type="number" min="0" class="form-control"
-                                       ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO"
-                                       ng-change="ageTO()" />
+                                        ng-model="GENETYLLIS_CLINICALHISTORY.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO"
+                                        ng-change="ageTO()" />
                                 </div>
                             </div>
                         </div>
@@ -283,7 +283,7 @@
                                 <div class="col">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" checked value="" id="WGS"
-                                               checked>
+                                            checked>
                                         <label class="form-check-label" for="WGS">
                                             Whole Genome Sequencing (WGS)
                                         </label>
@@ -300,8 +300,8 @@
                                 </div>
                                 <div class="col">
                                     <input type="text" class="form-control" placeholder="Date"
-                                       ng-model="entity.BirthDate" onfocus="(this.type='date')"
-                                       onblur="(this.type='text')" required>
+                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" required>
                                 </div>
                             </div>
                         </div>
@@ -342,8 +342,8 @@
                                 </div>
                                 >
                                 <div class="col">
-                                    <input type="text" ng-model='GENETYLLIS_VARIANT.VARIANT_ALT'
-                                        class="form-control" placeholder="Alt" ng-blur="variantAltFunc()" />
+                                    <input type="text" ng-model='GENETYLLIS_VARIANT.VARIANT_ALT' class="form-control"
+                                        placeholder="Alt" ng-blur="variantAltFunc()" />
                                 </div>
                             </div>
                         </div>
@@ -384,13 +384,13 @@
                             <div class="row">
                                 <div class="paging">
                                     <div class="select-columns">
-                                        <div ng-dropdown-multiselect="" options="example1data"
-                                             extra-settings="setting2" selected-model="example1model"
-                                             class="multiselect-wrap" ng-click="selectFucn()"></div>
+                                        <div ng-dropdown-multiselect="" options="example1data" extra-settings="setting2"
+                                            selected-model="example1model" class="multiselect-wrap"
+                                            ng-click="selectFucn()"></div>
                                     </div>
                                     <div class="per-page">
                                         <div class="align-paragraph">
-                                            <p class="">Showing {{selectedPerPage}} of 500</p>
+                                            <p class="">Showing {{selectedPerPage}} of {{totalItems}}</p>
                                         </div>
                                         <div class="export">
                                             <select ng-model="selectedPerPage" ng-options="x for x in perPageData"
@@ -420,14 +420,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr dir-paginate="data in patientsDetails | itemsPerPage:selectedPerPage">
-                                        <td ng-repeat="i in homePageTableInfo">
+                                    <tr dir-paginate="data in patientsDetails | itemsPerPage:selectedPerPage"
+                                        total-items="totalItems">
+                                        <td ng-repeat="i in homePageTableInfo ">
 
                                             <a href="http://localhost:8088/services/v4/web/genetyllis-pages/Patients/partials/patient-details.html"
-                                               ng-if="checkColumn(i)"
-                                               ng-click="redirectPatients(data)">{{data[i]}}</a>
+                                                ng-if="checkColumn(i)" ng-click="redirectPatients(data)">{{data[i]}}</a>
 
-                                                <span ng-if="notLink(i)">{{data[i]}}</span>
+                                            <span ng-if="notLink(i)">{{data[i]}}</span>
                                         </td>
                                     </tr>
                                 </tbody>

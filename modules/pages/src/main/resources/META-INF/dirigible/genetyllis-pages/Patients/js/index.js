@@ -52,8 +52,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     // _|_
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100]
-    // $scope.perPage = 5;
-    // console.log($scope.perPage)
+
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/Patients/services/alleleFr.js';
     $scope.patientsDetails = []
@@ -128,7 +127,9 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         $scope.GENETYLLIS_VARIANT.VARIANT_HGVS.push(hgvs)
         $scope.selectedHgvs = '';
     }
-
+    $scope.totalItems;
+    $scope.totalPages;
+    console.log($scope.patientsDetails, "Over")
     $scope.filter = function () {
         var query = {};
         query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
@@ -137,33 +138,41 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
-
+        let patientObject = {};
         $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
             .then(function (response) {
-
+                $scope.patientsDetails = [];
                 console.log(response.data);
                 response.data.data.forEach(patientResult => {
-                    let patientObject = {};
+                    patientObject = {};
                     patientObject.Id = patientResult.PATIENT_ID;
                     patientObject.LabId = patientResult.GENETYLLIS_PATIENT_LABID;
                     patientObject.BirthDate = patientResult.PATIENT_AGE;
-                    patientObject["Clinical history"] = patientResult.clinicalHistory;
+                    patientObject["Clinical history"] = patientResult.clinicalHistory[0].pathology[0].PATHOLOGY_NAME;
                     patientObject.Analysis = patientResult.analysis;
                     patientObject.Dates = patientResult.clinicalHistory.GENETYLLIS_CLINICALHISTORY_AGEONSET;
 
+
                     $scope.patientsDetails.push(patientObject);
+
                 })
+                console.log($scope.patientsDetails, "Under")
+                $scope.totalPages = response.data.totalPages;
+                $scope.totalItems = response.data.totalItems;
 
             }, function (response) {
             });
+
     }
+
+    $scope.filter();
 
     $scope.pageChangeHandler = function (curPage) {
         $scope.currentPage = curPage;
         $scope.filter()
+        $scope.patientsDetails = [];
     }
 
-    $scope.filter();
 
     $http.get(variantDetailsApi)
         .then(function (data) {
