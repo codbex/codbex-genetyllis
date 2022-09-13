@@ -142,6 +142,7 @@ exports.filterVariants = function (variant) {
 	initFilterSql();
 
 	var response = {};
+	var countSql = "";
 
 	buildFilterSql(variant.GENETYLLIS_VARIANT);
 	buildFilterSql(variant.GENETYLLIS_GENE);
@@ -149,21 +150,57 @@ exports.filterVariants = function (variant) {
 	buildFilterSql(variant.GENETYLLIS_SIGNIFICANCE);
 	buildFilterSql(variant.GENETYLLIS_ALLELEFREQUENCY);
 
+	countSql += filterSql;
+
 	filterSql += " LIMIT " + variant.perPage + " OFFSET " + variant.currentPage;
 
 	var resultSet = query.execute(filterSql, filterSqlParams);
 
-	filterSql = filterSql.replace('*', 'COUNT(*)');
+	countSql = "SELECT COUNT(DISTINCT GV.VARIANT_ID)" + countSql.slice(20);
 
-	var resultSetCount = query.execute(filterSql, filterSqlParams);
+	var resultSetCount = query.execute(countSql, filterSqlParams);
 
 	response.data = resultSet;
-	response.totalItems = resultSetCount[0]["COUNT(*)"];
-	response.totalPages = Math.floor(response.totalItems / patient.perPage) + (response.totalItems % patient.perPage == 0 ? 0 : 1);
+	response.totalItems = resultSetCount[0]["COUNT(DISTINCT GV.VARIANT_ID)"];
+	response.totalPages = Math.floor(response.totalItems / variant.perPage) + (response.totalItems % variant.perPage == 0 ? 0 : 1);
+
+	response.data.forEach(variantResult => {
+		var params = [];
+		params.push(variantResult.VARIANT_ID)
+
+		variantResult.clinicalSignificance = loadClinicalSignificance(params);
+		variantResult.alleleFrequency = loadAlleleFrequency(params);
+
+		params = [];
+		params.push(variantResult.VARIANT_GENEID);
+		variantResult.genes = loadGenes(params);
+	})
 
 	filterSql = "";
 
 	return response;
+}
+
+function loadClinicalSignificance(params) {
+	var clinicalSignificances = query.execute("SELECT * FROM GENETYLLIS_CLINICALSIGNIFICANCE WHERE CLINICALSIGNIFICANCE_VARIANTID = ?", params);
+
+	clinicalSignificances.forEach(clinicalSignificance => {
+		var clinicalParams = [];
+		clinicalParams.push(clinicalSignificance.CLINICALSIGNIFICANCE_PATHOLOGYID)
+		clinicalSignificance.pathology = query.execute("SELECT * FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_ID = ?", clinicalParams);
+
+		clinicalParams = [];
+		clinicalParams.push(clinicalSignificance.CLINICALSIGNIFICANCE_SIGNIFICANCEID)
+		clinicalSignificance.significance = query.execute("SELECT * FROM GENETYLLIS_SIGNIFICANCE WHERE SIGNIFICANCE_ID = ?", clinicalParams);
+	})
+}
+
+function loadAlleleFrequency(params) {
+	return query.execute("SELECT * FROM GENETYLLIS_ALLELEFREQUENCY WHERE ALLELEFREQUENCY_VARIANTID = ?", params);
+}
+
+function loadGenes(params) {
+	return query.execute("SELECT * FROM GENETYLLIS_GENE WHERE GENE_ID = ?", params);
 }
 
 function buildFilterSql(object) {
@@ -219,7 +256,7 @@ function addArrayValuesToSql(array) {
 function initFilterSql() {
 	useWhere = true;
 	filterSqlParams = [];
-	filterSql = "SELECT * FROM GENETYLLIS_VARIANT GV " +
+	filterSql = "SELECT DISTINCT GV.* FROM GENETYLLIS_VARIANT GV " +
 		"LEFT JOIN GENETYLLIS_GENE GG ON GV.VARIANT_GENEID = GG.GENE_ID " +
 		"LEFT JOIN GENETYLLIS_CLINICALSIGNIFICANCE GC ON GV.VARIANT_ID = GC.CLINICALSIGNIFICANCE_VARIANTID " +
 		"LEFT JOIN GENETYLLIS_PATHOLOGY GP ON GC.CLINICALSIGNIFICANCE_PATHOLOGYID = GP.PATHOLOGY_ID " +
