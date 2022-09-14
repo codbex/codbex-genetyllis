@@ -418,3 +418,8 @@ li {
   display: flex;
   margin: unset;
 }
+.checkboxes-holder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}

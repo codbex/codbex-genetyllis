@@ -139,11 +139,11 @@ exports.customDataCount = function () {
 };
 
 exports.filterVariants = function (variant) {
+
 	initFilterSql();
 
 	var response = {};
 	var countSql = "";
-
 	buildFilterSql(variant.GENETYLLIS_VARIANT);
 	buildFilterSql(variant.GENETYLLIS_GENE);
 	buildFilterSql(variant.GENETYLLIS_PATHOLOGY);
@@ -215,7 +215,6 @@ function buildFilterSql(object) {
 			}
 
 			condition = "";
-
 			if (Array.isArray(val)) {
 				condition = keys[i] + addArrayValuesToSql(val);
 

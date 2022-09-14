@@ -20,10 +20,10 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     const patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
     $scope.patientsDetail = []
     // _|_
-    $scope.example1model = [];
-    // $scope.example1data = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
-    $scope.example1data = [{ id: 7, label: "Gender" }, { id: 8, label: "Ethnicity" }, { id: 9, label: "Family history" }];
-    $scope.setting2 = {
+    $scope.patientsTableModel = [];
+    // $scope.patientsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
+    $scope.patientsTableData = [{ id: 7, label: "Gender" }, { id: 8, label: "Ethnicity" }, { id: 9, label: "Family history" }];
+    $scope.patientsTableSettings = {
         scrollableHeight: '200px',
         scrollable: true,
         enableSearch: true
@@ -32,8 +32,8 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     $scope.selectFucn = function () {
         $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
         $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
-        for (let x = 0; x < $scope.example1model.length; x++) {
-            let value = $scope.example1data.find(e => e.id == $scope.example1model[x].id)
+        for (let x = 0; x < $scope.patientsTableModel.length; x++) {
+            let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id)
             $scope.homePageTable.push(value.label);
             $scope.homePageTableInfo.push(value.label);
 
@@ -148,7 +148,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
                     patientObject.Id = patientResult.PATIENT_ID;
                     patientObject.LabId = patientResult.GENETYLLIS_PATIENT_LABID;
                     patientObject.BirthDate = patientResult.PATIENT_AGE;
-                    patientObject["Clinical history"] = patientResult.clinicalHistory[0].pathology[0].PATHOLOGY_NAME;
+                    patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     patientObject.Analysis = patientResult.analysis;
                     patientObject.Dates = patientResult.clinicalHistory.GENETYLLIS_CLINICALHISTORY_AGEONSET;
 
