@@ -1,3 +1,14 @@
+/*
+ * Copyright (c) 2022 codbex or an codbex affiliate company and contributors
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v20.html
+ *
+ * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
+ * SPDX-License-Identifier: EPL-2.0
+ */
 var patients = angular.module('patients', ['ui.bootstrap', 'ngStorage', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
 
 patients.config(function (paginationTemplateProvider) {
@@ -8,36 +19,40 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
 
     const patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
     $scope.patientsDetail = []
-    $http.get(patientsOptionsApi)
-        .then(function (data) {
-            $scope.patientsDetail = data.data;
-            $scope.patientsInfo = data.data
-            console.log($scope.homePageTable, "homePageTable")
-            console.log($scope.patientsDetail, 'patientsDetail')
-        });
     // _|_
-    $scope.example1model = [];
-    // $scope.example1data = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
-    $scope.example1data = [{ id: 7, label: "Gender" }, { id: 8, label: "Ethnicity" }, { id: 9, label: "Family history" }];
-    $scope.setting2 = {
+    $scope.patientsTableModel = [];
+    // $scope.patientsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
+    $scope.patientsTableData = [{ id: 7, label: "Gender" }, { id: 8, label: "Ethnicity" }, { id: 9, label: "Family history" }];
+    $scope.patientsTableSettings = {
         scrollableHeight: '200px',
         scrollable: true,
         enableSearch: true
     };
 
     $scope.selectFucn = function () {
+        $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
         $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
-        for (let x = 0; x < $scope.example1model.length; x++) {
-            let value = $scope.example1data.find(e => e.id == $scope.example1model[x].id)
+        for (let x = 0; x < $scope.patientsTableModel.length; x++) {
+            let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id)
             $scope.homePageTable.push(value.label);
+            $scope.homePageTableInfo.push(value.label);
+
         }
     }
 
+    $scope.checkColumn = function (e) {
+        return e == 'Id'
+    }
+    $scope.notLink = function (e) {
+        return e != 'Id'
+    }
+
+    $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
     $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
     // _|_
+    $scope.selectedPerPage = 10;
+    $scope.perPageData = [10, 20, 50, 100]
 
-    // $scope.perPage = 5;
-    console.log($scope.perPage)
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/Patients/services/alleleFr.js';
     $scope.patientsDetails = []
@@ -112,30 +127,52 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         $scope.GENETYLLIS_VARIANT.VARIANT_HGVS.push(hgvs)
         $scope.selectedHgvs = '';
     }
-
+    $scope.totalItems;
+    $scope.totalPages;
+    console.log($scope.patientsDetails, "Over")
     $scope.filter = function () {
         var query = {};
         query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
         query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
         query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
         query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        query.perPage = 20;
-        query.currentPage = (($scope.currentPage - 1) * $scope.perPage);
-
+        query.perPage = $scope.selectedPerPage;
+        query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
+        let patientObject = {};
         $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
             .then(function (response) {
-                console.log('response')
-                console.log(response.data)
+                $scope.patientsDetails = [];
+                console.log(response.data);
+                response.data.data.forEach(patientResult => {
+                    patientObject = {};
+                    patientObject.Id = patientResult.PATIENT_ID;
+                    patientObject.LabId = patientResult.GENETYLLIS_PATIENT_LABID;
+                    patientObject.BirthDate = patientResult.PATIENT_AGE;
+                    patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    patientObject.Analysis = patientResult.analysis;
+                    patientObject.Dates = patientResult.clinicalHistory.GENETYLLIS_CLINICALHISTORY_AGEONSET;
+
+
+                    $scope.patientsDetails.push(patientObject);
+
+                })
+                console.log($scope.patientsDetails, "Under")
+                $scope.totalPages = response.data.totalPages;
+                $scope.totalItems = response.data.totalItems;
 
             }, function (response) {
             });
+
     }
-    $http.get(patientsOptionsApi)
-        .then(function (data) {
-            // $scope.pathologyDatas = data.data;
-            $scope.patientsDetails = data.data;
-            console.log(patientsOptionsApi, 'patientsOptionsApi')
-        });
+
+    $scope.filter();
+
+    $scope.pageChangeHandler = function (curPage) {
+        $scope.currentPage = curPage;
+        $scope.filter()
+        $scope.patientsDetails = [];
+    }
+
 
     $http.get(variantDetailsApi)
         .then(function (data) {
@@ -262,33 +299,30 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     $scope.maleFunc = function () {
 
         if (!$scope.maleCheckbox) {
-            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(0)
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(1)
         } else {
             var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(0);
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
         }
-
     }
     $scope.femaleFunc = function () {
         if (!$scope.femaleCheckbox) {
 
-            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(1)
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(2)
         } else {
             var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(1);
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
 
         }
-
     }
 
     $scope.otherGenderFunc = function () {
         if (!$scope.otherGender) {
-            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(2)
+            $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(3)
         } else {
             var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(2);
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
         }
-
     }
 
 
@@ -316,6 +350,16 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
             x: s
         });
     }
+
+    $scope.redirectPatients = function (data) {
+        console.log(data, "data");
+        $localStorage.$default({
+            key: data
+        });
+        // $localStorage.setItem('key', data);
+    }
+
+
 
 }]);
 

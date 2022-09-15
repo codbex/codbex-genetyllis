@@ -18,6 +18,8 @@ homePage.config(function (paginationTemplateProvider) {
 });
 
 homePage.controller("homePageController", ['$scope', '$http', function ($scope, $http) {
+
+
     var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
     $scope.patientsDetail = []
     $http.get(patientsOptionsApi)
@@ -48,8 +50,8 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
     $scope.homePageTable = ["Id", "Date", "Patient", "Analysis"]
     // _|_
 
-    $scope.perPage = 5;
-
+    $scope.selectedPerPage = 10;
+    $scope.perPageData = [10, 20, 50, 100];
     var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
     var notificationApi = '/services/v4/js/genetyllis-app/gen/api/users/Notification.js';
     var variantApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';
