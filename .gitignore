@@ -6,6 +6,7 @@ dist/
 target/
 dirigible_local/
 bin/
+.history/
 
 .editorconfig
 .gitattributes
