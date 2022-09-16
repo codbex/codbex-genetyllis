@@ -52,6 +52,7 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
 
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100];
+    $scope.currentPage = 1;
     var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
     var notificationApi = '/services/v4/js/genetyllis-app/gen/api/users/Notification.js';
     var variantApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';
@@ -59,10 +60,17 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
 
     $scope.variants = [];
 
-    $http.get(patientsOptionsApi)
-        .then(function (data) {
-            $scope.patientsOptions = data.data;
-        });
+    function loadPatients() {
+        var query = {};
+
+        query.perPage = $scope.selectedPerPage;
+        query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
+
+        $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
+            .then(function (data) {
+                $scope.patientsOptions = data.data;
+            });
+    }
 
     function loadNotifications() {
         $http.get(notificationApi)

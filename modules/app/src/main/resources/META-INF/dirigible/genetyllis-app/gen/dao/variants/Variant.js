@@ -222,7 +222,7 @@ function buildFilterSql(object) {
 
 			condition = "";
 			if (Array.isArray(val)) {
-				condition = keys[i] + addArrayValuesToSql(val);
+				condition = "LOWER(" + keys[i] + ") " + addArrayValuesToSql(val);
 
 			} else if (keys[i].toString().endsWith('_TO')) {
 				condition = keys[i].slice(0, -3) + " <= ?";
@@ -233,7 +233,7 @@ function buildFilterSql(object) {
 				addFilterParam(val);
 
 			} else {
-				condition = keys[i] + " = ?";
+				condition = "LOWER(" + keys[i] + ") " + " = ?";
 				addFilterParam(val);
 			}
 
@@ -271,7 +271,7 @@ function initFilterSql() {
 
 function addFilterParam(param) {
 	if (isNaN(param)) {
-		filterSqlParams.push(param.toString());
+		filterSqlParams.push(param.toString().toLowerCase());
 	} else {
 		filterSqlParams.push(param);
 	}
