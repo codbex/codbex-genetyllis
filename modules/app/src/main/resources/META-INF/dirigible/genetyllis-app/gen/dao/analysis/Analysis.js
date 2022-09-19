@@ -42,20 +42,20 @@ var dao = daoApi.create({
 		}]
 });
 
-exports.list = function(settings) {
-	return dao.list(settings).map(function(e) {
+exports.list = function (settings) {
+	return dao.list(settings).map(function (e) {
 		EntityUtils.setLocalDate(e, "Date");
 		return e;
 	});
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	var entity = dao.find(id);
 	EntityUtils.setLocalDate(entity, "Date");
 	return entity;
 };
 
-exports.create = function(entity) {
+exports.create = function (entity) {
 	EntityUtils.setLocalDate(entity, "Date");
 	var id = dao.insert(entity);
 	triggerEvent("Create", {
@@ -69,7 +69,7 @@ exports.create = function(entity) {
 	return id;
 };
 
-exports.update = function(entity) {
+exports.update = function (entity) {
 	EntityUtils.setLocalDate(entity, "Date");
 	dao.update(entity);
 	triggerEvent("Update", {
@@ -82,7 +82,7 @@ exports.update = function(entity) {
 	});
 };
 
-exports.delete = function(id) {
+exports.delete = function (id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
 		table: "GENETYLLIS_ANALYSIS",
@@ -93,12 +93,12 @@ exports.delete = function(id) {
 		}
 	});
 };
+exports.count = function () {
 
-exports.count = function() {
 	return dao.count();
 };
 
-exports.customDataCount = function() {
+exports.customDataCount = function () {
 	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_ANALYSIS");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
