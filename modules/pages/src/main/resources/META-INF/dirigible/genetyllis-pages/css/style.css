@@ -423,3 +423,9 @@ li {
   flex-wrap: wrap;
   justify-content: space-around;
 }
+
+.table-head-max-height {
+
+  height: 200px;
+  overflow-y: scroll;
+}

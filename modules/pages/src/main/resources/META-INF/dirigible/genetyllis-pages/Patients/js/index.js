@@ -18,7 +18,6 @@ patients.config(function (paginationTemplateProvider) {
 patients.controller('patientsController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
 
     const patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
-    $scope.patientsDetail = []
     // _|_
     $scope.patientsTableModel = [];
     // $scope.patientsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
@@ -30,8 +29,8 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     };
 
     $scope.selectFucn = function () {
-        $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
         $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
+        $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
         for (let x = 0; x < $scope.patientsTableModel.length; x++) {
             let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id)
             $scope.homePageTable.push(value.label);
@@ -52,6 +51,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     // _|_
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100]
+    $scope.currentPage = 1;
 
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/Patients/services/alleleFr.js';
@@ -62,8 +62,6 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     $scope.addedFamilyHistoryId = [];
     $scope.addedVariantId = [];
 
-    $scope.perPage = 20;
-    $scope.currentPage = 1;
 
     $scope.labIds = [];
     $scope.selectedLabId = '';
@@ -129,7 +127,6 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     }
     $scope.totalItems;
     $scope.totalPages;
-    console.log($scope.patientsDetails, "Over")
     $scope.filter = function () {
         var query = {};
         query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
@@ -147,16 +144,19 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
                     patientObject = {};
                     patientObject.Id = patientResult.PATIENT_ID;
                     patientObject.LabId = patientResult.GENETYLLIS_PATIENT_LABID;
-                    patientObject.BirthDate = patientResult.PATIENT_AGE;
+                    patientObject.BirthDate = patientResult.PATIENT_AGE.split('T')[0];
                     patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
-                    patientObject.Analysis = patientResult.analysis;
-                    patientObject.Dates = patientResult.clinicalHistory.GENETYLLIS_CLINICALHISTORY_AGEONSET;
+                    patientObject.Analysis = patientResult?.analysis[0]?.ANALYSIS_ID;
+                    patientObject.Dates = patientResult.analysis[0]?.ANALYSIS_DATE.split('T')[0];
+                    patientObject.Gender = patientResult.PATIENT_GENDERID;
+                    patientObject.Ethnicity = patientResult.GENETYLLIS_PATIENT_POPULATIONID;
+                    patientObject["Family history"] = patientResult.familyHistory[0].patients[0].clinicalHistory[0].pathology[0].PATHOLOGY_NAME;
 
+                    console.log()
 
                     $scope.patientsDetails.push(patientObject);
 
                 })
-                console.log($scope.patientsDetails, "Under")
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
@@ -178,13 +178,12 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         .then(function (data) {
             // $scope.pathologyDatas = data.data;
             $scope.variants = data.data;
-            console.log($scope.variants, 'variants')
         });
     $http.get(alleleFrDetailsApi)
         .then(function (data) {
             for (let a = 0; a < 3; a++) {
-                $scope.variants[a].Gene = data.data[a].Frequency;
-                $scope.variants[a].Filter = data.data[a].GenderId;
+                $scope.variants[a].Gene = data.data[a]?.Frequency;
+                $scope.variants[a].Filter = data.data[a]?.GenderId;
             }
         })
 
@@ -195,10 +194,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
 
         if ($scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.includes($scope.selectedLabId) || $scope.selectedLabId == '') return
         $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.push($scope.selectedLabId);
-        console.log($scope.GENETYLLIS_PATIENT);
-        console.log($scope.GENETYLLIS_CLINICALHISTORY);
-        console.log($scope.GENETYLLIS_FAMILYHISTORY);
-        console.log($scope.GENETYLLIS_VARIANT);
+
 
     }
 

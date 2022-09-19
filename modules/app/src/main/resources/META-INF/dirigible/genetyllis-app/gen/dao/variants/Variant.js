@@ -149,7 +149,6 @@ exports.filterVariants = function (variant) {
 	buildFilterSql(variant.GENETYLLIS_PATHOLOGY);
 	buildFilterSql(variant.GENETYLLIS_SIGNIFICANCE);
 	buildFilterSql(variant.GENETYLLIS_ALLELEFREQUENCY);
-
 	countSql += filterSql;
 
 	filterSql += " LIMIT " + variant.perPage + " OFFSET " + variant.currentPage;
@@ -169,6 +168,7 @@ exports.filterVariants = function (variant) {
 		params.push(variantResult.VARIANT_ID)
 
 		variantResult.clinicalSignificance = loadClinicalSignificance(params);
+
 		variantResult.alleleFrequency = loadAlleleFrequency(params);
 
 		params = [];
@@ -180,10 +180,13 @@ exports.filterVariants = function (variant) {
 
 	return response;
 }
-
+// {
+// pathology:[],
+// significance:[],
+// }
 function loadClinicalSignificance(params) {
 	var clinicalSignificances = query.execute("SELECT * FROM GENETYLLIS_CLINICALSIGNIFICANCE WHERE CLINICALSIGNIFICANCE_VARIANTID = ?", params);
-
+	var clinlSigArr = { pathology: [], significance: [] }
 	clinicalSignificances.forEach(clinicalSignificance => {
 		var clinicalParams = [];
 		clinicalParams.push(clinicalSignificance.CLINICALSIGNIFICANCE_PATHOLOGYID)
@@ -192,7 +195,10 @@ function loadClinicalSignificance(params) {
 		clinicalParams = [];
 		clinicalParams.push(clinicalSignificance.CLINICALSIGNIFICANCE_SIGNIFICANCEID)
 		clinicalSignificance.significance = query.execute("SELECT * FROM GENETYLLIS_SIGNIFICANCE WHERE SIGNIFICANCE_ID = ?", clinicalParams);
-	})
+		clinlSigArr.pathology.push(clinicalSignificance.pathology[0])
+		clinlSigArr.significance.push(clinicalSignificance.significance[0])
+	});
+	return clinlSigArr;
 }
 
 function loadAlleleFrequency(params) {
@@ -216,7 +222,7 @@ function buildFilterSql(object) {
 
 			condition = "";
 			if (Array.isArray(val)) {
-				condition = keys[i] + addArrayValuesToSql(val);
+				condition = "LOWER(" + keys[i] + ") " + addArrayValuesToSql(val);
 
 			} else if (keys[i].toString().endsWith('_TO')) {
 				condition = keys[i].slice(0, -3) + " <= ?";
@@ -227,7 +233,7 @@ function buildFilterSql(object) {
 				addFilterParam(val);
 
 			} else {
-				condition = keys[i] + " = ?";
+				condition = "LOWER(" + keys[i] + ") " + " = ?";
 				addFilterParam(val);
 			}
 
@@ -265,7 +271,7 @@ function initFilterSql() {
 
 function addFilterParam(param) {
 	if (isNaN(param)) {
-		filterSqlParams.push(param.toString());
+		filterSqlParams.push(param.toString().toLowerCase());
 	} else {
 		filterSqlParams.push(param);
 	}

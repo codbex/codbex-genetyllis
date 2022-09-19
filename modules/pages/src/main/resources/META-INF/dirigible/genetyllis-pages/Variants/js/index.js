@@ -18,12 +18,12 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';
 
+    $scope.variantsDetails = [];
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100];
-    let currentPage = 1
-    $scope.pageChangeHandler = function (index) {
-        currentPage = index
-    }
+    $scope.currentPage = 1;
+    $scope.totalItems;
+    $scope.totalPages;
 
     $scope.selectConsequences = ["intron", "exon", "intragenic", "regulatory", "stop", "synonymous", "coding", "non", "splice", "other"]
     $scope.geneIds = [];
@@ -68,8 +68,9 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
     }
 
     $scope.addGeneFilter = function () {
-        $scope.GENETYLLIS_GENE.GENE_GENEID.push($scope.selectedGeneId)
+        $scope.GENETYLLIS_GENE.GENE_NAME.push($scope.selectedGeneId)
         $scope.selectedGeneId = '';
+        console.log($scope.GENETYLLIS_GENE.GENE_NAME)
     }
 
     // add conssequence
@@ -127,14 +128,28 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
         query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
         query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
         query.perPage = $scope.selectedPerPage;
-        console.log("TYka", query)
-        query.currentPage = ((currentPage - 1) * $scope.selectedPerPage);
-        let variantObj = {}
+        query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))
             .then(function (response) {
-                // $scope.variants = [];
-                console.log('response')
+                $scope.variantsDetails = [];
                 console.log(response.data)
+                response.data.data.forEach(data => {
+                    let variantObj = {}
+                    variantObj.HGVS = data.VARIANT_HGVS
+                    variantObj.Gene = data.genes[0].GENE_NAME
+                    variantObj.VARIANT_CONSEQUENCE = data.VARIANT_CONSEQUENCE
+                    variantObj.GeneId = data.VARIANT_GENEID
+                    variantObj.Reference = data.VARIANT_REFERENCE
+                    variantObj.Alternative = data.VARIANT_ALTERNATIVE
+                    variantObj.Pathology = data.clinicalSignificance?.pathology[0]?.PATHOLOGY_NAME;
+
+                    variantObj.Ethnicity = data.alleleFrequency[0]?.ALLELEFREQUENCY_POPULATIONID
+
+                    $scope.variantsDetails.push(variantObj)
+                })
+
+                $scope.totalPages = response.data.totalPages;
+                $scope.totalItems = response.data.totalItems;
 
             }, function (response) {
             });
@@ -142,52 +157,45 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
 
     $scope.filter();
 
-    $http.get(variantOptionsApi)
-        .then(function (data) {
-            // $scope.pathologyDatas = data.data;
-            $scope.variants = data.data;
-            console.log("Hello", $scope.variants)
-        });
 
-    $scope.variantTable = ['HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'allele frequency', 'Patients'];
+    // _|_
+    $scope.variantTableModel = [];
+    // $scope.variantsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
+    $scope.variantsTableData = [{ id: 7, label: "Ethnicity" }, { id: 8, label: "Gender" }];
+    $scope.patientsTableSettings = {
+        scrollableHeight: '200px',
+        scrollable: true,
+        enableSearch: true
+    };
+
+    $scope.selectFucn = function () {
+        console.log($scope.variants, "variants")
+        $scope.variantTable = ['HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients'];
+        $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "GeneId", "Reference", "Alternative", "Pathology"];
+        for (let x = 0; x < $scope.variantTableModel.length; x++) {
+            let value = $scope.variantsTableData.find(e => e.id == $scope.variantTableModel[x].id)
+            $scope.variantTable.push(value.label);
+            $scope.variantPageTableInfo.push(value.label);
+
+        }
+    }
+
+
+    $scope.checkColumn = function (e) {
+        return e == 'Id'
+    }
+    $scope.notLink = function (e) {
+        return e != 'Id'
+    }
+
+    $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "GeneId", "Reference", "Alternative", "Pathology"];
+    $scope.variantTable = ['HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
 
 
 
+    $scope.pageChangeHandler = function (curPage) {
+        $scope.currentPage = curPage;
+        $scope.filter()
+        $scope.variantsDetails = [];
+    }
 }]);
-
-    // $scope.variantTableModel = [];
-    // $scope.variantTableData = [];
-    // $scope.variantTableSettings = {
-    //     scrollableHeight: '200px',
-    //     scrollable: true,
-    //     enableSearch: true
-    // };
-
-    // $scope.variantTableInfo = ["HGVS", "HGVS", "DBSNP", "Clinical history", "Alternative", "Dates"];
-
-    // $scope.patientsTableModel = [];
-    // // $scope.patientsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
-    // $scope.patientsTableData = [{ id: 7, label: "Gender" }, { id: 8, label: "Ethnicity" }, { id: 9, label: "Family history" }];
-    // $scope.patientsTableSettings = {
-    //     scrollableHeight: '200px',
-    //     scrollable: true,
-    //     enableSearch: true
-    // };
-
-    // $scope.selectFucn = function () {
-    //     $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
-    //     $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
-    //     for (let x = 0; x < $scope.patientsTableModel.length; x++) {
-    //         let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id)
-    //         $scope.homePageTable.push(value.label);
-    //         $scope.homePageTableInfo.push(value.label);
-
-    //     }
-    // }
-
-    // $scope.checkColumn = function (e) {
-    //     return e == 'Id'
-    // }
-    // $scope.notLink = function (e) {
-    //     return e != 'Id'
-    // }
