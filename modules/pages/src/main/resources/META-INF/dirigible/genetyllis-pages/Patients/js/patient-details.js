@@ -76,5 +76,9 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
 
     // $localStorage.$reset()
+
+
+
+
 }]);
 
