@@ -1,5 +1,0 @@
-{
-	"description": "nomenclature perspective",
-	"extensionPoint": "launchpad-genetyllis-perspective",
-	"module": "genetyllis-app/gen/ui/nomenclature/extensions/perspective/perspective.js"
-}

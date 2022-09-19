@@ -1,5 +1,0 @@
-{
-	"description": "Institution menu",
-	"extensionPoint": "shell-genetyllis-app-menu",
-	"module": "genetyllis-app/gen/ui/analysis/views/Institution/extensions/menu/item.js"
-}

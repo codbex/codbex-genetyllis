@@ -9,13 +9,19 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-exports.setLocalDate = function(object, property) {
+exports.setDate = function (object, property) {
 	if (object[property]) {
-		object[property] = new Date(new Date(object[property]).setHours(-(new Date().getTimezoneOffset()/60), 0, 0, 0)).toISOString();
+		object[property] = new Date(object[property]).getTime();
 	}
 };
 
-exports.setBoolean = function(object, property) {
+exports.setLocalDate = function (object, property) {
+	if (object[property]) {
+		object[property] = new Date(new Date(object[property]).setHours(-(new Date().getTimezoneOffset() / 60), 0, 0, 0)).toISOString();
+	}
+};
+
+exports.setBoolean = function (object, property) {
 	if (object[property] !== undefined) {
 		object[property] = object[property] ? true : false;
 	}

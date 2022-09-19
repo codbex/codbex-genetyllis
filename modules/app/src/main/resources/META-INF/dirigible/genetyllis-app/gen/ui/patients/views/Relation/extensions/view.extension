@@ -1,5 +1,0 @@
-{
-	"description": "Relation view",
-	"extensionPoint": "launchpad-genetyllis-patients-view",
-	"module": "genetyllis-app/gen/ui/patients/views/Relation/extensions/view.js"
-}

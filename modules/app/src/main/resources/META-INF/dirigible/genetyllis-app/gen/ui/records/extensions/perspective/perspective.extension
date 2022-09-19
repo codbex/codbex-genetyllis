@@ -1,5 +1,0 @@
-{
-	"description": "records perspective",
-	"extensionPoint": "launchpad-genetyllis-perspective",
-	"module": "genetyllis-app/gen/ui/records/extensions/perspective/perspective.js"
-}

@@ -1,5 +1,0 @@
-{
-	"expression": "0 0 0 1 * ? *",
-	"handler": "genetyllis-app/gen/feed/patients/ClinicalHistoryFeedSynchronizer.js",
-	"description": "ClinicalHistoryFeedSynchronizer Job"
-}

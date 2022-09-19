@@ -9,11 +9,11 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-var query = require("db/v4/query");
-var producer = require("messaging/v4/producer");
-var daoApi = require("db/v4/dao");
+const query = require("db/v4/query");
+const producer = require("messaging/v4/producer");
+const daoApi = require("db/v4/dao");
 
-var dao = daoApi.create({
+let dao = daoApi.create({
 	table: "GENETYLLIS_PATHOLOGY",
 	properties: [
 		{
@@ -22,15 +22,18 @@ var dao = daoApi.create({
 			type: "INTEGER",
 			id: true,
 			autoIncrement: true,
-		}, {
+		},
+ {
 			name: "CUI",
 			column: "PATHOLOGY_CUI",
 			type: "VARCHAR",
-		}, {
+		},
+ {
 			name: "Name",
 			column: "PATHOLOGY_NAME",
 			type: "VARCHAR",
-		}]
+		}
+]
 });
 
 exports.list = function(settings) {
@@ -42,7 +45,7 @@ exports.get = function(id) {
 };
 
 exports.create = function(entity) {
-	var id = dao.insert(entity);
+	let id = dao.insert(entity);
 	triggerEvent("Create", {
 		table: "GENETYLLIS_PATHOLOGY",
 		key: {
@@ -83,7 +86,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATHOLOGY");
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATHOLOGY");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -94,13 +97,6 @@ exports.customDataCount = function() {
 	return 0;
 };
 
-exports.filterPathology = function(cui) {
-	paramArr = [];
-	paramArr.push('%' + cui + '%')
-	var resultSet = query.execute("SELECT * FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI LIKE ? LIMIT 10", paramArr);
-	return resultSet;
-}
-
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/nomenclature/Pathology/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/Nomenclature/Pathology/" + operation).send(JSON.stringify(data));
 }

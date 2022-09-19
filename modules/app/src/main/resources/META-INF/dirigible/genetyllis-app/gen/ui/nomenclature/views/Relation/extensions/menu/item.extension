@@ -1,5 +1,0 @@
-{
-	"description": "Relation menu",
-	"extensionPoint": "shell-genetyllis-app-menu",
-	"module": "genetyllis-app/gen/ui/nomenclature/views/Relation/extensions/menu/item.js"
-}

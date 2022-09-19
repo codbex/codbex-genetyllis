@@ -1,5 +1,0 @@
-{
-	"description": "analysis tiles",
-	"extensionPoint": "launchpad-genetyllis-tiles",
-	"module": "genetyllis-app/gen/ui/analysis/views/Physician/extensions/tile/tile.js"
-}

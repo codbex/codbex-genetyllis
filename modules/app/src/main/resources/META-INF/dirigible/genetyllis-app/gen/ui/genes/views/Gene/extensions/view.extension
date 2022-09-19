@@ -1,5 +1,0 @@
-{
-	"description": "Gene view",
-	"extensionPoint": "launchpad-genetyllis-genes-view",
-	"module": "genetyllis-app/gen/ui/genes/views/Gene/extensions/view.js"
-}

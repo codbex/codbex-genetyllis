@@ -1,0 +1,251 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="page" ng-controller="PageController">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=" dg-brand-icon />
+        <title dg-brand-title></title>
+        <theme></theme>
+        <script type="text/javascript"
+            src="/services/v4/js/resources-core/services/loader.js?id=application-view-js"></script>
+        <link type="text/css" rel="stylesheet"
+            href="/services/v4/js/resources-core/services/loader.js?id=application-view-css" />
+
+        <script type="text/javascript" src="controller.js"></script>
+    </head>
+
+    <body class="dg-vbox" dg-contextmenu="contextMenuContent">
+
+        <fd-scrollbar class="dg-full-height">
+            <fd-fieldset class="fd-margin--md" ng-form="formFieldset">
+                <fd-form-group dg-header="{{formHeaders[action]}}" name="entityForm">
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idHGVS" dg-required="false" dg-colon="true">HGVS</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.HGVS ? false : true }}">
+                            <fd-input id="idHGVS"
+                                name="HGVS"
+                                state="{{ formErrors.HGVS ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['HGVS'].$valid, 'HGVS')"
+                                ng-model="entity.HGVS"
+                                ng-readonly="action === 'select'"
+                                ng-minlength="0.0 || 0"
+                                ng-maxlength="20.0 || -1"
+                                dg-input-rules="{ patterns: [''] }"
+                                type="text"
+                                placeholder="Enter HGVS">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idChromosome" dg-required="false" dg-colon="true">Chromosome</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.Chromosome ? false : true }}">
+                            <fd-input id="idChromosome"
+                                name="Chromosome"
+                                state="{{ formErrors.Chromosome ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['Chromosome'].$valid, 'Chromosome')"
+                                ng-model="entity.Chromosome"
+                                ng-readonly="action === 'select'"
+                                ng-minlength="0.0 || 0"
+                                ng-maxlength="5.0 || -1"
+                                dg-input-rules="{ patterns: [''] }"
+                                type="text"
+                                placeholder="Enter Chromosome">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idStart" dg-required="false" dg-colon="true">Start</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.Start ? false : true }}">
+                            <fd-input id="idStart"
+                                name="Start"
+                                state="{{ formErrors.Start ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['Start'].$valid, 'Start')"
+                                ng-model="entity.Start"
+                                ng-readonly="action === 'select'"
+                                type="number"
+                                placeholder="Enter Start">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idEnd" dg-required="false" dg-colon="true">End</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.End ? false : true }}">
+                            <fd-input id="idEnd"
+                                name="End"
+                                state="{{ formErrors.End ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['End'].$valid, 'End')"
+                                ng-model="entity.End"
+                                ng-readonly="action === 'select'"
+                                type="number"
+                                placeholder="Enter End">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idDBSNP" dg-required="false" dg-colon="true">DBSNP</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.DBSNP ? false : true }}">
+                            <fd-input id="idDBSNP"
+                                name="DBSNP"
+                                state="{{ formErrors.DBSNP ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['DBSNP'].$valid, 'DBSNP')"
+                                ng-model="entity.DBSNP"
+                                ng-readonly="action === 'select'"
+                                ng-minlength="0.0 || 0"
+                                ng-maxlength="20.0 || -1"
+                                dg-input-rules="{ patterns: [''] }"
+                                type="text"
+                                placeholder="Enter DBSNP">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idReference" dg-required="false" dg-colon="true">Reference</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.Reference ? false : true }}">
+                            <fd-input id="idReference"
+                                name="Reference"
+                                state="{{ formErrors.Reference ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['Reference'].$valid, 'Reference')"
+                                ng-model="entity.Reference"
+                                ng-readonly="action === 'select'"
+                                ng-minlength="0.0 || 0"
+                                ng-maxlength="20.0 || -1"
+                                dg-input-rules="{ patterns: [''] }"
+                                type="text"
+                                placeholder="Enter Reference">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idAlternative" dg-required="false" dg-colon="true">Alternative</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.Alternative ? false : true }}">
+                            <fd-input id="idAlternative"
+                                name="Alternative"
+                                state="{{ formErrors.Alternative ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['Alternative'].$valid, 'Alternative')"
+                                ng-model="entity.Alternative"
+                                ng-readonly="action === 'select'"
+                                ng-minlength="0.0 || 0"
+                                ng-maxlength="20.0 || -1"
+                                dg-input-rules="{ patterns: [''] }"
+                                type="text"
+                                placeholder="Enter Alternative">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idGeneId" dg-required="false" dg-colon="true">Gene</fd-form-label>
+                        <fd-combobox-input id="idGeneId"
+                            name="GeneId"
+                            state="{{ formErrors.GeneId ? 'error' : '' }}"
+                            ng-required="true"
+                            ng-change="isValid(formFieldset['GeneId'].$valid, 'GeneId')"
+                            ng-model="entity.GeneId"
+                            dg-disabled="action === 'select'"
+                            dropdown-items="optionsGeneId"
+                            dg-placeholder="Search Gene ...">
+                        </fd-combobox-input>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idRegion" dg-required="false" dg-colon="true">Region</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.Region ? false : true }}">
+                            <fd-input id="idRegion"
+                                name="Region"
+                                state="{{ formErrors.Region ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['Region'].$valid, 'Region')"
+                                ng-model="entity.Region"
+                                ng-readonly="action === 'select'"
+                                ng-minlength="0.0 || 0"
+                                ng-maxlength="20.0 || -1"
+                                dg-input-rules="{ patterns: [''] }"
+                                type="text"
+                                placeholder="Enter Region">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idRegionNum" dg-required="false" dg-colon="true">Region Num</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.RegionNum ? false : true }}">
+                            <fd-input id="idRegionNum"
+                                name="RegionNum"
+                                state="{{ formErrors.RegionNum ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['RegionNum'].$valid, 'RegionNum')"
+                                ng-model="entity.RegionNum"
+                                ng-readonly="action === 'select'"
+                                ng-minlength="0.0 || 0"
+                                ng-maxlength="20.0 || -1"
+                                dg-input-rules="{ patterns: [''] }"
+                                type="text"
+                                placeholder="Enter Region Num">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+					<fd-form-item horizontal="false">
+						<fd-form-label for="idConsequence" dg-required="false" dg-colon="true">Consequence</fd-form-label>
+						<fd-textarea id="idConsequence"
+							name="Consequence"
+							state="{{ formErrors.Consequence ? 'error' : '' }}"
+							ng-required="false"
+							ng-change="isValid(formFieldset['Consequence'].$valid, 'Consequence')"
+							ng-model="entity.Consequence"
+							ng-readonly="action === 'select'"
+							ng-minlength="0.0 || 0"
+							ng-maxlength="2000.0 || -1"
+							dg-input-rules="{ patterns: [''] }"
+							placeholder="Enter Consequence">
+						</fd-textarea>
+						<fd-form-message dg-type="error" ng-show="formErrors.Consequence">Incorrect Input</fd-form-message>
+					</fd-form-item horizontal="false">
+					<fd-form-item horizontal="false">
+						<fd-form-label for="idConsequenceDetails" dg-required="false" dg-colon="true">Consequence Details</fd-form-label>
+						<fd-textarea id="idConsequenceDetails"
+							name="ConsequenceDetails"
+							state="{{ formErrors.ConsequenceDetails ? 'error' : '' }}"
+							ng-required="false"
+							ng-change="isValid(formFieldset['ConsequenceDetails'].$valid, 'ConsequenceDetails')"
+							ng-model="entity.ConsequenceDetails"
+							ng-readonly="action === 'select'"
+							ng-minlength="0.0 || 0"
+							ng-maxlength="2000.0 || -1"
+							dg-input-rules="{ patterns: [''] }"
+							placeholder="Enter Consequence Details">
+						</fd-textarea>
+						<fd-form-message dg-type="error" ng-show="formErrors.ConsequenceDetails">Incorrect Input</fd-form-message>
+					</fd-form-item horizontal="false">
+
+                </fd-form-group>
+            </fd-fieldset>
+        </fd-scrollbar>
+
+        <footer class="fd-dialog__footer fd-bar fd-bar--footer" ng-show="action !== 'select'">
+            <div class="fd-bar__right">
+                <fd-button class="fd-margin-end--tiny fd-dialog__decisive-button" compact="true" dg-type="emphasized"
+                    dg-label="{{action === 'create' ? 'Create' : 'Update'}}"
+                    ng-click="action === 'create' ? create() : update()" state="{{ !isFormValid ? 'disabled' : '' }}">
+                </fd-button>
+                <fd-button class="fd-dialog__decisive-button" compact="true" dg-type="transparent" dg-label="Cancel"
+                    ng-click="cancel()"></fd-button>
+            </div>
+        </footer>
+    </body>
+
+</html>

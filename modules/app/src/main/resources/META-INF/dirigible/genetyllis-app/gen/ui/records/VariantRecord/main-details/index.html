@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="page" ng-controller="PageController">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=" dg-brand-icon />
+        <title dg-brand-title></title>
+        <theme></theme>
+        <script type="text/javascript"
+            src="/services/v4/js/resources-core/services/loader.js?id=application-view-js"></script>
+        <link type="text/css" rel="stylesheet"
+            href="/services/v4/js/resources-core/services/loader.js?id=application-view-css" />
+
+        <script type="text/javascript" src="controller.js"></script>
+    </head>
+
+    <body class="dg-vbox" dg-contextmenu="contextMenuContent">
+
+        <fd-scrollbar class="dg-full-height">
+            <fd-fieldset class="fd-margin--md" ng-form="formFieldset">
+                <fd-form-group dg-header="{{formHeaders[action]}}" name="entityForm">
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idPatientId" dg-required="false" dg-colon="true">Patient</fd-form-label>
+                        <fd-combobox-input id="idPatientId"
+                            name="PatientId"
+                            state="{{ formErrors.PatientId ? 'error' : '' }}"
+                            ng-required="true"
+                            ng-change="isValid(formFieldset['PatientId'].$valid, 'PatientId')"
+                            ng-model="entity.PatientId"
+                            dg-disabled="action === 'select'"
+                            dropdown-items="optionsPatientId"
+                            dg-placeholder="Search Patient ...">
+                        </fd-combobox-input>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idVariantId" dg-required="false" dg-colon="true">Variant</fd-form-label>
+                        <fd-combobox-input id="idVariantId"
+                            name="VariantId"
+                            state="{{ formErrors.VariantId ? 'error' : '' }}"
+                            ng-required="true"
+                            ng-change="isValid(formFieldset['VariantId'].$valid, 'VariantId')"
+                            ng-model="entity.VariantId"
+                            dg-disabled="action === 'select'"
+                            dropdown-items="optionsVariantId"
+                            dg-placeholder="Search Variant ...">
+                        </fd-combobox-input>
+                    </fd-form-item>
+                    <fd-form-item>
+                        <fd-checkbox id="idHomozygous" compact="false" dg-required="false" ng-model="entity.Homozygous">
+                        </fd-checkbox>
+                        <fd-checkbox-label for="idHomozygous" dg-required="false">Homozygous</fd-checkbox-label>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idAlleleDepth" dg-required="false" dg-colon="true">Allele Depth</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.AlleleDepth ? false : true }}">
+                            <fd-input id="idAlleleDepth"
+                                name="AlleleDepth"
+                                state="{{ formErrors.AlleleDepth ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['AlleleDepth'].$valid, 'AlleleDepth')"
+                                ng-model="entity.AlleleDepth"
+                                ng-readonly="action === 'select'"
+                                type="number"
+                                placeholder="Enter Allele Depth">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idDepth" dg-required="false" dg-colon="true">Depth</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.Depth ? false : true }}">
+                            <fd-input id="idDepth"
+                                name="Depth"
+                                state="{{ formErrors.Depth ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['Depth'].$valid, 'Depth')"
+                                ng-model="entity.Depth"
+                                ng-readonly="action === 'select'"
+                                type="number"
+                                placeholder="Enter Depth">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idQuality" dg-required="false" dg-colon="true">Quality</fd-form-label>
+                        <fd-form-input-message-group dg-inactive="{{ formErrors.Quality ? false : true }}">
+                            <fd-input id="idQuality"
+                                name="Quality"
+                                state="{{ formErrors.Quality ? 'error' : '' }}"
+								ng-required="false"
+                                ng-change="isValid(formFieldset['Quality'].$valid, 'Quality')"
+                                ng-model="entity.Quality"
+                                ng-readonly="action === 'select'"
+                                type="number"
+                                placeholder="Enter Quality">
+                            </fd-input>
+                            <fd-form-message dg-type="error">Incorrect Input</fd-form-message>
+                        </fd-form-input-message-group>
+                    </fd-form-item>
+                    <fd-form-item horizontal="false">
+                        <fd-form-label for="idAnalysisId" dg-required="false" dg-colon="true">Analysis</fd-form-label>
+                        <fd-combobox-input id="idAnalysisId"
+                            name="AnalysisId"
+                            state="{{ formErrors.AnalysisId ? 'error' : '' }}"
+                            ng-required="true"
+                            ng-change="isValid(formFieldset['AnalysisId'].$valid, 'AnalysisId')"
+                            ng-model="entity.AnalysisId"
+                            dg-disabled="action === 'select'"
+                            dropdown-items="optionsAnalysisId"
+                            dg-placeholder="Search Analysis ...">
+                        </fd-combobox-input>
+                    </fd-form-item>
+
+                </fd-form-group>
+            </fd-fieldset>
+        </fd-scrollbar>
+
+        <footer class="fd-dialog__footer fd-bar fd-bar--footer" ng-show="action !== 'select'">
+            <div class="fd-bar__right">
+                <fd-button class="fd-margin-end--tiny fd-dialog__decisive-button" compact="true" dg-type="emphasized"
+                    dg-label="{{action === 'create' ? 'Create' : 'Update'}}"
+                    ng-click="action === 'create' ? create() : update()" state="{{ !isFormValid ? 'disabled' : '' }}">
+                </fd-button>
+                <fd-button class="fd-dialog__decisive-button" compact="true" dg-type="transparent" dg-label="Cancel"
+                    ng-click="cancel()"></fd-button>
+            </div>
+        </footer>
+    </body>
+
+</html>

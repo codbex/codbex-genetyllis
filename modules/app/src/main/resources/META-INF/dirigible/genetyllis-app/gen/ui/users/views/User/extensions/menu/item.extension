@@ -1,5 +1,0 @@
-{
-	"description": "User menu",
-	"extensionPoint": "shell-genetyllis-app-menu",
-	"module": "genetyllis-app/gen/ui/users/views/User/extensions/menu/item.js"
-}

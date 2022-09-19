@@ -9,11 +9,11 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-var query = require("db/v4/query");
-var producer = require("messaging/v4/producer");
-var daoApi = require("db/v4/dao");
+const query = require("db/v4/query");
+const producer = require("messaging/v4/producer");
+const daoApi = require("db/v4/dao");
 
-var dao = daoApi.create({
+let dao = daoApi.create({
 	table: "GENETYLLIS_FAMILYHISTORY",
 	properties: [
 		{
@@ -22,19 +22,23 @@ var dao = daoApi.create({
 			type: "INTEGER",
 			id: true,
 			autoIncrement: true,
-		}, {
+		},
+ {
 			name: "PatientId",
 			column: "FAMILYHISTORY_PATIENTID",
 			type: "INTEGER",
-		}, {
+		},
+ {
 			name: "RelationId",
 			column: "FAMILYHISTORY_RELATIONID",
 			type: "INTEGER",
-		}, {
+		},
+ {
 			name: "FamilyMemberId",
 			column: "FAMILYHISTORY_FAMILYMEMBERID",
 			type: "INTEGER",
-		}]
+		}
+]
 });
 
 exports.list = function(settings) {
@@ -46,7 +50,7 @@ exports.get = function(id) {
 };
 
 exports.create = function(entity) {
-	var id = dao.insert(entity);
+	let id = dao.insert(entity);
 	triggerEvent("Create", {
 		table: "GENETYLLIS_FAMILYHISTORY",
 		key: {
@@ -87,7 +91,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_FAMILYHISTORY");
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_FAMILYHISTORY");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -99,5 +103,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/patients/FamilyHistory/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/Patients/FamilyHistory/" + operation).send(JSON.stringify(data));
 }

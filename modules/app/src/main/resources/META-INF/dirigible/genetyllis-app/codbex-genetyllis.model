@@ -34,6 +34,7 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
+                "caption": "Manage entity Gender",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_GENDER",
                 "dataName": "GENETYLLIS_GENDER",
                 "dataQuery": "",
@@ -43,9 +44,9 @@
                 "menuKey": "gender",
                 "menuLabel": "Gender",
                 "name": "Gender",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "nomenclature",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
+                "perspectiveName": "Nomenclature",
+                "perspectiveOrder": "90",
                 "title": "Gender",
                 "tooltip": "Gender",
                 "type": "PRIMARY"
@@ -79,6 +80,7 @@
                         "isCalculatedProperty": "false",
                         "name": "LabId",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Lab ID",
                         "widgetLength": "20",
                         "widgetType": "TEXTBOX"
                     },
@@ -94,8 +96,9 @@
                         "isCalculatedProperty": "false",
                         "name": "BirthDate",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Birth Date",
                         "widgetLength": "20",
-                        "widgetType": "NUMBER"
+                        "widgetType": "DATE"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -111,11 +114,12 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Gender",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Patient_Gender",
                         "relationshipEntityName": "Gender",
-                        "relationshipEntityPerspectiveName": "nomenclature"
+                        "relationshipEntityPerspectiveName": "Nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -128,7 +132,7 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "Info",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
                         "widgetLength": "2000",
                         "widgetType": "TEXTAREA"
                     },
@@ -146,11 +150,12 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Physician",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Patient_Physician",
                         "relationshipEntityName": "Physician",
-                        "relationshipEntityPerspectiveName": "analysis"
+                        "relationshipEntityPerspectiveName": "Analysis"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -163,14 +168,18 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "PopulationId",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Population",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "Patient_Population",
                         "relationshipEntityName": "Population",
-                        "relationshipEntityPerspectiveName": "nomenclature"
+                        "relationshipEntityPerspectiveName": "Nomenclature"
                     }
                 ],
+                "caption": "Manage entity Patient",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATIENT",
                 "dataName": "GENETYLLIS_PATIENT",
                 "dataQuery": "",
@@ -182,9 +191,9 @@
                 "menuKey": "patient",
                 "menuLabel": "Patient",
                 "name": "Patient",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "patients",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/user.svg",
+                "perspectiveName": "Patients",
+                "perspectiveOrder": "20",
                 "title": "Patient",
                 "tooltip": "Patient",
                 "type": "PRIMARY"
@@ -237,6 +246,7 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
+                "caption": "Manage entity Pathology",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATHOLOGY",
                 "dataName": "GENETYLLIS_PATHOLOGY",
                 "dataQuery": "",
@@ -246,9 +256,9 @@
                 "menuKey": "pathology",
                 "menuLabel": "Pathology",
                 "name": "Pathology",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "nomenclature",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
+                "perspectiveName": "Nomenclature",
+                "perspectiveOrder": "90",
                 "title": "Pathology",
                 "tooltip": "Pathology",
                 "type": "PRIMARY"
@@ -286,11 +296,12 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Info",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Patient",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "ClinicalHistory_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "patients"
+                        "relationshipEntityPerspectiveName": "Patients"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -306,11 +317,12 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Pathology",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "ClinicalHistory_Pathology",
                         "relationshipEntityName": "Pathology",
-                        "relationshipEntityPerspectiveName": "nomenclature"
+                        "relationshipEntityPerspectiveName": "Nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -324,8 +336,9 @@
                         "isCalculatedProperty": "false",
                         "name": "AgeOnset",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Age of onset",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX"
+                        "widgetType": "NUMBER"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -338,11 +351,12 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "Notes",
-                        "widgetIsMajor": "true",
-                        "widgetLength": "20",
-                        "widgetType": "TEXTBOX"
+                        "widgetIsMajor": "false",
+                        "widgetLength": "2000",
+                        "widgetType": "TEXTAREA"
                     }
                 ],
+                "caption": "Manage entity ClinicalHistory",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_CLINICALHISTORY",
                 "dataName": "GENETYLLIS_CLINICALHISTORY",
                 "dataQuery": "",
@@ -352,9 +366,9 @@
                 "menuKey": "clinicalhistory",
                 "menuLabel": "ClinicalHistory",
                 "name": "ClinicalHistory",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "patients",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/user.svg",
+                "perspectiveName": "Patients",
+                "perspectiveOrder": "20",
                 "title": "ClinicalHistory",
                 "tooltip": "ClinicalHistory",
                 "type": "DEPENDENT"
@@ -447,7 +461,7 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "DBSNP",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
                         "widgetLength": "20",
                         "widgetType": "TEXTBOX"
                     },
@@ -462,7 +476,7 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "Reference",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
                         "widgetLength": "20",
                         "widgetType": "TEXTBOX"
                     },
@@ -477,7 +491,7 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "Alternative",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
                         "widgetLength": "20",
                         "widgetType": "TEXTBOX"
                     },
@@ -493,13 +507,14 @@
                         "isCalculatedProperty": "false",
                         "name": "GeneId",
                         "widgetDropDownKey": "Id",
-                        "widgetDropDownValue": "Name",
-                        "widgetIsMajor": "true",
+                        "widgetDropDownValue": "GeneId",
+                        "widgetIsMajor": "false",
+                        "widgetLabel": "Gene",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Variant_Gene",
                         "relationshipEntityName": "Gene",
-                        "relationshipEntityPerspectiveName": "genes"
+                        "relationshipEntityPerspectiveName": "Genes"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -512,7 +527,7 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "Region",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
                         "widgetLength": "20",
                         "widgetType": "TEXTBOX"
                     },
@@ -527,7 +542,8 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "RegionNum",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
+                        "widgetLabel": "Region Num",
                         "widgetLength": "20",
                         "widgetType": "TEXTBOX"
                     },
@@ -542,7 +558,7 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "Consequence",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
                         "widgetLength": "2000",
                         "widgetType": "TEXTAREA"
                     },
@@ -557,11 +573,13 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "ConsequenceDetails",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
+                        "widgetLabel": "Consequence Details",
                         "widgetLength": "2000",
                         "widgetType": "TEXTAREA"
                     }
                 ],
+                "caption": "Manage entity Variant",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_VARIANT",
                 "dataName": "GENETYLLIS_VARIANT",
                 "dataQuery": "",
@@ -571,9 +589,9 @@
                 "menuKey": "variant",
                 "menuLabel": "Variant",
                 "name": "Variant",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "variants",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/chart-pie-alt.svg",
+                "perspectiveName": "Variants",
+                "perspectiveOrder": "40",
                 "title": "Variant",
                 "tooltip": "Variant",
                 "type": "PRIMARY"
@@ -607,13 +625,14 @@
                         "isCalculatedProperty": "false",
                         "name": "PatientId",
                         "widgetDropDownKey": "Id",
-                        "widgetDropDownValue": "Info",
+                        "widgetDropDownValue": "LabId",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Patient",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "VariantRecord_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "patients"
+                        "relationshipEntityPerspectiveName": "Patients"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -629,11 +648,12 @@
                         "widgetDropDownKey": "ID",
                         "widgetDropDownValue": "HGVS",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Variant",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "VariantRecord_Variant",
                         "relationshipEntityName": "Variant",
-                        "relationshipEntityPerspectiveName": "variants"
+                        "relationshipEntityPerspectiveName": "Variants"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -661,7 +681,8 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "AlleleDepth",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
+                        "widgetLabel": "Allele Depth",
                         "widgetLength": "20",
                         "widgetType": "NUMBER"
                     },
@@ -676,9 +697,9 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "Depth",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX"
+                        "widgetType": "NUMBER"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -691,7 +712,7 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "Quality",
-                        "widgetIsMajor": "true",
+                        "widgetIsMajor": "false",
                         "widgetLength": "20",
                         "widgetType": "NUMBER"
                     },
@@ -706,14 +727,18 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "AnalysisId",
-                        "widgetIsMajor": "true",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "Date",
+                        "widgetIsMajor": "false",
+                        "widgetLabel": "Analysis",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "VariantRecord_Analysis",
                         "relationshipEntityName": "Analysis",
-                        "relationshipEntityPerspectiveName": "analysis"
+                        "relationshipEntityPerspectiveName": "Analysis"
                     }
                 ],
+                "caption": "Manage entity VariantRecord",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_VARIANTRECORD",
                 "dataName": "GENETYLLIS_VARIANTRECORD",
                 "dataQuery": "",
@@ -723,9 +748,9 @@
                 "menuKey": "variantrecord",
                 "menuLabel": "VariantRecord",
                 "name": "VariantRecord",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "records",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/external-link-alt.svg",
+                "perspectiveName": "Records",
+                "perspectiveOrder": "10",
                 "title": "VariantRecord",
                 "tooltip": "VariantRecord",
                 "type": "PRIMARY"
@@ -759,6 +784,7 @@
                         "isCalculatedProperty": "false",
                         "name": "GeneId",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Gene",
                         "widgetLength": "20",
                         "widgetType": "TEXTBOX"
                     },
@@ -793,6 +819,7 @@
                         "widgetType": "CHECKBOX"
                     }
                 ],
+                "caption": "Manage entity Gene",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_GENE",
                 "dataName": "GENETYLLIS_GENE",
                 "dataQuery": "",
@@ -802,9 +829,9 @@
                 "menuKey": "gene",
                 "menuLabel": "Gene",
                 "name": "Gene",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "genes",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/sliders-v-alt.svg",
+                "perspectiveName": "Genes",
+                "perspectiveOrder": "30",
                 "title": "Gene",
                 "tooltip": "Gene",
                 "type": "PRIMARY"
@@ -854,14 +881,18 @@
                         "name": "VariantRecordId",
                         "relationshipCardinality": "1_n",
                         "relationshipType": "COMPOSITION",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "Id",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Variant Record",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "Filter_VariantRecord",
                         "relationshipEntityName": "VariantRecord",
-                        "relationshipEntityPerspectiveName": "records"
+                        "relationshipEntityPerspectiveName": "Records"
                     }
                 ],
+                "caption": "Manage entity Filter",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_FILTER",
                 "dataName": "GENETYLLIS_FILTER",
                 "dataQuery": "",
@@ -871,9 +902,9 @@
                 "menuKey": "filter",
                 "menuLabel": "Filter",
                 "name": "Filter",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "records",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/external-link-alt.svg",
+                "perspectiveName": "Records",
+                "perspectiveOrder": "10",
                 "title": "Filter",
                 "tooltip": "Filter",
                 "type": "DEPENDENT"
@@ -923,14 +954,15 @@
                         "name": "VariantId",
                         "relationshipCardinality": "1_n",
                         "relationshipType": "COMPOSITION",
-                        "widgetDropDownKey": "Id",
-                        "widgetDropDownValue": "HGVS",
+                        "widgetDropDownKey": "",
+                        "widgetDropDownValue": "",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "",
                         "widgetLength": "20",
-                        "widgetType": "DROPDOWN",
+                        "widgetType": "TEXTBOX",
                         "relationshipName": "ClinicalSignificance_Variant",
                         "relationshipEntityName": "Variant",
-                        "relationshipEntityPerspectiveName": "variants"
+                        "relationshipEntityPerspectiveName": "Variants"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -946,11 +978,12 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Pathology",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "ClinicalSignificance_Pathology",
                         "relationshipEntityName": "Pathology",
-                        "relationshipEntityPerspectiveName": "nomenclature"
+                        "relationshipEntityPerspectiveName": "Nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -966,11 +999,12 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Significance",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "ClinicalSignificance_Significance",
                         "relationshipEntityName": "Significance",
-                        "relationshipEntityPerspectiveName": "nomenclature"
+                        "relationshipEntityPerspectiveName": "Nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -999,6 +1033,7 @@
                         "isCalculatedProperty": "false",
                         "name": "ReviewStatus",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Review Status",
                         "widgetLength": "2000",
                         "widgetType": "TEXTAREA"
                     },
@@ -1018,6 +1053,7 @@
                         "widgetType": "DATE"
                     }
                 ],
+                "caption": "Manage entity ClinicalSignificance",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_CLINICALSIGNIFICANCE",
                 "dataName": "GENETYLLIS_CLINICALSIGNIFICANCE",
                 "dataQuery": "",
@@ -1027,9 +1063,9 @@
                 "menuKey": "clinicalsignificance",
                 "menuLabel": "ClinicalSignificance",
                 "name": "ClinicalSignificance",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "variants",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/chart-pie-alt.svg",
+                "perspectiveName": "Variants",
+                "perspectiveOrder": "40",
                 "title": "ClinicalSignificance",
                 "tooltip": "ClinicalSignificance",
                 "type": "DEPENDENT"
@@ -1067,6 +1103,7 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
+                "caption": "Manage entity Significance",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_SIGNIFICANCE",
                 "dataName": "GENETYLLIS_SIGNIFICANCE",
                 "dataQuery": "",
@@ -1076,9 +1113,9 @@
                 "menuKey": "significance",
                 "menuLabel": "Significance",
                 "name": "Significance",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "nomenclature",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
+                "perspectiveName": "Nomenclature",
+                "perspectiveOrder": "90",
                 "title": "Significance",
                 "tooltip": "Significance",
                 "type": "PRIMARY"
@@ -1113,12 +1150,15 @@
                         "name": "VariantId",
                         "relationshipCardinality": "1_n",
                         "relationshipType": "COMPOSITION",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "HGVS",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Variant",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "AlleleFrequency_Variant",
                         "relationshipEntityName": "Variant",
-                        "relationshipEntityPerspectiveName": "variants"
+                        "relationshipEntityPerspectiveName": "Variants"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1134,11 +1174,12 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Gender",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "AlleleFrequency_Gender",
                         "relationshipEntityName": "Gender",
-                        "relationshipEntityPerspectiveName": "nomenclature"
+                        "relationshipEntityPerspectiveName": "Nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1151,12 +1192,15 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "PopulationId",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Population",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "AlleleFrequency_Population",
                         "relationshipEntityName": "Population",
-                        "relationshipEntityPerspectiveName": "nomenclature"
+                        "relationshipEntityPerspectiveName": "Nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1189,6 +1233,7 @@
                         "widgetType": "DATE"
                     }
                 ],
+                "caption": "Manage entity AlleleFrequency",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_ALLELEFREQUENCY",
                 "dataName": "GENETYLLIS_ALLELEFREQUENCY",
                 "dataQuery": "",
@@ -1198,9 +1243,9 @@
                 "menuKey": "allelefrequency",
                 "menuLabel": "AlleleFrequency",
                 "name": "AlleleFrequency",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "variants",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/chart-pie-alt.svg",
+                "perspectiveName": "Variants",
+                "perspectiveOrder": "40",
                 "title": "AlleleFrequency",
                 "tooltip": "AlleleFrequency",
                 "type": "DEPENDENT"
@@ -1250,9 +1295,10 @@
                         "name": "Description",
                         "widgetIsMajor": "true",
                         "widgetLength": "200",
-                        "widgetType": "TEXTBOX"
+                        "widgetType": "TEXTAREA"
                     }
                 ],
+                "caption": "Manage entity Population",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_POPULATION",
                 "dataName": "GENETYLLIS_POPULATION",
                 "dataQuery": "",
@@ -1262,9 +1308,9 @@
                 "menuKey": "population",
                 "menuLabel": "Population",
                 "name": "Population",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "nomenclature",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
+                "perspectiveName": "Nomenclature",
+                "perspectiveOrder": "90",
                 "title": "Population",
                 "tooltip": "Population",
                 "type": "PRIMARY"
@@ -1315,11 +1361,12 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Provider",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Analysis_Provider",
                         "relationshipEntityName": "Provider",
-                        "relationshipEntityPerspectiveName": "analysis"
+                        "relationshipEntityPerspectiveName": "Analysis"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1335,11 +1382,12 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Platform",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Analysis_Platform",
                         "relationshipEntityName": "Platform",
-                        "relationshipEntityPerspectiveName": "analysis"
+                        "relationshipEntityPerspectiveName": "Analysis"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1352,26 +1400,30 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "PatientId",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "LabId",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Patient",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "Analysis_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "patients"
+                        "relationshipEntityPerspectiveName": "Patients"
                     }
                 ],
+                "caption": "Manage entity Analysis",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_ANALYSIS",
                 "dataName": "GENETYLLIS_ANALYSIS",
                 "dataQuery": "",
-                "icon": "file-o",
+                "icon": "/services/v4/web/resources/unicons/file.svg",
                 "layoutType": "MANAGE",
                 "menuIndex": "100",
                 "menuKey": "analysis",
                 "menuLabel": "Analysis",
                 "name": "Analysis",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "analysis",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
+                "perspectiveName": "Analysis",
+                "perspectiveOrder": "50",
                 "title": "Analysis",
                 "tooltip": "Analysis",
                 "type": "PRIMARY"
@@ -1409,18 +1461,19 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
+                "caption": "Manage entity Provider",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PROVIDER",
                 "dataName": "GENETYLLIS_PROVIDER",
                 "dataQuery": "",
-                "icon": "file-o",
+                "icon": "/services/v4/web/resources/unicons/file.svg",
                 "layoutType": "MANAGE",
                 "menuIndex": "100",
                 "menuKey": "provider",
                 "menuLabel": "Provider",
                 "name": "Provider",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "analysis",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
+                "perspectiveName": "Analysis",
+                "perspectiveOrder": "50",
                 "title": "Provider",
                 "tooltip": "Provider",
                 "type": "PRIMARY"
@@ -1458,18 +1511,19 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
+                "caption": "Manage entity Platform",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PLATFORM",
                 "dataName": "GENETYLLIS_PLATFORM",
                 "dataQuery": "",
-                "icon": "file-o",
+                "icon": "/services/v4/web/resources/unicons/file.svg",
                 "layoutType": "MANAGE",
                 "menuIndex": "100",
                 "menuKey": "platform",
                 "menuLabel": "Platform",
                 "name": "Platform",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "analysis",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
+                "perspectiveName": "Analysis",
+                "perspectiveOrder": "50",
                 "title": "Platform",
                 "tooltip": "Platform",
                 "type": "PRIMARY"
@@ -1519,7 +1573,7 @@
                         "name": "Email",
                         "widgetIsMajor": "true",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX"
+                        "widgetType": "EMAIL"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1535,25 +1589,27 @@
                         "widgetDropDownKey": "Id",
                         "widgetDropDownValue": "Name",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Institution",
                         "widgetLength": "20",
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Physician_Institution",
                         "relationshipEntityName": "Institution",
-                        "relationshipEntityPerspectiveName": "analysis"
+                        "relationshipEntityPerspectiveName": "Analysis"
                     }
                 ],
+                "caption": "Manage entity Physician",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PHYSICIAN",
                 "dataName": "GENETYLLIS_PHYSICIAN",
                 "dataQuery": "",
-                "icon": "file-o",
+                "icon": "/services/v4/web/resources/unicons/file.svg",
                 "layoutType": "MANAGE",
                 "menuIndex": "100",
                 "menuKey": "physician",
                 "menuLabel": "Physician",
                 "name": "Physician",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "analysis",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
+                "perspectiveName": "Analysis",
+                "perspectiveOrder": "50",
                 "title": "Physician",
                 "tooltip": "Physician",
                 "type": "PRIMARY"
@@ -1606,18 +1662,19 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
+                "caption": "Manage entity Institution",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_INSTITUTION",
                 "dataName": "GENETYLLIS_INSTITUTION",
                 "dataQuery": "",
-                "icon": "file-o",
+                "icon": "/services/v4/web/resources/unicons/file.svg",
                 "layoutType": "MANAGE",
                 "menuIndex": "100",
                 "menuKey": "institution",
                 "menuLabel": "Institution",
                 "name": "Institution",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "analysis",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
+                "perspectiveName": "Analysis",
+                "perspectiveOrder": "50",
                 "title": "Institution",
                 "tooltip": "Institution",
                 "type": "PRIMARY"
@@ -1650,12 +1707,15 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "PatientId",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "LabId",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Patient",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "FamilyHistory_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "patients"
+                        "relationshipEntityPerspectiveName": "Patients"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1668,12 +1728,15 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "RelationId",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "RelationType",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Relation",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "FamilyHistory_Relation",
                         "relationshipEntityName": "Relation",
-                        "relationshipEntityPerspectiveName": "nomenclature"
+                        "relationshipEntityPerspectiveName": "Nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1686,26 +1749,30 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "FamilyMemberId",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "LabId",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Family Member",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "FamilyHistory_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "patients"
+                        "relationshipEntityPerspectiveName": "Patients"
                     }
                 ],
+                "caption": "Manage entity FamilyHistory",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_FAMILYHISTORY",
                 "dataName": "GENETYLLIS_FAMILYHISTORY",
                 "dataQuery": "",
-                "icon": "file-o",
+                "icon": "/services/v4/web/resources/unicons/file.svg",
                 "layoutType": "MANAGE",
                 "menuIndex": "100",
                 "menuKey": "familyhistory",
                 "menuLabel": "FamilyHistory",
                 "name": "FamilyHistory",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "patients",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/user.svg",
+                "perspectiveName": "Patients",
+                "perspectiveOrder": "20",
                 "title": "FamilyHistory",
                 "tooltip": "FamilyHistory",
                 "type": "DEPENDENT"
@@ -1739,22 +1806,24 @@
                         "isCalculatedProperty": "false",
                         "name": "RelationType",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Relation Type",
                         "widgetLength": "20",
                         "widgetType": "TEXTBOX"
                     }
                 ],
+                "caption": "Manage entity Relation",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_RELATION",
                 "dataName": "GENETYLLIS_RELATION",
                 "dataQuery": "",
-                "icon": "file-o",
+                "icon": "/services/v4/web/resources/unicons/file.svg",
                 "layoutType": "MANAGE",
                 "menuIndex": "100",
                 "menuKey": "relation",
                 "menuLabel": "Relation",
                 "name": "Relation",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "nomenclature",
-                "perspectiveOrder": "100",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
+                "perspectiveName": "Nomenclature",
+                "perspectiveOrder": "90",
                 "title": "Relation",
                 "tooltip": "Relation",
                 "type": "PRIMARY"
@@ -1787,12 +1856,15 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "UserUserId",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "Username",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "User",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "Notification_User",
                         "relationshipEntityName": "User",
-                        "relationshipEntityPerspectiveName": "users"
+                        "relationshipEntityPerspectiveName": "Users"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1805,12 +1877,15 @@
                         "dataUnique": "false",
                         "isCalculatedProperty": "false",
                         "name": "VariantId",
+                        "widgetDropDownKey": "Id",
+                        "widgetDropDownValue": "HGVS",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Variant",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX",
+                        "widgetType": "DROPDOWN",
                         "relationshipName": "Notification_Variant",
                         "relationshipEntityName": "Variant",
-                        "relationshipEntityPerspectiveName": "variants"
+                        "relationshipEntityPerspectiveName": "Variants"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1824,8 +1899,9 @@
                         "isCalculatedProperty": "false",
                         "name": "SeenFlag",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Seen",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX"
+                        "widgetType": "CHECKBOX"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1839,21 +1915,23 @@
                         "isCalculatedProperty": "false",
                         "name": "ChangeFlag",
                         "widgetIsMajor": "true",
+                        "widgetLabel": "Change Flag",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX"
+                        "widgetType": "CHECKBOX"
                     }
                 ],
+                "caption": "Manage entity Notification",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_NOTIFICATION",
                 "dataName": "GENETYLLIS_NOTIFICATION",
                 "dataQuery": "",
-                "icon": "file-o",
+                "icon": "/services/v4/web/resources/unicons/file.svg",
                 "layoutType": "MANAGE",
                 "menuIndex": "100",
                 "menuKey": "notification",
                 "menuLabel": "Notification",
                 "name": "Notification",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "users",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/globe.svg",
+                "perspectiveName": "Users",
                 "perspectiveOrder": "100",
                 "title": "Notification",
                 "tooltip": "Notification",
@@ -1907,17 +1985,18 @@
                         "widgetType": "TEXTBOX"
                     }
                 ],
+                "caption": "Manage entity User",
                 "dataCount": "SELECT COUNT(*) AS COUNT FROM GENETYLLIS_USER",
                 "dataName": "GENETYLLIS_USER",
                 "dataQuery": "",
-                "icon": "file-o",
+                "icon": "/services/v4/web/resources/unicons/file.svg",
                 "layoutType": "MANAGE",
                 "menuIndex": "100",
                 "menuKey": "user",
                 "menuLabel": "User",
                 "name": "User",
-                "perspectiveIcon": "files-o",
-                "perspectiveName": "users",
+                "perspectiveIcon": "/services/v4/web/resources/unicons/globe.svg",
+                "perspectiveName": "Users",
                 "perspectiveOrder": "100",
                 "title": "User",
                 "tooltip": "User",
@@ -1926,45 +2005,45 @@
         ],
         "perspectives": [
             {
-                "name": "patients",
+                "name": "Patients",
                 "label": "Patients",
-                "icon": "users",
+                "icon": "/services/v4/web/resources/unicons/user.svg",
                 "order": "20"
             },
             {
-                "name": "nomenclature",
+                "name": "Nomenclature",
                 "label": "Nomenclature",
-                "icon": "heartbeat",
+                "icon": "/services/v4/web/resources/unicons/heartbeat.svg",
                 "order": "90"
             },
             {
-                "name": "variants",
+                "name": "Variants",
                 "label": "Variants",
-                "icon": "bar-chart",
+                "icon": "/services/v4/web/resources/unicons/chart-pie-alt.svg",
                 "order": "40"
             },
             {
-                "name": "records",
+                "name": "Records",
                 "label": "Records",
-                "icon": "external-link",
+                "icon": "/services/v4/web/resources/unicons/external-link-alt.svg",
                 "order": "10"
             },
             {
-                "name": "genes",
+                "name": "Genes",
                 "label": "Genes",
-                "icon": "sliders",
+                "icon": "/services/v4/web/resources/unicons/sliders-v-alt.svg",
                 "order": "30"
             },
             {
-                "name": "analysis",
+                "name": "Analysis",
                 "label": "Analysis",
-                "icon": "ambulance",
+                "icon": "/services/v4/web/resources/unicons/ambulance.svg",
                 "order": "50"
             },
             {
-                "name": "users",
-                "label": "users",
-                "icon": "globe",
+                "name": "Users",
+                "label": "Users",
+                "icon": "/services/v4/web/resources/unicons/globe.svg",
                 "order": "100"
             }
         ],

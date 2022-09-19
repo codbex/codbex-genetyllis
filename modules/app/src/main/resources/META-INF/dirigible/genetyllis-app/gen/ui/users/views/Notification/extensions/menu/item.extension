@@ -1,5 +1,0 @@
-{
-	"description": "Notification menu",
-	"extensionPoint": "shell-genetyllis-app-menu",
-	"module": "genetyllis-app/gen/ui/users/views/Notification/extensions/menu/item.js"
-}

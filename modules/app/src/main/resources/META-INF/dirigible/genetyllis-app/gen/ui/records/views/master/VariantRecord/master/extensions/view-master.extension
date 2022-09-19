@@ -1,5 +1,0 @@
-{
-	"description": "records view",
-	"extensionPoint": "launchpad-genetyllis-records-VariantRecord-view",
-	"module": "genetyllis-app/gen/ui/records/views/master/VariantRecord/master/extensions/view.js"
-}

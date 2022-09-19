@@ -9,12 +9,12 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-var query = require("db/v4/query");
-var producer = require("messaging/v4/producer");
-var daoApi = require("db/v4/dao");
-var EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
+const query = require("db/v4/query");
+const producer = require("messaging/v4/producer");
+const daoApi = require("db/v4/dao");
+const EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
 
-var dao = daoApi.create({
+let dao = daoApi.create({
 	table: "GENETYLLIS_ALLELEFREQUENCY",
 	properties: [
 		{
@@ -23,45 +23,51 @@ var dao = daoApi.create({
 			type: "INTEGER",
 			id: true,
 			autoIncrement: true,
-		}, {
+		},
+ {
 			name: "VariantId",
 			column: "ALLELEFREQUENCY_VARIANTID",
 			type: "INTEGER",
-		}, {
+		},
+ {
 			name: "GenderId",
 			column: "ALLELEFREQUENCY_GENDERID",
 			type: "INTEGER",
-		}, {
+		},
+ {
 			name: "PopulationId",
 			column: "ALLELEFREQUENCY_POPULATIONID",
 			type: "INTEGER",
-		}, {
+		},
+ {
 			name: "Frequency",
 			column: "ALLELEFREQUENCY_FREQUENCY",
 			type: "DOUBLE",
-		}, {
+		},
+ {
 			name: "Updated",
 			column: "ALLELEFREQUENCY_UPDATED",
 			type: "DATE",
-		}]
+		}
+]
 });
 
 exports.list = function(settings) {
 	return dao.list(settings).map(function(e) {
-		EntityUtils.setLocalDate(e, "Updated");
+		EntityUtils.setDate(e, "Updated");
 		return e;
 	});
 };
 
 exports.get = function(id) {
-	var entity = dao.find(id);
-	EntityUtils.setLocalDate(entity, "Updated");
+	let entity = dao.find(id);
+	EntityUtils.setDate(entity, "Updated");
 	return entity;
 };
 
 exports.create = function(entity) {
 	EntityUtils.setLocalDate(entity, "Updated");
-	var id = dao.insert(entity);
+	let id = dao.insert(entity);
 	triggerEvent("Create", {
 		table: "GENETYLLIS_ALLELEFREQUENCY",
 		key: {
@@ -74,7 +80,7 @@ exports.create = function(entity) {
 };
 
 exports.update = function(entity) {
-	EntityUtils.setLocalDate(entity, "Updated");
+	// EntityUtils.setLocalDate(entity, "Updated");
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_ALLELEFREQUENCY",
@@ -98,12 +104,20 @@ exports.delete = function(id) {
 	});
 };
 
-exports.count = function() {
-	return dao.count();
+exports.count = function (VariantId) {
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_ALLELEFREQUENCY WHERE ALLELEFREQUENCY_VARIANTID = ?", [VariantId]);
+	if (resultSet !== null && resultSet[0] !== null) {
+		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
+			return resultSet[0].COUNT;
+		} else if (resultSet[0].count !== undefined && resultSet[0].count !== null) {
+			return resultSet[0].count;
+		}
+	}
+	return 0;
 };
 
 exports.customDataCount = function() {
-	var resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_ALLELEFREQUENCY");
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_ALLELEFREQUENCY");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -115,5 +129,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/variants/AlleleFrequency/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/Variants/AlleleFrequency/" + operation).send(JSON.stringify(data));
 }

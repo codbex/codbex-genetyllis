@@ -1,5 +1,0 @@
-{
-	"description": "users tiles",
-	"extensionPoint": "launchpad-genetyllis-tiles",
-	"module": "genetyllis-app/gen/ui/users/views/User/extensions/tile/tile.js"
-}
