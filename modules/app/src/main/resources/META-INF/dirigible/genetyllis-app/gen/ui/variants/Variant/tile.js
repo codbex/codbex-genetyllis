@@ -17,6 +17,7 @@ exports.getTile = function () {
         tooltip: "Variant",
         // icon: "file-o",
         location: "/services/v4/web/genetyllis-app/gen/ui/Variants/index.html",
-        order: "100"
+        order: "100",
+        groupOrder: "40"
     };
 };

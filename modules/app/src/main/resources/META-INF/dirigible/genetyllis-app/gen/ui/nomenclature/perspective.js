@@ -13,7 +13,7 @@ const perspectiveData = {
 	id: "Nomenclature",
 	name: "Nomenclature",
 	link: "/services/v4/web/genetyllis-app/gen/ui/Nomenclature/index.html",
-	order: "100",
+	order: "90",
 	icon: "/services/v4/web/resources/unicons/heartbeat.svg",
 };
 

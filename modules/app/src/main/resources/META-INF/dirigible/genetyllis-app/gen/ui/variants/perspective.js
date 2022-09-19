@@ -13,7 +13,7 @@ const perspectiveData = {
 	id: "Variants",
 	name: "Variants",
 	link: "/services/v4/web/genetyllis-app/gen/ui/Variants/index.html",
-	order: "100",
+	order: "40",
 	icon: "/services/v4/web/resources/unicons/chart-pie-alt.svg",
 };
 

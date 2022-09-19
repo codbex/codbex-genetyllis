@@ -17,6 +17,7 @@ exports.getTile = function () {
         tooltip: "User",
         // icon: "file-o",
         location: "/services/v4/web/genetyllis-app/gen/ui/Users/index.html",
-        order: "100"
+        order: "100",
+        groupOrder: "100"
     };
 };

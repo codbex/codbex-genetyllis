@@ -13,7 +13,7 @@ const perspectiveData = {
 	id: "Genes",
 	name: "Genes",
 	link: "/services/v4/web/genetyllis-app/gen/ui/Genes/index.html",
-	order: "100",
+	order: "30",
 	icon: "/services/v4/web/resources/unicons/sliders-v-alt.svg",
 };
 
