@@ -93,5 +93,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/Analysis/Platform/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/analysis/Platform/" + operation).send(JSON.stringify(data));
 }

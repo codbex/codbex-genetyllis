@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 const rs = require("http/v4/rs");
-const dao = require("genetyllis-app/gen/dao/Nomenclature/Significance");
+const dao = require("genetyllis-app/gen/dao/nomenclature/Significance");
 const http = require("genetyllis-app/gen/api/utils/http");
 
 rs.service()

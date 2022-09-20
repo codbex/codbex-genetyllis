@@ -11,10 +11,10 @@
  */
 angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["messageHubProvider", function (messageHubProvider) {
-		messageHubProvider.eventIdPrefix = 'genetyllis-app.Nomenclature.Pathology';
+		messageHubProvider.eventIdPrefix = 'genetyllis-app.nomenclature.Pathology';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/Nomenclature/Pathology.js";
+		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/nomenclature/Pathology.js";
 	}])
 	.controller('PageController', ['$scope', 'messageHub', 'entityApi', function ($scope, messageHub, entityApi) {
 

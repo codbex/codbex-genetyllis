@@ -143,5 +143,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/Variants/ClinicalSignificance/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/variants/ClinicalSignificance/" + operation).send(JSON.stringify(data));
 }

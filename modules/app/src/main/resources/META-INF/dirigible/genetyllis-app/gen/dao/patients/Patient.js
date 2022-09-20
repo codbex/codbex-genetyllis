@@ -29,54 +29,54 @@ let dao = daoApi.create({
 			id: true,
 			autoIncrement: true,
 		},
-		{
+ {
 			name: "LabId",
 			column: "GENETYLLIS_PATIENT_LABID",
 			type: "VARCHAR",
 		},
-		{
+ {
 			name: "BirthDate",
 			column: "PATIENT_AGE",
 			type: "DATE",
 		},
-		{
+ {
 			name: "GenderId",
 			column: "PATIENT_GENDERID",
 			type: "INTEGER",
 		},
-		{
+ {
 			name: "Info",
 			column: "PATIENT_INFO",
 			type: "VARCHAR",
 		},
-		{
+ {
 			name: "PhysicianId",
 			column: "GENETYLLIS_PATIENT_PHYSICIANID",
 			type: "INTEGER",
 		},
-		{
+ {
 			name: "PopulationId",
 			column: "GENETYLLIS_PATIENT_POPULATIONID",
 			type: "INTEGER",
 		}
-	]
+]
 });
 
-exports.list = function (settings) {
+exports.list = function(settings) {
 	return dao.list(settings).map(function (e) {
 		EntityUtils.setLocalDate(e, "BirthDate");
 		return e;
 	});
 };
 
-exports.get = function (id) {
+exports.get = function(id) {
 	let entity = dao.find(id);
 	// TODO this produces 500
 	// EntityUtils.setLocalDate(entity, "BirthDate");
 	return entity;
 };
 
-exports.create = function (entity) {
+exports.create = function(entity) {
 	EntityUtils.setLocalDate(entity, "BirthDate");
 	let id = dao.insert(entity);
 	triggerEvent("Create", {
@@ -90,7 +90,7 @@ exports.create = function (entity) {
 	return id;
 };
 
-exports.update = function (entity) {
+exports.update = function(entity) {
 	EntityUtils.setLocalDate(entity, "BirthDate");
 	dao.update(entity);
 	triggerEvent("Update", {
@@ -103,7 +103,7 @@ exports.update = function (entity) {
 	});
 };
 
-exports.delete = function (id) {
+exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
 		table: "GENETYLLIS_PATIENT",
@@ -115,11 +115,11 @@ exports.delete = function (id) {
 	});
 };
 
-exports.count = function () {
+exports.count = function() {
 	return dao.count();
 };
 
-exports.customDataCount = function () {
+exports.customDataCount = function() {
 	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATIENT");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
