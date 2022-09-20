@@ -45,7 +45,7 @@
                 "menuLabel": "Gender",
                 "name": "Gender",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
-                "perspectiveName": "Nomenclature",
+                "perspectiveName": "nomenclature",
                 "perspectiveOrder": "90",
                 "title": "Gender",
                 "tooltip": "Gender",
@@ -119,7 +119,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Patient_Gender",
                         "relationshipEntityName": "Gender",
-                        "relationshipEntityPerspectiveName": "Nomenclature"
+                        "relationshipEntityPerspectiveName": "nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -155,7 +155,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Patient_Physician",
                         "relationshipEntityName": "Physician",
-                        "relationshipEntityPerspectiveName": "Analysis"
+                        "relationshipEntityPerspectiveName": "analysis"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -176,7 +176,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Patient_Population",
                         "relationshipEntityName": "Population",
-                        "relationshipEntityPerspectiveName": "Nomenclature"
+                        "relationshipEntityPerspectiveName": "nomenclature"
                     }
                 ],
                 "caption": "Manage entity Patient",
@@ -192,7 +192,7 @@
                 "menuLabel": "Patient",
                 "name": "Patient",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/user.svg",
-                "perspectiveName": "Patients",
+                "perspectiveName": "patients",
                 "perspectiveOrder": "20",
                 "title": "Patient",
                 "tooltip": "Patient",
@@ -257,7 +257,7 @@
                 "menuLabel": "Pathology",
                 "name": "Pathology",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
-                "perspectiveName": "Nomenclature",
+                "perspectiveName": "nomenclature",
                 "perspectiveOrder": "90",
                 "title": "Pathology",
                 "tooltip": "Pathology",
@@ -301,7 +301,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "ClinicalHistory_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "Patients"
+                        "relationshipEntityPerspectiveName": "patients"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -322,7 +322,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "ClinicalHistory_Pathology",
                         "relationshipEntityName": "Pathology",
-                        "relationshipEntityPerspectiveName": "Nomenclature"
+                        "relationshipEntityPerspectiveName": "nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -367,7 +367,7 @@
                 "menuLabel": "ClinicalHistory",
                 "name": "ClinicalHistory",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/user.svg",
-                "perspectiveName": "Patients",
+                "perspectiveName": "patients",
                 "perspectiveOrder": "20",
                 "title": "ClinicalHistory",
                 "tooltip": "ClinicalHistory",
@@ -514,7 +514,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Variant_Gene",
                         "relationshipEntityName": "Gene",
-                        "relationshipEntityPerspectiveName": "Genes"
+                        "relationshipEntityPerspectiveName": "genes"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -590,7 +590,7 @@
                 "menuLabel": "Variant",
                 "name": "Variant",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/chart-pie-alt.svg",
-                "perspectiveName": "Variants",
+                "perspectiveName": "variants",
                 "perspectiveOrder": "40",
                 "title": "Variant",
                 "tooltip": "Variant",
@@ -632,7 +632,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "VariantRecord_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "Patients"
+                        "relationshipEntityPerspectiveName": "patients"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -653,7 +653,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "VariantRecord_Variant",
                         "relationshipEntityName": "Variant",
-                        "relationshipEntityPerspectiveName": "Variants"
+                        "relationshipEntityPerspectiveName": "variants"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -735,7 +735,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "VariantRecord_Analysis",
                         "relationshipEntityName": "Analysis",
-                        "relationshipEntityPerspectiveName": "Analysis"
+                        "relationshipEntityPerspectiveName": "analysis"
                     }
                 ],
                 "caption": "Manage entity VariantRecord",
@@ -749,7 +749,7 @@
                 "menuLabel": "VariantRecord",
                 "name": "VariantRecord",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/external-link-alt.svg",
-                "perspectiveName": "Records",
+                "perspectiveName": "records",
                 "perspectiveOrder": "10",
                 "title": "VariantRecord",
                 "tooltip": "VariantRecord",
@@ -830,7 +830,7 @@
                 "menuLabel": "Gene",
                 "name": "Gene",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/sliders-v-alt.svg",
-                "perspectiveName": "Genes",
+                "perspectiveName": "genes",
                 "perspectiveOrder": "30",
                 "title": "Gene",
                 "tooltip": "Gene",
@@ -889,7 +889,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Filter_VariantRecord",
                         "relationshipEntityName": "VariantRecord",
-                        "relationshipEntityPerspectiveName": "Records"
+                        "relationshipEntityPerspectiveName": "records"
                     }
                 ],
                 "caption": "Manage entity Filter",
@@ -903,7 +903,7 @@
                 "menuLabel": "Filter",
                 "name": "Filter",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/external-link-alt.svg",
-                "perspectiveName": "Records",
+                "perspectiveName": "records",
                 "perspectiveOrder": "10",
                 "title": "Filter",
                 "tooltip": "Filter",
@@ -954,15 +954,12 @@
                         "name": "VariantId",
                         "relationshipCardinality": "1_n",
                         "relationshipType": "COMPOSITION",
-                        "widgetDropDownKey": "",
-                        "widgetDropDownValue": "",
                         "widgetIsMajor": "true",
-                        "widgetLabel": "",
                         "widgetLength": "20",
                         "widgetType": "TEXTBOX",
                         "relationshipName": "ClinicalSignificance_Variant",
                         "relationshipEntityName": "Variant",
-                        "relationshipEntityPerspectiveName": "Variants"
+                        "relationshipEntityPerspectiveName": "variants"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -983,7 +980,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "ClinicalSignificance_Pathology",
                         "relationshipEntityName": "Pathology",
-                        "relationshipEntityPerspectiveName": "Nomenclature"
+                        "relationshipEntityPerspectiveName": "nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1004,7 +1001,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "ClinicalSignificance_Significance",
                         "relationshipEntityName": "Significance",
-                        "relationshipEntityPerspectiveName": "Nomenclature"
+                        "relationshipEntityPerspectiveName": "nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1064,7 +1061,7 @@
                 "menuLabel": "ClinicalSignificance",
                 "name": "ClinicalSignificance",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/chart-pie-alt.svg",
-                "perspectiveName": "Variants",
+                "perspectiveName": "variants",
                 "perspectiveOrder": "40",
                 "title": "ClinicalSignificance",
                 "tooltip": "ClinicalSignificance",
@@ -1114,7 +1111,7 @@
                 "menuLabel": "Significance",
                 "name": "Significance",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
-                "perspectiveName": "Nomenclature",
+                "perspectiveName": "nomenclature",
                 "perspectiveOrder": "90",
                 "title": "Significance",
                 "tooltip": "Significance",
@@ -1158,7 +1155,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "AlleleFrequency_Variant",
                         "relationshipEntityName": "Variant",
-                        "relationshipEntityPerspectiveName": "Variants"
+                        "relationshipEntityPerspectiveName": "variants"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1179,7 +1176,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "AlleleFrequency_Gender",
                         "relationshipEntityName": "Gender",
-                        "relationshipEntityPerspectiveName": "Nomenclature"
+                        "relationshipEntityPerspectiveName": "nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1200,7 +1197,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "AlleleFrequency_Population",
                         "relationshipEntityName": "Population",
-                        "relationshipEntityPerspectiveName": "Nomenclature"
+                        "relationshipEntityPerspectiveName": "nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1244,7 +1241,7 @@
                 "menuLabel": "AlleleFrequency",
                 "name": "AlleleFrequency",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/chart-pie-alt.svg",
-                "perspectiveName": "Variants",
+                "perspectiveName": "variants",
                 "perspectiveOrder": "40",
                 "title": "AlleleFrequency",
                 "tooltip": "AlleleFrequency",
@@ -1309,7 +1306,7 @@
                 "menuLabel": "Population",
                 "name": "Population",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
-                "perspectiveName": "Nomenclature",
+                "perspectiveName": "nomenclature",
                 "perspectiveOrder": "90",
                 "title": "Population",
                 "tooltip": "Population",
@@ -1366,7 +1363,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Analysis_Provider",
                         "relationshipEntityName": "Provider",
-                        "relationshipEntityPerspectiveName": "Analysis"
+                        "relationshipEntityPerspectiveName": "analysis"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1387,7 +1384,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Analysis_Platform",
                         "relationshipEntityName": "Platform",
-                        "relationshipEntityPerspectiveName": "Analysis"
+                        "relationshipEntityPerspectiveName": "analysis"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1408,7 +1405,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Analysis_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "Patients"
+                        "relationshipEntityPerspectiveName": "patients"
                     }
                 ],
                 "caption": "Manage entity Analysis",
@@ -1422,7 +1419,7 @@
                 "menuLabel": "Analysis",
                 "name": "Analysis",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
-                "perspectiveName": "Analysis",
+                "perspectiveName": "analysis",
                 "perspectiveOrder": "50",
                 "title": "Analysis",
                 "tooltip": "Analysis",
@@ -1472,7 +1469,7 @@
                 "menuLabel": "Provider",
                 "name": "Provider",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
-                "perspectiveName": "Analysis",
+                "perspectiveName": "analysis",
                 "perspectiveOrder": "50",
                 "title": "Provider",
                 "tooltip": "Provider",
@@ -1522,7 +1519,7 @@
                 "menuLabel": "Platform",
                 "name": "Platform",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
-                "perspectiveName": "Analysis",
+                "perspectiveName": "analysis",
                 "perspectiveOrder": "50",
                 "title": "Platform",
                 "tooltip": "Platform",
@@ -1594,7 +1591,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Physician_Institution",
                         "relationshipEntityName": "Institution",
-                        "relationshipEntityPerspectiveName": "Analysis"
+                        "relationshipEntityPerspectiveName": "analysis"
                     }
                 ],
                 "caption": "Manage entity Physician",
@@ -1608,7 +1605,7 @@
                 "menuLabel": "Physician",
                 "name": "Physician",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
-                "perspectiveName": "Analysis",
+                "perspectiveName": "analysis",
                 "perspectiveOrder": "50",
                 "title": "Physician",
                 "tooltip": "Physician",
@@ -1673,7 +1670,7 @@
                 "menuLabel": "Institution",
                 "name": "Institution",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/ambulance.svg",
-                "perspectiveName": "Analysis",
+                "perspectiveName": "analysis",
                 "perspectiveOrder": "50",
                 "title": "Institution",
                 "tooltip": "Institution",
@@ -1715,7 +1712,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "FamilyHistory_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "Patients"
+                        "relationshipEntityPerspectiveName": "patients"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1736,7 +1733,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "FamilyHistory_Relation",
                         "relationshipEntityName": "Relation",
-                        "relationshipEntityPerspectiveName": "Nomenclature"
+                        "relationshipEntityPerspectiveName": "nomenclature"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1757,7 +1754,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "FamilyHistory_Patient",
                         "relationshipEntityName": "Patient",
-                        "relationshipEntityPerspectiveName": "Patients"
+                        "relationshipEntityPerspectiveName": "patients"
                     }
                 ],
                 "caption": "Manage entity FamilyHistory",
@@ -1771,7 +1768,7 @@
                 "menuLabel": "FamilyHistory",
                 "name": "FamilyHistory",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/user.svg",
-                "perspectiveName": "Patients",
+                "perspectiveName": "patients",
                 "perspectiveOrder": "20",
                 "title": "FamilyHistory",
                 "tooltip": "FamilyHistory",
@@ -1822,7 +1819,7 @@
                 "menuLabel": "Relation",
                 "name": "Relation",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/heartbeat.svg",
-                "perspectiveName": "Nomenclature",
+                "perspectiveName": "nomenclature",
                 "perspectiveOrder": "90",
                 "title": "Relation",
                 "tooltip": "Relation",
@@ -1864,7 +1861,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Notification_User",
                         "relationshipEntityName": "User",
-                        "relationshipEntityPerspectiveName": "Users"
+                        "relationshipEntityPerspectiveName": "users"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1885,7 +1882,7 @@
                         "widgetType": "DROPDOWN",
                         "relationshipName": "Notification_Variant",
                         "relationshipEntityName": "Variant",
-                        "relationshipEntityPerspectiveName": "Variants"
+                        "relationshipEntityPerspectiveName": "variants"
                     },
                     {
                         "calculatedPropertyExpression": "",
@@ -1931,7 +1928,7 @@
                 "menuLabel": "Notification",
                 "name": "Notification",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/globe.svg",
-                "perspectiveName": "Users",
+                "perspectiveName": "users",
                 "perspectiveOrder": "100",
                 "title": "Notification",
                 "tooltip": "Notification",
@@ -1996,7 +1993,7 @@
                 "menuLabel": "User",
                 "name": "User",
                 "perspectiveIcon": "/services/v4/web/resources/unicons/globe.svg",
-                "perspectiveName": "Users",
+                "perspectiveName": "users",
                 "perspectiveOrder": "100",
                 "title": "User",
                 "tooltip": "User",
@@ -2005,43 +2002,43 @@
         ],
         "perspectives": [
             {
-                "name": "Patients",
+                "name": "patients",
                 "label": "Patients",
                 "icon": "/services/v4/web/resources/unicons/user.svg",
                 "order": "20"
             },
             {
-                "name": "Nomenclature",
+                "name": "nomenclature",
                 "label": "Nomenclature",
                 "icon": "/services/v4/web/resources/unicons/heartbeat.svg",
                 "order": "90"
             },
             {
-                "name": "Variants",
+                "name": "variants",
                 "label": "Variants",
                 "icon": "/services/v4/web/resources/unicons/chart-pie-alt.svg",
                 "order": "40"
             },
             {
-                "name": "Records",
+                "name": "records",
                 "label": "Records",
                 "icon": "/services/v4/web/resources/unicons/external-link-alt.svg",
                 "order": "10"
             },
             {
-                "name": "Genes",
+                "name": "genes",
                 "label": "Genes",
                 "icon": "/services/v4/web/resources/unicons/sliders-v-alt.svg",
                 "order": "30"
             },
             {
-                "name": "Analysis",
+                "name": "analysis",
                 "label": "Analysis",
                 "icon": "/services/v4/web/resources/unicons/ambulance.svg",
                 "order": "50"
             },
             {
-                "name": "Users",
+                "name": "users",
                 "label": "Users",
                 "icon": "/services/v4/web/resources/unicons/globe.svg",
                 "order": "100"
