@@ -36,7 +36,6 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
     function loadAnalysisCount() {
         $http.get(analysisCount + "/count")
             .then(function (data) {
-                console.log("data", data)
                 $scope.totalItems = data.data
             });
     };
@@ -47,13 +46,11 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
         var query = {};
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
-        console.log(query)
         $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
             .then(function (data) {
                 $scope.patientsDetails = []
                 // ["ANALYSIS_DATE", "ANALYSIS_ID", "ANALYSIS_PLATFORMID", "ANALYSIS_PROVIDERID", "GENETYLLIS_ANALYSIS_PATIENTID"]
                 patientObject = {};
-                console.log(data.data.data)
                 data.data.data.forEach(patientResult => {
                     // patientObject = {};
                     // patientObject.Date = patientResult.analysis[0]?.ANALYSIS_DATE.split("T")[0];
@@ -89,12 +86,8 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
                     }
                 })
                 $scope.patientsDetails.sort((a, b) => {
-                    console.log(a, "a")
-                    console.log(b, "b")
                     return a.Id - b.Id
                 })
-                // $scope.patientsDetails.ANALYSIS_DATE = "2022-10-15"
-                console.log($scope.patientsDetails)
 
             });
     }
@@ -191,7 +184,6 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
         loadPatients()
         $scope.patientsDetails = [];
     }
-    console.log($scope.currentPage)
 
 
 }]);

@@ -29,37 +29,37 @@ let dao = daoApi.create({
 			id: true,
 			autoIncrement: true,
 		},
- {
+		{
 			name: "LabId",
 			column: "GENETYLLIS_PATIENT_LABID",
 			type: "VARCHAR",
 		},
- {
+		{
 			name: "BirthDate",
 			column: "PATIENT_AGE",
 			type: "DATE",
 		},
- {
+		{
 			name: "GenderId",
 			column: "PATIENT_GENDERID",
 			type: "INTEGER",
 		},
- {
+		{
 			name: "Info",
 			column: "PATIENT_INFO",
 			type: "VARCHAR",
 		},
- {
+		{
 			name: "PhysicianId",
 			column: "GENETYLLIS_PATIENT_PHYSICIANID",
 			type: "INTEGER",
 		},
- {
+		{
 			name: "PopulationId",
 			column: "GENETYLLIS_PATIENT_POPULATIONID",
 			type: "INTEGER",
 		}
-]
+	]
 });
 
 exports.list = function (settings) {
@@ -160,13 +160,26 @@ exports.filterPatients = function (patient) {
 	var response = {};
 	var countSql = "";
 
-	filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
-	filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY, filterSql);
-	filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT, filterSql);
-
-	if (!isFamilyHsistoryEmpty(patient.GENETYLLIS_FAMILYHISTORY)) {
-		buildFamilyHistoryFilterSql(patient.GENETYLLIS_FAMILYHISTORY);
+	if (patient.GENETYLLIS_PATIENT) {
+		filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
 	}
+	if (patient.GENETYLLIS_CLINICALHISTORY) {
+		filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY, filterSql);
+	}
+	if (patient.GENETYLLIS_VARIANT) {
+		filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT, filterSql);
+
+	}
+	if (patient.GENETYLLIS_FAMILYHISTORY) {
+		if (!isFamilyHsistoryEmpty(patient.GENETYLLIS_FAMILYHISTORY)) {
+			buildFamilyHistoryFilterSql(patient.GENETYLLIS_FAMILYHISTORY);
+		}
+	}
+	filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS, filterSql);
+
+
+
+
 
 	countSql += filterSql;
 
@@ -244,9 +257,12 @@ function loadAnalysis(params) {
 }
 
 function buildFilterSql(object, sql) {
+
 	var keys = Object.keys(object);
 	for (var i = 0; i < keys.length; i++) {
 		var val = object[keys[i]];
+		console.log('----------------------------------------------------------------');
+		console.log(JSON.stringify(object))
 		if (Array.isArray(val) ? (val.length > 0) : (val !== undefined && val !== '' && val !== null)) {
 			if (useWhere) {
 				sql += " WHERE ";
@@ -268,12 +284,14 @@ function buildFilterSql(object, sql) {
 				addFilterParam(val);
 
 			} else {
-				condition = "LOWER(" + keys[i] + ") " + " = ?";
+				condition = keys[i] + " = ?";
 				addFilterParam(val);
 			}
 
 			sql += condition;
 			useWhere = false;
+			console.log(condition)
+
 		}
 	}
 
@@ -313,6 +331,7 @@ function initFilterSql() {
 	filterSql = "SELECT DISTINCT GP.* FROM GENETYLLIS_PATIENT GP " +
 		"LEFT JOIN GENETYLLIS_CLINICALHISTORY GC ON GP.PATIENT_ID = GC.CLINICALHISTORY_PATIENTID " +
 		"LEFT JOIN GENETYLLIS_FAMILYHISTORY GF ON GP.PATIENT_ID = GF.FAMILYHISTORY_PATIENTID " +
+		"LEFT JOIN GENETYLLIS_ANALYSIS GA ON GP.PATIENT_ID = GA.GENETYLLIS_ANALYSIS_PATIENTID " +
 		"LEFT JOIN GENETYLLIS_PATHOLOGY GPT ON GC.CLINICALHISTORY_PATHOLOGYID = GPT.PATHOLOGY_ID " +
 		"LEFT JOIN GENETYLLIS_VARIANTRECORD GVR ON GP.PATIENT_ID = GVR.VARIANTRECORD_PATIENTID " +
 		"LEFT JOIN GENETYLLIS_VARIANT GV ON GVR.VARIANTRECORD_VARIANTID = GV.VARIANT_ID";

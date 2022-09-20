@@ -73,7 +73,6 @@ rs.service()
         var id = ctx.pathParameters.id;
         var entity = dao.get(id);
         console.log(ctx)
-        console.log("_------------------------------------------____")
         if (entity) {
             sendResponseOk(entity);
         } else {
