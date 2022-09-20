@@ -33,8 +33,7 @@
 
 		<!-- <link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet"
 			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" /> -->
-		<script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.9/angular.js" data-semver="1.4.9">
-		</script>
+
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
 
 		<link rel="stylesheet" href="../css/pagination.css">
@@ -113,15 +112,39 @@
 						<div class="container">
 
 							<div class="row">
-								<div class="paging">
+								<!-- <div class="paging">
 									<div class="select-columns">
 										<div ng-dropdown-multiselect="" options="example1data" extra-settings="setting2"
-											selected-model="example1model" class="multiselect-wrap"
+											selected-model="homePageModel" class="multiselect-wrap"
 											ng-click="selectFucn()"></div>
 									</div>
 									<div class="per-page">
 										<div class="align-paragraph">
 											<p class="">Showing {{selectedPerPage}} of 500</p>
+										</div>
+										<div class="export">
+											<select ng-model="selectedPerPage" ng-options="x for x in perPageData"
+												class="form-control">
+											</select>
+										</div>
+										<div class="align-paragraph">
+											<p>per page</p>
+										</div>
+										<div class="">
+											<button type="button"
+												class="btn btn-primary filterBtn addFilter">Export</button>
+										</div>
+									</div>
+								</div> -->
+								<div class="paging">
+									<div class="select-columns">
+										<div ng-dropdown-multiselect="" options="patientsTableData"
+											extra-settings="patientsTableSettings" selected-model="patientsTableModel"
+											class="multiselect-wrap" ng-click="selectFucn()"></div>
+									</div>
+									<div class="per-page">
+										<div class="align-paragraph">
+											<p class="">Showing {{selectedPerPage}} of {{totalItems}}</p>
 										</div>
 										<div class="export">
 											<select ng-model="selectedPerPage" ng-options="x for x in perPageData"
@@ -151,12 +174,10 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr dir-paginate="data in patientsDetail | itemsPerPage:selectedPerPage">
-										<!-- <td>{{data.Id}}</td>
-										<td>{{data.BirthDate}}</td>
-										<td>{{data.GenderId}}</td>
-										<td>{{data.Info}}</td> -->
-										<td ng-repeat="i in homePageTable">{{data[i]}}</td>
+									<tr dir-paginate="data in patientsDetails | itemsPerPage:selectedPerPage "
+										total-items="totalItems">
+
+										<td ng-repeat="i in homePageTableInfo">{{data[i]}}</td>
 
 									</tr>
 								</tbody>

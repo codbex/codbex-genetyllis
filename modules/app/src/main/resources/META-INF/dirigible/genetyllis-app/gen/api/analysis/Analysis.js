@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 const rs = require("http/v4/rs");
-const dao = require("genetyllis-app/gen/dao/Analysis/Analysis");
+const dao = require("genetyllis-app/gen/dao/analysis/Analysis");
 const http = require("genetyllis-app/gen/api/utils/http");
 
 rs.service()
@@ -18,7 +18,7 @@ rs.service()
 		.get(function(ctx, request) {
 			let queryOptions = {};
 			let parameters = request.getParameterNames();
-			for (let i = 0; i < parameters.length; i ++) {
+			for (let i = 0; i < parameters.length; i++) {
 				queryOptions[parameters[i]] = request.getParameter(parameters[i]);
 			}
 			let entities = dao.list(queryOptions);
@@ -36,7 +36,7 @@ rs.service()
         })
 	.resource("count")
 		.get(function(ctx, request) {
-			http.sendResponseOk("" + dao.count());
+			http.sendResponseOk(dao.count());
 		})
 		.catch(function(ctx, error) {
             if (error.name === "ForbiddenError") {

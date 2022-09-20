@@ -47,16 +47,16 @@ let dao = daoApi.create({
 ]
 });
 
-exports.list = function(settings) {
-	return dao.list(settings).map(function(e) {
-		EntityUtils.setDate(e, "Date");
+exports.list = function (settings) {
+	return dao.list(settings).map(function (e) {
+		EntityUtils.setLocalDate(e, "Date");
 		return e;
 	});
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	let entity = dao.find(id);
-	EntityUtils.setDate(entity, "Date");
+	EntityUtils.setLocalDate(entity, "Date");
 	return entity;
 };
 
@@ -74,8 +74,8 @@ exports.create = function(entity) {
 	return id;
 };
 
-exports.update = function(entity) {
-	// EntityUtils.setLocalDate(entity, "Date");
+exports.update = function (entity) {
+	EntityUtils.setLocalDate(entity, "Date");
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_ANALYSIS",
@@ -116,5 +116,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/Analysis/Analysis/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/analysis/Analysis/" + operation).send(JSON.stringify(data));
 }

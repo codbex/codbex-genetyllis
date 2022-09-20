@@ -14,6 +14,11 @@ const producer = require("messaging/v4/producer");
 const daoApi = require("db/v4/dao");
 const EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
 
+let filterSql = "";
+let filterFamilyHistorySql = "";
+let filterSqlParams = [];
+let useWhere = true;
+
 let dao = daoApi.create({
 	table: "GENETYLLIS_PATIENT",
 	properties: [
@@ -57,20 +62,21 @@ let dao = daoApi.create({
 ]
 });
 
-exports.list = function(settings) {
-	return dao.list(settings).map(function(e) {
-		EntityUtils.setDate(e, "BirthDate");
+exports.list = function (settings) {
+	return dao.list(settings).map(function (e) {
+		EntityUtils.setLocalDate(e, "BirthDate");
 		return e;
 	});
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	let entity = dao.find(id);
-	EntityUtils.setDate(entity, "BirthDate");
+	// TODO this produces 500
+	// EntityUtils.setLocalDate(entity, "BirthDate");
 	return entity;
 };
 
-exports.create = function(entity) {
+exports.create = function (entity) {
 	EntityUtils.setLocalDate(entity, "BirthDate");
 	let id = dao.insert(entity);
 	triggerEvent("Create", {
@@ -84,8 +90,8 @@ exports.create = function(entity) {
 	return id;
 };
 
-exports.update = function(entity) {
-	// EntityUtils.setLocalDate(entity, "BirthDate");
+exports.update = function (entity) {
+	EntityUtils.setLocalDate(entity, "BirthDate");
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_PATIENT",
@@ -97,7 +103,7 @@ exports.update = function(entity) {
 	});
 };
 
-exports.delete = function(id) {
+exports.delete = function (id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
 		table: "GENETYLLIS_PATIENT",
@@ -109,11 +115,11 @@ exports.delete = function(id) {
 	});
 };
 
-exports.count = function() {
+exports.count = function () {
 	return dao.count();
 };
 
-exports.customDataCount = function() {
+exports.customDataCount = function () {
 	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATIENT");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
@@ -325,5 +331,5 @@ function addFilterParam(param) {
 }
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/Patients/Patient/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/patients/Patient/" + operation).send(JSON.stringify(data));
 }

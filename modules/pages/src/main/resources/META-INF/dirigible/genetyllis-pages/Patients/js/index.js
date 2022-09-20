@@ -127,6 +127,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     }
     $scope.totalItems;
     $scope.totalPages;
+
     $scope.filter = function () {
         var query = {};
         query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
@@ -136,6 +137,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         let patientObject = {};
+
         $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
             .then(function (response) {
                 $scope.patientsDetails = [];
@@ -147,19 +149,16 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
                     patientObject.BirthDate = patientResult.PATIENT_AGE.split('T')[0];
                     patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     patientObject.Analysis = patientResult?.analysis[0]?.ANALYSIS_ID;
-                    patientObject.Dates = patientResult.analysis[0]?.ANALYSIS_DATE.split('T')[0];
-                    patientObject.Gender = patientResult.PATIENT_GENDERID;
-                    patientObject.Ethnicity = patientResult.GENETYLLIS_PATIENT_POPULATIONID;
-                    patientObject["Family history"] = patientResult.familyHistory[0].patients[0].clinicalHistory[0].pathology[0].PATHOLOGY_NAME;
-
-                    console.log()
-
+                    patientObject.Dates = patientResult?.analysis[0]?.ANALYSIS_DATE.split('T')[0];
+                    patientObject.Gender = patientResult?.PATIENT_GENDERID;
+                    patientObject.Ethnicity = patientResult?.GENETYLLIS_PATIENT_POPULATIONID;
+                    patientObject["Family history"] = patientResult?.familyHistory[0].patients[0].clinicalHistory[0].pathology[0].PATHOLOGY_NAME;
                     $scope.patientsDetails.push(patientObject);
 
                 })
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
-
+                console.log(" $scope.patientsDetails", $scope.patientsDetails)
             }, function (response) {
             });
 
@@ -182,8 +181,8 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     $http.get(alleleFrDetailsApi)
         .then(function (data) {
             for (let a = 0; a < 3; a++) {
-                $scope.variants[a].Gene = data.data[a]?.Frequency;
-                $scope.variants[a].Filter = data.data[a]?.GenderId;
+                $scope.variants[a].Gene = data?.data[a]?.Frequency;
+                $scope.variants[a].Filter = data?.data[a]?.GenderId;
             }
         })
 

@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-var patientDetails = angular.module("patientDetails", ['ngStorage', 'angularUtils.directives.dirPagination']);
+var patientDetails = angular.module("patientDetails", ['ngStorage', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
 patientDetails.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../../components/pagination.html');
 });
@@ -78,6 +78,70 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     // $localStorage.$reset()
 
 
+
+
+
+    // clinical significance
+    $scope.clinicalSignificance = ['Benign', 'Likely benign', 'Pathogenic', 'Likely pathogenic', 'VUS'];
+    $scope.selectionClinicalSignificance = [];
+    $scope.toggleSelection = function toggleSelection(clinicalSignificance) {
+        var idx = $scope.selectionClinicalSignificance.indexOf(clinicalSignificance);
+        if (idx > -1) {
+            // remove clinical significance
+            $scope.GENETYLLIS_SIGNIFICANCE.SIGNIFICANCE_ID.splice(idx, 1)
+            $scope.selectionClinicalSignificance.splice(idx, 1);
+        } else {
+            // add clinical significance
+            $scope.GENETYLLIS_SIGNIFICANCE.SIGNIFICANCE_ID.push(clinicalSignificance)
+            $scope.selectionClinicalSignificance.push(clinicalSignificance);
+        }
+        console.log($scope.selectionClinicalSignificance)
+    };
+
+
+
+
+
+
+    $scope.patientInfoModel = [];
+    // $scope.variantsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
+    $scope.variantsTableData = [{ id: 10, label: "AF(men)" }, { id: 11, label: "AF(Bulgarian)" }, { id: 12, label: "Analysis" }];
+    $scope.patientsTableSettings = {
+        scrollableHeight: '200px',
+        scrollable: true,
+        enableSearch: true
+    };
+
+    $scope.selectFucn = function () {
+        console.log($scope.variants, "variants")
+        $scope.variantTable = ['HGVS', 'Gene', 'Pseudo', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
+        $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "GeneId", "Reference", "Alternative", "Pathology"];
+        for (let x = 0; x < $scope.patientInfoModel.length; x++) {
+            let value = $scope.variantsTableData.find(e => e.id == $scope.patientInfoModel[x].id)
+            $scope.variantTable.push(value.label);
+            $scope.variantPageTableInfo.push(value.label);
+
+        }
+    }
+
+    $scope.checkColumn = function (e) {
+        return e == 'Id'
+    }
+    $scope.notLink = function (e) {
+        return e != 'Id'
+    }
+
+    $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "GeneId", "Reference", "Alternative", "Pathology"];
+    $scope.variantTable = ['HGVS', 'Gene', 'Pseudo', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
+
+
+
+
+    $scope.pageChangeHandler = function (curPage) {
+        $scope.currentPage = curPage;
+        $scope.filter()
+        $scope.variantsDetails = [];
+    }
 
 
 }]);
