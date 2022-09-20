@@ -11,10 +11,10 @@
  */
 angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["messageHubProvider", function (messageHubProvider) {
-		messageHubProvider.eventIdPrefix = 'genetyllis-app.Records.Filter';
+		messageHubProvider.eventIdPrefix = 'genetyllis-app.records.Filter';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/Records/Filter.js";
+		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/records/Filter.js";
 	}])
 	.controller('PageController', ['$scope', 'messageHub', 'entityApi', function ($scope, messageHub, entityApi) {
 

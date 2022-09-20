@@ -11,10 +11,10 @@
  */
 angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["messageHubProvider", function (messageHubProvider) {
-		messageHubProvider.eventIdPrefix = 'genetyllis-app.Records.Filter';
+		messageHubProvider.eventIdPrefix = 'genetyllis-app.records.Filter';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/Records/Filter.js";
+		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/records/Filter.js";
 	}])
 	.controller('PageController', ['$scope', '$http', '$http', 'messageHub', 'entityApi', function ($scope, $http, $http, messageHub, entityApi) {
 
@@ -26,13 +26,13 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		resetPagination();
 
 		//-----------------Events-------------------//
-		messageHub.onDidReceiveMessage("genetyllis-app.Records.VariantRecord.entitySelected", function (msg) {
+		messageHub.onDidReceiveMessage("genetyllis-app.records.VariantRecord.entitySelected", function (msg) {
 			resetPagination();
 			$scope.selectedMainEntityId = msg.data.selectedMainEntityId;
 			$scope.loadPage($scope.dataPage);
 		}, true);
 
-		messageHub.onDidReceiveMessage("genetyllis-app.Records.VariantRecord.clearDetails", function (msg) {
+		messageHub.onDidReceiveMessage("genetyllis-app.records.VariantRecord.clearDetails", function (msg) {
 			$scope.$apply(function () {
 				resetPagination();
 				$scope.selectedMainEntityId = null;
@@ -144,7 +144,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		//----------------Dropdowns-----------------//
 		$scope.optionsVariantRecordId = [];
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/Records/VariantRecord.js").then(function (response) {
+		$http.get("/services/v4/js/genetyllis-app/gen/api/records/VariantRecord.js").then(function (response) {
 			$scope.optionsVariantRecordId = response.data.map(e => {
 				return {
 					value: e.Id,
