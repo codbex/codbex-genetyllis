@@ -7,7 +7,8 @@
     "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
-    "keys": []
+    "keys": [],
+    "schema": "public"
   },
   {
     "table": "GENETYLLIS_GENDER",
@@ -17,7 +18,8 @@
     "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
-    "keys": []
+    "keys": [],
+    "schema": "public"
   },
   {
     "table": "GENETYLLIS_POPULATION",
@@ -27,7 +29,8 @@
     "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
-    "keys": []
+    "keys": [],
+    "schema": "public"
   },
   {
     "table": "GENETYLLIS_SIGNIFICANCE",
@@ -37,7 +40,8 @@
     "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
-    "keys": []
+    "keys": [],
+    "schema": "public"
   },
   {
     "table": "GENETYLLIS_GENE",
@@ -47,7 +51,8 @@
     "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
-    "keys": []
+    "keys": [],
+    "schema": "public"
   },
   {
     "table": "GENETYLLIS_RELATION",
@@ -57,7 +62,8 @@
     "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
-    "keys": []
+    "keys": [],
+    "schema": "public"
   },
   {
     "table": "GENETYLLIS_VARIANT",
@@ -67,7 +73,8 @@
     "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
-    "keys": []
+    "keys": [],
+    "schema": "public"
   },
   {
     "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
@@ -77,7 +84,8 @@
     "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
-    "keys": []
+    "keys": [],
+    "schema": "public"
   },
   {
     "table": "GENETYLLIS_ALLELEFREQUENCY",
@@ -87,6 +95,7 @@
     "delimField": ",",
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
-    "keys": []
+    "keys": [],
+    "schema": "public"
   }
 ]
