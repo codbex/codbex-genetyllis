@@ -141,7 +141,7 @@
                             </div>
                             <div class="addedText">
                                 <span ng-repeat="i in GENETYLLIS_GENE.GENE_NAME track by $index"
-                                    ng-click="removeConsequence($index)">{{i}}</span>
+                                    ng-click="removeGene($index)">{{i}}</span>
                             </div>
                         </div>
                     </div>
@@ -157,9 +157,7 @@
                                         ng-model="selectedConsequence" ng-change="addConsequenceFilter()">
                                     </select>
                                 </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
-                                </div>
+
                             </div>
                             <div class="addedText">
                                 <span ng-repeat="i in GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE track by $index"
@@ -193,8 +191,9 @@
                     <div class="holder">
                         <div class="container checkboxes-holder">
                             <label ng-repeat="x in clinicalSignificance">
-                                <input type="checkbox" name="selectedFruits[]" value="{{clinicalSignificance}}"
-                                    ng-checked="selection.indexOf(x) > -1" ng-click="toggleSelection(x)"> {{x}}
+                                <input type="checkbox" value="{{clinicalSignificance}}"
+                                    ng-click="toggleSelection(x.name)" ng-model="x.Selected">
+                                {{x.name}}
                             </label>
                         </div>
                     </div>
@@ -230,7 +229,9 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col">
-                                    <button type="button" class="btn btn-link">Clear all filter</button>
+                                    <button type="button" class="btn btn-link"
+                                        ng-click="clearAllFilters(clinicalSignificance.length)">Clear all
+                                        filter</button>
                                 </div>
                                 <div class="col">
                                     <button ng-click="filter()" type="button"

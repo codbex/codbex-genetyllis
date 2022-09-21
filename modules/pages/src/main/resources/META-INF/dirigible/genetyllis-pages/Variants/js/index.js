@@ -66,11 +66,17 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
         ALLELEFREQUENCY_FREQUENCY_FROM: '',
         ALLELEFREQUENCY_FREQUENCY_TO: ''
     }
-
+    // add gene filters
     $scope.addGeneFilter = function () {
+        if (!$scope.selectedGeneId || $scope.GENETYLLIS_GENE.GENE_NAME.includes($scope.selectedGeneId)) return
         $scope.GENETYLLIS_GENE.GENE_NAME.push($scope.selectedGeneId)
         $scope.selectedGeneId = '';
-        console.log($scope.GENETYLLIS_GENE.GENE_NAME)
+
+    }
+
+    // remove gene filter
+    $scope.removeGene = function (i) {
+        $scope.GENETYLLIS_GENE.GENE_NAME.splice(i, 1)
     }
 
     // add conssequence
@@ -90,8 +96,9 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
     }
 
     // add Pathology
-
     $scope.addPathologyFilter = function (cui) {
+        if (!cui || $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.includes(cui)) return
+
         $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.push(cui)
         $scope.selectedPathologyCui = '';
     }
@@ -102,9 +109,16 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
     }
 
     // clinical significance
-    $scope.clinicalSignificance = ['Benign', 'Likely benign', 'Pathogenic', 'Likely pathogenic', 'VUS'];
+    $scope.clinicalSignificance = [
+        { name: "Benign" },
+        { name: "Likely benign" },
+        { name: "Pathogenic" },
+        { name: "Likely pathogenic" },
+        { name: "VUS" }
+    ];
+
     $scope.selectionClinicalSignificance = [];
-    $scope.toggleSelection = function toggleSelection(clinicalSignificance) {
+    $scope.toggleSelection = function (clinicalSignificance) {
         var idx = $scope.selectionClinicalSignificance.indexOf(clinicalSignificance);
         if (idx > -1) {
             // remove clinical significance
@@ -116,6 +130,7 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
             $scope.selectionClinicalSignificance.push(clinicalSignificance);
         }
         console.log($scope.selectionClinicalSignificance)
+
     };
 
     //  allelefrequency
@@ -147,7 +162,6 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
 
                     $scope.variantsDetails.push(variantObj)
                 })
-
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
@@ -198,4 +212,23 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
         $scope.filter()
         $scope.variantsDetails = [];
     }
+
+    $scope.clearAllFilters = function () {
+        angular.forEach($scope.clinicalSignificance, function (item) {
+            item.Selected = false;
+        });
+
+        $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ""
+        $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ""
+        $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ""
+        $scope.GENETYLLIS_VARIANT.VARIANT_REFERENCE = ""
+        $scope.GENETYLLIS_VARIANT.VARIANT_ALTERNATIVE = ""
+        $scope.GENETYLLIS_GENE.GENE_NAME = []
+        $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = []
+        $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI = []
+        $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_FROM = ""
+        $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_TO = ""
+        $scope.filter()
+    }
+
 }]);

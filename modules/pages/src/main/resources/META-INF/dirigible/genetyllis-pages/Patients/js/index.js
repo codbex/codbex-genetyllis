@@ -46,8 +46,8 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         return e != 'Id'
     }
 
-    $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
     $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
+    $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
     // _|_
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100]
@@ -252,53 +252,6 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     $scope.chromList.push(`chrX`)
     $scope.chromList.push(`chrY`)
 
-
-
-
-    $scope.clearAllFilters = function () {
-        $scope.selectedLabId = ""
-        selectedPatientConceptId = ""
-        $scope.selectedPatientConceptId = ""
-        $scope.selectedFamilyConceptId = ""
-        // $scope.addedLabId = [];
-        // $scope.addedClinicalHistoryId = [];
-        // $scope.addedFamilyHistoryId = [];
-        // $scope.addedVariantId = [];
-        $scope.maleCheckbox = false;
-        $scope.femaleCheckbox = false;
-        $scope.otherGender = false;
-        $scope.otherEthnicity = false;
-        $scope.bulgarian = false;
-        $scope.GENETYLLIS_PATIENT = {
-            GENETYLLIS_PATIENT_LABID: [],
-            PATIENT_AGE_FROM: '',
-            PATIENT_AGE_TO: '',
-            PATIENT_GENDERID: [],
-            GENETYLLIS_PATIENT_POPULATIONID: []
-        }
-
-        $scope.GENETYLLIS_CLINICALHISTORY = {
-            PATHOLOGY_CUI: [],
-            GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
-            GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
-        }
-
-        $scope.GENETYLLIS_FAMILYHISTORY = {
-            PATHOLOGY_CUI: [],
-            GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
-            GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
-        }
-        $scope.GENETYLLIS_ANALYSIS.ANALYSIS_DATE = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_ALT = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
-        $scope.filter()
-    }
-
     if ($scope.maleCheckbox == undefined) $scope.maleCheckbox = false;
     if ($scope.femaleCheckbox == undefined) $scope.femaleCheckbox = false;
     if ($scope.otherGender == undefined) $scope.otherGender = false;
@@ -367,6 +320,50 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         // $localStorage.setItem('key', data);
     }
 
+
+    $scope.clearAllFilters = function () {
+        $scope.selectedLabId = ""
+        selectedPatientConceptId = ""
+        $scope.selectedPatientConceptId = ""
+        $scope.selectedFamilyConceptId = ""
+        // $scope.addedLabId = [];
+        // $scope.addedClinicalHistoryId = [];
+        // $scope.addedFamilyHistoryId = [];
+        // $scope.addedVariantId = [];
+        $scope.maleCheckbox = false;
+        $scope.femaleCheckbox = false;
+        $scope.otherGender = false;
+        $scope.otherEthnicity = false;
+        $scope.bulgarian = false;
+        $scope.GENETYLLIS_PATIENT = {
+            GENETYLLIS_PATIENT_LABID: [],
+            PATIENT_AGE_FROM: '',
+            PATIENT_AGE_TO: '',
+            PATIENT_GENDERID: [],
+            GENETYLLIS_PATIENT_POPULATIONID: []
+        }
+
+        $scope.GENETYLLIS_CLINICALHISTORY = {
+            PATHOLOGY_CUI: [],
+            GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
+            GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
+        }
+
+        $scope.GENETYLLIS_FAMILYHISTORY = {
+            PATHOLOGY_CUI: [],
+            GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
+            GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
+        }
+        $scope.GENETYLLIS_ANALYSIS.ANALYSIS_DATE = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_ALT = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
+        $scope.filter()
+    }
 
 
 }]);
