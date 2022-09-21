@@ -11,10 +11,10 @@
  */
 angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["messageHubProvider", function (messageHubProvider) {
-		messageHubProvider.eventIdPrefix = 'genetyllis-app.Variants.AlleleFrequency';
+		messageHubProvider.eventIdPrefix = 'genetyllis-app.variants.AlleleFrequency';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/Variants/AlleleFrequency.js";
+		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/variants/AlleleFrequency.js";
 	}])
 	.controller('PageController', ['$scope', 'messageHub', 'entityApi', function ($scope, messageHub, entityApi) {
 

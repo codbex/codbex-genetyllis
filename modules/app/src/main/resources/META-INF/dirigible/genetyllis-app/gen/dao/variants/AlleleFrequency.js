@@ -129,5 +129,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/Variants/AlleleFrequency/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/variants/AlleleFrequency/" + operation).send(JSON.stringify(data));
 }

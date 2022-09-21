@@ -98,5 +98,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/Users/User/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/users/User/" + operation).send(JSON.stringify(data));
 }

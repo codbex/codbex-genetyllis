@@ -116,5 +116,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/Patients/ClinicalHistory/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/patients/ClinicalHistory/" + operation).send(JSON.stringify(data));
 }

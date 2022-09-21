@@ -11,10 +11,10 @@
  */
 angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["messageHubProvider", function (messageHubProvider) {
-		messageHubProvider.eventIdPrefix = 'genetyllis-app.Variants.ClinicalSignificance';
+		messageHubProvider.eventIdPrefix = 'genetyllis-app.variants.ClinicalSignificance';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/Variants/ClinicalSignificance.js";
+		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/variants/ClinicalSignificance.js";
 	}])
 	.controller('PageController', ['$scope', '$http', '$http', 'messageHub', 'entityApi', function ($scope, $http, $http, messageHub, entityApi) {
 
@@ -26,13 +26,13 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		resetPagination();
 
 		//-----------------Events-------------------//
-		messageHub.onDidReceiveMessage("genetyllis-app.Variants.Variant.entitySelected", function (msg) {
+		messageHub.onDidReceiveMessage("genetyllis-app.variants.Variant.entitySelected", function (msg) {
 			resetPagination();
 			$scope.selectedMainEntityId = msg.data.selectedMainEntityId;
 			$scope.loadPage($scope.dataPage);
 		}, true);
 
-		messageHub.onDidReceiveMessage("genetyllis-app.Variants.Variant.clearDetails", function (msg) {
+		messageHub.onDidReceiveMessage("genetyllis-app.variants.Variant.clearDetails", function (msg) {
 			$scope.$apply(function () {
 				resetPagination();
 				$scope.selectedMainEntityId = null;
@@ -158,7 +158,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		$scope.optionsPathologyId = [];
 		$scope.optionsSignificanceId = [];
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/Nomenclature/Pathology.js").then(function (response) {
+		$http.get("/services/v4/js/genetyllis-app/gen/api/nomenclature/Pathology.js").then(function (response) {
 			$scope.optionsPathologyId = response.data.map(e => {
 				return {
 					value: e.Id,
@@ -167,7 +167,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/Nomenclature/Significance.js").then(function (response) {
+		$http.get("/services/v4/js/genetyllis-app/gen/api/nomenclature/Significance.js").then(function (response) {
 			$scope.optionsSignificanceId = response.data.map(e => {
 				return {
 					value: e.Id,

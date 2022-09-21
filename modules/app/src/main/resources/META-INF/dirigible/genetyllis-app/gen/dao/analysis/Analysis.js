@@ -47,14 +47,14 @@ let dao = daoApi.create({
 ]
 });
 
-exports.list = function (settings) {
+exports.list = function(settings) {
 	return dao.list(settings).map(function (e) {
 		EntityUtils.setLocalDate(e, "Date");
 		return e;
 	});
 };
 
-exports.get = function (id) {
+exports.get = function(id) {
 	let entity = dao.find(id);
 	EntityUtils.setLocalDate(entity, "Date");
 	return entity;
@@ -74,7 +74,7 @@ exports.create = function(entity) {
 	return id;
 };
 
-exports.update = function (entity) {
+exports.update = function(entity) {
 	EntityUtils.setLocalDate(entity, "Date");
 	dao.update(entity);
 	triggerEvent("Update", {

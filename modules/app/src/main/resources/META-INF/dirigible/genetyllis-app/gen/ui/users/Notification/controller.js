@@ -11,10 +11,10 @@
  */
 angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["messageHubProvider", function (messageHubProvider) {
-		messageHubProvider.eventIdPrefix = 'genetyllis-app.Users.Notification';
+		messageHubProvider.eventIdPrefix = 'genetyllis-app.users.Notification';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/Users/Notification.js";
+		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/users/Notification.js";
 	}])
 	.controller('PageController', ['$scope', '$http', 'messageHub', 'entityApi', function ($scope, $http, messageHub, entityApi) {
 
@@ -122,7 +122,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		$scope.optionsUserUserId = [];
 		$scope.optionsVariantId = [];
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/Users/User.js").then(function (response) {
+		$http.get("/services/v4/js/genetyllis-app/gen/api/users/User.js").then(function (response) {
 			$scope.optionsUserUserId = response.data.map(e => {
 				return {
 					value: e.Id,
@@ -131,7 +131,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/Variants/Variant.js").then(function (response) {
+		$http.get("/services/v4/js/genetyllis-app/gen/api/variants/Variant.js").then(function (response) {
 			$scope.optionsVariantId = response.data.map(e => {
 				return {
 					value: e.Id,

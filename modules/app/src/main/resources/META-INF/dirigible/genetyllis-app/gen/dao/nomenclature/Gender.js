@@ -93,5 +93,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/Nomenclature/Gender/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/nomenclature/Gender/" + operation).send(JSON.stringify(data));
 }
