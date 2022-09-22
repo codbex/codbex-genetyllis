@@ -33,10 +33,9 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
 
     var api = "/services/v4/js/Home-page/services/patientInfo.js";
     var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
-    var clinicalHistroryApi = '/services/v4/js/genetyllis-app/gen/api/patients/ClinicalHistory.js';
-    var familyHistroryApi = '/services/v4/js/genetyllis-app/gen/api/patients/FamilyHistory.js';
-    var populationApi = '/services/v4/js/genetyllis-app/gen/api/nomenclature/Population.js';
-    var relationApi = '/services/v4/js/genetyllis-app/gen/api/nomenclature/Relation.js';
+    var clinicalHistroryApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/ClinicalHistory.js';
+    var familyHistroryApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/FamilyHistory.js';
+    var relationApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/nomenclature/Relation.js';
     var pathologyApi = '/services/v4/js/genetyllis-pages/Home-page/services/pathology.js';
 
     $scope.entity = {

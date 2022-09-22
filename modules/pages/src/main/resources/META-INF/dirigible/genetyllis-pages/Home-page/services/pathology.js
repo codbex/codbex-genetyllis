@@ -57,7 +57,7 @@ rs.service()
     .resource('')
     .get(function (id) {
         console.log(id)
-        var entities = dao.customDataCount("");
+        var entities = dao.count();
 
         sendResponseOk(entities);
     })

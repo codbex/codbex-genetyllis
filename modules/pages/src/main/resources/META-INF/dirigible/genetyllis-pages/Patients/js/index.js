@@ -17,7 +17,7 @@ patients.config(function (paginationTemplateProvider) {
 
 patients.controller('patientsController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
 
-    const patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
+    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/Patient.js';
     // _|_
     $scope.patientsTableModel = [];
     // $scope.patientsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
