@@ -1,6 +1,6 @@
-SIGNIFICANCE_ID,SIGNIFICANCE_NAME
-1,Pathogenic variant
-2,Likely pathogenic variant
-3,Variant of uncerain significance (VUS)
-4,Likely benign variant
-5,Benign variant
+"SIGNIFICANCE_ID","SIGNIFICANCE_NAME"
+"1","Pathogenic variant"
+"2","Likely pathogenic variant"
+"3","Variant of uncerain significance (VUS)"
+"4","Likely benign variant"
+"5","Benign variant"
