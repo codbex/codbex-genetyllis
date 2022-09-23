@@ -1,21 +1,21 @@
 CLINICALSIGNIFICANCE_ID,GENETYLLIS_CLINICALSIGNIFICANCE_ACCESSION,CLINICALSIGNIFICANCE_VARIANTID,CLINICALSIGNIFICANCE_PATHOLOGYID,CLINICALSIGNIFICANCE_SIGNIFICANCEID,CLINICALSIGNIFICANCE_EVALUATED,CLINICALSIGNIFICANCE_REVIEWSTATUS,CLINICALSIGNIFICANCE_UPDATED
-1,1325235,1,3213,1,2015-10-11T00:00:00.000,"[criteria provided, single submitter]",2022-09-19T00:00:00.000
-2,4354345,2,4534,2,2014-10-11T00:00:00.000,"[criteria provided, single submitter]",2020-09-19T00:00:00.000
-3,4354544,3,1111,3,2013-10-11T00:00:00.000,"[criteria provided, multiple submitters, no conflicts]",2021-09-19T00:00:00.000
+1,1325235,1,3213,1,2015-10-11T00:00:00.000,[criteria provided single submitter],2022-09-19T00:00:00.000
+2,4354345,2,4534,2,2014-10-11T00:00:00.000,[criteria provided  single submitter] ,2020-09-19T00:00:00.000
+3,4354544,3,1111,3,2013-10-11T00:00:00.000,[criteria provided  multiple submitters  no conflicts] ,2021-09-19T00:00:00.000
 4,6548887,4,5346,4,2012-10-11T00:00:00.000,,2019-09-19T00:00:00.000
 5,465488,5,10000,5,2018-10-11T00:00:00.000,,2017-09-19T00:00:00.000
-6,7897996,6,12314,1,2019-10-11T00:00:00.000,"[criteria provided, single submitter]",2018-09-19T00:00:00.000
-7,646455,7,4445,2,2017-10-11T00:00:00.000,"[criteria provided, multiple submitters, no conflicts]",2020-09-19T00:00:00.000
+6,7897996,6,12314,1,2019-10-11T00:00:00.000,[criteria provided  single submitter] ,2018-09-19T00:00:00.000
+7,646455,7,4445,2,2017-10-11T00:00:00.000,[criteria provided  multiple submitters  no conflicts] ,2020-09-19T00:00:00.000
 8,5454545,8,7765,3,2017-10-11T00:00:00.000,,2022-09-19T00:00:00.000
-9,6478798,9,9914,4,2015-09-11T00:00:00.000,"[criteria provided, single submitter]",2022-09-19T00:00:00.000
-10,6876854,10,4556,5,2015-08-11T00:00:00.000,"[criteria provided, single submitter]",2022-09-19T00:00:00.000
-11,132122,11,7624,6,2015-10-20T00:00:00.000,"[criteria provided, multiple submitters, no conflicts]",2022-03-19T00:00:00.000
+9,6478798,9,9914,4,2015-09-11T00:00:00.000,[criteria provided  single submitter] ,2022-09-19T00:00:00.000
+10,6876854,10,4556,5,2015-08-11T00:00:00.000,[criteria provided  single submitter] ,2022-09-19T00:00:00.000
+11,132122,11,7624,6,2015-10-20T00:00:00.000,[criteria provided  multiple submitters  no conflicts] ,2022-03-19T00:00:00.000
 12,456455,12,3578,1,2015-10-30T00:00:00.000,,2022-04-19T00:00:00.000
-13,5434535,13,3211,7,2015-10-21T00:00:00.000,"[criteria provided, multiple submitters, no conflicts]",2022-06-19T00:00:00.000
-14,7777789,14,3213,8,2015-10-01T00:00:00.000,"[criteria provided, single submitter]",2022-05-19T00:00:00.000
-15,878797,15,6598,9,2015-10-10T00:00:00.000,"[criteria provided, multiple submitters, no conflicts]",2022-08-19T00:00:00.000
-16,546467,16,7675,10,2015-10-17T00:00:00.000,"[criteria provided, single submitter]",2022-07-19T00:00:00.000
-17,1223333,17,65463,11,2015-10-12T00:00:00.000,"[criteria provided, multiple submitters, no conflicts]",2017-09-19T00:00:00.000
-18,123145458,18,8756,12,2020-10-12T00:00:00.000,"[criteria provided, multiple submitters, no conflicts]",2019-09-19T00:00:00.000
-19,132523578,19,1232,13,2018-10-20T00:00:00.000,"[criteria provided, multiple submitters, no conflicts]",2020-09-19T00:00:00.000
-20,86868787,20,6547,14,2015-10-15T00:00:00.000,"[criteria provided, single submitter]",2021-09-09T00:00:00.000
+13,5434535,13,3211,7,2015-10-21T00:00:00.000,[criteria provided  multiple submitters  no conflicts] ,2022-06-19T00:00:00.000
+14,7777789,14,3213,8,2015-10-01T00:00:00.000,[criteria provided  single submitter] ,2022-05-19T00:00:00.000
+15,878797,15,6598,9,2015-10-10T00:00:00.000,[criteria provided  multiple submitters  no conflicts] ,2022-08-19T00:00:00.000
+16,546467,16,7675,10,2015-10-17T00:00:00.000,[criteria provided  single submitter] ,2022-07-19T00:00:00.000
+17,1223333,17,65463,11,2015-10-12T00:00:00.000,[criteria provided  multiple submitters  no conflicts] ,2017-09-19T00:00:00.000
+18,123145458,18,8756,12,2020-10-12T00:00:00.000,[criteria provided  multiple submitters  no conflicts] ,2019-09-19T00:00:00.000
+19,132523578,19,1232,13,2018-10-20T00:00:00.000,[criteria provided  multiple submitters  no conflicts] ,2020-09-19T00:00:00.000
+20,86868787,20,6547,14,2015-10-15T00:00:00.000,[criteria provided  single submitter] ,2021-09-09T00:00:00.000

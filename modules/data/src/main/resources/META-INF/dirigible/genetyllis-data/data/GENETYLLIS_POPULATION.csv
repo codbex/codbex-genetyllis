@@ -1,20 +1,20 @@
-"POPULATION_ID","POPULATION_NAME","POPULATION_DESCRIPTION"
-"1","afr","African/African-American"
-"2","ami","Amish"
-"3","amr","Latino/Admixed American"
-"4","asj","Ashkenazi Jewish"
-"5","eas","East Asian"
-"6","eas_jpn","Japanese"
-"7","eas_kor","Korean"
-"8","eas_oea","Other East Asian"
-"9","fin","European (Finnish)"
-"10","mid","Middle Eastern"
-"11","nfe","European (non-Finnish)"
-"12","nfe_bgr","Bulgarian"
-"13","nfe_est","Estonian"
-"14","nfe_nwe","North-western European"
-"15","nfe_onf","Other non-Finnish European"
-"16","nfe_seu","Southern European"
-"17","nfe_swe","Swedish"
-"18","oth","Other"
-"19","sas","South Asian"
+POPULATION_ID,POPULATION_NAME,POPULATION_DESCRIPTION
+1,afr,African/African-American
+2,ami,Amish
+3,amr,Latino/Admixed American
+4,asj,Ashkenazi Jewish
+5,eas,East Asian
+6,eas_jpn,Japanese
+7,eas_kor,Korean
+8,eas_oea,Other East Asian
+9,fin,European (Finnish)
+10,mid,Middle Eastern
+11,nfe,European (non-Finnish)
+12,nfe_bgr,Bulgarian
+13,nfe_est,Estonian
+14,nfe_nwe,North-western European
+15,nfe_onf,Other non-Finnish European
+16,nfe_seu,Southern European
+17,nfe_swe,Swedish
+18,oth,Other
+19,sas,South Asian

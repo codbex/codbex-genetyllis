@@ -1,5 +1,5 @@
-"INSTITUTION_ID","INSTITUTION_NAME","INSTITUTION_ADDRESS"
-"1","Genetic LTD","Wall Street"
-"2","Sequence test firm","New Delhi"
-"3","New DNA","Apollo Street"
-"4","Generic name","1st street blv"
+INSTITUTION_ID,INSTITUTION_NAME,INSTITUTION_ADDRESS
+1,Genetic LTD,Wall Street
+2,Sequence test firm,New Delhi
+3,New DNA,Apollo Street
+4,Generic name,1st street blv
