@@ -18,12 +18,11 @@ homePage.config(function (paginationTemplateProvider) {
 });
 
 homePage.controller("homePageController", ['$scope', '$http', function ($scope, $http) {
-    var analysisCount = '/services/v4/js/genetyllis-pages/Home-page/services/api/analysis/Analysis.js';
+    var analysisCount = '/services/v4/js/genetyllis-pages/services/api/analysis/Analysis.js';
 
-    var patientsOptionsApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/Patient.js';
-    var notificationApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/users/Notification.js';
-    var variantApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/variants/Variant.js';
-    var notificationController = '/services/v4/js/genetyllis-pages/Home-page/services/notification.js';
+    var patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+    var notificationApi = '/services/v4/js/genetyllis-pages/services/api/users/Notification.js';
+    var variantApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100];
     $scope.currentPage = 1;
@@ -158,7 +157,7 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
             return noti.VariantId == id;
         });
 
-        $http.post(notificationController, JSON.stringify({ notificationId: $scope.notiId[0].NotificationId }))
+        $http.post(notificationApi, JSON.stringify({ notificationId: $scope.notiId[0].NotificationId }))
             .then(data => {
                 $scope.refreshNotifications()
             })

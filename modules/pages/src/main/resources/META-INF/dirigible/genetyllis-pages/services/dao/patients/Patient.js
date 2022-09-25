@@ -76,7 +76,9 @@ exports.filterPatients = function (patient) {
 			buildFamilyHistoryFilterSql(patient.GENETYLLIS_FAMILYHISTORY);
 		}
 	}
-	filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS, filterSql);
+	if (patient.GENETYLLIS_ANALYSIS) {
+		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS, filterSql);
+	}
 
 	countSql += filterSql;
 
