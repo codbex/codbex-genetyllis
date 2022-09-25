@@ -18,7 +18,7 @@ rs.service()
 		.get(function(ctx, request) {
 			let queryOptions = {};
 			let parameters = request.getParameterNames();
-			for (let i = 0; i < parameters.length; i ++) {
+			for (let i = 0; i < parameters.length; i++) {
 				queryOptions[parameters[i]] = request.getParameter(parameters[i]);
 			}
 			let entities = dao.list(queryOptions);

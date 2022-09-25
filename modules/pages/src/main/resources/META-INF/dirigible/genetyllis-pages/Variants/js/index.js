@@ -16,7 +16,7 @@ page.config(function (paginationTemplateProvider) {
 });
 page.controller('VariantController', ['$scope', '$http', function ($scope, $http) {
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
-    const variantOptionsApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';
+    const variantOptionsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
 
     $scope.variantsDetails = [];
     $scope.selectedPerPage = 10;

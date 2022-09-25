@@ -14,9 +14,9 @@ var dao = require("genetyllis-app/gen/dao/records/VariantRecord.js")
 exports.getTile = function (relativePath) {
 	let count = "n/a";
 	try {
-		count = dao.customDataCount();
+		count = dao.count();
 	} catch (e) {
-		console.error("Error occured while involking 'genetyllis-app/gen/dao/records/VariantRecord.customDataCount()': " + e);
+		console.error("Error occured while involking 'genetyllis-pages/Home-page/services/dao/records/VariantRecord.count()': " + e);
 	}
 	return {
 		name: "VariantRecordUpload",

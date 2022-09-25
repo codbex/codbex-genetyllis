@@ -55,7 +55,7 @@ angular.module('page')
 	}])
 	.controller('PageController', function ($scope, $http, $messageHub) {
 
-		var api = '/services/v4/js/genetyllis-app/gen/api/nomenclature/Gender.js';
+		var api = '/services/v4/js/genetyllis-pages/Home-page/services/api/nomenclature/Gender.js';
 
 		$scope.dateOptions = {
 			startingDay: 1

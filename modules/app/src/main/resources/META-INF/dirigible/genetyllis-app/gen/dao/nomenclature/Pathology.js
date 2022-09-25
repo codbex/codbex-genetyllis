@@ -23,28 +23,28 @@ let dao = daoApi.create({
 			id: true,
 			autoIncrement: true,
 		},
- {
+		{
 			name: "CUI",
 			column: "PATHOLOGY_CUI",
 			type: "VARCHAR",
 		},
- {
+		{
 			name: "Name",
 			column: "PATHOLOGY_NAME",
 			type: "VARCHAR",
 		}
-]
+	]
 });
 
-exports.list = function(settings) {
+exports.list = function (settings) {
 	return dao.list(settings);
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	return dao.find(id);
 };
 
-exports.create = function(entity) {
+exports.create = function (entity) {
 	let id = dao.insert(entity);
 	triggerEvent("Create", {
 		table: "GENETYLLIS_PATHOLOGY",
@@ -57,7 +57,7 @@ exports.create = function(entity) {
 	return id;
 };
 
-exports.update = function(entity) {
+exports.update = function (entity) {
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_PATHOLOGY",
@@ -69,7 +69,7 @@ exports.update = function(entity) {
 	});
 };
 
-exports.delete = function(id) {
+exports.delete = function (id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
 		table: "GENETYLLIS_PATHOLOGY",
@@ -81,11 +81,11 @@ exports.delete = function(id) {
 	});
 };
 
-exports.count = function() {
+exports.count = function () {
 	return dao.count();
 };
 
-exports.customDataCount = function() {
+exports.customDataCount = function () {
 	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATHOLOGY");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
