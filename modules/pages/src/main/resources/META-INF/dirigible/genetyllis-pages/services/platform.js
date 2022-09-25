@@ -9,7 +9,6 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-console.log("HELOOOOOOOOOOOOOOOOOOOOOOOOOooooHELOOOOOOOOOOOOOOOOOOOOOOOOOoooo")
 var dao = require("genetyllis-app/gen/dao/analysis/Platform.js");
 var rs = require('http/v4/rs');
 var response = require('http/v4/response');
@@ -53,46 +52,3 @@ var sendResponse = function (status, body) {
         response.println(JSON.stringify(body));
     }
 };
-
-rs.service()
-    .resource('')
-    .get(function () {
-        var entities = dao.list();
-        sendResponseOk(entities);
-    })
-    .resource('{id}')
-    .get(function (ctx) {
-        var id = ctx.pathParameters.id;
-        var entity = dao.get(id);
-        if (entity) {
-            sendResponseOk(entity);
-        } else {
-            sendResponseNotFound('Books not found');
-        }
-    })
-    .resource('')
-    .post(function (ctx, request, response) {
-        var entity = request.getJSON();
-        entity.id = dao.create(entity);
-        response.setHeader('Content-Location', '/services/v4/js/genetyllis-app/gen/dao/analysis/Platform.js/' + entity.id);
-        sendResponseCreated(entity);
-    })
-    .resource('{id}')
-    .put(function (ctx, request) {
-        var entity = request.getJSON();
-        entity.id = ctx.pathParameters.id;
-        dao.update(entity);
-        sendResponseOk(entity);
-    })
-    .resource('{id}')
-    .delete(function (ctx) {
-        var id = ctx.pathParameters.id;
-        var entity = dao.get(id);
-        if (entity) {
-            dao.delete(id);
-            sendResponseNoContent();
-        } else {
-            sendResponseNotFound('Books not found');
-        }
-    })
-    .execute();

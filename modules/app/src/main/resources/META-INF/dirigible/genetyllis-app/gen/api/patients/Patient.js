@@ -36,7 +36,7 @@ rs.service()
         })
 	.resource("count")
 		.get(function(ctx, request) {
-			http.sendResponseOk(dao.count());
+			http.sendResponseOk("" + dao.count());
 		})
 		.catch(function(ctx, error) {
             if (error.name === "ForbiddenError") {
@@ -55,86 +55,6 @@ rs.service()
 				http.sendResponseOk(entity);
 			} else {
 				http.sendResponseNotFound("Patient not found");
-			}
-		})
-		.produces(["application/json"])
-		.catch(function (ctx, error) {
-			if (error.name === "ForbiddenError") {
-				http.sendForbiddenRequest(error.message);
-			} else if (error.name === "ValidationError") {
-				http.sendResponseBadRequest(error.message);
-			} else {
-				http.sendInternalServerError(error.message);
-			}
-		})
-	.resource("getPatientByLabId/{labId}")
-		.get(function (ctx) {
-			let labId = ctx.pathParameters.labId;
-			let entity = dao.getPatientByLabId(labId);
-			if (entity) {
-				http.sendResponseOk(entity);
-			} else {
-				http.sendResponseNotFound("There was a problem with the database!");
-			}
-		})
-		.produces(["application/json"])
-		.catch(function (ctx, error) {
-			if (error.name === "ForbiddenError") {
-				http.sendForbiddenRequest(error.message);
-			} else if (error.name === "ValidationError") {
-				http.sendResponseBadRequest(error.message);
-			} else {
-				http.sendInternalServerError(error.message);
-			}
-		})
-	.resource("loadPatientHistory/{labId}")
-		.get(function (ctx) {
-			let labId = ctx.pathParameters.labId;
-			let entity = dao.getPatientAndHistoryByLabId(labId);
-			if (entity) {
-				http.sendResponseOk(entity);
-			} else {
-				http.sendResponseNotFound("Patient not found!");
-			}
-		})
-		.produces(["application/json"])
-		.catch(function (ctx, error) {
-			if (error.name === "ForbiddenError") {
-				http.sendForbiddenRequest(error.message);
-			} else if (error.name === "ValidationError") {
-				http.sendResponseBadRequest(error.message);
-			} else {
-				http.sendInternalServerError(error.message);
-			}
-		})
-	.resource("suggestLabIds/{labId}")
-		.get(function (ctx) {
-			let labId = ctx.pathParameters.labId;
-			let result = dao.suggestLabIds(labId);
-			if (result) {
-				http.sendResponseOk(result);
-			} else {
-				http.sendResponseNotFound("LabId not found!");
-			}
-		})
-		.produces(["application/json"])
-		.catch(function (ctx, error) {
-			if (error.name === "ForbiddenError") {
-				http.sendForbiddenRequest(error.message);
-			} else if (error.name === "ValidationError") {
-				http.sendResponseBadRequest(error.message);
-			} else {
-				http.sendInternalServerError(error.message);
-			}
-		})
-	.resource("filterPatients")
-		.post(function (ctx, request, response) {
-			let patient = request.getJSON();
-			let result = dao.filterPatients(patient);
-			if (result) {
-				http.sendResponseOk(result);
-			} else {
-				http.sendResponseNotFound("Patient not found!");
 			}
 		})
 		.produces(["application/json"])

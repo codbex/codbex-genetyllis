@@ -1,0 +1,31 @@
+CLINICALHISTORY_ID,CLINICALHISTORY_PATIENTID,CLINICALHISTORY_PATHOLOGYID,GENETYLLIS_CLINICALHISTORY_AGEONSET,GENETYLLIS_CLINICALHISTORY_NOTES
+1,1,1,0,Relapsed
+2,2,2,1,On ibuprofen
+3,3,3,2,Addicted to meth
+4,4,4,3,Simple
+5,5,5,23,Not so simple
+6,6,6,25,Cocaine
+7,7,7,34,Antibiotic resistance
+8,8,8,40,Stepsis
+9,9,9,42,Cirosis
+10,10,10,44,Lung puncture
+11,11,11,46,Brain eating amoeba
+12,12,12,48,Radiation poisoning
+13,13,13,50,Tried to have a night out after turning 30
+14,14,14,52,Tired
+15,15,15,54,Chronic motion sickness
+16,16,16,56,Insomnia
+17,17,17,58,Lack of taste
+18,18,18,60,Drip
+19,19,19,62,Wet sand
+20,20,20,64,Brain damage
+21,21,21,66,Broken heart
+22,22,22,68,Removed kidney
+23,23,23,70,Clinical depression
+24,24,24,72,Anemia
+25,25,25,74,Cystic formings on the tailbone
+26,26,26,76,1999
+27,27,27,78,Silent state
+28,28,28,80,Blind
+29,29,29,82,Food poisoning
+30,30,30,84,Bedbound

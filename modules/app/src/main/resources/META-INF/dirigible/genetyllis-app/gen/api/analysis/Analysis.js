@@ -36,7 +36,7 @@ rs.service()
         })
 	.resource("count")
 		.get(function(ctx, request) {
-			http.sendResponseOk(dao.count());
+			http.sendResponseOk("" + dao.count());
 		})
 		.catch(function(ctx, error) {
             if (error.name === "ForbiddenError") {

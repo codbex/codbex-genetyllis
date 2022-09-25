@@ -18,11 +18,11 @@ homePage.config(function (paginationTemplateProvider) {
 });
 
 homePage.controller("homePageController", ['$scope', '$http', function ($scope, $http) {
-    var analysisCount = '/services/v4/js/genetyllis-app/gen/api/analysis/Analysis.js';
+    var analysisCount = '/services/v4/js/genetyllis-pages/Home-page/services/api/analysis/Analysis.js';
 
-    var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
-    var notificationApi = '/services/v4/js/genetyllis-app/gen/api/users/Notification.js';
-    var variantApi = '/services/v4/js/genetyllis-app/gen/api/variants/Variant.js';
+    var patientsOptionsApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/Patient.js';
+    var notificationApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/users/Notification.js';
+    var variantApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/variants/Variant.js';
     var notificationController = '/services/v4/js/genetyllis-pages/Home-page/services/notification.js';
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100];
