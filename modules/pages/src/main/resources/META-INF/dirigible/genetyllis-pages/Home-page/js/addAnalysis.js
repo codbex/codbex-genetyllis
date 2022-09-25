@@ -53,7 +53,7 @@ addAnalysis.factory('$messageHub', [function () {
     };
 }])
 addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', '$messageHub', function ($scope, $http, FileUploader, $messageHub) {
-    var patientidOptionsApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/Patient.js';
+    var patientidOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.patientidOptions = [];
     function patientidOptionsLoad() {

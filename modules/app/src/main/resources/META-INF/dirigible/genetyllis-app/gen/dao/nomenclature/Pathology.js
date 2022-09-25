@@ -81,13 +81,6 @@ exports.delete = function (id) {
 	});
 };
 
-exports.filterPathology = function (cui) {
-	paramArr = [];
-	paramArr.push('%' + cui + '%')
-	var resultSet = query.execute("SELECT * FROM GENETYLLIS_PATHOLOGY WHERE PATHOLOGY_CUI LIKE ? LIMIT 10", paramArr);
-	return resultSet;
-}
-
 exports.count = function () {
 	return dao.count();
 };

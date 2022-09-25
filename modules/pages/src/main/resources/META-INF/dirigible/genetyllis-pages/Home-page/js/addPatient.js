@@ -32,7 +32,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     $scope.dataGridOptionsFamilyHistory = {}
 
     var api = "/services/v4/js/Home-page/services/patientInfo.js";
-    var patientsOptionsApi = '/services/v4/js/genetyllis-app/gen/api/patients/Patient.js';
+    var patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
     var clinicalHistroryApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/ClinicalHistory.js';
     var familyHistroryApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/FamilyHistory.js';
     var relationApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/nomenclature/Relation.js';

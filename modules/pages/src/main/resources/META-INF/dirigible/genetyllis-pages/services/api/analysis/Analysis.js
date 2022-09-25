@@ -10,8 +10,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 const rs = require("http/v4/rs");
-const dao = require("genetyllis-app/gen/dao/patients/Patient");
-const http = require("genetyllis-app/gen/api/utils/http");
+const dao = require("genetyllis-pages/services/dao/analysis/Analysis");
+const http = require("genetyllis-pages/services/api/utils/http");
 
 rs.service()
 	.resource("")
@@ -48,81 +48,77 @@ rs.service()
 			}
         })
 	.resource("{id}")
-		.get(function (ctx) {
+		.get(function(ctx) {
 			let id = ctx.pathParameters.id;
-			let entity = dao.existsPatientByLabId(id);
+			let entity = dao.get(id);
 			if (entity) {
-				http.sendResponseOk(entity);
+			    http.sendResponseOk(entity);
 			} else {
-				http.sendResponseNotFound("Patient not found");
+				http.sendResponseNotFound("Analysis not found");
 			}
 		})
 		.produces(["application/json"])
-		.catch(function (ctx, error) {
-			if (error.name === "ForbiddenError") {
-				http.sendForbiddenRequest(error.message);
-			} else if (error.name === "ValidationError") {
+		.catch(function(ctx, error) {
+            if (error.name === "ForbiddenError") {
+                http.sendForbiddenRequest(error.message);
+            } else if(error.name === "ValidationError") {
 				http.sendResponseBadRequest(error.message);
 			} else {
 				http.sendInternalServerError(error.message);
 			}
-		})
+        })
 	.resource("")
-		.post(function (ctx, request, response) {
+		.post(function(ctx, request, response) {
 			let entity = request.getJSON();
-			if (entity.Id && entity.Id !== undefined) {
-				dao.update(entity);
-			} else {
-				entity.Id = dao.create(entity);
-			}
-			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/Patient.js/" + entity.Id);
+			entity.Id = dao.create(entity);
+			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/Analysis.js/" + entity.Id);
 			http.sendResponseCreated(entity);
 		})
 		.produces(["application/json"])
-		.catch(function (ctx, error) {
-			if (error.name === "ForbiddenError") {
-				http.sendForbiddenRequest(error.message);
-			} else if (error.name === "ValidationError") {
+		.catch(function(ctx, error) {
+            if (error.name === "ForbiddenError") {
+                http.sendForbiddenRequest(error.message);
+            } else if(error.name === "ValidationError") {
 				http.sendResponseBadRequest(error.message);
 			} else {
 				http.sendInternalServerError(error.message);
 			}
-		})
+        })
 	.resource("{id}")
-		.put(function (ctx, request) {
+		.put(function(ctx, request) {
 			let entity = request.getJSON();
 			entity.Id = ctx.pathParameters.id;
 			dao.update(entity);
 			http.sendResponseOk(entity);
 		})
 		.produces(["application/json"])
-		.catch(function (ctx, error) {
-			if (error.name === "ForbiddenError") {
-				http.sendForbiddenRequest(error.message);
-			} else if (error.name === "ValidationError") {
+		.catch(function(ctx, error) {
+            if (error.name === "ForbiddenError") {
+                http.sendForbiddenRequest(error.message);
+            } else if(error.name === "ValidationError") {
 				http.sendResponseBadRequest(error.message);
 			} else {
 				http.sendInternalServerError(error.message);
 			}
-		})
+        })
 	.resource("{id}")
-		.delete(function (ctx) {
+		.delete(function(ctx) {
 			let id = ctx.pathParameters.id;
 			let entity = dao.get(id);
 			if (entity) {
 				dao.delete(id);
 				http.sendResponseNoContent();
 			} else {
-				http.sendResponseNotFound("Patient not found");
+				http.sendResponseNotFound("Analysis not found");
 			}
 		})
-		.catch(function (ctx, error) {
-			if (error.name === "ForbiddenError") {
-				http.sendForbiddenRequest(error.message);
-			} else if (error.name === "ValidationError") {
+		.catch(function(ctx, error) {
+            if (error.name === "ForbiddenError") {
+                http.sendForbiddenRequest(error.message);
+            } else if(error.name === "ValidationError") {
 				http.sendResponseBadRequest(error.message);
 			} else {
 				http.sendInternalServerError(error.message);
 			}
-		})
+        })
 .execute();

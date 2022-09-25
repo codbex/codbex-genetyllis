@@ -10,8 +10,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 const rs = require("http/v4/rs");
-const dao = require("genetyllis-app/gen/dao/patients/Patient");
-const http = require("genetyllis-app/gen/api/utils/http");
+const dao = require("genetyllis-pages/services/dao/patients/Patient");
+const http = require("genetyllis-pages/services/api/utils/http");
 
 rs.service()
 	.resource("")
@@ -55,6 +55,86 @@ rs.service()
 				http.sendResponseOk(entity);
 			} else {
 				http.sendResponseNotFound("Patient not found");
+			}
+		})
+		.produces(["application/json"])
+		.catch(function (ctx, error) {
+			if (error.name === "ForbiddenError") {
+				http.sendForbiddenRequest(error.message);
+			} else if (error.name === "ValidationError") {
+				http.sendResponseBadRequest(error.message);
+			} else {
+				http.sendInternalServerError(error.message);
+			}
+		})
+	.resource("getPatientByLabId/{labId}")
+		.get(function (ctx) {
+			let labId = ctx.pathParameters.labId;
+			let entity = dao.getPatientByLabId(labId);
+			if (entity) {
+				http.sendResponseOk(entity);
+			} else {
+				http.sendResponseNotFound("There was a problem with the database!");
+			}
+		})
+		.produces(["application/json"])
+		.catch(function (ctx, error) {
+			if (error.name === "ForbiddenError") {
+				http.sendForbiddenRequest(error.message);
+			} else if (error.name === "ValidationError") {
+				http.sendResponseBadRequest(error.message);
+			} else {
+				http.sendInternalServerError(error.message);
+			}
+		})
+	.resource("loadPatientHistory/{labId}")
+		.get(function (ctx) {
+			let labId = ctx.pathParameters.labId;
+			let entity = dao.getPatientAndHistoryByLabId(labId);
+			if (entity) {
+				http.sendResponseOk(entity);
+			} else {
+				http.sendResponseNotFound("Patient not found!");
+			}
+		})
+		.produces(["application/json"])
+		.catch(function (ctx, error) {
+			if (error.name === "ForbiddenError") {
+				http.sendForbiddenRequest(error.message);
+			} else if (error.name === "ValidationError") {
+				http.sendResponseBadRequest(error.message);
+			} else {
+				http.sendInternalServerError(error.message);
+			}
+		})
+	.resource("suggestLabIds/{labId}")
+		.get(function (ctx) {
+			let labId = ctx.pathParameters.labId;
+			let result = dao.suggestLabIds(labId);
+			if (result) {
+				http.sendResponseOk(result);
+			} else {
+				http.sendResponseNotFound("LabId not found!");
+			}
+		})
+		.produces(["application/json"])
+		.catch(function (ctx, error) {
+			if (error.name === "ForbiddenError") {
+				http.sendForbiddenRequest(error.message);
+			} else if (error.name === "ValidationError") {
+				http.sendResponseBadRequest(error.message);
+			} else {
+				http.sendInternalServerError(error.message);
+			}
+		})
+	.resource("filterPatients")
+		.post(function (ctx, request, response) {
+			let patient = request.getJSON();
+			let result = dao.filterPatients(patient);
+			if (result) {
+				http.sendResponseOk(result);
+			} else {
+				http.sendResponseNotFound("Patient not found!");
 			}
 		})
 		.produces(["application/json"])

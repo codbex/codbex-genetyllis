@@ -16,13 +16,13 @@ var parser = require("genetyllis-parser/vcf/parser");
 var files = require("io/v4/files");
 var httpClient = require("http/v4/client");
 var database = require("db/v4/database");
-var daoVariantRecord = require("genetyllis-app/gen/dao/records/VariantRecord");
-var daoVariant = require("genetyllis-app/gen/dao/variants/Variant");
-var daoGene = require("genetyllis-app/gen/dao/genes/Gene");
-var daoFilter = require("genetyllis-app/gen/dao/records/Filter");
-var daoClinicalSignificance = require("genetyllis-app/gen/dao/variants/ClinicalSignificance");
-var daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
-var daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
+var daoVariantRecord = require("genetyllis-pages/services/dao/records/VariantRecord");
+var daoVariant = require("genetyllis-pages/services/dao/variants/Variant");
+var daoGene = require("genetyllis-pages/services/dao/genes/Gene");
+var daoFilter = require("genetyllis-pages/services/dao/records/Filter");
+var daoClinicalSignificance = require("genetyllis-pages/services/dao/variants/ClinicalSignificance");
+var daoPathology = require("genetyllis-pages/services/dao/nomenclature/Pathology");
+var daoAlleleFreqeuncy = require("genetyllis-pages/services/dao/variants/AlleleFrequency.js");
 if (request.getMethod() === "POST") {
     if (upload.isMultipartContent()) {
         let patientId = request.getParameter("PatientId");
