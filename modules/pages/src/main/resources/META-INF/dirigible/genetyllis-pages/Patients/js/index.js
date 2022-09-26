@@ -162,7 +162,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
                     }
                     patientObject.Gender = patientResult?.PATIENT_GENDERID;
                     patientObject.Ethnicity = patientResult?.GENETYLLIS_PATIENT_POPULATIONID;
-                    if (patientResult.familyHistory) {
+                    if (patientResult.familyHistory && patientResult.familyHistory.clinicalHistory) {
                         patientObject["Family history"] = patientResult.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     }
                     $scope.patientsDetails.push(patientObject);

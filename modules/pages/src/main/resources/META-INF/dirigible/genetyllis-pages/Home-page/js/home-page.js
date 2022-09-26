@@ -79,7 +79,9 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
 
                             patientObject.Gender = patientResult.PATIENT_GENDERID;
                             patientObject.Ethnicity = patientResult.GENETYLLIS_PATIENT_POPULATIONID;
-                            patientObject["Family history"] = patientResult?.familyHistory[0]?.patients[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                            if (patientResult.familyHistory && patientResult.familyHistory.patients && patientResult.familyHistory.patients.clinicalHistory) {
+                                patientObject["Family history"] = patientResult.familyHistory[0]?.patients[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                            }
                             $scope.patientsDetails.push(patientObject);
                         })
                     }
