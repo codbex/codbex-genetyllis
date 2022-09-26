@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2022 codbex or an codbex affiliate company and contributors
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v20.html
- *
- * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
- * SPDX-License-Identifier: EPL-2.0
- */
 const query = require("db/v4/query");
 const producer = require("messaging/v4/producer");
 const daoApi = require("db/v4/dao");
@@ -58,16 +47,15 @@ let dao = daoApi.create({
 });
 
 exports.list = function(settings) {
-	return dao.list(settings).map(function (e) {
-		EntityUtils.setLocalDate(e, "BirthDate");
+	return dao.list(settings).map(function(e) {
+		EntityUtils.setDate(e, "BirthDate");
 		return e;
 	});
 };
 
 exports.get = function(id) {
 	let entity = dao.find(id);
-	// TODO this produces 500
-	// EntityUtils.setLocalDate(entity, "BirthDate");
+	EntityUtils.setDate(entity, "BirthDate");
 	return entity;
 };
 
@@ -86,7 +74,7 @@ exports.create = function(entity) {
 };
 
 exports.update = function(entity) {
-	EntityUtils.setLocalDate(entity, "BirthDate");
+	// EntityUtils.setLocalDate(entity, "BirthDate");
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_PATIENT",
