@@ -40,6 +40,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     $scope.currentPage = 1;
     $scope.patientsTableModel = [];
     $scope.patientsTableData = [{ id: 1, label: "Gender" }, { id: 2, label: "Ethnicity" }, { id: 3, label: "Family history" }];
+
     $scope.patientsTableSettings = {
         scrollableHeight: '200px',
         scrollable: true,
@@ -52,25 +53,13 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         $scope.patientDetailsTableInfo = ["HGVS", "GeneId", "BirthDate", "Consequence", "Analysis", "Dates", "s ", "a ", "b "];
         for (let x = 0; x < $scope.patientsTableModel.length; x++) {
             let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id)
-
             $scope.patientDetailsTable.push(value.label);
-
             $scope.patientDetailsTableInfo.push(value.label);
-
         }
     }
 
     $scope.patientDetailsTable = ['HGVS', 'Gene', 'Pseudo', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
     $scope.patientDetailsTableInfo = ["HGVS", "GeneId", "BirthDate", "Consequence", "Analysis", "Dates", " s", "a ", " b"];
-    // ----patientDetailsTable
-    // $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "GeneId", "Reference", "Alternative", "Pathology"];
-
-    // $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "GeneId", "Reference", "Alternative", "Pathology"];
-    // $scope.variantTable = ['HGVS', 'Gene', 'Pseudo', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
-
-    // $scope.variantsTableData = [{ id: 10, label: "AF(men)" }, { id: 11, label: "AF(Bulgarian)" }, { id: 12, label: "Analysis" }];
-
-
 
     $scope.GENETYLLIS_GENE = {
         GENE_GENEID: [],

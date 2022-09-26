@@ -456,7 +456,7 @@
                             <div class="paging">
                                 <div class="select-columns">
                                     <div ng-dropdown-multiselect="" options="patientsTableData"
-                                        extra-settings="example6settings" selected-model="patientsTableModel"
+                                        extra-settings="patientsTableSettings" selected-model="patientsTableModel"
                                         class="multiselect-wrap" ng-click="selectFucn()"></div>
                                 </div>
                                 <div class="per-page">
@@ -486,19 +486,20 @@
                         <table border="1px solid #000 " cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th ng-repeat="i in variatnDetailsTable">
+                                    <th ng-repeat="i in patientDetailsTable">
                                         {{i}}
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr dir-paginate="data in patientsDetails | itemsPerPage:selectedPerPage"
+                                <tr dir-paginate="data in variants | itemsPerPage:selectedPerPage"
                                     total-items="totalItems">
-                                    <td ng-repeat="i in homePageTableInfo ">
-
+                                    <td ng-repeat="i in patientDetailsTableInfo ">
+                                        <!-- 
                                         <a href="partials/patient-details.html" ng-if="checkColumn(i)"
-                                            ng-click="redirectPatients(data)">{{data[i]}}</a>
-                                        <span ng-if="notLink(i)">{{data[i]}}</span>
+                                            ng-click="redirectPatients(data)">{{data[i]}}</a> -->
+                                        <span>{{data[i]}}</span>
+                                        <!-- <span>{{i}}</span> -->
                                     </td>
                                 </tr>
                             </tbody>

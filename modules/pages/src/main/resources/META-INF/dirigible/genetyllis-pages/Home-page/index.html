@@ -85,11 +85,13 @@
 						<div class="container">
 							<div class="row">
 								<div class="col">
-									<input type="text" class="form-control" placeholder="Date"
-										onfocus="(this.type='date')" onblur="(this.type='text')" required>
+									<input type="text" class="form-control" placeholder="Date" ng-model="analysisDate"
+										ng-change="analysisDateFunc()" onfocus="(this.type='date')"
+										onblur="(this.type='text')" required>
 								</div>
 								<div class="col">
-									<input type="search" placeholder="LabID" class="form-control" ng-model="search">
+									<input type="search" placeholder="LabID" class="form-control" ng-model="search"
+										ng-change="labIdFunc()">
 
 								</div>
 								<div class="col">
@@ -139,7 +141,7 @@
 								<div class="paging">
 									<div class="select-columns">
 										<div ng-dropdown-multiselect="" options="patientsTableData"
-											extra-settings="patientsTableSettings" selected-model="patientsTableModel"
+											extra-settings="patientsTableSettings" selected-model="patientsTableModel "
 											class="multiselect-wrap" ng-click="selectFucn()"></div>
 									</div>
 									<div class="per-page">
@@ -168,7 +170,7 @@
 							<table border="1px solid #000 " cellspacing="0">
 								<thead>
 									<tr>
-										<th ng-repeat="i in homePageTable">
+										<th ng-repeat="i in homePageTable ">
 											{{i}}
 										</th>
 									</tr>

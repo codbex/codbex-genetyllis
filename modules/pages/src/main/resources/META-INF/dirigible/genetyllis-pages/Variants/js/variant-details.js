@@ -18,48 +18,37 @@ variantDetails.config(function (paginationTemplateProvider) {
 variantDetails.controller('variantDetailsController', ['$scope', '$http', function ($scope, $http) {
 
     $scope.clinicalSignificance = ["Accession", "Pathology", "Significance", "Evaluation", "Review"]
-    const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
+    const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
     $scope.variants;
 
-    // $scope.patientsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
-    $scope.patientsTableData = [{ id: 1, label: "Filter" }, { id: 2, label: "PID" }, { id: 3, label: "DOB" }, { id: 4, label: "Gender" }, { id: 5, label: "Ethnicity" }];
-    $scope.patientsTableModel = [$scope.patientsTableData[2], $scope.patientsTableData[3]];
+    $scope.selectedPerPage = 10;
+    $scope.perPageData = [10, 20, 50, 100]
+    $scope.currentPage = 1;
+
+    $scope.patientsTableModel = [];
+    $scope.patientsTableData = [{ id: 1, label: "Filter" }, { id: 2, label: "Ethnicity" }];
+
     $scope.patientsTableSettings = {
         scrollableHeight: '200px',
         scrollable: true,
         enableSearch: true
     };
 
-
-    // $scope.example6data = [{ id: 1, label: 'David' }, { id: 2, label: 'Jhon' }, { id: 3, label: 'Danny' }];
-    // $scope.example6model = [$scope.example6data[0], $scope.example6data[2]];
-    // $scope.example6settings = {};
-
-
     $scope.selectFucn = function () {
-        // $scope.variatnDetailsTable = ["PID", "LabID", "DOB", "Gender", "Ethnicity", "Clinical history", "Family history", "Analysis", "Date"]
-        $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
+        $scope.patientDetailsTable = ['PID', 'LabId', 'DOB', 'Gender', 'Clinical history', 'Family history', 'Analysis', 'Date'];
 
+        $scope.patientDetailsTableInfo = ["Id", "LabId", "BirthDate", "GenderId", "Clinical history", "Family history", "Analysis", "Date"];
         for (let x = 0; x < $scope.patientsTableModel.length; x++) {
-            let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id);
-            $scope.variatnDetailsTable.push(value.label);
-            $scope.homePageTableInfo.push(value.label);
+            let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id)
+            $scope.patientDetailsTable.push(value.label);
+            $scope.patientDetailsTableInfo.push(value.label);
         }
     }
 
-    $scope.checkColumn = function (e) {
-        return e == 'Id'
-    }
-    $scope.notLink = function (e) {
-        return e != 'Id'
-    }
+    $scope.patientDetailsTable = ['PID', 'LabId', 'DOB', 'Gender', 'Clinical history', 'Family history', 'Analysis', 'Date'];
+    $scope.patientDetailsTableInfo = ["Id", "LabId", "BirthDate", "GenderId", "Clinical history", "Family history", "Analysis", "Date"];
 
-    $scope.variatnDetailsTable = ["PID", "LabID", "DOB", "Gender", "Ethnicity", "Clinical history", "Family history", "Analysis", "Date"]
-    $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
-    // _|_
-    $scope.selectedPerPage = 10;
-    $scope.perPageData = [10, 20, 50, 100]
-    $scope.currentPage = 1;
+
 
 
     $scope.labIds = [];
@@ -134,10 +123,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', functi
             $scope.variants = data.data;
             console.log("Hello", $scope.variants)
         });
-
-
-
-
 
 
 

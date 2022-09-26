@@ -43,6 +43,7 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
 
     function loadPatients() {
         var query = {};
+
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
@@ -51,19 +52,6 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
                 // ["ANALYSIS_DATE", "ANALYSIS_ID", "ANALYSIS_PLATFORMID", "ANALYSIS_PROVIDERID", "GENETYLLIS_ANALYSIS_PATIENTID"]
                 patientObject = {};
                 data.data.data.forEach(patientResult => {
-                    // patientObject = {};
-                    // patientObject.Date = patientResult.analysis[0]?.ANALYSIS_DATE.split("T")[0];
-                    // patientObject.Id = patientResult.analysis[0]?.ANALYSIS_ID;
-                    // patientObject.Patient = patientResult.GENETYLLIS_PATIENT_LABID;
-                    // patientObject.Platform = patientResult?.analysis[0]?.ANALYSIS_PLATFORMID;
-                    // patientObject.Provider = patientResult.analysis[0]?.ANALYSIS_PROVIDERID;
-
-                    // patientObject.Dates = patientResult.analysis[0]?.ANALYSIS_DATE.split('T')[0];
-                    // patientObject.Gender = patientResult.PATIENT_GENDERID;
-                    // patientObject.Ethnicity = patientResult.GENETYLLIS_PATIENT_POPULATIONID;
-                    // patientObject["Family history"] = patientResult?.familyHistory[0]?.patients[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
-                    // $scope.patientsDetails.push(patientObject);
-
                     if (patientResult.analysis.length > 0) {
 
                         patientResult.analysis.forEach(el => {
@@ -185,4 +173,12 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
     }
 
 
+
+    $scope.analysisDateFunc = function () {
+        console.log("Hello", $scope.analysisDate)
+    }
+
+    $scope.labIdFunc = function () {
+        console.log("Hello", $scope.search)
+    }
 }]);
