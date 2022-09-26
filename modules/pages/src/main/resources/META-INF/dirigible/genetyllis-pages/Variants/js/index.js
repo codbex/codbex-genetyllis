@@ -151,15 +151,19 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
                 response.data.data.forEach(data => {
                     let variantObj = {}
                     variantObj.HGVS = data.VARIANT_HGVS
-                    variantObj.Gene = data.genes[0].GENE_NAME
+                    if (data.genes) {
+                        variantObj.Gene = data.genes[0]?.GENE_NAME
+                    }
                     variantObj.VARIANT_CONSEQUENCE = data.VARIANT_CONSEQUENCE
                     variantObj.GeneId = data.VARIANT_GENEID
                     variantObj.Reference = data.VARIANT_REFERENCE
                     variantObj.Alternative = data.VARIANT_ALTERNATIVE
-                    variantObj.Pathology = data.clinicalSignificance?.pathology[0]?.PATHOLOGY_NAME;
-
-                    variantObj.Ethnicity = data.alleleFrequency[0]?.ALLELEFREQUENCY_POPULATIONID
-
+                    if (data.clinicalSignificance && data.clinicalSignificance.pathology) {
+                        variantObj.Pathology = data.clinicalSignificance.pathology[0]?.PATHOLOGY_NAME;
+                    }
+                    if (data.alleleFrequency) {
+                        variantObj.Ethnicity = data.alleleFrequency[0]?.ALLELEFREQUENCY_POPULATIONID
+                    }
                     $scope.variantsDetails.push(variantObj)
                 })
                 $scope.totalPages = response.data.totalPages;
