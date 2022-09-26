@@ -53,8 +53,8 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     $scope.perPageData = [10, 20, 50, 100]
     $scope.currentPage = 1;
 
-    const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
-    const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/Patients/services/alleleFr.js';
+    const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/variants.js';
+    const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/services/alleleFr.js';
     $scope.patientsDetails = []
     $scope.variantsRef = ['A', 'G', 'C', 'T', 'U']
     $scope.addedLabId = [];
@@ -153,12 +153,18 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
                     patientObject.Id = patientResult.PATIENT_ID;
                     patientObject.LabId = patientResult.GENETYLLIS_PATIENT_LABID;
                     patientObject.BirthDate = patientResult.PATIENT_AGE.split('T')[0];
-                    patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
-                    patientObject.Analysis = patientResult?.analysis[0]?.ANALYSIS_ID;
-                    patientObject.Dates = patientResult?.analysis[0]?.ANALYSIS_DATE.split('T')[0];
+                    if (patientResult.clinicalHistory) {
+                        patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    }
+                    if (patientResult.analysis) {
+                        patientObject.Analysis = patientResult.analysis[0]?.ANALYSIS_ID;
+                        patientObject.Dates = patientResult.analysis[0]?.ANALYSIS_DATE.split('T')[0];
+                    }
                     patientObject.Gender = patientResult?.PATIENT_GENDERID;
                     patientObject.Ethnicity = patientResult?.GENETYLLIS_PATIENT_POPULATIONID;
-                    patientObject["Family history"] = patientResult?.familyHistory[0]?.patients[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    if (patientResult.familyHistory && patientResult.familyHistory.clinicalHistory) {
+                        patientObject["Family history"] = patientResult.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    }
                     $scope.patientsDetails.push(patientObject);
 
                 })

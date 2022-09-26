@@ -16,27 +16,27 @@ var filterSql = "";
 var filterSqlParams = [];
 var useWhere = true;
 
-exports.list = function(settings) {
+exports.list = function (settings) {
 	return dao.list(settings);
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	return dao.get(id);
 };
 
-exports.create = function(entity) {
+exports.create = function (entity) {
 	return dao.create(entity);
 };
 
-exports.update = function(entity) {
+exports.update = function (entity) {
 	dao.update(entity);
 };
 
-exports.delete = function(id) {
+exports.delete = function (id) {
 	dao.delete(id);
 };
 
-exports.count = function() {
+exports.count = function () {
 	return dao.count();
 };
 
@@ -65,47 +65,46 @@ exports.filterVariants = function (variant) {
 	response.totalItems = resultSetCount[0]["COUNT"];
 	response.totalPages = Math.floor(response.totalItems / variant.perPage) + (response.totalItems % variant.perPage == 0 ? 0 : 1);
 
-	response.data.forEach(variantResult => {
-		var params = [];
-		params.push(variantResult.VARIANT_ID)
+	let variantIds = response.data.map(foundVariant => foundVariant.VARIANT_ID);
+	let variantIdsInStatement = addArrayValuesToSql(variantIds);
 
-		variantResult.clinicalSignificance = loadClinicalSignificance(params);
+	/* LOAD CLINICALSIGNIFICANCE AND PATHOLOGY */
+	let clinicalSignificanceQuery = 'SELECT * FROM "GENETYLLIS_CLINICALSIGNIFICANCE" WHERE "CLINICALSIGNIFICANCE_VARIANTID"' + variantIdsInStatement;
+	let clinicalSignificance = query.execute(clinicalSignificanceQuery, variantIds);
 
-		variantResult.alleleFrequency = loadAlleleFrequency(params);
+	let pathologyIds = clinicalSignificance.map(significance => significance.CLINICALSIGNIFICANCE_PATHOLOGYID);
+	let pathologyResult = [];
+	if (pathologyIds.length > 0) {
+		let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
+		let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
+		pathologyResult = query.execute(pathologyQuery, pathologyIds);
+	}
 
-		params = [];
-		params.push(variantResult.VARIANT_GENEID);
-		variantResult.genes = loadGenes(params);
+	/* MAP PATHOLOGY TO CLINICALSIGNIFICANCE */
+	clinicalSignificance.forEach(significance => {
+		significance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === significance.CLINICALSIGNIFICANCE_PATHOLOGYID)
+	})
+
+	/* LOAD ALLELEFREQUENCY */
+	let alleleFrequencyQuery = 'SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID"' + variantIdsInStatement;
+	let alleleFrequency = query.execute(alleleFrequencyQuery, variantIds);
+
+	/* LOAD GENES */
+	let geneIds = response.data.map(foundVariant => foundVariant.VARIANT_GENEID);
+	let geneIdsInStatement = addArrayValuesToSql(geneIds);
+	let geneQuery = 'SELECT * FROM "GENETYLLIS_GENE" WHERE "GENE_ID"' + geneIdsInStatement;
+	let genes = query.execute(geneQuery, geneIds);
+
+	/* MAP CLINICALSIGNIFICANCE, ALLELEFREQUENCY AND GENES TO VARIANT */
+	response.data.forEach(foundVariant => {
+		foundVariant.clinicalSignificance = clinicalSignificance.filter(significance => significance.CLINICALSIGNIFICANCE_VARIANTID === foundVariant.VARIANT_ID);
+		foundVariant.alleleFrequency = alleleFrequency.filter(allele => allele.ALLELEFREQUENCY_VARIANTID === foundVariant.VARIANT_ID);
+		foundVariant.genes = genes.filter(gene => gene.GENE_ID === foundVariant.VARIANT_GENEID);
 	})
 
 	filterSql = "";
 
 	return response;
-}
-
-function loadClinicalSignificance(params) {
-	var clinicalSignificances = query.execute('SELECT * FROM "GENETYLLIS_CLINICALSIGNIFICANCE" WHERE "CLINICALSIGNIFICANCE_VARIANTID" = ?', params);
-	var clinlSigArr = { pathology: [], significance: [] }
-	clinicalSignificances.forEach(clinicalSignificance => {
-		var clinicalParams = [];
-		clinicalParams.push(clinicalSignificance.CLINICALSIGNIFICANCE_PATHOLOGYID)
-		clinicalSignificance.pathology = query.execute('SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID" = ?', clinicalParams);
-
-		clinicalParams = [];
-		clinicalParams.push(clinicalSignificance.CLINICALSIGNIFICANCE_SIGNIFICANCEID)
-		clinicalSignificance.significance = query.execute('SELECT * FROM "GENETYLLIS_SIGNIFICANCE" WHERE "SIGNIFICANCE_ID" = ?', clinicalParams);
-		clinlSigArr.pathology.push(clinicalSignificance.pathology[0])
-		clinlSigArr.significance.push(clinicalSignificance.significance[0])
-	});
-	return clinlSigArr;
-}
-
-function loadAlleleFrequency(params) {
-	return query.execute('SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID" = ?', params);
-}
-
-function loadGenes(params) {
-	return query.execute('SELECT * FROM "GENETYLLIS_GENE" WHERE "GENE_ID" = ?', params);
 }
 
 function buildFilterSql(object) {
