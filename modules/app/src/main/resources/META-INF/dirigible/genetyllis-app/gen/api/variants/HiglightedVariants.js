@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 const rs = require("http/v4/rs");
-const dao = require("genetyllis-app/gen/dao/analysis/Analysis");
+const dao = require("genetyllis-app/gen/dao/variants/HiglightedVariants");
 const http = require("genetyllis-app/gen/api/utils/http");
 
 rs.service()
@@ -54,7 +54,7 @@ rs.service()
 			if (entity) {
 			    http.sendResponseOk(entity);
 			} else {
-				http.sendResponseNotFound("Analysis not found");
+				http.sendResponseNotFound("HiglightedVariants not found");
 			}
 		})
 		.produces(["application/json"])
@@ -70,8 +70,8 @@ rs.service()
 	.resource("")
 		.post(function(ctx, request, response) {
 			let entity = request.getJSON();
-			entity.Id = dao.create(entity);
-			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/Analysis.js/" + entity.Id);
+			entity.HighlightedVariantId = dao.create(entity);
+			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/HiglightedVariants.js/" + entity.HighlightedVariantId);
 			http.sendResponseCreated(entity);
 		})
 		.produces(["application/json"])
@@ -87,7 +87,7 @@ rs.service()
 	.resource("{id}")
 		.put(function(ctx, request) {
 			let entity = request.getJSON();
-			entity.Id = ctx.pathParameters.id;
+			entity.HighlightedVariantId = ctx.pathParameters.id;
 			dao.update(entity);
 			http.sendResponseOk(entity);
 		})
@@ -109,7 +109,7 @@ rs.service()
 				dao.delete(id);
 				http.sendResponseNoContent();
 			} else {
-				http.sendResponseNotFound("Analysis not found");
+				http.sendResponseNotFound("HiglightedVariants not found");
 			}
 		})
 		.catch(function(ctx, error) {

@@ -25,6 +25,8 @@ const daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
 const daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
 const myVariantInfoUrl = "https://myvariant.info/v1/variant/";
 
+//asd
+
 if (request.getMethod() === "POST") {
     if (upload.isMultipartContent()) {
         let patientId = request.getParameter("PatientId");
