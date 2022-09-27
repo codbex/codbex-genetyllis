@@ -15,7 +15,7 @@ patientDetails.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../../components/pagination.html');
 });
 patientDetails.controller('patientDetailsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
-    const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
+    const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     $scope.patientsDetails = $localStorage.x;
     $scope.variants;
     $scope.patientsDetailsTable = []
@@ -208,6 +208,51 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         $scope.variantsDetails = [];
     }
 
+    $scope.filter = function () {
+        var query = {};
+        query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
+        query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE
+        query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY
+        query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE
+        query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY
+        query.perPage = $scope.selectedPerPage;
+        query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
+        let patientObject = {};
+
+        $http.post(variantDetailsApi + "/filterVariants", JSON.stringify(query))
+            .then(function (response) {
+                console.log('response', response)
+                $scope.patientsDetailsTable = [];
+                response.data.data.forEach((patientResult, i) => {
+                    console.log(i, patientResult)
+                    patientObject = {};
+                    patientObject.Id = patientResult.PATIENT_ID;
+                    patientObject.LabId = patientResult.GENETYLLIS_PATIENT_LABID;
+                    if (patientResult.clinicalHistory) {
+                        patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    }
+                    if (patientResult.analysis) {
+                        patientObject.Analysis = patientResult.analysis[0]?.ANALYSIS_ID;
+                        patientObject.Dates = patientResult.analysis[0]?.ANALYSIS_DATE.split('T')[0];
+                    }
+                    patientObject.Gender = patientResult?.PATIENT_GENDERID;
+                    patientObject.Ethnicity = patientResult?.GENETYLLIS_PATIENT_POPULATIONID;
+                    if (patientResult.familyHistory && patientResult.familyHistory.clinicalHistory) {
+                        patientObject["Family history"] = patientResult.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    }
+                    $scope.patientsDetailsTable.push(patientObject);
+
+                })
+                $scope.totalPages = response.data.totalPages;
+                $scope.totalItems = response.data.totalItems;
+                console.log(" $scope.patientsDetails", $scope.patientsDetails)
+            }, function (response) {
+            });
+
+    }
+
+    $scope.filter();
+
     $scope.clearAllFilters = function () {
         angular.forEach($scope.clinicalSignificance, function (item) {
             item.Selected = false;
@@ -223,8 +268,10 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI = []
         $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_FROM = ""
         $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_TO = ""
-        // $scope.filter()
+        $scope.filter()
     }
+
+
 
 }]);
 

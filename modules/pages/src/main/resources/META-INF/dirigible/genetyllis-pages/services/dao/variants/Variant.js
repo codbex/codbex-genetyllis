@@ -43,14 +43,28 @@ exports.count = function () {
 exports.filterVariants = function (variant) {
 
 	initFilterSql();
-
 	var response = {};
 	var countSql = "";
-	buildFilterSql(variant.GENETYLLIS_VARIANT);
-	buildFilterSql(variant.GENETYLLIS_GENE);
-	buildFilterSql(variant.GENETYLLIS_PATHOLOGY);
-	buildFilterSql(variant.GENETYLLIS_SIGNIFICANCE);
-	buildFilterSql(variant.GENETYLLIS_ALLELEFREQUENCY);
+	if (variant.GENETYLLIS_VARIANT) {
+		buildFilterSql(variant.GENETYLLIS_VARIANT);
+
+	}
+	if (variant.GENETYLLIS_GENE) {
+		buildFilterSql(variant.GENETYLLIS_GENE);
+
+	}
+	if (variant.GENETYLLIS_PATHOLOGY) {
+		buildFilterSql(variant.GENETYLLIS_PATHOLOGY);
+	}
+	if (variant.GENETYLLIS_SIGNIFICANCE) {
+		buildFilterSql(variant.GENETYLLIS_SIGNIFICANCE);
+
+	}
+	if (variant.GENETYLLIS_ALLELEFREQUENCY) {
+		buildFilterSql(variant.GENETYLLIS_ALLELEFREQUENCY);
+
+	}
+
 	countSql += filterSql;
 
 	filterSql += " LIMIT " + variant.perPage + " OFFSET " + variant.currentPage;

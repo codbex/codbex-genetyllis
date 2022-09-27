@@ -18,7 +18,8 @@ variantDetails.config(function (paginationTemplateProvider) {
 variantDetails.controller('variantDetailsController', ['$scope', '$http', function ($scope, $http) {
 
     $scope.clinicalSignificance = ["Accession", "Pathology", "Significance", "Evaluation", "Review"]
-    const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+
     $scope.variants;
 
     $scope.selectedPerPage = 10;
@@ -116,13 +117,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', functi
         $scope.GENETYLLIS_VARIANT.VARIANT_HGVS.push(hgvs)
         $scope.selectedHgvs = '';
     }
-
-    $http.get(variantDetailsApi)
-        .then(function (data) {
-            // $scope.pathologyDatas = data.data;
-            $scope.variants = data.data;
-            console.log("Hello", $scope.variants)
-        });
 
 
 
@@ -252,6 +246,13 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', functi
         // $localStorage.setItem('key', data);
     }
 
+    // $http.get(variantDetailsApi)
+    //     .then(function (data) {
+    //         // $scope.pathologyDatas = data.data;
+    //         $scope.variants = data.data;
+    //         console.log("Hello", $scope.variants)
+    //     });
+
 
     $scope.clearAllFilters = function () {
         $scope.selectedLabId = ""
@@ -290,9 +291,19 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', functi
         $scope.GENETYLLIS_VARIANT.VARIANT_ALT = ''
         $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = ''
         $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
-        // $scope.filter()
+        $scope.filter()
     }
 
+
+    $scope.filter = function () {
+        var query = {};
+        query.perPage = $scope.selectedPerPage;
+        query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
+        $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
+            .then(function (response) {
+                console.log(response, "response")
+            })
+    }
 }]);
 
 
