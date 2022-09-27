@@ -188,39 +188,41 @@ exports.filterVariants = function (variant) {
 	let variantIds = response.data.map(foundVariant => foundVariant.VARIANT_ID);
 	let variantIdsInStatement = addArrayValuesToSql(variantIds);
 
-	/* LOAD CLINICALSIGNIFICANCE AND PATHOLOGY */
-	let clinicalSignificanceQuery = 'SELECT * FROM "GENETYLLIS_CLINICALSIGNIFICANCE" WHERE "CLINICALSIGNIFICANCE_VARIANTID"' + variantIdsInStatement;
-	let clinicalSignificance = query.execute(clinicalSignificanceQuery, variantIds);
+	if (variantIds.length > 0) {
+		/* LOAD CLINICALSIGNIFICANCE AND PATHOLOGY */
+		let clinicalSignificanceQuery = 'SELECT * FROM "GENETYLLIS_CLINICALSIGNIFICANCE" WHERE "CLINICALSIGNIFICANCE_VARIANTID"' + variantIdsInStatement;
+		let clinicalSignificance = query.execute(clinicalSignificanceQuery, variantIds);
 
-	let pathologyIds = clinicalSignificance.map(significance => significance.CLINICALSIGNIFICANCE_PATHOLOGYID);
-	let pathologyResult = [];
-	if (pathologyIds.length > 0) {
-		let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
-		let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
-		pathologyResult = query.execute(pathologyQuery, pathologyIds);
+		let pathologyIds = clinicalSignificance.map(significance => significance.CLINICALSIGNIFICANCE_PATHOLOGYID);
+		let pathologyResult = [];
+		if (pathologyIds.length > 0) {
+			let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
+			let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
+			pathologyResult = query.execute(pathologyQuery, pathologyIds);
+		}
+
+		/* MAP PATHOLOGY TO CLINICALSIGNIFICANCE */
+		clinicalSignificance.forEach(significance => {
+			significance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === significance.CLINICALSIGNIFICANCE_PATHOLOGYID)
+		})
+
+		/* LOAD ALLELEFREQUENCY */
+		let alleleFrequencyQuery = 'SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID"' + variantIdsInStatement;
+		let alleleFrequency = query.execute(alleleFrequencyQuery, variantIds);
+
+		/* LOAD GENES */
+		let geneIds = response.data.map(foundVariant => foundVariant.VARIANT_GENEID);
+		let geneIdsInStatement = addArrayValuesToSql(geneIds);
+		let geneQuery = 'SELECT * FROM "GENETYLLIS_GENE" WHERE "GENE_ID"' + geneIdsInStatement;
+		let genes = query.execute(geneQuery, geneIds);
+
+		/* MAP CLINICALSIGNIFICANCE, ALLELEFREQUENCY AND GENES TO VARIANT */
+		response.data.forEach(foundVariant => {
+			foundVariant.clinicalSignificance = clinicalSignificance.filter(significance => significance.CLINICALSIGNIFICANCE_VARIANTID === foundVariant.VARIANT_ID);
+			foundVariant.alleleFrequency = alleleFrequency.filter(allele => allele.ALLELEFREQUENCY_VARIANTID === foundVariant.VARIANT_ID);
+			foundVariant.genes = genes.filter(gene => gene.GENE_ID === foundVariant.VARIANT_GENEID);
+		})
 	}
-
-	/* MAP PATHOLOGY TO CLINICALSIGNIFICANCE */
-	clinicalSignificance.forEach(significance => {
-		significance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === significance.CLINICALSIGNIFICANCE_PATHOLOGYID)
-	})
-
-	/* LOAD ALLELEFREQUENCY */
-	let alleleFrequencyQuery = 'SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID"' + variantIdsInStatement;
-	let alleleFrequency = query.execute(alleleFrequencyQuery, variantIds);
-
-	/* LOAD GENES */
-	let geneIds = response.data.map(foundVariant => foundVariant.VARIANT_GENEID);
-	let geneIdsInStatement = addArrayValuesToSql(geneIds);
-	let geneQuery = 'SELECT * FROM "GENETYLLIS_GENE" WHERE "GENE_ID"' + geneIdsInStatement;
-	let genes = query.execute(geneQuery, geneIds);
-
-	/* MAP CLINICALSIGNIFICANCE, ALLELEFREQUENCY AND GENES TO VARIANT */
-	response.data.forEach(foundVariant => {
-		foundVariant.clinicalSignificance = clinicalSignificance.filter(significance => significance.CLINICALSIGNIFICANCE_VARIANTID === foundVariant.VARIANT_ID);
-		foundVariant.alleleFrequency = alleleFrequency.filter(allele => allele.ALLELEFREQUENCY_VARIANTID === foundVariant.VARIANT_ID);
-		foundVariant.genes = genes.filter(gene => gene.GENE_ID === foundVariant.VARIANT_GENEID);
-	})
 
 	filterSql = "";
 
