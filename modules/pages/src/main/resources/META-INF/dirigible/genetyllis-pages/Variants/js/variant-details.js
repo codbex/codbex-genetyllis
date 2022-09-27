@@ -314,10 +314,10 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', functi
 
                     variantObj.GenderId = data.PATIENT_GENDERID === 1 ? "male" : data.PATIENT_GENDERID == 2 ? "female" : "Nonspecifed gender";
                     variantObj["Clinical history"] = data.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
-                    variantObj["Family history"] = data.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    variantObj["Family history"] = data.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     variantObj.Analysis = data.analysis[0]?.ANALYSIS_ID;
                     variantObj.Date = data.analysis[0]?.ANALYSIS_DATE.split("T")[0];
-                    variantObj.Ethnicity = data.GENETYLLIS_PATIENT_POPULATIONID;
+                    variantObj.Ethnicity = data.GENETYLLIS_PATIENT_POPULATIONID === 12 ? "Bulgarian" : data.GENETYLLIS_PATIENT_POPULATIONID === 18 ? "Other ethnicity" : "European (non-Finnish)";
                     $scope.variants.push(variantObj);
                 });
                 $scope.totalPages = response.data.totalPages;

@@ -162,7 +162,7 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
                         variantObj.Pathology = data.clinicalSignificance.pathology[0]?.PATHOLOGY_NAME;
                     }
                     if (data.alleleFrequency) {
-                        variantObj.Ethnicity = data.alleleFrequency[0]?.ALLELEFREQUENCY_POPULATIONID
+                        variantObj.Ethnicity = data.alleleFrequency[0]?.ALLELEFREQUENCY_POPULATIONID === 12 ? "Bulgarian" : "Other ethnicity";
                     }
                     $scope.variantsDetails.push(variantObj)
                 })
