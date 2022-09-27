@@ -64,13 +64,15 @@ exports.filterPatients = function (patient) {
 	if (patient.GENETYLLIS_PATIENT) {
 		filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
 	}
+
 	if (patient.GENETYLLIS_CLINICALHISTORY) {
 		filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY, filterSql);
 	}
+
 	if (patient.GENETYLLIS_VARIANT) {
 		filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT, filterSql);
-
 	}
+
 	if (patient.GENETYLLIS_FAMILYHISTORY) {
 		if (!isFamilyHsistoryEmpty(patient.GENETYLLIS_FAMILYHISTORY)) {
 			buildFamilyHistoryFilterSql(patient.GENETYLLIS_FAMILYHISTORY);
@@ -97,47 +99,49 @@ exports.filterPatients = function (patient) {
 	let patientIds = response.data.map(foundPatient => foundPatient.PATIENT_ID);
 	let patientIdsInStatement = addArrayValuesToSql(patientIds);
 
-	/* LOAD FAMILYHISTORY */
-	let familyHistoryQuery = 'SELECT * FROM "GENETYLLIS_FAMILYHISTORY" WHERE "FAMILYHISTORY_PATIENTID"' + patientIdsInStatement;
-	let familyHistory = query.execute(familyHistoryQuery, patientIds);
+	if (patientIds.length > 0) {
+		/* LOAD FAMILYHISTORY */
+		let familyHistoryQuery = 'SELECT * FROM "GENETYLLIS_FAMILYHISTORY" WHERE "FAMILYHISTORY_PATIENTID"' + patientIdsInStatement;
+		let familyHistory = query.execute(familyHistoryQuery, patientIds);
 
-	let familyPatientIds = familyHistory.map(member => member.FAMILYHISTORY_FAMILYMEMBERID);
+		let familyPatientIds = familyHistory.map(member => member.FAMILYHISTORY_FAMILYMEMBERID);
 
-	/* LOAD CLINICALHISTORY AND PATHOLOGY */
-	let familyAndPatientIds = patientIds.concat(familyPatientIds)
-	let familyAndPatientIdsInStatement = addArrayValuesToSql(familyAndPatientIds);
-	let clinicalHistoryQuery = 'SELECT * FROM "GENETYLLIS_CLINICALHISTORY" WHERE "CLINICALHISTORY_PATIENTID"' + familyAndPatientIdsInStatement;
-	let clinicalHistory = query.execute(clinicalHistoryQuery, familyAndPatientIds);
+		/* LOAD CLINICALHISTORY AND PATHOLOGY */
+		let familyAndPatientIds = patientIds.concat(familyPatientIds)
+		let familyAndPatientIdsInStatement = addArrayValuesToSql(familyAndPatientIds);
+		let clinicalHistoryQuery = 'SELECT * FROM "GENETYLLIS_CLINICALHISTORY" WHERE "CLINICALHISTORY_PATIENTID"' + familyAndPatientIdsInStatement;
+		let clinicalHistory = query.execute(clinicalHistoryQuery, familyAndPatientIds);
 
-	let pathologyIds = clinicalHistory.map(memberHistory => memberHistory.CLINICALHISTORY_PATHOLOGYID);
-	let pathologyResult = [];
-	if (pathologyIds.length > 0) {
-		let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
-		let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
+		let pathologyIds = clinicalHistory.map(memberHistory => memberHistory.CLINICALHISTORY_PATHOLOGYID);
+		let pathologyResult = [];
+		if (pathologyIds.length > 0) {
+			let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
+			let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
 
-		pathologyResult = query.execute(pathologyQuery, pathologyIds);
+			pathologyResult = query.execute(pathologyQuery, pathologyIds);
+		}
+
+		/* MAP PATHOLOGY TO CLINICALHISTORY */
+		clinicalHistory.forEach(history => {
+			history.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === history.CLINICALHISTORY_PATHOLOGYID)
+		})
+
+		/* LOAD ANALYSIS */
+		let analysisQuery = 'SELECT * FROM "GENETYLLIS_ANALYSIS" WHERE "GENETYLLIS_ANALYSIS_PATIENTID"' + patientIdsInStatement;
+		let analysis = query.execute(analysisQuery, patientIds);
+
+		/* MAP CLINICALHISTORY AND PATIENT TO FAMILYHISTORY */
+		familyHistory.forEach(member => {
+			member.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === member.FAMILYHISTORY_FAMILYMEMBERID)
+		})
+
+		/* MAP CLINICALHISTORY, FAMILYHISTORY AND ANALYSIS TO PATIENT */
+		response.data.forEach(foundPatient => {
+			foundPatient.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === foundPatient.PATIENT_ID)
+			foundPatient.familyHistory = familyHistory.filter(family => family.FAMILYHISTORY_PATIENTID === foundPatient.PATIENT_ID)
+			foundPatient.analysis = analysis.filter(analysisElement => analysisElement.GENETYLLIS_ANALYSIS_PATIENTID === foundPatient.PATIENT_ID)
+		})
 	}
-
-	/* MAP PATHOLOGY TO CLINICALHISTORY */
-	clinicalHistory.forEach(history => {
-		history.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === history.CLINICALHISTORY_PATHOLOGYID)
-	})
-
-	/* LOAD ANALYSIS */
-	let analysisQuery = 'SELECT * FROM "GENETYLLIS_ANALYSIS" WHERE "GENETYLLIS_ANALYSIS_PATIENTID"' + patientIdsInStatement;
-	let analysis = query.execute(analysisQuery, patientIds);
-
-	/* MAP CLINICALHISTORY AND PATIENT TO FAMILYHISTORY */
-	familyHistory.forEach(member => {
-		member.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === member.FAMILYHISTORY_FAMILYMEMBERID)
-	})
-
-	/* MAP CLINICALHISTORY, FAMILYHISTORY AND ANALYSIS TO PATIENT */
-	response.data.forEach(foundPatient => {
-		foundPatient.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === foundPatient.PATIENT_ID)
-		foundPatient.familyHistory = familyHistory.filter(family => family.FAMILYHISTORY_PATIENTID === foundPatient.PATIENT_ID)
-		foundPatient.analysis = analysis.filter(analysisElement => analysisElement.GENETYLLIS_ANALYSIS_PATIENTID === foundPatient.PATIENT_ID)
-	})
 
 	filterSql = "";
 
@@ -233,7 +237,7 @@ function initFilterSql() {
 
 function addFilterParam(param) {
 	if (isNaN(param)) {
-		filterSqlParams.push(param.toString().toLowerCase());
+		filterSqlParams.push(param.toString());
 	} else {
 		filterSqlParams.push(param);
 	}

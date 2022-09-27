@@ -46,6 +46,8 @@ exports.filterVariantsPatientDetails = function (variant) {
 	let response = {};
 	let countSql = "";
 
+	buildFilterSql(variant.GENETYLLIS_PATIENT);
+
 	if (variant.GENETYLLIS_VARIANT) {
 		buildFilterSql(variant.GENETYLLIS_VARIANT);
 	}
@@ -91,19 +93,13 @@ exports.filterVariantsPatientDetails = function (variant) {
 		/* LOAD CLINICALSIGNIFICANCE AND PATHOLOGY */
 		let clinicalSignificanceQuery = 'SELECT * FROM "GENETYLLIS_CLINICALSIGNIFICANCE" WHERE "CLINICALSIGNIFICANCE_VARIANTID"' + variantIdsInStatement;
 		let clinicalSignificance = query.execute(clinicalSignificanceQuery, variantIds);
-
-		let pathologyIds = clinicalSignificance.map(significance => significance.CLINICALSIGNIFICANCE_PATHOLOGYID);
-		let pathologyResult = [];
-		if (pathologyIds.length > 0) {
-			let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
-			let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
-			pathologyResult = query.execute(pathologyQuery, pathologyIds);
-		}
-
-		/* MAP PATHOLOGY TO CLINICALSIGNIFICANCE */
-		clinicalSignificance.forEach(significance => {
-			significance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === significance.CLINICALSIGNIFICANCE_PATHOLOGYID)
-		})
+		let clinicalSignificancePathologyIds = clinicalSignificance.map(significance => significance.CLINICALSIGNIFICANCE_PATHOLOGYID);
+		// let pathologyResult = [];
+		// if (pathologyIds.length > 0) {
+		// 	let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
+		// 	let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
+		// 	pathologyResult = query.execute(pathologyQuery, pathologyIds);
+		// }
 
 		/* LOAD GENES */
 		let geneIds = response.data.map(foundVariant => foundVariant.VARIANT_GENEID);
@@ -116,10 +112,51 @@ exports.filterVariantsPatientDetails = function (variant) {
 		let variantRecords = query.execute(variantRecordQuery, variantIds);
 
 		/* LOAD PATIENTS */
-		let variantRecordPatientIds = variantRecords.map(variantRecord => variantRecord.VARIANTRECORD_PATIENTID);
-		let variantRecordPatientIdsInStatement = addArrayValuesToSql(variantRecordPatientIds);
-		let patientsQuery = 'SELECT * FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_ID"' + variantRecordPatientIdsInStatement;
-		let patients = query.execute(patientsQuery, variantRecordPatientIds);
+		// let variantRecordPatientIds = variantRecords.map(variantRecord => variantRecord.VARIANTRECORD_PATIENTID);
+		// let variantRecordPatientIdsInStatement = addArrayValuesToSql(variantRecordPatientIds);
+		let patientsQuery = 'SELECT * FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_ID" = ?';
+		let patients = query.execute(patientsQuery, [variant.GENETYLLIS_PATIENT.PATIENT_ID]);
+
+		/* LOAD FAMILYHISTORY */
+		let familyHistoryQuery = 'SELECT * FROM "GENETYLLIS_FAMILYHISTORY" WHERE "FAMILYHISTORY_PATIENTID" = ?';
+		let familyHistory = query.execute(familyHistoryQuery, [variant.GENETYLLIS_PATIENT.PATIENT_ID]);
+
+		let familyPatientIds = familyHistory.map(member => member.FAMILYHISTORY_FAMILYMEMBERID);
+
+		/* LOAD CLINICALHISTORY AND PATHOLOGY */
+		familyPatientIds.push(variant.GENETYLLIS_PATIENT.PATIENT_ID);
+		let familyAndPatientIdsInStatement = addArrayValuesToSql(familyPatientIds);
+		let clinicalHistoryQuery = 'SELECT * FROM "GENETYLLIS_CLINICALHISTORY" WHERE "CLINICALHISTORY_PATIENTID"' + familyAndPatientIdsInStatement;
+		let clinicalHistory = query.execute(clinicalHistoryQuery, familyPatientIds);
+
+		let pathologyIds = clinicalHistory.map(memberHistory => memberHistory.CLINICALHISTORY_PATHOLOGYID);
+		pathologyIds = pathologyIds.concat(clinicalSignificancePathologyIds);
+		let pathologyResult = [];
+		if (pathologyIds.length > 0) {
+			let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
+			let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
+
+			pathologyResult = query.execute(pathologyQuery, pathologyIds);
+		}
+
+		/* MAP PATHOLOGY TO CLINICALSIGNIFICANCE */
+		clinicalSignificance.forEach(significance => {
+			significance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === significance.CLINICALSIGNIFICANCE_PATHOLOGYID)
+		})
+
+		/* MAP PATHOLOGY TO CLINICALHISTORY */
+		clinicalHistory.forEach(history => {
+			history.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === history.CLINICALHISTORY_PATHOLOGYID)
+		})
+
+		/* MAP CLINICALHISTORY TO FAMILYHISTORY */
+		familyHistory.forEach(member => {
+			member.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === member.FAMILYHISTORY_FAMILYMEMBERID)
+		})
+
+		/* MAP CLINICALHISTORY TO THE SINGLE PATIENT */
+		patients[0].clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === patients[0].PATIENT_ID)
+		patients[0].familyHistory = familyHistory;
 
 		/* MAP PATIENTS TO VARIANTRECORD */
 		variantRecords.forEach(variantRecord => {

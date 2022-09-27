@@ -174,7 +174,8 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     // patientsDetailsTable
     $scope.filter = function () {
         var query = {};
-        query.PATIENT_ID = $scope.patientId;
+        query.GENETYLLIS_PATIENT = {};
+        query.GENETYLLIS_PATIENT.PATIENT_ID = $scope.patientId;
         query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
         query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE
         query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY
@@ -223,14 +224,12 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
                 console.log(" $scope.patientsDetails", $scope.patientsDetails);
-                localStorage.clear();
+                // localStorage.clear();
 
             }, function (response) {
             });
 
     }
-
-    $scope.filter();
 
     $scope.clearAllFilters = function () {
         angular.forEach($scope.clinicalSignificance, function (item) {
@@ -276,5 +275,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
     }
     $scope.patientId = $scope.fromData.Id
-}]);
 
+    $scope.filter();
+}]);
