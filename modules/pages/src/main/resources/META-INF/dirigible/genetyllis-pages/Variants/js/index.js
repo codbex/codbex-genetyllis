@@ -232,6 +232,7 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
         $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI = []
         $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_FROM = ""
         $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_TO = ""
+        $scope.selectConsequences = ["intron", "exon", "intragenic", "regulatory", "stop", "synonymous", "coding", "non", "splice", "other"]
         $scope.filter()
     }
 

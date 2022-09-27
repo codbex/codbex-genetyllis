@@ -25,41 +25,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     $scope.clickedUrl = "../../images/star.svg";
     $scope.notClickedUrl = "../../images/not-clicked-star.svg";
 
-    $http.get(variantDetailsApi)
-        .then(function (data) {
-            $scope.patientsDetailsTable = []
-            data.data.forEach(data => {
-                $scope.patientsDetailsTable.push(data)
-            })
-            $scope.totalItems = $scope.patientsDetailsTable.length;
-        });
 
-    // table pagination
-    $scope.selectedPerPage = 10;
-    $scope.perPageData = [10, 20, 50, 100]
-    $scope.currentPage = 1;
-    $scope.patientsTableModel = [];
-    $scope.patientsTableData = [{ id: 1, label: "Gender" }, { id: 2, label: "Ethnicity" }, { id: 3, label: "Family history" }];
-
-    $scope.patientsTableSettings = {
-        scrollableHeight: '200px',
-        scrollable: true,
-        enableSearch: true
-    };
-
-    $scope.selectFucn = function () {
-        $scope.patientDetailsTable = ['HGVS', 'Gene', 'Pseudo', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
-
-        $scope.patientDetailsTableInfo = ["HGVS", "GeneId", "BirthDate", "Consequence", "Analysis", "Dates", "s ", "a ", "b "];
-        for (let x = 0; x < $scope.patientsTableModel.length; x++) {
-            let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id)
-            $scope.patientDetailsTable.push(value.label);
-            $scope.patientDetailsTableInfo.push(value.label);
-        }
-    }
-
-    $scope.patientDetailsTable = ['HGVS', 'Gene', 'Pseudo', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
-    $scope.patientDetailsTableInfo = ["HGVS", "GeneId", "BirthDate", "Consequence", "Analysis", "Dates", " s", "a ", " b"];
 
     $scope.GENETYLLIS_GENE = {
         GENE_GENEID: [],
@@ -90,36 +56,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     }
 
 
-
-
-
-
-    // $scope.addColumns = ["", "HGVS", "Filter", "Gene", "Pseudo", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele Freq", "Af (men)", "AF (Bulgarian)", "Analysis"]
-    // Date
-    const newDate = new Date("1990-01-03T01:00:00.000Z");
-    $scope.year = newDate.getFullYear();
-    $scope.month = Number(newDate.getMonth()) + 1;
-    $scope.day = newDate.getDay();
-
-    $scope.fromData = $localStorage.key;
-    $scope.gender = ''
-    //Gender Id
-    $scope.fromData.GenderId == 1 ? "male" : $scope.fromData == 2 ? "female" : "other"
-    if ($scope.fromData.GenderId == 1) {
-        $scope.gender = "male"
-    } else if ($scope.fromData.GenderId == 2) {
-        $scope.gender = "female"
-    } else {
-        $scope.gender = "other"
-    }
-    // population
-    $scope.population = ''
-    if ($scope.fromData.PopulationId == 18) {
-        $scope.population = "Bulgarian";
-    } else {
-        $scope.population = "Other";
-
-    }
     // clinical significance
     $scope.clinicalSignificance = ['Benign', 'Likely benign', 'Pathogenic', 'Likely pathogenic', 'VUS'];
     $scope.selectionClinicalSignificance = [];
@@ -208,6 +144,34 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         $scope.variantsDetails = [];
     }
 
+    // table pagination
+    $scope.selectedPerPage = 10;
+    $scope.perPageData = [10, 20, 50, 100]
+    $scope.currentPage = 1;
+    $scope.patientsTableModel = [];
+    $scope.patientsTableData = [{ id: 1, label: "Gender" }, { id: 2, label: "Ethnicity" }, { id: 3, label: "Family history" }];
+
+    $scope.patientsTableSettings = {
+        scrollableHeight: '200px',
+        scrollable: true,
+        enableSearch: true
+    };
+
+    $scope.selectFucn = function () {
+        $scope.patientDetailsTable = ['HGVS', 'Gene', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
+
+        $scope.patientDetailsTableInfo = ["HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency", "l"];
+        for (let x = 0; x < $scope.patientsTableModel.length; x++) {
+            let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id)
+            $scope.patientDetailsTable.push(value.label);
+            $scope.patientDetailsTableInfo.push(value.label);
+        }
+    }
+
+    $scope.patientDetailsTable = ['HGVS', 'Gene', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
+    $scope.patientDetailsTableInfo = ["HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency", "l"];
+
+    // patientsDetailsTable
     $scope.filter = function () {
         var query = {};
         query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
@@ -219,20 +183,30 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         let patientObject = {};
 
-        $http.post(variantDetailsApi + "/filterVariants", JSON.stringify(query))
+        $http.post(variantDetailsApi + "/filterPatientDetails", JSON.stringify(query))
             .then(function (response) {
                 console.log('response', response)
                 $scope.patientsDetailsTable = [];
                 response.data.data.forEach((patientResult, i) => {
                     console.log(i, patientResult)
                     patientObject = {};
-                    patientObject.Id = patientResult.PATIENT_ID;
-                    patientObject.LabId = patientResult.GENETYLLIS_PATIENT_LABID;
+                    patientObject.HGVS = patientResult.VARIANT_HGVS;
+                    patientObject.GeneId = patientResult.VARIANT_GENEID;
+                    patientObject.Consequence = patientResult.VARIANT_CONSEQUENCE;
+                    patientObject.Homozygous = patientResult.variantRecords[0].VARIANTRECORD_HOMOZYGOUS ? "Yes" : "No";
+                    patientObject.Pathology = patientResult.clinicalSignificance[0].pathology[0].PATHOLOGY_NAME;
+
+                    patientObject["Clinical significance"] = patientResult.clinicalSignificance[0].CLINICALSIGNIFICANCE_ID;
+                    patientObject["Allele frequency"] = patientResult.alleleFrequency[0].ALLELEFREQUENCY_FREQUENCY;
+
+
+
+
                     if (patientResult.clinicalHistory) {
                         patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     }
                     if (patientResult.analysis) {
-                        patientObject.Analysis = patientResult.analysis[0]?.ANALYSIS_ID;
+                        // patientObject.HGVS = i;
                         patientObject.Dates = patientResult.analysis[0]?.ANALYSIS_DATE.split('T')[0];
                     }
                     patientObject.Gender = patientResult?.PATIENT_GENDERID;
@@ -271,6 +245,31 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         $scope.filter()
     }
 
+
+    const newDate = new Date("1990-01-03T01:00:00.000Z");
+    $scope.year = newDate.getFullYear();
+    $scope.month = Number(newDate.getMonth()) + 1;
+    $scope.day = newDate.getDay();
+
+    $scope.fromData = $localStorage.key;
+    $scope.gender = ''
+    //Gender Id
+    $scope.fromData.GenderId == 1 ? "male" : $scope.fromData == 2 ? "female" : "other"
+    if ($scope.fromData.GenderId == 1) {
+        $scope.gender = "male"
+    } else if ($scope.fromData.GenderId == 2) {
+        $scope.gender = "female"
+    } else {
+        $scope.gender = "other"
+    }
+    // population
+    $scope.population = ''
+    if ($scope.fromData.PopulationId == 18) {
+        $scope.population = "Bulgarian";
+    } else {
+        $scope.population = "Other";
+
+    }
 
 
 }]);
