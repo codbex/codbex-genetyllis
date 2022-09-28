@@ -14,7 +14,7 @@ var page = angular.module("variant", ['ngStorage', 'angularUtils.directives.dirP
 page.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
-page.controller('VariantController', ['$scope', '$http', function ($scope, $http) {
+page.controller('VariantController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
 
@@ -66,11 +66,17 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
         ALLELEFREQUENCY_FREQUENCY_FROM: '',
         ALLELEFREQUENCY_FREQUENCY_TO: ''
     }
-
+    // add gene filters
     $scope.addGeneFilter = function () {
+        if (!$scope.selectedGeneId || $scope.GENETYLLIS_GENE.GENE_NAME.includes($scope.selectedGeneId)) return
         $scope.GENETYLLIS_GENE.GENE_NAME.push($scope.selectedGeneId)
         $scope.selectedGeneId = '';
-        console.log($scope.GENETYLLIS_GENE.GENE_NAME)
+
+    }
+
+    // remove gene filter
+    $scope.removeGene = function (i) {
+        $scope.GENETYLLIS_GENE.GENE_NAME.splice(i, 1)
     }
 
     // add conssequence
@@ -90,8 +96,9 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
     }
 
     // add Pathology
-
     $scope.addPathologyFilter = function (cui) {
+        if (!cui || $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.includes(cui)) return
+
         $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.push(cui)
         $scope.selectedPathologyCui = '';
     }
@@ -102,9 +109,16 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
     }
 
     // clinical significance
-    $scope.clinicalSignificance = ['Benign', 'Likely benign', 'Pathogenic', 'Likely pathogenic', 'VUS'];
+    $scope.clinicalSignificance = [
+        { name: "Benign" },
+        { name: "Likely benign" },
+        { name: "Pathogenic" },
+        { name: "Likely pathogenic" },
+        { name: "VUS" }
+    ];
+
     $scope.selectionClinicalSignificance = [];
-    $scope.toggleSelection = function toggleSelection(clinicalSignificance) {
+    $scope.toggleSelection = function (clinicalSignificance) {
         var idx = $scope.selectionClinicalSignificance.indexOf(clinicalSignificance);
         if (idx > -1) {
             // remove clinical significance
@@ -116,6 +130,7 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
             $scope.selectionClinicalSignificance.push(clinicalSignificance);
         }
         console.log($scope.selectionClinicalSignificance)
+
     };
 
     //  allelefrequency
@@ -136,18 +151,21 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
                 response.data.data.forEach(data => {
                     let variantObj = {}
                     variantObj.HGVS = data.VARIANT_HGVS
-                    variantObj.Gene = data.genes[0].GENE_NAME
+                    if (data.genes) {
+                        variantObj.Gene = data.genes[0]?.GENE_NAME
+                    }
                     variantObj.VARIANT_CONSEQUENCE = data.VARIANT_CONSEQUENCE
                     variantObj.GeneId = data.VARIANT_GENEID
                     variantObj.Reference = data.VARIANT_REFERENCE
                     variantObj.Alternative = data.VARIANT_ALTERNATIVE
-                    variantObj.Pathology = data.clinicalSignificance?.pathology[0]?.PATHOLOGY_NAME;
-
-                    variantObj.Ethnicity = data.alleleFrequency[0]?.ALLELEFREQUENCY_POPULATIONID
-
+                    if (data.clinicalSignificance && data.clinicalSignificance.pathology) {
+                        variantObj.Pathology = data.clinicalSignificance.pathology[0]?.PATHOLOGY_NAME;
+                    }
+                    if (data.alleleFrequency) {
+                        variantObj.Ethnicity = data.alleleFrequency[0]?.ALLELEFREQUENCY_POPULATIONID === 12 ? "Bulgarian" : "Other ethnicity";
+                    }
                     $scope.variantsDetails.push(variantObj)
                 })
-
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
@@ -198,4 +216,38 @@ page.controller('VariantController', ['$scope', '$http', function ($scope, $http
         $scope.filter()
         $scope.variantsDetails = [];
     }
+
+    $scope.clearAllFilters = function () {
+        angular.forEach($scope.clinicalSignificance, function (item) {
+            item.Selected = false;
+        });
+
+        $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ""
+        $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ""
+        $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ""
+        $scope.GENETYLLIS_VARIANT.VARIANT_REFERENCE = ""
+        $scope.GENETYLLIS_VARIANT.VARIANT_ALTERNATIVE = ""
+        $scope.GENETYLLIS_GENE.GENE_NAME = []
+        $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = []
+        $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI = []
+        $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_FROM = ""
+        $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_TO = ""
+        $scope.selectConsequences = ["intron", "exon", "intragenic", "regulatory", "stop", "synonymous", "coding", "non", "splice", "other"]
+        $scope.filter()
+    }
+
+    $scope.redirectPatients = function (data) {
+        console.log(data, "data");
+        $localStorage.$default({
+            HGVS: data
+        });
+    }
+
+    $scope.checkColumn = function (e) {
+        return e == "HGVS"
+    }
+    $scope.notLink = function (e) {
+        return e != "HGVS"
+    }
+
 }]);

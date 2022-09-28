@@ -15,59 +15,54 @@ const daoApi = require("db/v4/dao");
 const EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
 
 let dao = daoApi.create({
-	table: "GENETYLLIS_ANALYSIS",
+	table: "GENETYLLIS_HIGLIGHTEDVARIANTS",
 	properties: [
 		{
-			name: "Id",
-			column: "ANALYSIS_ID",
+			name: "HighlightedVariantId",
+			column: "HIGLIGHTEDVARIANTS_HIGHLIGHTEDVARIANTID",
 			type: "INTEGER",
 			id: true,
 			autoIncrement: true,
 		},
  {
-			name: "Date",
-			column: "ANALYSIS_DATE",
-			type: "DATE",
-		},
- {
-			name: "ProviderId",
-			column: "ANALYSIS_PROVIDERID",
+			name: "VariantRecordId",
+			column: "HIGLIGHTEDVARIANTS_VARIANTRECORDID",
 			type: "INTEGER",
 		},
  {
-			name: "PlatformId",
-			column: "ANALYSIS_PLATFORMID",
+			name: "VariantId",
+			column: "HIGLIGHTEDVARIANTS_VARIANTID",
 			type: "INTEGER",
 		},
  {
-			name: "PatientId",
-			column: "GENETYLLIS_ANALYSIS_PATIENTID",
-			type: "INTEGER",
+			name: "Status",
+			column: "HIGLIGHTEDVARIANTS_STATIS",
+			type: "BOOLEAN",
 		}
 ]
 });
 
 exports.list = function(settings) {
 	return dao.list(settings).map(function(e) {
-		EntityUtils.setDate(e, "Date");
+		EntityUtils.setBoolean(e, "Status");
 		return e;
 	});
 };
 
 exports.get = function(id) {
 	let entity = dao.find(id);
-	EntityUtils.setDate(entity, "Date");
+	EntityUtils.setBoolean(entity, "Status");
 	return entity;
 };
 
 exports.create = function(entity) {
-	EntityUtils.setLocalDate(entity, "Date");
+	EntityUtils.setBoolean(entity, "Status");
 	let id = dao.insert(entity);
 	triggerEvent("Create", {
-		table: "GENETYLLIS_ANALYSIS",
+		table: "GENETYLLIS_HIGLIGHTEDVARIANTS",
 		key: {
-			name: "Id",
-			column: "ANALYSIS_ID",
+			name: "HighlightedVariantId",
+			column: "HIGLIGHTEDVARIANTS_HIGHLIGHTEDVARIANTID",
 			value: id
 		}
 	});
@@ -75,14 +70,14 @@ exports.create = function(entity) {
 };
 
 exports.update = function(entity) {
-	// EntityUtils.setLocalDate(entity, "Date");
+	EntityUtils.setBoolean(entity, "Status");
 	dao.update(entity);
 	triggerEvent("Update", {
-		table: "GENETYLLIS_ANALYSIS",
+		table: "GENETYLLIS_HIGLIGHTEDVARIANTS",
 		key: {
-			name: "Id",
-			column: "ANALYSIS_ID",
-			value: entity.Id
+			name: "HighlightedVariantId",
+			column: "HIGLIGHTEDVARIANTS_HIGHLIGHTEDVARIANTID",
+			value: entity.HighlightedVariantId
 		}
 	});
 };
@@ -90,10 +85,10 @@ exports.update = function(entity) {
 exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
-		table: "GENETYLLIS_ANALYSIS",
+		table: "GENETYLLIS_HIGLIGHTEDVARIANTS",
 		key: {
-			name: "Id",
-			column: "ANALYSIS_ID",
+			name: "HighlightedVariantId",
+			column: "HIGLIGHTEDVARIANTS_HIGHLIGHTEDVARIANTID",
 			value: id
 		}
 	});
@@ -104,7 +99,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_ANALYSIS");
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_HIGLIGHTEDVARIANTS");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -116,5 +111,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/analysis/Analysis/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/variants/HiglightedVariants/" + operation).send(JSON.stringify(data));
 }

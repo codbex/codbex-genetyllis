@@ -143,9 +143,12 @@ li {
 .family-history {
   width: 61.5%;
 }
-
+.clinical-history table,
+.family-history table,
 .history-table table {
   width: 100%;
+  border-collapse: unset;
+  margin-bottom: 0
 }
 
 .history-table table th,

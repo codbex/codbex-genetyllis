@@ -39,22 +39,17 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         }
     }
 
-    $scope.checkColumn = function (e) {
-        return e == 'Id'
-    }
-    $scope.notLink = function (e) {
-        return e != 'Id'
-    }
 
-    $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
+
     $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
+    $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
     // _|_
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100]
     $scope.currentPage = 1;
 
-    const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
-    const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/Patients/services/alleleFr.js';
+    const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/variants.js';
+    const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/services/alleleFr.js';
     $scope.patientsDetails = []
     $scope.variantsRef = ['A', 'G', 'C', 'T', 'U']
     $scope.addedLabId = [];
@@ -153,12 +148,18 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
                     patientObject.Id = patientResult.PATIENT_ID;
                     patientObject.LabId = patientResult.GENETYLLIS_PATIENT_LABID;
                     patientObject.BirthDate = patientResult.PATIENT_AGE.split('T')[0];
-                    patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
-                    patientObject.Analysis = patientResult?.analysis[0]?.ANALYSIS_ID;
-                    patientObject.Dates = patientResult?.analysis[0]?.ANALYSIS_DATE.split('T')[0];
+                    if (patientResult.clinicalHistory) {
+                        patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    }
+                    if (patientResult.analysis) {
+                        patientObject.Analysis = patientResult.analysis[0]?.ANALYSIS_ID;
+                        patientObject.Dates = patientResult.analysis[0]?.ANALYSIS_DATE.split('T')[0];
+                    }
                     patientObject.Gender = patientResult?.PATIENT_GENDERID;
                     patientObject.Ethnicity = patientResult?.GENETYLLIS_PATIENT_POPULATIONID;
-                    patientObject["Family history"] = patientResult?.familyHistory[0]?.patients[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    if (patientResult.familyHistory && patientResult.familyHistory.clinicalHistory) {
+                        patientObject["Family history"] = patientResult.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                    }
                     $scope.patientsDetails.push(patientObject);
 
                 })
@@ -179,18 +180,18 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     }
 
 
-    $http.get(variantDetailsApi)
-        .then(function (data) {
-            // $scope.pathologyDatas = data.data;
-            $scope.variants = data.data;
-        });
-    $http.get(alleleFrDetailsApi)
-        .then(function (data) {
-            for (let a = 0; a < 3; a++) {
-                $scope.variants[a].Gene = data?.data[a]?.Frequency;
-                $scope.variants[a].Filter = data?.data[a]?.GenderId;
-            }
-        })
+    // $http.get(variantDetailsApi)
+    //     .then(function (data) {
+    //         // $scope.pathologyDatas = data.data;
+    //         $scope.variants = data.data;
+    //     });
+    // $http.get(alleleFrDetailsApi)
+    //     .then(function (data) {
+    //         for (let a = 0; a < 3; a++) {
+    //             $scope.variants[a].Gene = data?.data[a]?.Frequency;
+    //             $scope.variants[a].Filter = data?.data[a]?.GenderId;
+    //         }
+    //     })
 
 
     // LabID
@@ -252,53 +253,6 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     $scope.chromList.push(`chrX`)
     $scope.chromList.push(`chrY`)
 
-
-
-
-    $scope.clearAllFilters = function () {
-        $scope.selectedLabId = ""
-        selectedPatientConceptId = ""
-        $scope.selectedPatientConceptId = ""
-        $scope.selectedFamilyConceptId = ""
-        // $scope.addedLabId = [];
-        // $scope.addedClinicalHistoryId = [];
-        // $scope.addedFamilyHistoryId = [];
-        // $scope.addedVariantId = [];
-        $scope.maleCheckbox = false;
-        $scope.femaleCheckbox = false;
-        $scope.otherGender = false;
-        $scope.otherEthnicity = false;
-        $scope.bulgarian = false;
-        $scope.GENETYLLIS_PATIENT = {
-            GENETYLLIS_PATIENT_LABID: [],
-            PATIENT_AGE_FROM: '',
-            PATIENT_AGE_TO: '',
-            PATIENT_GENDERID: [],
-            GENETYLLIS_PATIENT_POPULATIONID: []
-        }
-
-        $scope.GENETYLLIS_CLINICALHISTORY = {
-            PATHOLOGY_CUI: [],
-            GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
-            GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
-        }
-
-        $scope.GENETYLLIS_FAMILYHISTORY = {
-            PATHOLOGY_CUI: [],
-            GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
-            GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
-        }
-        $scope.GENETYLLIS_ANALYSIS.ANALYSIS_DATE = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_ALT = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
-        $scope.filter()
-    }
-
     if ($scope.maleCheckbox == undefined) $scope.maleCheckbox = false;
     if ($scope.femaleCheckbox == undefined) $scope.femaleCheckbox = false;
     if ($scope.otherGender == undefined) $scope.otherGender = false;
@@ -353,20 +307,59 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         }
     }
 
-    $scope.getLocation = function (s) {
-        $localStorage.$default({
-            x: s
-        });
-    }
 
     $scope.redirectPatients = function (data) {
         console.log(data, "data");
         $localStorage.$default({
-            key: data
+            patient: data
         });
-        // $localStorage.setItem('key', data);
+    }
+    $scope.checkColumn = function (e) {
+        return e == 'Id'
+    }
+    $scope.notLink = function (e) {
+        return e != 'Id'
     }
 
+    $scope.clearAllFilters = function () {
+        $scope.selectedLabId = ""
+        selectedPatientConceptId = ""
+        $scope.selectedPatientConceptId = ""
+        $scope.selectedFamilyConceptId = ""
+        $scope.maleCheckbox = false;
+        $scope.femaleCheckbox = false;
+        $scope.otherGender = false;
+        $scope.otherEthnicity = false;
+        $scope.bulgarian = false;
+        $scope.GENETYLLIS_PATIENT = {
+            GENETYLLIS_PATIENT_LABID: [],
+            PATIENT_AGE_FROM: '',
+            PATIENT_AGE_TO: '',
+            PATIENT_GENDERID: [],
+            GENETYLLIS_PATIENT_POPULATIONID: []
+        }
+
+        $scope.GENETYLLIS_CLINICALHISTORY = {
+            PATHOLOGY_CUI: [],
+            GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
+            GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
+        }
+
+        $scope.GENETYLLIS_FAMILYHISTORY = {
+            PATHOLOGY_CUI: [],
+            GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
+            GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
+        }
+        $scope.GENETYLLIS_ANALYSIS.ANALYSIS_DATE = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_ALT = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = ''
+        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
+        $scope.filter()
+    }
 
 
 }]);

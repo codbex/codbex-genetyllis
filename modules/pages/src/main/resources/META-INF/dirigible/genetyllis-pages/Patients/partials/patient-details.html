@@ -110,34 +110,19 @@
                         </div>
                         <div class="table-holder table-head-max-height">
 
-                            <table border="1px solid #000" cellspacing="0">
+                            <table border="1px solid #000" class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            Age of onset
+                                        <th ng-repeat="x in clinicalHistoryThead">
+                                            {{x}}
                                         </th>
-                                        <th>
-                                            Pathology
-                                        </th>
-                                        <th>
-                                            Notes
-                                        </th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="data in variants">
-                                        <td>
-                                            <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
-            cursor: pointer" /> -->
-                                            <image ng-click="photo.clicked = !photo.clicked ;imageHandler($index)"
-                                                ng-src="{{photo.clicked ? clickedUrl : notClickedUrl}}" style="height: 20px; width: 20px;
-            cursor: pointer" />
+                                    <tr ng-repeat="data in patientClinicalHistory">
+                                        <td ng-repeat="x in data">
+                                            {{x}}
                                         </td>
-                                        <td>
-                                            {{data.HGVS}}
-                                        </td>
-                                        <td></td>
 
                                     </tr>
                                 </tbody>
@@ -155,42 +140,21 @@
                             </div>
                         </div>
                         <div class="table-holder table-head-max-height">
-                            <table border="1px solid #000" cellspacing="0">
+                            <table border="1px solid #000" class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            PID
-                                        </th>
-                                        <th>
-                                            Relation
-                                        </th>
-                                        <th>
-                                            Age of onset
-                                        </th>
-                                        <th>
-                                            Pathology
-                                        </th>
-                                        <th>
-                                            Notes
+                                        <th ng-repeat="x in familyHistoryThead">
+                                            {{x}}
                                         </th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="data in variants">
-                                        <td>
-                                            <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
-            cursor: pointer" /> -->
-                                            <image ng-click="photo.clicked = !photo.clicked ;imageHandler($index)"
-                                                ng-src="{{photo.clicked ? clickedUrl : notClickedUrl}}" style="height: 20px; width: 20px;
-            cursor: pointer" />
+                                    <tr ng-repeat="data in patientFamilylHistory">
+                                        <td ng-repeat="x in familyHistoryThead">
+                                            {{data[x]}}
                                         </td>
-                                        <td>
-                                            {{data.HGVS}}
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+
 
                                     </tr>
                                 </tbody>
@@ -223,7 +187,7 @@
                                 </div>
                                 <div class="col">
                                     <input type="text" class="form-control" placeholder="Date"
-                                        ng-model="entity.BirthDate" onfocus="(this.type='date')"
+                                        ng-model="GENETYLLIS_ANALYSIS.ANALYSIS_DATE" onfocus="(this.type='date')"
                                         onblur="(this.type='text')" required>
                                 </div>
                             </div>
@@ -290,41 +254,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <h5>
-                                        Filter
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            PASS
-                                        </label>
-                                    </div>
-                                </div>
 
-                                <div class="col-5">
-                                    <div class="select-columns">
-                                        <select class="form-select form-control">
-                                            <option selected>Columns</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="holder">
                         <div class="container">
                             <div class="row">
@@ -344,32 +274,11 @@
                             </div>
                             <div class="addedText">
                                 <span ng-repeat="i in GENETYLLIS_GENE.GENE_NAME track by $index"
-                                    ng-click="removeConsequence($index)">{{i}}</span>
+                                    ng-click="removeGene($index)">{{i}}</span>
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="holder">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            pseudo
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
-                                            not pseudo
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+
                     <div class="holder">
                         <div class="container">
                             <div class="row">
@@ -382,9 +291,7 @@
                                         ng-model="selectedConsequence" ng-change="addConsequenceFilter()">
                                     </select>
                                 </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn btn-secondary filterBtn">Add</button>
-                                </div>
+
                             </div>
                             <div class="addedText">
                                 <span ng-repeat="i in GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE track by $index"
@@ -440,10 +347,13 @@
                     </div>
                     <div class="holder">
                         <div class="container checkboxes-holder">
-                            <label ng-repeat="x in clinicalSignificance">
-                                <input type="checkbox" name="selectedFruits[]" value="{{clinicalSignificance}}"
-                                    ng-checked="selection.indexOf(x) > -1" ng-click="toggleSelection(x)"> {{x}}
-                            </label>
+                            <div class="container checkboxes-holder">
+                                <label ng-repeat="x in clinicalSignificance">
+                                    <input type="checkbox" value="{{clinicalSignificance}}"
+                                        ng-click="toggleSelection(x.name)" ng-model="x.Selected">
+                                    {{x.name}}
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="holder">
@@ -478,7 +388,9 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col">
-                                    <button type="button" class="btn btn-link">Clear all filter</button>
+                                    <button type="button" class="btn btn-link"
+                                        ng-click="clearAllFilters(clinicalSignificance.length)">Clear all
+                                        filter</button>
                                 </div>
                                 <div class="col">
                                     <button ng-click="filter()" type="button"
@@ -493,8 +405,8 @@
                         <div class="row">
                             <div class="paging">
                                 <div class="select-columns">
-                                    <div ng-dropdown-multiselect="" options="variantsTableData"
-                                        extra-settings="patientsTableSettings" selected-model="patientInfoModel"
+                                    <div ng-dropdown-multiselect="" options="patientsTableData"
+                                        extra-settings="patientsTableSettings" selected-model="patientsTableModel"
                                         class="multiselect-wrap" ng-click="selectFucn()"></div>
                                 </div>
                                 <div class="per-page">
@@ -521,16 +433,22 @@
                         <table border="1px solid #000" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th ng-repeat="x in variantTable">
+                                    <th ng-repeat="x in patientDetailsTable">
                                         {{x}}
                                     </th>
 
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr dir-paginate="data in variantsDetails | itemsPerPage: selectedPerPage"
+                                <tr dir-paginate="data in patientsDetailsTable | itemsPerPage:selectedPerPage"
                                     total-items="totalItems">
-                                    <td ng-repeat="info in variantPageTableInfo">{{data[info]}}</td>
+                                    <td ng-repeat="i in patientDetailsTableInfo ">
+
+                                        <!-- <a href="partials/patient-details.html" ng-if="checkColumn(i)"
+                                            ng-click="redirectPatients(data)">{{data[i]}}</a> -->
+
+                                        <span>{{data[i]}}</span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

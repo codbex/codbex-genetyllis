@@ -734,6 +734,38 @@
                 ]
             },
             {
+                "name": "GENETYLLIS_HIGLIGHTEDVARIANTS",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "HIGLIGHTEDVARIANTS_HIGHLIGHTEDVARIANTID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "HIGLIGHTEDVARIANTS_VARIANTRECORDID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "HIGLIGHTEDVARIANTS_VARIANTID"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "HIGLIGHTEDVARIANTS_STATIS"
+                    }
+                ]
+            },
+            {
                 "name": "Patient_Gender",
                 "type": "foreignKey",
                 "table": "GENETYLLIS_PATIENT",
@@ -955,6 +987,24 @@
                 "table": "GENETYLLIS_NOTIFICATION",
                 "constraintName": "Notification_Variant",
                 "columns": "NOTIFICATION_VARIANTID",
+                "referencedTable": "GENETYLLIS_VARIANT",
+                "referencedColumns": "VARIANT_ID"
+            },
+            {
+                "name": "HiglightedVariants_VariantRecord",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_HIGLIGHTEDVARIANTS",
+                "constraintName": "HiglightedVariants_VariantRecord",
+                "columns": "HIGLIGHTEDVARIANTS_VARIANTRECORDID",
+                "referencedTable": "GENETYLLIS_VARIANTRECORD",
+                "referencedColumns": "VARIANTRECORD_ID"
+            },
+            {
+                "name": "HiglightedVariants_Variant",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_HIGLIGHTEDVARIANTS",
+                "constraintName": "HiglightedVariants_Variant",
+                "columns": "HIGLIGHTEDVARIANTS_VARIANTID",
                 "referencedTable": "GENETYLLIS_VARIANT",
                 "referencedColumns": "VARIANT_ID"
             }
