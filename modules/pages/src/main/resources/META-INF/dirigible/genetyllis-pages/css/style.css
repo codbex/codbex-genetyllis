@@ -144,6 +144,7 @@ li {
   width: 61.5%;
 }
 .clinical-history table,
+.family-history table,
 .history-table table {
   width: 100%;
   border-collapse: unset;

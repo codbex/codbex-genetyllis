@@ -110,34 +110,19 @@
                         </div>
                         <div class="table-holder table-head-max-height">
 
-                            <table border="1px solid #000" cellspacing="0">
+                            <table border="1px solid #000" class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            Age of onset
+                                        <th ng-repeat="x in clinicalHistoryThead">
+                                            {{x}}
                                         </th>
-                                        <th>
-                                            Pathology
-                                        </th>
-                                        <th>
-                                            Notes
-                                        </th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="data in variants">
-                                        <td>
-                                            <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
-            cursor: pointer" /> -->
-                                            <image ng-click="photo.clicked = !photo.clicked ;imageHandler($index)"
-                                                ng-src="{{photo.clicked ? clickedUrl : notClickedUrl}}" style="height: 20px; width: 20px;
-            cursor: pointer" />
+                                    <tr ng-repeat="data in patientClinicalHistory">
+                                        <td ng-repeat="x in data">
+                                            {{x}}
                                         </td>
-                                        <td>
-                                            {{data.HGVS}}
-                                        </td>
-                                        <td></td>
 
                                     </tr>
                                 </tbody>
@@ -155,42 +140,21 @@
                             </div>
                         </div>
                         <div class="table-holder table-head-max-height">
-                            <table border="1px solid #000" cellspacing="0">
+                            <table border="1px solid #000" class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            PID
-                                        </th>
-                                        <th>
-                                            Relation
-                                        </th>
-                                        <th>
-                                            Age of onset
-                                        </th>
-                                        <th>
-                                            Pathology
-                                        </th>
-                                        <th>
-                                            Notes
+                                        <th ng-repeat="x in familyHistoryThead">
+                                            {{x}}
                                         </th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="data in variants">
-                                        <td>
-                                            <!-- <image ng-src="{{photo.url}}" ng-click="ImageClick($index)" style="height: 20px; width: 20px;
-            cursor: pointer" /> -->
-                                            <image ng-click="photo.clicked = !photo.clicked ;imageHandler($index)"
-                                                ng-src="{{photo.clicked ? clickedUrl : notClickedUrl}}" style="height: 20px; width: 20px;
-            cursor: pointer" />
+                                    <tr ng-repeat="data in patientFamilylHistory">
+                                        <td ng-repeat="x in familyHistoryThead">
+                                            {{data[x]}}
                                         </td>
-                                        <td>
-                                            {{data.HGVS}}
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+
 
                                     </tr>
                                 </tbody>

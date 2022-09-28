@@ -39,12 +39,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         }
     }
 
-    $scope.checkColumn = function (e) {
-        return e == 'Id'
-    }
-    $scope.notLink = function (e) {
-        return e != 'Id'
-    }
+
 
     $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
     $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
@@ -185,18 +180,18 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
     }
 
 
-    $http.get(variantDetailsApi)
-        .then(function (data) {
-            // $scope.pathologyDatas = data.data;
-            $scope.variants = data.data;
-        });
-    $http.get(alleleFrDetailsApi)
-        .then(function (data) {
-            for (let a = 0; a < 3; a++) {
-                $scope.variants[a].Gene = data?.data[a]?.Frequency;
-                $scope.variants[a].Filter = data?.data[a]?.GenderId;
-            }
-        })
+    // $http.get(variantDetailsApi)
+    //     .then(function (data) {
+    //         // $scope.pathologyDatas = data.data;
+    //         $scope.variants = data.data;
+    //     });
+    // $http.get(alleleFrDetailsApi)
+    //     .then(function (data) {
+    //         for (let a = 0; a < 3; a++) {
+    //             $scope.variants[a].Gene = data?.data[a]?.Frequency;
+    //             $scope.variants[a].Filter = data?.data[a]?.GenderId;
+    //         }
+    //     })
 
 
     // LabID
@@ -312,30 +307,25 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', f
         }
     }
 
-    $scope.getLocation = function (s) {
-        $localStorage.$default({
-            x: s
-        });
-    }
 
     $scope.redirectPatients = function (data) {
         console.log(data, "data");
         $localStorage.$default({
-            key: data
+            patient: data
         });
-        // $localStorage.setItem('key', data);
     }
-
+    $scope.checkColumn = function (e) {
+        return e == 'Id'
+    }
+    $scope.notLink = function (e) {
+        return e != 'Id'
+    }
 
     $scope.clearAllFilters = function () {
         $scope.selectedLabId = ""
         selectedPatientConceptId = ""
         $scope.selectedPatientConceptId = ""
         $scope.selectedFamilyConceptId = ""
-        // $scope.addedLabId = [];
-        // $scope.addedClinicalHistoryId = [];
-        // $scope.addedFamilyHistoryId = [];
-        // $scope.addedVariantId = [];
         $scope.maleCheckbox = false;
         $scope.femaleCheckbox = false;
         $scope.otherGender = false;
