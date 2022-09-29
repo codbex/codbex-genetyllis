@@ -93,7 +93,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         VARIANT_REF: '',
         VARIANT_ALT: '',
         VARIANT_CONSEQUENCE: [],
-        HGVS: ''
+        VARIANT_HGVS: ''
     }
     $scope.GENETYLLIS_ANALYSIS = {
         ANALYSIS_DATE: "",
@@ -296,6 +296,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
 
+        console.log(query.GENETYLLIS_VARIANT)
         $http.post(patientsOptionsApi + "/filterVariantDetails", JSON.stringify(query))
             .then(function (response) {
                 $scope.variants = []
@@ -317,9 +318,9 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                 });
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
+                localStorage.clear();
             })
     }
-    $scope.filter();
 
     $scope.pageChangeHandler = function (curPage) {
         $scope.currentPage = curPage;
@@ -330,8 +331,9 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     $scope.fromData = $localStorage.HGVS;
     $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
+    console.log($scope.GENETYLLIS_VARIANT.VARIANT_HGVS)
     $scope.filter()
-    localStorage.clear();
+
 
 }]);
 
