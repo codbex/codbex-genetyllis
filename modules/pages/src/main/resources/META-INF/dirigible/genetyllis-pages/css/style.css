@@ -422,6 +422,13 @@ li {
 .editPatients {
   display: flex;
   margin: unset;
+  margin-bottom: 10px;
+}
+.editPatients h4 {
+  margin: unset;
+}
+.editPatients .row {
+  align-items: flex-end;
 }
 .checkboxes-holder {
   display: flex;
@@ -433,4 +440,8 @@ li {
 
   height: 200px;
   overflow-y: scroll;
+}
+
+.currPage {
+  background: #1DB9C3;
 }
