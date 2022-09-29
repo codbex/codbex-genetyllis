@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2022 codbex or an codbex affiliate company and contributors
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v20.html
- *
- * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
- * SPDX-License-Identifier: EPL-2.0
- */
 const query = require("db/v4/query");
 const producer = require("messaging/v4/producer");
 const daoApi = require("db/v4/dao");
@@ -56,8 +45,13 @@ let dao = daoApi.create({
 		},
  {
 			name: "AnalysisId",
-			column: "GENETYLLIS_VARIANTRECORD_ANALYSISID",
+			column: "VARIANTRECORD_ANALYSISID",
 			type: "INTEGER",
+		},
+ {
+			name: "Highlight",
+			column: "VARIANTRECORD_HIGHLIGHT",
+			type: "BOOLEAN",
 		}
 ]
 });
@@ -65,6 +59,7 @@ let dao = daoApi.create({
 exports.list = function(settings) {
 	return dao.list(settings).map(function(e) {
 		EntityUtils.setBoolean(e, "Homozygous");
+		EntityUtils.setBoolean(e, "Highlight");
 		return e;
 	});
 };
@@ -72,11 +67,13 @@ exports.list = function(settings) {
 exports.get = function(id) {
 	let entity = dao.find(id);
 	EntityUtils.setBoolean(entity, "Homozygous");
+	EntityUtils.setBoolean(entity, "Highlight");
 	return entity;
 };
 
 exports.create = function(entity) {
 	EntityUtils.setBoolean(entity, "Homozygous");
+	EntityUtils.setBoolean(entity, "Highlight");
 	let id = dao.insert(entity);
 	triggerEvent("Create", {
 		table: "GENETYLLIS_VARIANTRECORD",
@@ -91,6 +88,7 @@ exports.create = function(entity) {
 
 exports.update = function(entity) {
 	EntityUtils.setBoolean(entity, "Homozygous");
+	EntityUtils.setBoolean(entity, "Highlight");
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_VARIANTRECORD",
@@ -119,7 +117,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_VARIANTRECORD");
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM VARIANTRECORD");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;

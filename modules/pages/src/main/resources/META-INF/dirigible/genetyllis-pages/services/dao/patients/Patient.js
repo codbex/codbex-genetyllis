@@ -82,6 +82,10 @@ exports.filterPatients = function (patient) {
 		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS, filterSql);
 	}
 
+	// if (variant.GENETYLLIS_SIGNIFICANCE) {
+	// 	buildFilterSql(variant.GENETYLLIS_SIGNIFICANCE);
+	// }
+
 	countSql += filterSql;
 
 	filterSql += " LIMIT " + patient.perPage + " OFFSET " + patient.currentPage;
@@ -218,6 +222,7 @@ function addArrayValuesToSql(array) {
 
 	return inStatement;
 }
+// 'LEFT JOIN "GENETYLLIS_SIGNIFICANCE" GS ON GC."CLINICALSIGNIFICANCE_SIGNIFICANCEID" = GS."SIGNIFICANCE_ID" ' +
 
 function initFilterSql() {
 	useWhere = true;

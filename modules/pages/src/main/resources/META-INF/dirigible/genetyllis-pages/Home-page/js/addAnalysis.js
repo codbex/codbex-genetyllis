@@ -39,20 +39,20 @@ addAnalysis.factory('httpRequestInterceptor', function () {
 addAnalysis.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpRequestInterceptor');
 }])
-addAnalysis.factory('$messageHub', [function () {
-    let messageHub = new FramesMessageHub();
-    let message = function (evtName, evtData) {
-        messageHub.post({ data: evtData }, evtName);
-    };
-    let on = function (topic, callback) {
-        messageHub.subscribe(callback, topic);
-    };
-    return {
-        message: message,
-        on: on
-    };
-}])
-addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', '$messageHub', function ($scope, $http, FileUploader, $messageHub) {
+// addAnalysis.factory('$messageHub', [function () {
+//     let messageHub = new FramesMessageHub();
+//     let message = function (evtName, evtData) {
+//         messageHub.post({ data: evtData }, evtName);
+//     };
+//     let on = function (topic, callback) {
+//         messageHub.subscribe(callback, topic);
+//     };
+//     return {
+//         message: message,
+//         on: on
+//     };
+// }])
+addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', function ($scope, $http, FileUploader) {
     var patientidOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.patientidOptions = [];

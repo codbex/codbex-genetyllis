@@ -193,40 +193,43 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
         $http.post(variantDetailsApi + "/filterPatientDetails", JSON.stringify(query))
             .then(function (response) {
-                console.log('response', response)
                 $scope.patientsDetailsTable = [];
                 $scope.patientClinicalHistory = []
                 $scope.patientFamilylHistory = []
 
-                // patient clinical history
-                let patientClinicalHistoryDetails = response.data.data[0].variantRecords[0]?.patients[0]?.clinicalHistory;
+                // patient clinical history 
+                let patientClinicalHistoryDetails = response.data.data[0].variantRecords[0]?.patients
+                if (patientClinicalHistoryDetails.length > 0) {
+                    patientClinicalHistoryDetails = response.data.data[0].variantRecords[0]?.patients[0]?.clinicalHistory;
 
-                patientClinicalHistoryDetails.forEach((el, i) => {
-                    patientClinicalHistoryObj = {}
-                    patientClinicalHistoryObj['Age of onset'] = el.GENETYLLIS_CLINICALHISTORY_AGEONSET
-                    patientClinicalHistoryObj.Pathology = el.pathology[0].PATHOLOGY_NAME
-                    patientClinicalHistoryObj.Notes = el.GENETYLLIS_CLINICALHISTORY_NOTES
-                    $scope.patientClinicalHistory.push(patientClinicalHistoryObj);
-                })
-                // patient family history
-                let patientFamilyHistoryDetails = response.data.data[0].variantRecords[0]?.patients[0]?.familyHistory;
+                    patientClinicalHistoryDetails.forEach((el, i) => {
+                        patientClinicalHistoryObj = {}
+                        patientClinicalHistoryObj['Age of onset'] = el.GENETYLLIS_CLINICALHISTORY_AGEONSET
+                        patientClinicalHistoryObj.Pathology = el.pathology[0].PATHOLOGY_NAME
+                        patientClinicalHistoryObj.Notes = el.GENETYLLIS_CLINICALHISTORY_NOTES
+                        $scope.patientClinicalHistory.push(patientClinicalHistoryObj);
+                    })
+                }
+                // patient family history 
+                let patientFamilyHistoryDetails = response.data.data[0].variantRecords[0]?.patients
 
-                patientFamilyHistoryDetails.forEach((el, i) => {
-                    patientfamilylHistoryObj = {}
-                    console.log(el)
-                    patientfamilylHistoryObj.PID = el.FAMILYHISTORY_FAMILYMEMBERID
-                    patientfamilylHistoryObj.Relation = el.FAMILYHISTORY_RELATIONID
-                    patientfamilylHistoryObj["Age of onset"] = el.clinicalHistory[0].GENETYLLIS_CLINICALHISTORY_AGEONSET
-                    patientfamilylHistoryObj.Pathology = el.clinicalHistory[0].pathology[0].PATHOLOGY_NAME
-                    patientfamilylHistoryObj.Notes = el.clinicalHistory[0].GENETYLLIS_CLINICALHISTORY_NOTES
-                    $scope.patientFamilylHistory.push(patientfamilylHistoryObj);
-                    console.log($scope.patientFamilylHistory)
+                if (patientFamilyHistoryDetails.length > 0) {
+                    patientFamilyHistoryDetails = response.data.data[0].variantRecords[0]?.patients[0]?.familyHistory;
 
-                })
+                    patientFamilyHistoryDetails.forEach((el, i) => {
+                        patientfamilylHistoryObj = {}
+                        patientfamilylHistoryObj.PID = el.FAMILYHISTORY_FAMILYMEMBERID
+                        patientfamilylHistoryObj.Relation = el.FAMILYHISTORY_RELATIONID
+                        patientfamilylHistoryObj["Age of onset"] = el.clinicalHistory[0].GENETYLLIS_CLINICALHISTORY_AGEONSET
+                        patientfamilylHistoryObj.Pathology = el.clinicalHistory[0].pathology[0].PATHOLOGY_NAME
+                        patientfamilylHistoryObj.Notes = el.clinicalHistory[0].GENETYLLIS_CLINICALHISTORY_NOTES
+                        $scope.patientFamilylHistory.push(patientfamilylHistoryObj);
 
+                    })
+
+                }
 
                 response.data.data.forEach((patientResult, i) => {
-                    // console.log(i, patientResult)
                     patientObject = {};
                     patientObject.HGVS = patientResult.VARIANT_HGVS;
                     patientObject.GeneId = patientResult.genes[0]?.GENE_NAME;
@@ -259,9 +262,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
-                console.log(" $scope.patientsDetails", $scope.patientsDetails);
 
-                console.log($scope.patientFamilylHistory)
                 localStorage.clear();
             });
 
@@ -286,31 +287,42 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     }
 
 
-    const newDate = new Date("1990-01-03T01:00:00.000Z");
-    $scope.year = newDate.getFullYear();
-    $scope.month = Number(newDate.getMonth()) + 1;
-    $scope.day = newDate.getDay();
-
     $scope.fromData = $localStorage.patient;
     $scope.gender = ''
     //Gender Id
-    $scope.fromData.GenderId == 1 ? "male" : $scope.fromData == 2 ? "female" : "other"
-    if ($scope.fromData.GenderId == 1) {
-        $scope.gender = "male"
-    } else if ($scope.fromData.GenderId == 2) {
-        $scope.gender = "female"
-    } else {
-        $scope.gender = "other"
-    }
-    // population
-    $scope.population = ''
-    if ($scope.fromData.PopulationId == 18) {
-        $scope.population = "Bulgarian";
-    } else {
-        $scope.population = "Other";
 
+    $scope.patientId = $scope.fromData.Id;
+
+    let currDate = new Date();
+    let mlscndsNow = Date.parse(currDate)
+    const mlscndsFrom = Date.parse($scope.fromData.BirthDate);
+    let patientAgeInMlscnds = mlscndsNow - mlscndsFrom;
+    function getDate(t) {
+        let year,
+            month,
+            day,
+            hour,
+            minute,
+            second;
+
+        second = Math.floor(t / 1000);
+        minute = Math.floor(second / 60);
+        second = second % 60;
+        hour = Math.floor(minute / 60);
+        minute = minute % 60;
+        day = Math.floor(hour / 24);
+        hour = hour % 24;
+        month = Math.floor(day / 30);
+        day = day % 30;
+        year = Math.floor(month / 12);
+        month = month % 12;
+
+        return { year, month, day, hour, minute, second };
     }
-    $scope.patientId = $scope.fromData.Id
+    $scope.patientBirthDate = $scope.fromData.BirthDate.split("T")[0]
+    $scope.patientYear = getDate(patientAgeInMlscnds).year - 1;
+    $scope.patientsGender = $scope.fromData.Gender == 1 ? "male" : $scope.fromData.Gender == 2 ? "female" : "other";
+    $scope.patientEthnicity = $scope.fromData.Ethnicity == 12 ? "Bulgarian" : "Other ethnicity"
 
     $scope.filter();
 }]);

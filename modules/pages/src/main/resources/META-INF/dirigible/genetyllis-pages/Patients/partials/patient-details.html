@@ -83,18 +83,18 @@
                         <div class="container">
                             <div class="column">
                                 <div class="col">
-                                    <h4>Date of birth: <span>{{day}}/{{month}}/{{year}}</span></h4>
+                                    <h4>Date of birth: <span>{{patientBirthDate}}</span></h4>
                                 </div>
                             </div>
                             <div class="col">
-                                <h4>Age: <span ng-if="(age != 'undefined' || null)? true :false"> {{age}}</span>
+                                <h4>Age: <span ng-if="(age != 'undefined' || null)? true :false"> {{patientYear}}</span>
                                 </h4>
                             </div>
                             <div class="col">
-                                <h4>Gender: <span>{{gender}}</span></h4>
+                                <h4>Gender: <span>{{patientsGender}}</span></h4>
                             </div>
                             <div class="col">
-                                <h4>Ethnicity: <span>{{population}}</span></h4>
+                                <h4>Ethnicity: <span>{{patientEthnicity}}</span></h4>
                             </div>
                         </div>
                     </div>
