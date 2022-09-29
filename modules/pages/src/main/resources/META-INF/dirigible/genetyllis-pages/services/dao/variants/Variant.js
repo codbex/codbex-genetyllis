@@ -69,6 +69,7 @@ exports.filterVariantsPatientDetails = function (variant) {
 	}
 
 	if (variant.GENETYLLIS_SIGNIFICANCE) {
+
 		buildFilterSql(variant.GENETYLLIS_SIGNIFICANCE);
 	}
 

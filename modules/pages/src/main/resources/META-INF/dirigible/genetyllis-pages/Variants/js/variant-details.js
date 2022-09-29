@@ -15,7 +15,7 @@ variantDetails.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../../components/pagination.html');
 });
 
-variantDetails.controller('variantDetailsController', ['$scope', '$http', function ($scope, $http) {
+variantDetails.controller('variantDetailsController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
 
     $scope.clinicalSignificance = ["Accession", "Pathology", "Significance", "Evaluation", "Review"]
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
@@ -92,7 +92,8 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', functi
         VARIANT_END_TO: '',
         VARIANT_REF: '',
         VARIANT_ALT: '',
-        VARIANT_CONSEQUENCE: []
+        VARIANT_CONSEQUENCE: [],
+        HGVS: ''
     }
     $scope.GENETYLLIS_ANALYSIS = {
         ANALYSIS_DATE: "",
@@ -231,19 +232,8 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', functi
         }
     }
 
-    $scope.getLocation = function (s) {
-        $localStorage.$default({
-            x: s
-        });
-    }
 
-    $scope.redirectPatients = function (data) {
-        console.log(data, "data");
-        $localStorage.$default({
-            key: data
-        });
-        // $localStorage.setItem('key', data);
-    }
+
 
 
 
@@ -304,10 +294,8 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', functi
             .then(function (response) {
                 $scope.variants = []
                 console.log(response, "response")
-                //  "", "",  ", "", ""];
                 response.data.data.forEach(data => {
                     let variantObj = {}
-                    console.log(data)
                     variantObj.LabId = data.GENETYLLIS_PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
@@ -324,13 +312,19 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', functi
                 $scope.totalItems = response.data.totalItems;
             })
     }
-    $scope.filter();
 
     $scope.pageChangeHandler = function (curPage) {
         $scope.currentPage = curPage;
         $scope.filter()
         $scope.patientsDetails = [];
     }
+
+
+    $scope.fromData = $localStorage.HGVS;
+    $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
+    $scope.filter()
+    localStorage.clear();
+
 }]);
 
 

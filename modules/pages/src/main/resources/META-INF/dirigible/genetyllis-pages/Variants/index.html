@@ -284,7 +284,7 @@
                                 <tr dir-paginate="data in variantsDetails | itemsPerPage: selectedPerPage"
                                     total-items="totalItems">
                                     <td ng-repeat="info in variantPageTableInfo">
-                                        <a ng-click="redirectPatients(data)"
+                                        <a href="partials/variant-details.html" ng-click="redirectPatients(data)"
                                             ng-if="checkColumn(info)">{{data[info]}}</a>
 
                                         <span ng-if="notLink(info)">{{data[info]}}</span>
