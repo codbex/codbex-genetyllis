@@ -233,7 +233,13 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     }
 
 
-
+    $scope.redirectPatients = function (data) {
+        console.log(data, "data");
+        $localStorage.$default({
+            key: data
+        });
+        // $localStorage.setItem('key', data);
+    }
 
 
 
@@ -278,7 +284,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     }
 
 
-    // GENETYLLIS_ANALYSIS GENETYLLIS_VARIANT GENETYLLIS_FAMILYHISTORY GENETYLLIS_CLINICALHISTORY 
+    // GENETYLLIS_ANALYSIS GENETYLLIS_VARIANT GENETYLLIS_FAMILYHISTORY GENETYLLIS_CLINICALHISTORY
 
     $scope.filter = function () {
         let query = {};
@@ -290,12 +296,13 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
 
-        $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
+        $http.post(patientsOptionsApi + "/filterVariantDetails", JSON.stringify(query))
             .then(function (response) {
                 $scope.variants = []
                 console.log(response, "response")
                 response.data.data.forEach(data => {
                     let variantObj = {}
+                    console.log(data)
                     variantObj.LabId = data.GENETYLLIS_PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
@@ -312,6 +319,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                 $scope.totalItems = response.data.totalItems;
             })
     }
+    $scope.filter();
 
     $scope.pageChangeHandler = function (curPage) {
         $scope.currentPage = curPage;

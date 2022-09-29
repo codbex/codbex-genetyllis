@@ -15,7 +15,7 @@ const http = require("genetyllis-pages/services/api/utils/http");
 
 rs.service()
 	.resource("")
-		.get(function(ctx, request) {
+		.get(function (ctx, request) {
 			let queryOptions = {};
 			let parameters = request.getParameterNames();
 			for (let i = 0; i < parameters.length; i++) {
@@ -25,28 +25,28 @@ rs.service()
 			http.sendResponseOk(entities);
 		})
 		.produces(["application/json"])
-		.catch(function(ctx, error) {
-            if (error.name === "ForbiddenError") {
-                http.sendForbiddenRequest(error.message);
-            } else if(error.name === "ValidationError") {
+		.catch(function (ctx, error) {
+			if (error.name === "ForbiddenError") {
+				http.sendForbiddenRequest(error.message);
+			} else if (error.name === "ValidationError") {
 				http.sendResponseBadRequest(error.message);
 			} else {
 				http.sendInternalServerError(error.message);
 			}
-        })
+		})
 	.resource("count")
-		.get(function(ctx, request) {
+		.get(function (ctx, request) {
 			http.sendResponseOk(dao.count());
 		})
-		.catch(function(ctx, error) {
-            if (error.name === "ForbiddenError") {
-                http.sendForbiddenRequest(error.message);
-            } else if(error.name === "ValidationError") {
+		.catch(function (ctx, error) {
+			if (error.name === "ForbiddenError") {
+				http.sendForbiddenRequest(error.message);
+			} else if (error.name === "ValidationError") {
 				http.sendResponseBadRequest(error.message);
 			} else {
 				http.sendInternalServerError(error.message);
 			}
-        })
+		})
 	.resource("{id}")
 		.get(function (ctx) {
 			let id = ctx.pathParameters.id;
@@ -131,6 +131,26 @@ rs.service()
 		.post(function (ctx, request, response) {
 			let patient = request.getJSON();
 			let result = dao.filterPatients(patient);
+			if (result) {
+				http.sendResponseOk(result);
+			} else {
+				http.sendResponseNotFound("Patient not found!");
+			}
+		})
+		.produces(["application/json"])
+		.catch(function (ctx, error) {
+			if (error.name === "ForbiddenError") {
+				http.sendForbiddenRequest(error.message);
+			} else if (error.name === "ValidationError") {
+				http.sendResponseBadRequest(error.message);
+			} else {
+				http.sendInternalServerError(error.message);
+			}
+		})
+	.resource("filterVariantDetails")
+		.post(function (ctx, request, response) {
+			let patient = request.getJSON();
+			let result = dao.filterVariantDetails(patient);
 			if (result) {
 				http.sendResponseOk(result);
 			} else {
