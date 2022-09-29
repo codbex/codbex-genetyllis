@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2022 codbex or an codbex affiliate company and contributors
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v20.html
- *
- * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
- * SPDX-License-Identifier: EPL-2.0
- */
 const query = require("db/v4/query");
 const producer = require("messaging/v4/producer");
 const daoApi = require("db/v4/dao");
@@ -23,28 +12,28 @@ let dao = daoApi.create({
 			id: true,
 			autoIncrement: true,
 		},
-		{
+ {
 			name: "CUI",
 			column: "PATHOLOGY_CUI",
 			type: "VARCHAR",
 		},
-		{
+ {
 			name: "Name",
 			column: "PATHOLOGY_NAME",
 			type: "VARCHAR",
 		}
-	]
+]
 });
 
-exports.list = function (settings) {
+exports.list = function(settings) {
 	return dao.list(settings);
 };
 
-exports.get = function (id) {
+exports.get = function(id) {
 	return dao.find(id);
 };
 
-exports.create = function (entity) {
+exports.create = function(entity) {
 	let id = dao.insert(entity);
 	triggerEvent("Create", {
 		table: "GENETYLLIS_PATHOLOGY",
@@ -57,7 +46,7 @@ exports.create = function (entity) {
 	return id;
 };
 
-exports.update = function (entity) {
+exports.update = function(entity) {
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_PATHOLOGY",
@@ -69,7 +58,7 @@ exports.update = function (entity) {
 	});
 };
 
-exports.delete = function (id) {
+exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
 		table: "GENETYLLIS_PATHOLOGY",
@@ -81,14 +70,12 @@ exports.delete = function (id) {
 	});
 };
 
-exports.count = function () {
+exports.count = function() {
 	return dao.count();
 };
 
-console.log("----------------------------------------------")
-exports.customDataCount = function () {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_PATHOLOGY");
-	console.log(resultSet)
+exports.customDataCount = function() {
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM PATHOLOGY");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;

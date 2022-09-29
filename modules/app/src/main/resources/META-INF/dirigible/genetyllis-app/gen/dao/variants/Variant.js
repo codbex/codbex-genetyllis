@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2022 codbex or an codbex affiliate company and contributors
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v20.html
- *
- * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
- * SPDX-License-Identifier: EPL-2.0
- */
 const query = require("db/v4/query");
 const producer = require("messaging/v4/producer");
 const daoApi = require("db/v4/dao");
@@ -65,12 +54,12 @@ let dao = daoApi.create({
 		},
  {
 			name: "Region",
-			column: "GENETYLLIS_VARIANT_REGION",
+			column: "VARIANT_REGION",
 			type: "VARCHAR",
 		},
  {
 			name: "RegionNum",
-			column: "GENETYLLIS_VARIANT_REGIONNUM",
+			column: "VARIANT_REGIONNUM",
 			type: "VARCHAR",
 		},
  {
@@ -136,7 +125,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_VARIANT");
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM VARIANT");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
