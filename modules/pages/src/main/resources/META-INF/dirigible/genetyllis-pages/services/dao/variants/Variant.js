@@ -280,7 +280,7 @@ function buildFilterSql(object) {
 
 			condition = "";
 			if (Array.isArray(val)) {
-				condition = "LOWER(" + keys[i] + ") " + addArrayValuesToSql(val);
+				condition = 'LOWER("' + keys[i] + '")' + addArrayValuesToSql(val);
 
 			} else if (keys[i].toString().endsWith('_TO')) {
 				condition = keys[i].slice(0, -3) + " <= ?";
@@ -291,7 +291,7 @@ function buildFilterSql(object) {
 				addFilterParam(val);
 
 			} else {
-				condition = keys[i] + " = ?";
+				condition = '"' + keys[i] + '"' + " = ?";
 				addFilterParam(val);
 			}
 
@@ -336,7 +336,7 @@ function initPatientDetailsSql() {
 		'LEFT JOIN "GENETYLLIS_ANALYSIS" GAL ON GVR."GENETYLLIS_VARIANTRECORD_ANALYSISID" = GAL."ANALYSIS_ID" ' +
 		'LEFT JOIN "GENETYLLIS_GENE" GG ON GV."VARIANT_GENEID" = GG."GENE_ID" ' +
 		'LEFT JOIN "GENETYLLIS_CLINICALSIGNIFICANCE" GC ON GV."VARIANT_ID" = GC."CLINICALSIGNIFICANCE_VARIANTID" ' +
-		'LEFT JOIN "GENETYLLIS_PATHOLOGY" GP ON GC."CLINICALSIGNIFICANCE_PATHOLOGYID" = GP."PATHOLOGY_ID" ' +
+		'LEFT JOIN "GENETYLLIS_PATHOLOGY" GPT ON GC."CLINICALSIGNIFICANCE_PATHOLOGYID" = GPT."PATHOLOGY_ID" ' +
 		'LEFT JOIN "GENETYLLIS_SIGNIFICANCE" GS ON GC."CLINICALSIGNIFICANCE_SIGNIFICANCEID" = GS."SIGNIFICANCE_ID" ' +
 		'LEFT JOIN "GENETYLLIS_ALLELEFREQUENCY" GA ON GV."VARIANT_ID" = GA."ALLELEFREQUENCY_VARIANTID"';
 }
