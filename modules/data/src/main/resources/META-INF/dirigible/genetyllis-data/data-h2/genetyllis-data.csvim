@@ -1,0 +1,212 @@
+[
+    {
+        "table": "GENETYLLIS_ALLELEFREQUENCY",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_ALLELEFREQUENCY.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_ANALYSIS",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_ANALYSIS.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_CLINICALHISTORY",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_CLINICALHISTORY.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_CLINICALSIGNIFICANCE",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_CLINICALSIGNIFICANCE.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_FAMILYHISTORY",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_FAMILYHISTORY.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_FILTER",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_FILTER.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_GENDER",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_GENDER.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_GENE",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_GENE.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_INSTITUTION",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_INSTITUTION.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_NOTIFICATION",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_NOTIFICATION.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_PATHOLOGY",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_PATHOLOGY.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_PATIENT",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_PATIENT.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_PHYSICIAN",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_PHYSICIAN.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_PLATFORM",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_PLATFORM.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_POPULATION",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_POPULATION.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_PROVIDER",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_PROVIDER.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_RELATION",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_RELATION.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_SIGNIFICANCE",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_SIGNIFICANCE.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_USER",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_USER.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_VARIANT",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_VARIANT.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    },
+    {
+        "table": "GENETYLLIS_VARIANTRECORD",
+        "file": "/genetyllis-data/data-h2/GENETYLLIS_VARIANTRECORD.csv",
+        "header": true,
+        "useHeaderNames": true,
+        "delimField": ",",
+        "delimEnclosing": "\"",
+        "distinguishEmptyFromNull": true,
+        "keys": []
+    }
+]
