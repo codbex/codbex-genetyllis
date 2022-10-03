@@ -179,6 +179,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         var query = {};
         query.GENETYLLIS_PATIENT = {};
         query.GENETYLLIS_PATIENT.PATIENT_ID = $scope.patientId;
+        console.log($scope.patientId)
         query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
         query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE
         query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY
@@ -193,12 +194,14 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
         $http.post(variantDetailsApi + "/filterPatientDetails", JSON.stringify(query))
             .then(function (response) {
+                console.log(response)
                 $scope.patientsDetailsTable = [];
                 $scope.patientClinicalHistory = []
                 $scope.patientFamilylHistory = []
 
                 // patient clinical history 
                 let patientClinicalHistoryDetails = response.data.data[0].variantRecords[0]?.patients
+                console.log(response.data.data[0].variantRecords[0]?.patients, "eh")
                 if (patientClinicalHistoryDetails.length > 0) {
                     patientClinicalHistoryDetails = response.data.data[0].variantRecords[0]?.patients[0]?.clinicalHistory;
 
@@ -230,6 +233,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                 }
 
                 response.data.data.forEach((patientResult, i) => {
+
                     patientObject = {};
                     patientObject.HGVS = patientResult.VARIANT_HGVS;
                     patientObject.GeneId = patientResult.genes[0]?.GENE_NAME;
@@ -290,39 +294,39 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     $scope.fromData = $localStorage.patient;
     $scope.gender = ''
     //Gender Id
-
+    console.log($scope.fromData)
     $scope.patientId = $scope.fromData.Id;
 
-    let currDate = new Date();
-    let mlscndsNow = Date.parse(currDate)
-    const mlscndsFrom = Date.parse($scope.fromData.BirthDate);
-    let patientAgeInMlscnds = mlscndsNow - mlscndsFrom;
-    function getDate(t) {
-        let year,
-            month,
-            day,
-            hour,
-            minute,
-            second;
+    // let currDate = new Date();
+    // let mlscndsNow = Date.parse(currDate)
+    // const mlscndsFrom = Date.parse($scope.fromData.BirthDate);
+    // let patientAgeInMlscnds = mlscndsNow - mlscndsFrom;
+    // function getDate(t) {
+    //     let year,
+    //         month,
+    //         day,
+    //         hour,
+    //         minute,
+    //         second;
 
-        second = Math.floor(t / 1000);
-        minute = Math.floor(second / 60);
-        second = second % 60;
-        hour = Math.floor(minute / 60);
-        minute = minute % 60;
-        day = Math.floor(hour / 24);
-        hour = hour % 24;
-        month = Math.floor(day / 30);
-        day = day % 30;
-        year = Math.floor(month / 12);
-        month = month % 12;
+    //     second = Math.floor(t / 1000);
+    //     minute = Math.floor(second / 60);
+    //     second = second % 60;
+    //     hour = Math.floor(minute / 60);
+    //     minute = minute % 60;
+    //     day = Math.floor(hour / 24);
+    //     hour = hour % 24;
+    //     month = Math.floor(day / 30);
+    //     day = day % 30;
+    //     year = Math.floor(month / 12);
+    //     month = month % 12;
 
-        return { year, month, day, hour, minute, second };
-    }
-    $scope.patientBirthDate = $scope.fromData.BirthDate.split("T")[0]
-    $scope.patientYear = getDate(patientAgeInMlscnds).year - 1;
-    $scope.patientsGender = $scope.fromData.Gender == 1 ? "male" : $scope.fromData.Gender == 2 ? "female" : "other";
-    $scope.patientEthnicity = $scope.fromData.Ethnicity == 12 ? "Bulgarian" : "Other ethnicity"
+    //     return { year, month, day, hour, minute, second };
+    // }
+    // $scope.patientBirthDate = $scope.fromData.BirthDate.split("T")[0]
+    // $scope.patientYear = getDate(patientAgeInMlscnds).year - 1;
+    // $scope.patientsGender = $scope.fromData.Gender == 1 ? "male" : $scope.fromData.Gender == 2 ? "female" : "other";
+    // $scope.patientEthnicity = $scope.fromData.Ethnicity == 12 ? "Bulgarian" : "Other ethnicity"
 
     $scope.filter();
 }]);

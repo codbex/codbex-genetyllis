@@ -16,7 +16,8 @@
         <script src="../js/file-uploader.js"> </script>
         <script type="text/javascript" src="/services/v4/web/ide-core/ui/message-hub.js"></script>
         <link type="text/css" rel="stylesheet" href="../../css/style.css" />
-
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js">
+        </script>
     </head>
 
     <body ng-controller='addAnalysisController'>
@@ -49,6 +50,7 @@
         </div>
         <div class="patient-wrapper">
             <div class="container">
+                <h4>Analysis #{{analysisId}}</h4>
                 <div class="row">
                     <div class="col-6  align-items ">
                         <div class="border-content patientDetails">
@@ -79,7 +81,7 @@
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <input type="text" class="form-control" placeholder="Date of birth"
+                                            <input type="text" class="form-control" placeholder="Date of analysis"
                                                 ng-model="entity.BirthDate" onfocus="(this.type='date')"
                                                 onblur="(this.type='text')" required>
                                         </div>

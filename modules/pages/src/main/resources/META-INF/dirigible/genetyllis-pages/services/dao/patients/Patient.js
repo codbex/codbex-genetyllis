@@ -348,7 +348,7 @@ function buildFamilyHistoryFilterSql(object) {
 	filterSql += ")"
 }
 
-function addArrayValuesToSql(array, arr) {
+function addArrayValuesToSql(array) {
 
 	var inStatement = " IN (";
 	array.forEach(element => {
