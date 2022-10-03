@@ -127,6 +127,26 @@ rs.service()
 				http.sendInternalServerError(error.message);
 			}
 		})
+	.resource("loadPatientFormData/{id}")
+		.get(function (ctx) {
+			let id = ctx.pathParameters.id;
+			let entity = dao.loadPatientFormData(id);
+			if (entity) {
+				http.sendResponseOk(entity);
+			} else {
+				http.sendResponseNotFound("Patient not found!");
+			}
+		})
+		.produces(["application/json"])
+		.catch(function (ctx, error) {
+			if (error.name === "ForbiddenError") {
+				http.sendForbiddenRequest(error.message);
+			} else if (error.name === "ValidationError") {
+				http.sendResponseBadRequest(error.message);
+			} else {
+				http.sendInternalServerError(error.message);
+			}
+		})
 	.resource("filterPatients")
 		.post(function (ctx, request, response) {
 			let patient = request.getJSON();
