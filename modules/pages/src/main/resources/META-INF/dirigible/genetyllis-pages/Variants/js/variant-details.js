@@ -68,11 +68,11 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     $scope.selectedHgvsArr = [];
 
     $scope.GENETYLLIS_PATIENT = {
-        GENETYLLIS_PATIENT_LABID: [],
+        PATIENT_LABID: [],
         PATIENT_AGE_FROM: '',
         PATIENT_AGE_TO: '',
         PATIENT_GENDERID: [],
-        GENETYLLIS_PATIENT_POPULATIONID: []
+        PATIENT_POPULATIONID: []
     }
 
     $scope.GENETYLLIS_CLINICALHISTORY = {
@@ -99,7 +99,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         ANALYSIS_DATE: "",
     }
     $scope.addLabIdFilter = function (labId) {
-        $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.push(labId)
+        $scope.GENETYLLIS_PATIENT.PATIENT_LABID.push(labId)
         $scope.selectedLabId = '';
     }
 
@@ -123,14 +123,14 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     $scope.addLabIdFilter = function (args) {
 
-        if ($scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.includes($scope.selectedLabId) || $scope.selectedLabId == '') return
-        $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.push($scope.selectedLabId);
+        if ($scope.GENETYLLIS_PATIENT.PATIENT_LABID.includes($scope.selectedLabId) || $scope.selectedLabId == '') return
+        $scope.GENETYLLIS_PATIENT.PATIENT_LABID.push($scope.selectedLabId);
         $scope.selectedLabId = ""
 
     }
 
     $scope.removeLabId = function (i) {
-        $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.splice(i, 1);
+        $scope.GENETYLLIS_PATIENT.PATIENT_LABID.splice(i, 1);
     }
 
     // Clinical History ID
@@ -168,8 +168,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     $scope.removeVariantId = function (i) {
         $scope.addedVariantId.splice(i, 1);
     }
-
-
 
     $scope.chromList = []
     for (let a = 1; a <= 22; a++) {
@@ -238,6 +236,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         $localStorage.$default({
             key: data
         });
+        console.log($localStorage.$default, "local")
         // $localStorage.setItem('key', data);
     }
 
@@ -304,21 +303,21 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                 response.data.data.forEach(data => {
                     let variantObj = {}
                     console.log(data)
-                    variantObj.LabId = data.GENETYLLIS_PATIENT_LABID;
+                    variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
 
-                    variantObj.GenderId = data.PATIENT_GENDERID === 1 ? "male" : data.PATIENT_GENDERID == 2 ? "female" : "Nonspecifed gender";
+                    variantObj.GenderId = data.PATIENT_GENDERID === 1 ? "Male" : data.PATIENT_GENDERID == 2 ? "Female" : "Nonspecifed gender";
                     variantObj["Clinical history"] = data.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     variantObj["Family history"] = data.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     variantObj.Analysis = data.analysis[0]?.ANALYSIS_ID;
                     variantObj.Date = data.analysis[0]?.ANALYSIS_DATE.split("T")[0];
-                    variantObj.Ethnicity = data.GENETYLLIS_PATIENT_POPULATIONID === 12 ? "Bulgarian" : data.GENETYLLIS_PATIENT_POPULATIONID === 18 ? "Other ethnicity" : "European (non-Finnish)";
+                    variantObj.Ethnicity = data.PATIENT_POPULATIONID === 12 ? "Bulgarian" : data.PATIENT_POPULATIONID === 18 ? "Other ethnicity" : "European (non-Finnish)";
                     $scope.variants.push(variantObj);
                 });
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
-                localStorage.clear();
+                // localStorage.clear();
             })
     }
 

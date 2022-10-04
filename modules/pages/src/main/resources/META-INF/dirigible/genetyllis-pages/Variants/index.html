@@ -19,12 +19,15 @@
         <script type="text/javascript" src="/webjars/angularjs/1.8.2/angular-resource.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js">
         </script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
         <script type="text/javascript"
             src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js"></script>
-        <script
+        <script <!--
             src="https://rawgit.com/myforce/angularjs-dropdown-multiselect/master/src/angularjs-dropdown-multiselect.js"
-            type="text/javascript"></script>
+            -->
+            type="text/javascript">
+        </script>
 
 
         <link rel="stylesheet" href="../css/pagination.css">
@@ -245,12 +248,12 @@
                 <div class="variantTable">
                     <div class="holder">
                         <div class="row">
-                            <div class="paging">
-                                <div class="select-columns">
+                            <div class="pagingVariant">
+                                <!-- <div class="select-columns">
                                     <div ng-dropdown-multiselect="" options="variantsTableData"
                                         extra-settings="patientsTableSettings" selected-model="variantTableModel"
                                         class="multiselect-wrap" ng-click="selectFucn()"></div>
-                                </div>
+                                </div> -->
                                 <div class="per-page">
                                     <div class="align-paragraph">
                                         <p class="">Showing {{selectedPerPage}} of {{totalItems}}</p>
@@ -288,7 +291,10 @@
                                         <a href="partials/variant-details.html" ng-click="redirectPatients(data)"
                                             ng-if="checkColumn(info)">{{data[info]}}</a>
 
-                                        <span ng-if="notLink(info)">{{data[info]}}</span>
+                                        <a href="{{data.GeneLink}}" ng-if="info === 'Gene'">{{data[info]}}</a>
+                                        <span ng-if="info == 'AlleleFrequency'">{{data[info]}} * 10<sup>-6</sup></span>
+                                        <span
+                                            ng-if="notLink(info) && info !== 'Gene' && info !== 'AlleleFrequency'">{{data[info]}}</span>
                                     </td>
                                 </tr>
                             </tbody>
