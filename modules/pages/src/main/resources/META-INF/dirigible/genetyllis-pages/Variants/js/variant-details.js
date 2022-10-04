@@ -21,6 +21,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.variants;
+    $scope.clinicalSignificanceArr
 
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100]
@@ -77,14 +78,14 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     $scope.GENETYLLIS_CLINICALHISTORY = {
         PATHOLOGY_CUI: [],
-        GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
-        GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
+        CLINICALHISTORY_AGEONSET_FROM: '',
+        CLINICALHISTORY_AGEONSET_TO: ''
     }
 
     $scope.GENETYLLIS_FAMILYHISTORY = {
         PATHOLOGY_CUI: [],
-        GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
-        GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
+        CLINICALHISTORY_AGEONSET_FROM: '',
+        CLINICALHISTORY_AGEONSET_TO: ''
     }
     $scope.GENETYLLIS_VARIANT = {
         VARIANT_CHROMOSOME: '',
@@ -295,14 +296,30 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
 
-        console.log(query.GENETYLLIS_VARIANT)
         $http.post(patientsOptionsApi + "/filterVariantDetails", JSON.stringify(query))
             .then(function (response) {
                 $scope.variants = []
+                $scope.clinicalSignificanceArr = []
                 console.log(response, "response")
                 response.data.data.forEach(data => {
+
                     let variantObj = {}
+<<<<<<< HEAD
+                    let clinicalSignificanceObj = {}
+                    // console.log(data, "clinicalSignificance");
+
+                    console.log(data.clinicalSignificance, "clinicalSignificance");
+
+                    data.clinicalSignificance.map(el => {
+                        clinicalSignificanceObj.Accession = el.CLINICALSIGNIFICANCE_ACCESSION
+                        clinicalSignificanceObj.Pathology = el.pathology[0]?.PATHOLOGY_NAME
+                        clinicalSignificanceObj.Significance = el.significance[0]?.SIGNIFICANCE_NAME
+                        clinicalSignificanceObj.Evaluation = el.CLINICALSIGNIFICANCE_EVALUATED.split("T")[0]
+                        clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
+                    })
+=======
                     console.log(data)
+>>>>>>> branch 'notification-working' of https://github.com/codbex/codbex-genetyllis.git
                     variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
@@ -314,6 +331,9 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                     variantObj.Date = data.analysis[0]?.ANALYSIS_DATE.split("T")[0];
                     variantObj.Ethnicity = data.PATIENT_POPULATIONID === 12 ? "Bulgarian" : data.PATIENT_POPULATIONID === 18 ? "Other ethnicity" : "European (non-Finnish)";
                     $scope.variants.push(variantObj);
+                    $scope.clinicalSignificanceArr.push(clinicalSignificanceObj)
+                    // console.log(clinicalSignificanceObj.Review.split(/^.|.$/gi)[1], "clinicalSignificance");
+
                 });
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
