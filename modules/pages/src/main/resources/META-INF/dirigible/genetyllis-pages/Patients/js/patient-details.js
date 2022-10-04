@@ -16,7 +16,8 @@ patientDetails.config(function (paginationTemplateProvider) {
 });
 patientDetails.controller('patientDetailsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
-    $scope.patientsDetails = $localStorage.x;
+    $scope.patientsDetails = $sessionStorage.x;
+    console.log("sessionStorage", $sessionStorage)
     $scope.variants;
     $scope.patientsDetailsTable = []
     $scope.selectedGeneId = '';
@@ -287,7 +288,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     }
 
 
-    $scope.fromData = $localStorage.patient;
+    $scope.fromData = $sessionStorage.patient;
     $scope.gender = ''
     //Gender Id
 

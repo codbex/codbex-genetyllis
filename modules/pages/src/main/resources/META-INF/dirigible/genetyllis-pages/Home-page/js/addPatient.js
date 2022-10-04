@@ -36,7 +36,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
     var clinicalHistroryApi = '/services/v4/js/genetyllis-pages/services/api/patients/ClinicalHistory.js';
     var familyHistroryApi = '/services/v4/js/genetyllis-pages/services/api/patients/FamilyHistory.js';
     var relationApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Relation.js';
-    var pathologyApi = '/services/v4/js/genetyllis-pages/services/pathology.js';
+    var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
 
     $scope.entity = {
         Id: '',
