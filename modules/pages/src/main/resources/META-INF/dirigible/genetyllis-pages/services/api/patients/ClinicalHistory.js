@@ -71,7 +71,11 @@ rs.service()
 	.resource("")
 		.post(function(ctx, request, response) {
 			let entity = request.getJSON();
-			entity.Id = dao.create(entity);
+			if (entity.Id && entity.Id !== "") {
+				dao.update(entity);
+			} else {
+				entity.Id = dao.create(entity);
+			}
 			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/ClinicalHistory.js/" + entity.Id);
 			http.sendResponseCreated(entity);
 		})
