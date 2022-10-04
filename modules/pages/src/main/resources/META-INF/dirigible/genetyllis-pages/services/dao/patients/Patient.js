@@ -131,7 +131,7 @@ exports.filterPatients = function (patient) {
 		})
 
 		/* LOAD ANALYSIS */
-		let analysisQuery = 'SELECT * FROM "GENETYLLIS_ANALYSIS" WHERE "GENETYLLIS_ANALYSIS_PATIENTID"' + patientIdsInStatement;
+		let analysisQuery = 'SELECT * FROM "GENETYLLIS_ANALYSIS" WHERE "ANALYSIS_PATIENTID"' + patientIdsInStatement;
 		let analysis = query.execute(analysisQuery, patientIds);
 
 		/* MAP CLINICALHISTORY AND PATIENT TO FAMILYHISTORY */
@@ -143,7 +143,7 @@ exports.filterPatients = function (patient) {
 		response.data.forEach(foundPatient => {
 			foundPatient.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === foundPatient.PATIENT_ID)
 			foundPatient.familyHistory = familyHistory.filter(family => family.FAMILYHISTORY_PATIENTID === foundPatient.PATIENT_ID)
-			foundPatient.analysis = analysis.filter(analysisElement => analysisElement.GENETYLLIS_ANALYSIS_PATIENTID === foundPatient.PATIENT_ID)
+			foundPatient.analysis = analysis.filter(analysisElement => analysisElement.ANALYSIS_PATIENTID === foundPatient.PATIENT_ID)
 		})
 	}
 
@@ -230,7 +230,7 @@ function initFilterSql() {
 	filterSql = 'SELECT DISTINCT GP.* FROM "GENETYLLIS_PATIENT" GP ' +
 		'LEFT JOIN "GENETYLLIS_CLINICALHISTORY" GC ON GP."PATIENT_ID" = GC."CLINICALHISTORY_PATIENTID" ' +
 		'LEFT JOIN "GENETYLLIS_FAMILYHISTORY" GF ON GP."PATIENT_ID" = GF."FAMILYHISTORY_PATIENTID" ' +
-		'LEFT JOIN "GENETYLLIS_ANALYSIS" GA ON GP."PATIENT_ID" = GA."GENETYLLIS_ANALYSIS_PATIENTID" ' +
+		'LEFT JOIN "GENETYLLIS_ANALYSIS" GA ON GP."PATIENT_ID" = GA."ANALYSIS_PATIENTID" ' +
 		'LEFT JOIN "GENETYLLIS_PATHOLOGY" GPT ON GC."CLINICALHISTORY_PATHOLOGYID" = GPT."PATHOLOGY_ID" ' +
 		'LEFT JOIN "GENETYLLIS_VARIANTRECORD" GVR ON GP."PATIENT_ID" = GVR."VARIANTRECORD_PATIENTID" ' +
 		'LEFT JOIN "GENETYLLIS_VARIANT" GV ON GVR."VARIANTRECORD_VARIANTID" = GV."VARIANT_ID"';
