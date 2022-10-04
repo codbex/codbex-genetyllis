@@ -207,19 +207,6 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
             })
 
         console.log($scope.variants);
-
-        // $scope.filter = function () {
-        //     let query = {};
-        //     query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
-        //     query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
-        //     query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
-        //     query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        //     query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
-        //     query.perPage = $scope.selectedPerPage;
-        //     query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
-
-        //     console.log(query.GENETYLLIS_VARIANT)
-        // }
     }
 
     $scope.filter();
