@@ -268,7 +268,8 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
-                // localStorage.clear();
+                $sessionStorage.$reset();
+
             });
 
     }

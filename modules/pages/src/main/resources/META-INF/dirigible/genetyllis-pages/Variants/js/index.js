@@ -148,27 +148,28 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))
             .then(function (response) {
+                console.log(response, 'respo')
                 $scope.variantsDetails = [];
                 console.log(response.data, "response")
                 response.data.data.forEach(data => {
                     let variantObj = {}
                     variantObj.HGVS = data.VARIANT_HGVS
-                    if (data.genes) {
-                        variantObj.Gene = data.genes[0]?.GENE_NAME != "NULL" ? data.genes[0]?.GENE_NAME : "-";
-                        if (data.genes[0]?.GENE_NAME !== 'NULL') {
-                            $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + data.genes[0]?.GENE_NAME)
-                                .then(function (responseSite) {
-                                    responseSite.data[3].forEach(gene => {
-                                        if (gene[3] === data.genes[0]?.GENE_NAME) {
-                                            variantObj.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
-                                        }
+                    // if (data.genes) {
+                    //     variantObj.Gene = data.genes[0]?.GENE_NAME != "NULL" ? data.genes[0]?.GENE_NAME : "-";
+                    //     if (data.genes[0]?.GENE_NAME !== 'NULL') {
+                    //         $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + data.genes[0]?.GENE_NAME)
+                    //             .then(function (responseSite) {
+                    //                 responseSite.data[3].forEach(gene => {
+                    //                     if (gene[3] === data.genes[0]?.GENE_NAME) {
+                    //                         variantObj.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
+                    //                     }
 
-                                    })
-                                });
-                        }
+                    //                 })
+                    //             });
+                    //     }
 
-                        // console.log($scope.geneResponse, "geneResponse")
-                    }
+                    //     // console.log($scope.geneResponse, "geneResponse")
+                    // }
                     variantObj.VARIANT_CONSEQUENCE = data.VARIANT_CONSEQUENCE
                     variantObj.GeneId = data.VARIANT_GENEID
 
@@ -207,18 +208,18 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
 
         console.log($scope.variants);
 
-        $scope.filter = function () {
-            let query = {};
-            query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
-            query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
-            query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
-            query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-            query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
-            query.perPage = $scope.selectedPerPage;
-            query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
+        // $scope.filter = function () {
+        //     let query = {};
+        //     query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
+        //     query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
+        //     query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
+        //     query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
+        //     query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
+        //     query.perPage = $scope.selectedPerPage;
+        //     query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
 
-            console.log(query.GENETYLLIS_VARIANT)
-        }
+        //     console.log(query.GENETYLLIS_VARIANT)
+        // }
     }
 
     $scope.filter();

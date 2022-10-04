@@ -333,7 +333,6 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
 
 
     $scope.redirectPatients = function (data) {
-        $sessionStorage.$reset();
         $sessionStorage.$default({
             patient: data
         });

@@ -304,7 +304,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                 response.data.data.forEach(data => {
 
                     let variantObj = {}
-<<<<<<< HEAD
                     let clinicalSignificanceObj = {}
                     // console.log(data, "clinicalSignificance");
 
@@ -317,9 +316,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                         clinicalSignificanceObj.Evaluation = el.CLINICALSIGNIFICANCE_EVALUATED.split("T")[0]
                         clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
                     })
-=======
                     console.log(data)
->>>>>>> branch 'notification-working' of https://github.com/codbex/codbex-genetyllis.git
                     variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];

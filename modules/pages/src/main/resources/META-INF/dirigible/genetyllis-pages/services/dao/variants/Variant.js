@@ -140,6 +140,7 @@ exports.filterVariantsPatientDetails = function (variant) {
 	return response;
 }
 exports.filterVariants = function (variant) {
+	console.log("HE;;p")
 	initFilterSql();
 	let response = {};
 	let countSql = "";
@@ -164,6 +165,8 @@ exports.filterVariants = function (variant) {
 	countSql = 'SELECT COUNT(DISTINCT GV."VARIANT_ID") AS "COUNT"' + countSql.slice(20);
 	let resultSetCount = query.execute(countSql, filterSqlParams);
 	response.data = resultSet;
+	console.log("opdasodsap[as")
+
 	response.totalItems = resultSetCount[0]["COUNT"];
 	response.totalPages = Math.floor(response.totalItems / variant.perPage) + (response.totalItems % variant.perPage == 0 ? 0 : 1);
 	let variantIds = response.data.map(foundVariant => foundVariant.VARIANT_ID);

@@ -252,9 +252,12 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
     $scope.isEmptyTableFamilyMember = false;
 
     $scope.addEntryFamilyMember = function () {
-        $scope.familyMembersArray.push(angular.copy($scope.familyClinicalHistoryDataArray));
+        $scope.familyMembersArray.push($scope.familyClinicalHistoryDataArray);
         $scope.familyMemberData = $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray;
-
+        console.log("familyClinicalHistoryDataArray")
+        console.log($scope.familyClinicalHistoryDataArray)
+        console.log("familyMemberData")
+        console.log($scope.familyMemberData)
         $scope.familyClinicalHistoryData = {};
         $scope.familyClinicalHistoryDataArray = {
             Id: '',
@@ -284,7 +287,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
     }
 
     function loadPatientFormData() {
-        $http.get(patientsOptionsApi + "/loadPatientFormData/" + $localStorage.patient.Id)
+        $http.get(patientsOptionsApi + "/loadPatientFormData/" + 1)
             .then(data => {
                 console.log(data)
                 $scope.entity.Id = data.data.PATIENT_ID;
