@@ -55,6 +55,49 @@ exports.suggestLabIds = function (labId) {
 	return query.execute('SELECT * FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_LABID" LIKE ? LIMIT 10', [`%${labId}%`]);
 }
 
+exports.loadPatientFormData = function (id) {
+	let patient = query.execute('SELECT * FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_ID" = ?', [id])[0];
+
+	/* LOAD FAMILYHISTORY */
+	let familyHistory = query.execute('SELECT * FROM "GENETYLLIS_FAMILYHISTORY" WHERE "FAMILYHISTORY_PATIENTID" = ?', [id]);
+
+	let familyPatientIds = familyHistory.map(member => member.FAMILYHISTORY_FAMILYMEMBERID);
+	let familyPatientIdsInStatement = addArrayValuesToSql(familyPatientIds);
+	let familyHistoryPatientsQuery = 'SELECT * FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_ID"' + familyPatientIdsInStatement;
+	let familyHistoryPatients = query.execute(familyHistoryPatientsQuery, familyPatientIds);
+
+	/* LOAD CLINICALHISTORY AND PATHOLOGY */
+	familyPatientIds.push(id);
+	let familyAndPatientIdsInStatement = addArrayValuesToSql(familyPatientIds);
+	let clinicalHistoryQuery = 'SELECT * FROM "GENETYLLIS_CLINICALHISTORY" WHERE "CLINICALHISTORY_PATIENTID"' + familyAndPatientIdsInStatement;
+	let clinicalHistory = query.execute(clinicalHistoryQuery, familyPatientIds);
+
+	let pathologyIds = clinicalHistory.map(memberHistory => memberHistory.CLINICALHISTORY_PATHOLOGYID);
+	let pathologyResult = [];
+	if (pathologyIds.length > 0) {
+		let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
+		let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
+
+		pathologyResult = query.execute(pathologyQuery, pathologyIds);
+	}
+
+	/* MAP PATHOLOGY TO CLINICALHISTORY */
+	clinicalHistory.forEach(history => {
+		history.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === history.CLINICALHISTORY_PATHOLOGYID);
+	})
+
+	/* MAP CLINICALHISTORY AND PATIENT TO FAMILYHISTORY */
+	familyHistory.forEach(member => {
+		member.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === member.FAMILYHISTORY_FAMILYMEMBERID);
+		member.patient = familyHistoryPatients.filter(familyPatient => familyPatient.PATIENT_ID === member.FAMILYHISTORY_FAMILYMEMBERID);
+	})
+
+	patient.familyHistory = familyHistory;
+	patient.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === patient.PATIENT_ID);
+
+	return patient;
+}
+
 exports.filterVariantDetails = function (patient) {
 	initFilterSql();
 
@@ -348,7 +391,7 @@ function buildFamilyHistoryFilterSql(object) {
 	filterSql += ")"
 }
 
-function addArrayValuesToSql(array, arr) {
+function addArrayValuesToSql(array) {
 
 	var inStatement = " IN (";
 	array.forEach(element => {
