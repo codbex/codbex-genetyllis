@@ -283,6 +283,46 @@ addPatient.controller('addPatientController', ['$scope', '$http', function ($sco
             })
     }
 
+    function loadPatientFormData() {
+        $http.get(patientsOptionsApi + "/loadPatientFormData/" + 1)
+            .then(data => {
+                $scope.entity.Id = data.data;
+                $scope.clinicalHistoryDataArray = data.data.clinicalHistory;
+                // $scope.familyHistory = data.data.clinicalHistory;
+                // data.data.clinicalHistory.forEach(history => {
+                //     let loadedClinicalHistory = {};
+                //     loadedClinicalHistory.
+                //     $scope.clinicalHistoryDataArray.push(loadedClinicalHistory);
+                // })
+                console.log(data)
+                data.data.familyHistory.forEach(member => {
+                    let familyMember = {};
+                    familyMember.ClinicalHistoryDataArray = [];
+                    familyMember.Id = member.FAMILYHISTORY_ID;
+                    familyMember.LabId = member.GENETYLLIS_PATIENT_LABID;
+                    familyMember.RelationId = member.Id;
+                    familyMember.RelationName = $scope.relationData.find(el => el.Id == member.FAMILYHISTORY_RELATIONID).RelationType;
+                    familyMember.PatientId = member.FAMILYHISTORY_PATIENTID;
+                    familyMember.FamilyMemberId = member.FAMILYHISTORY_FAMILYMEMBERID;
+                    member.clinicalHistory.forEach(history => {
+                        let clinicalHistory = {};
+                        clinicalHistory.PathologyId = history.CLINICALHISTORY_PATHOLOGYID;
+                        clinicalHistory.PathologyId = history.CLINICALHISTORY_PATHOLOGYID;
+                        clinicalHistory.PathologyCui = history.PATHOLOGY_CUI;
+                        clinicalHistory.PathologyName = history.PATHOLOGY_NAME;
+                        clinicalHistory.Notes = history.GENETYLLIS_CLINICALHISTORY_NOTES;
+                        clinicalHistory.AgeOnset = history.GENETYLLIS_CLINICALHISTORY_AGEONSET;
+                        familyMember.ClinicalHistoryDataArray.push(angular.copy(clinicalHistory));
+                    })
+                    $scope.familyMembersArray.push(angular.copy(familyMember));
+                })
+
+                console.log(JSON.stringify($scope.familyMembersArray));
+            })
+    }
+
+    // loadPatientFormData();
+
     $scope.loadFamilyMemberByLabId = function () {
         $http.get(patientsOptionsApi + "/loadPatientHistory/" + $scope.familyClinicalHistoryDataArray.LabId.toString())
             .then(data => {

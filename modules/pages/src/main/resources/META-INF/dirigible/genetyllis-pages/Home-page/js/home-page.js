@@ -34,7 +34,6 @@ homePage.controller("homePageController", ['$scope', '$http', '$localStorage', f
     function loadAnalysisCount() {
         $http.get(analysisCount + "/count")
             .then(function (data) {
-                console.log(data)
                 $scope.totalItems = data.data
             });
     };
@@ -48,11 +47,9 @@ homePage.controller("homePageController", ['$scope', '$http', '$localStorage', f
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
             .then(function (data) {
-                console.log(data)
                 $scope.patientsDetails = []
                 // ["ANALYSIS_DATE", "ANALYSIS_ID", "ANALYSIS_PLATFORMID", "ANALYSIS_PROVIDERID", "GENETYLLIS_ANALYSIS_PATIENTID"]
                 patientObject = {};
-                console.log(data)
                 data.data.data.forEach(patientResult => {
                     let patientRes = patientResult.PATIENT_LABID;
                     if (patientResult.analysis.length > -1) {
@@ -173,26 +170,31 @@ homePage.controller("homePageController", ['$scope', '$http', '$localStorage', f
 
 
     $scope.analysisDateFunc = function () {
-        console.log("Hello", $scope.analysisDate)
     }
 
     $scope.labIdFunc = function () {
-        console.log("Hello", $scope.search)
     }
 
+    $scope.redirectAnalysis = function (data) {
 
-    $scope.redirectPatients = function (data) {
-        console.log(data, "data");
         $localStorage.$default({
             analysis: data
         });
     }
 
-    $scope.checkColumn = function (e) {
 
-        return e == "Id"
+    $scope.redirectPatients = function (data) {
+        console.log(data)
+        $localStorage.$default({
+            patient: data
+        });
+    }
+
+    $scope.checkColumn = function (e) {
+        console.log(e)
+        return e == "Id" || e == "Patient"
     }
     $scope.notLink = function (e) {
-        return e != 'Id'
+        return e != 'Id' && e != "Patient"
     }
 }]);

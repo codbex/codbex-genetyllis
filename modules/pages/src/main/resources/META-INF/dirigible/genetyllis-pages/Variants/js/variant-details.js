@@ -69,7 +69,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     $scope.selectedHgvsArr = [];
 
     $scope.GENETYLLIS_PATIENT = {
-        GENETYLLIS_PATIENT_LABID: [],
+        PATIENT_LABID: [],
         PATIENT_AGE_FROM: '',
         PATIENT_AGE_TO: '',
         PATIENT_GENDERID: [],
@@ -170,8 +170,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         $scope.addedVariantId.splice(i, 1);
     }
 
-
-
     $scope.chromList = []
     for (let a = 1; a <= 22; a++) {
         $scope.chromList.push(`chr${a}`)
@@ -239,6 +237,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         $localStorage.$default({
             key: data
         });
+        console.log($localStorage.$default, "local")
         // $localStorage.setItem('key', data);
     }
 
@@ -305,6 +304,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                 response.data.data.forEach(data => {
 
                     let variantObj = {}
+<<<<<<< HEAD
                     let clinicalSignificanceObj = {}
                     // console.log(data, "clinicalSignificance");
 
@@ -317,11 +317,14 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                         clinicalSignificanceObj.Evaluation = el.CLINICALSIGNIFICANCE_EVALUATED.split("T")[0]
                         clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
                     })
+=======
+                    console.log(data)
+>>>>>>> branch 'notification-working' of https://github.com/codbex/codbex-genetyllis.git
                     variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
 
-                    variantObj.GenderId = data.PATIENT_GENDERID === 1 ? "male" : data.PATIENT_GENDERID == 2 ? "female" : "Nonspecifed gender";
+                    variantObj.GenderId = data.PATIENT_GENDERID === 1 ? "Male" : data.PATIENT_GENDERID == 2 ? "Female" : "Nonspecifed gender";
                     variantObj["Clinical history"] = data.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     variantObj["Family history"] = data.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     variantObj.Analysis = data.analysis[0]?.ANALYSIS_ID;

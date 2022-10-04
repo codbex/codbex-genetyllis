@@ -86,7 +86,7 @@
 								</div>
 								<div class="col">
 									<input type="search" placeholder="LabID" class="form-control" ng-model="search"
-										ng-change="labIdFunc()">
+										ng-blur="labIdFunc()">
 
 								</div>
 								<div class="col">
@@ -148,13 +148,14 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr dir-paginate="data in patientsDetails | itemsPerPage:selectedPerPage "
+									<tr dir-paginate="data in patientsDetails | itemsPerPage:selectedPerPage | filter:search"
 										total-items="totalItems">
 
 										<td ng-repeat="i in homePageTableInfo">
-											<a href="partials/addAnalysis.html" ng-if="checkColumn(i)"
+											<a href="partials/addAnalysis.html" ng-if="i=='Id'"
+												ng-click="redirectAnalysis(data)">{{data[i]}}</a>
+											<a href="../Patients/partials/patient-details.html" ng-if="i=='Patient'"
 												ng-click="redirectPatients(data)">{{data[i]}}</a>
-
 											<span ng-if="notLink(i)">{{data[i]}}</span>
 										</td>
 
