@@ -190,7 +190,7 @@ rs.service()
 	.resource("")
 		.post(function (ctx, request, response) {
 			let entity = request.getJSON();
-			if (entity.Id && entity.Id !== undefined) {
+			if (entity.Id && entity.Id !== "") {
 				dao.update(entity);
 			} else {
 				entity.Id = dao.create(entity);
