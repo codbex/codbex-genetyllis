@@ -108,7 +108,7 @@ exports.delete = function(id) {
 };
 
 exports.count = function (VariantId) {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_CLINICALSIGNIFICANCE\" WHERE \"CLINICALSIGNIFICANCE_VARIANTID\" = ?", [VariantId]);
+	let resultSet = query.execute('SELECT COUNT(*) AS COUNT FROM "GENETYLLIS_CLINICALSIGNIFICANCE" WHERE "CLINICALSIGNIFICANCE_VARIANTID" = ?', [VariantId]);
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -120,7 +120,7 @@ exports.count = function (VariantId) {
 };
 
 exports.customDataCount = function() {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM CLINICALSIGNIFICANCE");
+	let resultSet = query.execute('SELECT COUNT(*) AS COUNT FROM "GENETYLLIS_CLINICALSIGNIFICANCE"');
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
