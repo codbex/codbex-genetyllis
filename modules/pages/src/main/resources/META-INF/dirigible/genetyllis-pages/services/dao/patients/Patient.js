@@ -221,7 +221,7 @@ exports.filterPatients = function (patient) {
 	var countSql = "";
 
 	if (patient.GENETYLLIS_PATIENT) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT);
+		filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
 	}
 
 	if (patient.GENETYLLIS_CLINICALHISTORY) {
@@ -240,8 +240,6 @@ exports.filterPatients = function (patient) {
 	if (patient.GENETYLLIS_ANALYSIS) {
 		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS);
 	}
-
-
 
 	countSql += filterSql;
 
@@ -324,8 +322,6 @@ exports.filterPatients = function (patient) {
 			foundPatient.familyHistory = familyHistory.filter(family => family.FAMILYHISTORY_PATIENTID === foundPatient.PATIENT_ID)
 			foundPatient.analysis = analysis.filter(analysisElement => analysisElement.ANALYSIS_PATIENTID === foundPatient.PATIENT_ID)
 		})
-
-
 	}
 
 	filterSql = "";
@@ -405,6 +401,7 @@ function addArrayValuesToSql(array, isLower) {
 
 	return inStatement;
 }
+
 function initFilterSql() {
 	useWhere = true;
 	filterSqlParams = [];
