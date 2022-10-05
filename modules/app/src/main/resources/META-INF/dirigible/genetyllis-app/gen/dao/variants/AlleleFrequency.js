@@ -94,7 +94,7 @@ exports.delete = function(id) {
 };
 
 exports.count = function (VariantId) {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_ALLELEFREQUENCY WHERE ALLELEFREQUENCY_VARIANTID = ?", [VariantId]);
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_ALLELEFREQUENCY\" WHERE \"ALLELEFREQUENCY_VARIANTID\" = ?", [VariantId]);
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;

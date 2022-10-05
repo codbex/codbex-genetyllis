@@ -81,7 +81,7 @@ exports.delete = function(id) {
 };
 
 exports.count = function (PatientId) {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_CLINICALHISTORY WHERE CLINICALHISTORY_PATIENTID = ?", [PatientId]);
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_CLINICALHISTORY\" WHERE \"CLINICALHISTORY_PATIENTID\" = ?", [PatientId]);
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
