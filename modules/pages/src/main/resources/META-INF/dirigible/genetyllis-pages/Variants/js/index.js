@@ -14,7 +14,7 @@ var page = angular.module("variant", ['ngStorage', 'angularUtils.directives.dirP
 page.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
-page.controller('VariantController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
+page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
@@ -275,9 +275,9 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
         $scope.filter()
     }
 
+
     $scope.redirectPatients = function (data) {
-        // console.log(data, "data");
-        $localStorage.$default({
+        $sessionStorage.$default({
             HGVS: data
         });
     }
