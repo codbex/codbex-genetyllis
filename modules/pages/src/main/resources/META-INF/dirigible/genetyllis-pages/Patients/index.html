@@ -46,7 +46,8 @@
                                 <a href="../../../web/genetyllis-pages/Home-page/index.html">Home</a>
                             </li>
                             <li>
-                                <a href="../../../web/genetyllis-pages/Patients/index.html">Patients</a>
+                                <a href="../../../web/genetyllis-pages/Patients/index.html"
+                                    class="currPage">Patients</a>
                             </li>
 
                             <li>
@@ -86,7 +87,7 @@
                                 </div>
                             </div>
                             <div class="addedText">
-                                <span ng-repeat="i in GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID track by $index"
+                                <span ng-repeat="i in GENETYLLIS_PATIENT.PATIENT_LABID track by $index"
                                     ng-click="removeLabId($index)">{{i}}</span>
                             </div>
                         </div>

@@ -11,13 +11,13 @@
  */
 
 
-let homePage = angular.module("home-page", ['angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
+let homePage = angular.module("home-page", ['ngStorage', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
 
 homePage.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
 
-homePage.controller("homePageController", ['$scope', '$http', function ($scope, $http) {
+homePage.controller("homePageController", ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
     var analysisCount = '/services/v4/js/genetyllis-pages/services/api/analysis/Analysis.js';
 
     var patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
@@ -30,8 +30,7 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
     $scope.totalItems;
     $scope.patientsDetails = [];
 
-    // $scope.homePageTable = ["AID", "Date", "Patient", "Provider", "Status",];
-    // $scope.homePageTableInfo = ["ANALYSIS_DATE", "LabId", "BirthDate", "Clinical history", "Analysis"];
+
     function loadAnalysisCount() {
         $http.get(analysisCount + "/count")
             .then(function (data) {
@@ -52,18 +51,16 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
                 // ["ANALYSIS_DATE", "ANALYSIS_ID", "ANALYSIS_PLATFORMID", "ANALYSIS_PROVIDERID", "GENETYLLIS_ANALYSIS_PATIENTID"]
                 patientObject = {};
                 data.data.data.forEach(patientResult => {
-                    if (patientResult.analysis.length > 0) {
-
+                    let patientRes = patientResult.PATIENT_LABID;
+                    if (patientResult.analysis.length > -1) {
                         patientResult.analysis.forEach(el => {
-
                             patientObject = {};
                             patientObject.Date = el.ANALYSIS_DATE.split("T")[0];
                             patientObject.Id = el.ANALYSIS_ID;
-                            patientObject.Platform = el.ANALYSIS_PLATFORMID;
-                            patientObject.Provider = el.ANALYSIS_PROVIDERID;
+                            patientObject.Platform = el.platform[0].PLATFORM_NAME;
+                            patientObject.Provider = el.provider[0].PROVIDER_NAME;
                             patientObject.Dates = el.ANALYSIS_DATE.split('T')[0];
-
-                            patientObject.Patient = patientResult.GENETYLLIS_PATIENT_LABID;
+                            patientObject.Patient = patientRes;
 
                             patientObject.Gender = patientResult.PATIENT_GENDERID;
                             patientObject.Ethnicity = patientResult.GENETYLLIS_PATIENT_POPULATIONID;
@@ -99,12 +96,8 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
     // _|_
     $scope.patientsTableModel = [];
     // $scope.patientsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
-    $scope.patientsTableData = [{ id: 7, label: "Gender" }, { id: 8, label: "Ethnicity" }, { id: 9, label: "Family history" }];
-    $scope.patientsTableSettings = {
-        scrollableHeight: '200px',
-        scrollable: true,
-        enableSearch: true
-    };
+    $scope.patientsTableData = [{ id: 7, label: "Status" }];
+
 
     $scope.selectFucn = function () {
         $scope.homePageTable = ["AID", "Date", "Patient", "Platform", "Provider"];
@@ -177,10 +170,31 @@ homePage.controller("homePageController", ['$scope', '$http', function ($scope, 
 
 
     $scope.analysisDateFunc = function () {
-        console.log("Hello", $scope.analysisDate)
     }
 
     $scope.labIdFunc = function () {
-        console.log("Hello", $scope.search)
+    }
+
+    $scope.redirectAnalysis = function (data) {
+
+        $localStorage.$default({
+            analysis: data
+        });
+    }
+
+
+    $scope.redirectPatients = function (data) {
+        console.log(data)
+        $localStorage.$default({
+            patient: data
+        });
+    }
+
+    $scope.checkColumn = function (e) {
+        console.log(e)
+        return e == "Id" || e == "Patient"
+    }
+    $scope.notLink = function (e) {
+        return e != 'Id' && e != "Patient"
     }
 }]);

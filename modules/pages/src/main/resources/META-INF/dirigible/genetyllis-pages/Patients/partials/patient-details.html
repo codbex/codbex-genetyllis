@@ -55,17 +55,19 @@
         </div>
         <div class="patient-details">
             <div class="editPatients">
-                <div class="row">
-                    <div class="col">
-                        <h4>{{fromData.LabId}}(PID:{{fromData.Id}})</h4>
-                    </div>
-                    <div class="col">
-                        <form action="../../Home-page/partials/addPatient.html">
-                            <input type="submit" ng-click="editPatients()" class="btn btn-primary filterBtn addFilter"
-                                value="Edit" />
-                        </form>
-
-
+                <div class="patient-info-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h4>{{fromData.LabId}}(PID:{{fromData.Id}})</h4>
+                            </div>
+                            <div class="col">
+                                <form action="../../Home-page/partials/addPatient.html">
+                                    <input type="submit" ng-click="editPatients()"
+                                        class="btn btn-primary filterBtn addFilter" value="Edit" />
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

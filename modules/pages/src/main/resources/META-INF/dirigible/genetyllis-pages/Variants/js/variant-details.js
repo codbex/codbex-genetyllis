@@ -15,12 +15,14 @@ variantDetails.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../../components/pagination.html');
 });
 
-variantDetails.controller('variantDetailsController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
+variantDetails.controller('variantDetailsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
+
 
     $scope.clinicalSignificance = ["Accession", "Pathology", "Significance", "Evaluation", "Review"]
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.variants;
+    $scope.clinicalSignificanceArr
 
     $scope.selectedPerPage = 10;
     $scope.perPageData = [10, 20, 50, 100]
@@ -68,23 +70,23 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     $scope.selectedHgvsArr = [];
 
     $scope.GENETYLLIS_PATIENT = {
-        GENETYLLIS_PATIENT_LABID: [],
+        PATIENT_LABID: [],
         PATIENT_AGE_FROM: '',
         PATIENT_AGE_TO: '',
         PATIENT_GENDERID: [],
-        GENETYLLIS_PATIENT_POPULATIONID: []
+        PATIENT_POPULATIONID: []
     }
 
     $scope.GENETYLLIS_CLINICALHISTORY = {
         PATHOLOGY_CUI: [],
-        GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
-        GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
+        CLINICALHISTORY_AGEONSET_FROM: '',
+        CLINICALHISTORY_AGEONSET_TO: ''
     }
 
     $scope.GENETYLLIS_FAMILYHISTORY = {
         PATHOLOGY_CUI: [],
-        GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM: '',
-        GENETYLLIS_CLINICALHISTORY_AGEONSET_TO: ''
+        CLINICALHISTORY_AGEONSET_FROM: '',
+        CLINICALHISTORY_AGEONSET_TO: ''
     }
     $scope.GENETYLLIS_VARIANT = {
         VARIANT_CHROMOSOME: '',
@@ -93,13 +95,13 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         VARIANT_REF: '',
         VARIANT_ALT: '',
         VARIANT_CONSEQUENCE: [],
-        HGVS: ''
+        VARIANT_HGVS: ''
     }
     $scope.GENETYLLIS_ANALYSIS = {
         ANALYSIS_DATE: "",
     }
     $scope.addLabIdFilter = function (labId) {
-        $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.push(labId)
+        $scope.GENETYLLIS_PATIENT.PATIENT_LABID.push(labId)
         $scope.selectedLabId = '';
     }
 
@@ -123,14 +125,14 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     $scope.addLabIdFilter = function (args) {
 
-        if ($scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.includes($scope.selectedLabId) || $scope.selectedLabId == '') return
-        $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.push($scope.selectedLabId);
+        if ($scope.GENETYLLIS_PATIENT.PATIENT_LABID.includes($scope.selectedLabId) || $scope.selectedLabId == '') return
+        $scope.GENETYLLIS_PATIENT.PATIENT_LABID.push($scope.selectedLabId);
         $scope.selectedLabId = ""
 
     }
 
     $scope.removeLabId = function (i) {
-        $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_LABID.splice(i, 1);
+        $scope.GENETYLLIS_PATIENT.PATIENT_LABID.splice(i, 1);
     }
 
     // Clinical History ID
@@ -168,8 +170,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     $scope.removeVariantId = function (i) {
         $scope.addedVariantId.splice(i, 1);
     }
-
-
 
     $scope.chromList = []
     for (let a = 1; a <= 22; a++) {
@@ -236,7 +236,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
 
 
-
     $scope.clearAllFilters = function () {
         $scope.selectedLabId = ""
         selectedPatientConceptId = ""
@@ -278,10 +277,11 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     }
 
 
-    // GENETYLLIS_ANALYSIS GENETYLLIS_VARIANT GENETYLLIS_FAMILYHISTORY GENETYLLIS_CLINICALHISTORY 
+    // GENETYLLIS_ANALYSIS GENETYLLIS_VARIANT GENETYLLIS_FAMILYHISTORY GENETYLLIS_CLINICALHISTORY
 
     $scope.filter = function () {
         let query = {};
+        console.log($scope.fromData)
         query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
         query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
         query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
@@ -290,27 +290,42 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
 
-        $http.post(patientsOptionsApi + "/filterPatients", JSON.stringify(query))
+        $http.post(patientsOptionsApi + "/filterVariantDetails", JSON.stringify(query))
             .then(function (response) {
                 $scope.variants = []
-                console.log(response, "response")
+                $scope.clinicalSignificanceArr = []
                 response.data.data.forEach(data => {
+
                     let variantObj = {}
-                    variantObj.LabId = data.GENETYLLIS_PATIENT_LABID;
+                    let clinicalSignificanceObj = {}
+
+
+                    data.clinicalSignificance.map(el => {
+                        clinicalSignificanceObj.Accession = el.CLINICALSIGNIFICANCE_ACCESSION
+                        clinicalSignificanceObj.Pathology = el.pathology[0]?.PATHOLOGY_NAME
+                        clinicalSignificanceObj.Significance = el.significance[0]?.SIGNIFICANCE_NAME
+                        clinicalSignificanceObj.Evaluation = el.CLINICALSIGNIFICANCE_EVALUATED.split("T")[0]
+                        clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
+                    })
+                    variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
 
-                    variantObj.GenderId = data.PATIENT_GENDERID === 1 ? "male" : data.PATIENT_GENDERID == 2 ? "female" : "Nonspecifed gender";
+                    variantObj.GenderId = data.PATIENT_GENDERID === 1 ? "Male" : data.PATIENT_GENDERID == 2 ? "Female" : "Nonspecifed gender";
                     variantObj["Clinical history"] = data.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     variantObj["Family history"] = data.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     variantObj.Analysis = data.analysis[0]?.ANALYSIS_ID;
                     variantObj.Date = data.analysis[0]?.ANALYSIS_DATE.split("T")[0];
-                    variantObj.Ethnicity = data.GENETYLLIS_PATIENT_POPULATIONID === 12 ? "Bulgarian" : data.GENETYLLIS_PATIENT_POPULATIONID === 18 ? "Other ethnicity" : "European (non-Finnish)";
+                    variantObj.Ethnicity = data.PATIENT_POPULATIONID === 12 ? "Bulgarian" : data.PATIENT_POPULATIONID === 18 ? "Other ethnicity" : "European (non-Finnish)";
                     $scope.variants.push(variantObj);
+                    $scope.clinicalSignificanceArr.push(clinicalSignificanceObj)
+
                 });
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
             })
+        $sessionStorage.$reset();
+
     }
 
     $scope.pageChangeHandler = function (curPage) {
@@ -320,10 +335,11 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     }
 
 
-    $scope.fromData = $localStorage.HGVS;
+    $scope.fromData = $sessionStorage.HGVS;
     $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
+    console.log($scope.GENETYLLIS_VARIANT)
     $scope.filter()
-    localStorage.clear();
+
 
 }]);
 

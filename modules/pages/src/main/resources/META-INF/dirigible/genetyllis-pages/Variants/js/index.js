@@ -14,9 +14,10 @@ var page = angular.module("variant", ['ngStorage', 'angularUtils.directives.dirP
 page.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
-page.controller('VariantController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
+page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
+    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.variantsDetails = [];
     $scope.selectedPerPage = 10;
@@ -70,6 +71,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
     $scope.addGeneFilter = function () {
         if (!$scope.selectedGeneId || $scope.GENETYLLIS_GENE.GENE_NAME.includes($scope.selectedGeneId)) return
         $scope.GENETYLLIS_GENE.GENE_NAME.push($scope.selectedGeneId)
+
         $scope.selectedGeneId = '';
 
     }
@@ -146,31 +148,65 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))
             .then(function (response) {
+                console.log(response, 'respo')
                 $scope.variantsDetails = [];
-                console.log(response.data)
+                console.log(response.data, "response")
                 response.data.data.forEach(data => {
                     let variantObj = {}
                     variantObj.HGVS = data.VARIANT_HGVS
-                    if (data.genes) {
-                        variantObj.Gene = data.genes[0]?.GENE_NAME
-                    }
+                    // if (data.genes) {
+                    //     variantObj.Gene = data.genes[0]?.GENE_NAME != "NULL" ? data.genes[0]?.GENE_NAME : "-";
+                    //     if (data.genes[0]?.GENE_NAME !== 'NULL') {
+                    //         $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + data.genes[0]?.GENE_NAME)
+                    //             .then(function (responseSite) {
+                    //                 responseSite.data[3].forEach(gene => {
+                    //                     if (gene[3] === data.genes[0]?.GENE_NAME) {
+                    //                         variantObj.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
+                    //                     }
+
+                    //                 })
+                    //             });
+                    //     }
+
+                    //     // console.log($scope.geneResponse, "geneResponse")
+                    // }
                     variantObj.VARIANT_CONSEQUENCE = data.VARIANT_CONSEQUENCE
                     variantObj.GeneId = data.VARIANT_GENEID
+
                     variantObj.Reference = data.VARIANT_REFERENCE
                     variantObj.Alternative = data.VARIANT_ALTERNATIVE
+                    variantObj.ClinicalSignificance = data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 1 ? "Pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 2 ? "Likely pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 3 ? "Variant of uncerain significance (VUS)" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 4 ? "Likely benign variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 5 ? "Benign variant" : "undefined";
                     if (data.clinicalSignificance && data.clinicalSignificance.pathology) {
                         variantObj.Pathology = data.clinicalSignificance.pathology[0]?.PATHOLOGY_NAME;
                     }
                     if (data.alleleFrequency) {
-                        variantObj.Ethnicity = data.alleleFrequency[0]?.ALLELEFREQUENCY_POPULATIONID === 12 ? "Bulgarian" : "Other ethnicity";
+                        variantObj.AlleleFrequency = (Number(data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) * 1000000);
+
                     }
+                    // console.log(data, "data")
                     $scope.variantsDetails.push(variantObj)
                 })
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
+                console.log($scope.variantsDetails, "variantsDetails")
             }, function (response) {
             });
+
+        $http.post(patientsOptionsApi + "/filterVariantDetails", JSON.stringify(query))
+            .then(function (response) {
+                $scope.variants = []
+                // console.log(response, "response")
+                response.data.data.forEach(data => {
+                    let variantObj = {}
+                    // console.log(data)
+                    variantObj.PatientsCount = data.count;
+                    $scope.variants.push(variantObj);
+                });
+                // localStorage.clear();
+            })
+
+        console.log($scope.variants);
     }
 
     $scope.filter();
@@ -179,7 +215,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
     // _|_
     $scope.variantTableModel = [];
     // $scope.variantsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
-    $scope.variantsTableData = [{ id: 7, label: "Ethnicity" }, { id: 8, label: "Gender" }];
+    // $scope.variantsTableData = [{ id: 7, label: "Ethnicity" }, { id: 8, label: "Gender" }];
     $scope.patientsTableSettings = {
         scrollableHeight: '200px',
         scrollable: true,
@@ -187,9 +223,10 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
     };
 
     $scope.selectFucn = function () {
+
         console.log($scope.variants, "variants")
         $scope.variantTable = ['HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients'];
-        $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "GeneId", "Reference", "Alternative", "Pathology"];
+        $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "Reference", "AlleleFrequency", "Patients"];
         for (let x = 0; x < $scope.variantTableModel.length; x++) {
             let value = $scope.variantsTableData.find(e => e.id == $scope.variantTableModel[x].id)
             $scope.variantTable.push(value.label);
@@ -198,15 +235,17 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
         }
     }
 
-
     $scope.checkColumn = function (e) {
         return e == 'Id'
     }
     $scope.notLink = function (e) {
         return e != 'Id'
     }
+    $scope.isGene = function (e) {
+        return e != '-'
+    }
 
-    $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "GeneId", "Reference", "Alternative", "Pathology"];
+    $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "ClinicalSignificance", "AlleleFrequency", 'Patients'];
     $scope.variantTable = ['HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
 
 
@@ -236,9 +275,9 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
         $scope.filter()
     }
 
+
     $scope.redirectPatients = function (data) {
-        console.log(data, "data");
-        $localStorage.$default({
+        $sessionStorage.$default({
             HGVS: data
         });
     }

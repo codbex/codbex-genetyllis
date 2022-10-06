@@ -42,35 +42,78 @@ exports.count = function () {
 };
 
 exports.getPatientByLabId = function (labId) {
-	return query.execute('SELECT * FROM "GENETYLLIS_PATIENT" WHERE "GENETYLLIS_PATIENT_LABID" = ? LIMIT 1', [labId]);
+	return query.execute('SELECT * FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_LABID" = ? LIMIT 1', [labId]);
 }
 
 exports.getPatientAndHistoryByLabId = function (labId) {
 	return query.execute('SELECT * FROM "GENETYLLIS_PATIENT" GP ' +
 		'JOIN "GENETYLLIS_CLINICALHISTORY" GC ON GP."PATIENT_ID" = GC."CLINICALHISTORY_PATIENTID" ' +
-		'JOIN "GENETYLLIS_FAMILYHISTORY" GF ON GP."PATIENT_ID" = GF."FAMILYHISTORY_FAMILYMEMBERID"  WHERE "GENETYLLIS_PATIENT_LABID" = ?', [labId]);
+		'JOIN "GENETYLLIS_FAMILYHISTORY" GF ON GP."PATIENT_ID" = GF."FAMILYHISTORY_FAMILYMEMBERID"  WHERE "PATIENT_LABID" = ?', [labId]);
 }
 
 exports.suggestLabIds = function (labId) {
-	return query.execute('SELECT * FROM "GENETYLLIS_PATIENT" WHERE "GENETYLLIS_PATIENT_LABID" LIKE ? LIMIT 10', [`%${labId}%`]);
+	return query.execute('SELECT * FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_LABID" LIKE ? LIMIT 10', [`%${labId}%`]);
 }
 
-exports.filterPatients = function (patient) {
+exports.loadPatientFormData = function (id) {
+	let patient = query.execute('SELECT * FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_ID" = ?', [id])[0];
+
+	/* LOAD FAMILYHISTORY */
+	let familyHistory = query.execute('SELECT * FROM "GENETYLLIS_FAMILYHISTORY" WHERE "FAMILYHISTORY_PATIENTID" = ?', [id]);
+
+	let familyPatientIds = familyHistory.map(member => member.FAMILYHISTORY_FAMILYMEMBERID);
+	let familyPatientIdsInStatement = addArrayValuesToSql(familyPatientIds, false);
+	let familyHistoryPatientsQuery = 'SELECT * FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_ID"' + familyPatientIdsInStatement;
+	let familyHistoryPatients = query.execute(familyHistoryPatientsQuery, familyPatientIds);
+
+	/* LOAD CLINICALHISTORY AND PATHOLOGY */
+	familyPatientIds.push(id);
+	let familyAndPatientIdsInStatement = addArrayValuesToSql(familyPatientIds, false);
+	let clinicalHistoryQuery = 'SELECT * FROM "GENETYLLIS_CLINICALHISTORY" WHERE "CLINICALHISTORY_PATIENTID"' + familyAndPatientIdsInStatement;
+	let clinicalHistory = query.execute(clinicalHistoryQuery, familyPatientIds);
+
+	let pathologyIds = clinicalHistory.map(memberHistory => memberHistory.CLINICALHISTORY_PATHOLOGYID);
+	let pathologyResult = [];
+	if (pathologyIds.length > 0) {
+		let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds, false);
+		let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
+
+		pathologyResult = query.execute(pathologyQuery, pathologyIds);
+	}
+
+	/* MAP PATHOLOGY TO CLINICALHISTORY */
+	clinicalHistory.forEach(history => {
+		history.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === history.CLINICALHISTORY_PATHOLOGYID);
+	})
+
+	/* MAP CLINICALHISTORY AND PATIENT TO FAMILYHISTORY */
+	familyHistory.forEach(member => {
+		member.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === member.FAMILYHISTORY_FAMILYMEMBERID);
+		member.patient = familyHistoryPatients.filter(familyPatient => familyPatient.PATIENT_ID === member.FAMILYHISTORY_FAMILYMEMBERID);
+	})
+
+	patient.familyHistory = familyHistory;
+	patient.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === patient.PATIENT_ID);
+
+	return patient;
+}
+
+exports.filterVariantDetails = function (patient) {
 	initFilterSql();
 
 	var response = {};
 	var countSql = "";
 
 	if (patient.GENETYLLIS_PATIENT) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
+		filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT);
 	}
 
 	if (patient.GENETYLLIS_CLINICALHISTORY) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY, filterSql);
+		filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY);
 	}
 
 	if (patient.GENETYLLIS_VARIANT) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT, filterSql);
+		filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT);
 	}
 
 	if (patient.GENETYLLIS_FAMILYHISTORY) {
@@ -79,12 +122,8 @@ exports.filterPatients = function (patient) {
 		}
 	}
 	if (patient.GENETYLLIS_ANALYSIS) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS, filterSql);
+		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS);
 	}
-
-	// if (variant.GENETYLLIS_SIGNIFICANCE) {
-	// 	buildFilterSql(variant.GENETYLLIS_SIGNIFICANCE);
-	// }
 
 	countSql += filterSql;
 
@@ -101,7 +140,123 @@ exports.filterPatients = function (patient) {
 	response.totalPages = Math.floor(response.totalItems / patient.perPage) + (response.totalItems % patient.perPage == 0 ? 0 : 1);
 
 	let patientIds = response.data.map(foundPatient => foundPatient.PATIENT_ID);
-	let patientIdsInStatement = addArrayValuesToSql(patientIds);
+
+	let patientIdsInStatement = addArrayValuesToSql(patientIds, false);
+
+	if (patientIds.length > 0) {
+		/* LOAD FAMILYHISTORY */
+		let familyHistoryQuery = 'SELECT * FROM "GENETYLLIS_FAMILYHISTORY" WHERE "FAMILYHISTORY_PATIENTID"' + patientIdsInStatement;
+		let familyHistory = query.execute(familyHistoryQuery, patientIds);
+
+		let familyPatientIds = familyHistory.map(member => member.FAMILYHISTORY_FAMILYMEMBERID);
+
+		/* LOAD CLINICALSIGNIFICANCE */
+		let clinicalSignificanceQuery = 'SELECT GC.*, GV."VARIANTRECORD_PATIENTID"  FROM "GENETYLLIS_CLINICALSIGNIFICANCE" GC ' +
+			'LEFT JOIN "GENETYLLIS_VARIANTRECORD" GV ON GC."CLINICALSIGNIFICANCE_VARIANTID" = GV."VARIANTRECORD_VARIANTID" ' +
+			'WHERE "VARIANTRECORD_PATIENTID"' + patientIdsInStatement;
+		let clinicalSignificance = query.execute(clinicalSignificanceQuery, patientIds);
+		let clinicalSignificanePathologyIds = clinicalSignificance.map(foundClinicalSignificance => foundClinicalSignificance.CLINICALSIGNIFICANCE_PATHOLOGYID);
+		let significanceIds = clinicalSignificance.map(foundClinicalSignificance => foundClinicalSignificance.CLINICALSIGNIFICANCE_SIGNIFICANCEID);
+		let significanceIdsInStatement = addArrayValuesToSql(significanceIds, false);
+
+		/* LOAD SIGNIFICANCE */
+		let significanceQuery = 'SELECT * FROM "GENETYLLIS_SIGNIFICANCE" WHERE "SIGNIFICANCE_ID"' + significanceIdsInStatement;
+		let significance = query.execute(significanceQuery, significanceIds);
+
+		/* LOAD CLINICALHISTORY AND PATHOLOGY */
+		let familyAndPatientIds = patientIds.concat(familyPatientIds)
+		let familyAndPatientIdsInStatement = addArrayValuesToSql(familyAndPatientIds, false);
+		let clinicalHistoryQuery = 'SELECT * FROM "GENETYLLIS_CLINICALHISTORY" WHERE "CLINICALHISTORY_PATIENTID"' + familyAndPatientIdsInStatement;
+		let clinicalHistory = query.execute(clinicalHistoryQuery, familyAndPatientIds);
+
+		let pathologyIds = clinicalHistory.map(memberHistory => memberHistory.CLINICALHISTORY_PATHOLOGYID);
+		pathologyIds = pathologyIds.concat(clinicalSignificanePathologyIds);
+		let pathologyResult = [];
+		if (pathologyIds.length > 0) {
+			let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds, false);
+			let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
+
+			pathologyResult = query.execute(pathologyQuery, pathologyIds);
+		}
+
+		/* MAP PATHOLOGY TO CLINICALHISTORY */
+		clinicalHistory.forEach(history => {
+			history.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === history.CLINICALHISTORY_PATHOLOGYID);
+		})
+
+		/* MAP PATHOLOGY TO CLINICALSIGNIFICANCE */
+		clinicalSignificance.forEach(foundClinicalSignificance => {
+			foundClinicalSignificance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === foundClinicalSignificance.CLINICALSIGNIFICANCE_PATHOLOGYID);
+			foundClinicalSignificance.significance = significance.filter(foundSignificance => foundSignificance.SIGNIFICANCE_ID === foundClinicalSignificance.CLINICALSIGNIFICANCE_SIGNIFICANCEID);
+		})
+
+		/* LOAD ANALYSIS */
+		let analysisQuery = 'SELECT * FROM "GENETYLLIS_ANALYSIS" WHERE "ANALYSIS_PATIENTID"' + patientIdsInStatement;
+		let analysis = query.execute(analysisQuery, patientIds);
+
+		/* MAP CLINICALHISTORY AND PATIENT TO FAMILYHISTORY */
+		familyHistory.forEach(member => {
+			member.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === member.FAMILYHISTORY_FAMILYMEMBERID)
+		})
+
+		/* MAP CLINICALHISTORY, FAMILYHISTORY AND ANALYSIS TO PATIENT */
+		response.data.forEach(foundPatient => {
+			foundPatient.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === foundPatient.PATIENT_ID)
+			foundPatient.familyHistory = familyHistory.filter(family => family.FAMILYHISTORY_PATIENTID === foundPatient.PATIENT_ID)
+			foundPatient.analysis = analysis.filter(analysisElement => analysisElement.ANALYSIS_PATIENTID === foundPatient.PATIENT_ID)
+			foundPatient.clinicalSignificance = clinicalSignificance.filter(foundClinicalSignificance => foundClinicalSignificance.VARIANTRECORD_PATIENTID === foundPatient.PATIENT_ID)
+		})
+
+	}
+
+	filterSql = "";
+
+	return response;
+}
+
+exports.filterPatients = function (patient) {
+	initFilterSql();
+
+	var response = {};
+	var countSql = "";
+
+	if (patient.GENETYLLIS_PATIENT) {
+		filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
+	}
+
+	if (patient.GENETYLLIS_CLINICALHISTORY) {
+		filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY);
+	}
+
+	if (patient.GENETYLLIS_VARIANT) {
+		filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT);
+	}
+
+	if (patient.GENETYLLIS_FAMILYHISTORY) {
+		if (!isFamilyHsistoryEmpty(patient.GENETYLLIS_FAMILYHISTORY)) {
+			buildFamilyHistoryFilterSql(patient.GENETYLLIS_FAMILYHISTORY);
+		}
+	}
+	if (patient.GENETYLLIS_ANALYSIS) {
+		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS);
+	}
+
+	countSql += filterSql;
+
+	filterSql += " LIMIT " + patient.perPage + " OFFSET " + patient.currentPage;
+
+	var resultSet = query.execute(filterSql, filterSqlParams);
+
+	countSql = 'SELECT COUNT(DISTINCT GP."PATIENT_ID") AS "COUNT"' + countSql.slice(20);
+
+	var resultSetCount = query.execute(countSql, filterSqlParams);
+
+	response.data = resultSet;
+	response.totalItems = resultSetCount[0]["COUNT"];
+	response.totalPages = Math.floor(response.totalItems / patient.perPage) + (response.totalItems % patient.perPage == 0 ? 0 : 1);
+
+	let patientIds = response.data.map(foundPatient => foundPatient.PATIENT_ID);
+	let patientIdsInStatement = addArrayValuesToSql(patientIds, false);
 
 	if (patientIds.length > 0) {
 		/* LOAD FAMILYHISTORY */
@@ -112,14 +267,14 @@ exports.filterPatients = function (patient) {
 
 		/* LOAD CLINICALHISTORY AND PATHOLOGY */
 		let familyAndPatientIds = patientIds.concat(familyPatientIds)
-		let familyAndPatientIdsInStatement = addArrayValuesToSql(familyAndPatientIds);
+		let familyAndPatientIdsInStatement = addArrayValuesToSql(familyAndPatientIds, false);
 		let clinicalHistoryQuery = 'SELECT * FROM "GENETYLLIS_CLINICALHISTORY" WHERE "CLINICALHISTORY_PATIENTID"' + familyAndPatientIdsInStatement;
 		let clinicalHistory = query.execute(clinicalHistoryQuery, familyAndPatientIds);
 
 		let pathologyIds = clinicalHistory.map(memberHistory => memberHistory.CLINICALHISTORY_PATHOLOGYID);
 		let pathologyResult = [];
 		if (pathologyIds.length > 0) {
-			let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds);
+			let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds, false);
 			let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
 
 			pathologyResult = query.execute(pathologyQuery, pathologyIds);
@@ -134,6 +289,28 @@ exports.filterPatients = function (patient) {
 		let analysisQuery = 'SELECT * FROM "GENETYLLIS_ANALYSIS" WHERE "ANALYSIS_PATIENTID"' + patientIdsInStatement;
 		let analysis = query.execute(analysisQuery, patientIds);
 
+		if (analysis.length > 0) {
+			let analysisProviderIds = analysis.map(foundPatient => foundPatient.ANALYSIS_PROVIDERID);
+			let providerIdsInStatement = addArrayValuesToSql(analysisProviderIds, false);
+
+			/* LOAD PROVIDER */
+			let providerQuery = 'SELECT * FROM "GENETYLLIS_PROVIDER" WHERE "PROVIDER_ID"' + providerIdsInStatement;
+			let provider = query.execute(providerQuery, analysisProviderIds);
+			analysis.forEach(el => {
+				el.provider = provider.filter(pl => pl.PROVIDER_ID === el.ANALYSIS_PROVIDERID)
+			})
+
+
+			/* LOAD PLATFORM */
+			let analysisPlatformIds = analysis.map(foundPatient => foundPatient.ANALYSIS_PLATFORMID);
+			let platformIdsInStatement = addArrayValuesToSql(analysisPlatformIds, false);
+
+			let platformQuery = 'SELECT * FROM "GENETYLLIS_PLATFORM" WHERE "PLATFORM_ID"' + platformIdsInStatement;
+			let platform = query.execute(platformQuery, analysisPlatformIds);
+			analysis.forEach(el => {
+				el.platform = platform.filter(pl => pl.PLATFORM_ID === el.ANALYSIS_PLATFORMID)
+			});
+		}
 		/* MAP CLINICALHISTORY AND PATIENT TO FAMILYHISTORY */
 		familyHistory.forEach(member => {
 			member.clinicalHistory = clinicalHistory.filter(history => history.CLINICALHISTORY_PATIENTID === member.FAMILYHISTORY_FAMILYMEMBERID)
@@ -154,46 +331,47 @@ exports.filterPatients = function (patient) {
 
 function isFamilyHsistoryEmpty(object) {
 	return (!object.PATHOLOGY_CUI || object.PATHOLOGY_CUI.length === 0)
-		&& !object.GENETYLLIS_CLINICALHISTORY_AGEONSET_FROM
-		&& !object.GENETYLLIS_CLINICALHISTORY_AGEONSET_TO;
+		&& !object.CLINICALHISTORY_AGEONSET_FROM
+		&& !object.CLINICALHISTORY_AGEONSET_TO;
 }
 
-function buildFilterSql(object, sql) {
+function buildFilterSql(object) {
 	var keys = Object.keys(object);
 	for (var i = 0; i < keys.length; i++) {
 		var val = object[keys[i]];
 		if (Array.isArray(val) ? (val.length > 0) : (val !== undefined && val !== '' && val !== null)) {
 			if (useWhere) {
-				sql += " WHERE ";
+				filterSql += " WHERE ";
 			} else {
-				sql += " AND ";
+				filterSql += " AND ";
 			}
 
 			condition = "";
+			let isLower = isNaN(val);
 
 			if (Array.isArray(val)) {
-				condition = 'LOWER("' + keys[i] + '")' + addArrayValuesToSql(val);
+				condition = columnLowerCondition(keys[i], isLower) + addArrayValuesToSql(val, isLower);
 
 			} else if (keys[i].toString().endsWith('_TO')) {
-				condition = keys[i].slice(0, -3) + " <= ?";
-				addFilterParam(val);
+				condition = columnLowerCondition(keys[i].slice(0, -3), isLower) + " <= ?";
+				addFilterParam(val, isLower);
 
 			} else if (keys[i].toString().endsWith('_FROM')) {
-				condition = keys[i].slice(0, -5) + " >= ?";
-				addFilterParam(val);
+				condition = columnLowerCondition(keys[i].slice(0, -5), isLower) + " >= ?";
+				addFilterParam(val, isLower);
 
 			} else {
-				condition = '"' + keys[i] + '"' + " = ?";
-				addFilterParam(val);
+				condition = columnLowerCondition(keys[i], isLower) + " = ?";
+				addFilterParam(val, isLower);
 			}
 
-			sql += condition;
+			filterSql += condition;
 			useWhere = false;
 
 		}
 	}
 
-	return sql;
+	return filterSql;
 }
 
 function buildFamilyHistoryFilterSql(object) {
@@ -210,11 +388,12 @@ function buildFamilyHistoryFilterSql(object) {
 	filterSql += ")"
 }
 
-function addArrayValuesToSql(array) {
-	var inStatement = " IN (";
+function addArrayValuesToSql(array, isLower) {
+
+	let inStatement = " IN (";
 	array.forEach(element => {
 		inStatement += "?,";
-		addFilterParam(element);
+		addFilterParam(element, isLower);
 	})
 
 	inStatement = inStatement.slice(0, -1)
@@ -222,7 +401,6 @@ function addArrayValuesToSql(array) {
 
 	return inStatement;
 }
-// 'LEFT JOIN "GENETYLLIS_SIGNIFICANCE" GS ON GC."CLINICALSIGNIFICANCE_SIGNIFICANCEID" = GS."SIGNIFICANCE_ID" ' +
 
 function initFilterSql() {
 	useWhere = true;
@@ -231,6 +409,7 @@ function initFilterSql() {
 		'LEFT JOIN "GENETYLLIS_CLINICALHISTORY" GC ON GP."PATIENT_ID" = GC."CLINICALHISTORY_PATIENTID" ' +
 		'LEFT JOIN "GENETYLLIS_FAMILYHISTORY" GF ON GP."PATIENT_ID" = GF."FAMILYHISTORY_PATIENTID" ' +
 		'LEFT JOIN "GENETYLLIS_ANALYSIS" GA ON GP."PATIENT_ID" = GA."ANALYSIS_PATIENTID" ' +
+		'LEFT JOIN "GENETYLLIS_PROVIDER" GPR ON GA."ANALYSIS_PROVIDERID" = GPR."PROVIDER_ID" ' +
 		'LEFT JOIN "GENETYLLIS_PATHOLOGY" GPT ON GC."CLINICALHISTORY_PATHOLOGYID" = GPT."PATHOLOGY_ID" ' +
 		'LEFT JOIN "GENETYLLIS_VARIANTRECORD" GVR ON GP."PATIENT_ID" = GVR."VARIANTRECORD_PATIENTID" ' +
 		'LEFT JOIN "GENETYLLIS_VARIANT" GV ON GVR."VARIANTRECORD_VARIANTID" = GV."VARIANT_ID"';
@@ -240,11 +419,19 @@ function initFilterSql() {
 		'JOIN "GENETYLLIS_PATHOLOGY" GPTF ON GCF."CLINICALHISTORY_PATHOLOGYID" = GPTF."PATHOLOGY_ID"';
 }
 
-function addFilterParam(param) {
-	if (isNaN(param)) {
-		filterSqlParams.push(param.toString());
+function addFilterParam(param, isLower) {
+	if (isLower) {
+		filterSqlParams.push(param.toString().toLowerCase());
 	} else {
 		filterSqlParams.push(param);
+	}
+}
+
+function columnLowerCondition(column, isLower) {
+	if (isLower) {
+		return 'LOWER("' + column + '")'
+	} else {
+		return '"' + column + '"';
 	}
 }
 

@@ -9,15 +9,8 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-var addAnalysis = angular.module("addAnalysis", ['angularFileUpload']);
+var addAnalysis = angular.module("addAnalysis", ['ngStorage', 'angularFileUpload']);
 
-// addAnalysis.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-//     console.log($routeProvider)
-//     $routeProvider.when('/services/v4/web/genetyllis-pages/Home-page/partials/addAnalysis.html', { templateUrl: '/services/v4/web/genetyllis-upload/views/VariantRecordUpload/index.html' });
-//     $routeProvider.otherwise({ redirectTo: 'services/v4/web/genetyllis-pages/Home-page/partials/addAnalysis.html' })
-
-//     $locationProvider.html5Mode({ enabled: true, requireBase: false });
-// }])
 addAnalysis.factory('httpRequestInterceptor', function () {
     let csrfToken = null;
     return {
@@ -39,20 +32,8 @@ addAnalysis.factory('httpRequestInterceptor', function () {
 addAnalysis.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpRequestInterceptor');
 }])
-// addAnalysis.factory('$messageHub', [function () {
-//     let messageHub = new FramesMessageHub();
-//     let message = function (evtName, evtData) {
-//         messageHub.post({ data: evtData }, evtName);
-//     };
-//     let on = function (topic, callback) {
-//         messageHub.subscribe(callback, topic);
-//     };
-//     return {
-//         message: message,
-//         on: on
-//     };
-// }])
-addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', function ($scope, $http, FileUploader) {
+
+addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', '$localStorage', function ($scope, $http, FileUploader, $localStorage) {
     var patientidOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.patientidOptions = [];
@@ -123,18 +104,18 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
     $scope.entity = {};
     $scope.vcfNames = [{ name: "gi" }, { name: "gu" }]
 
-    $http.get(providereDetailsApi)
-        .then(function (data) {
-            // $scope.pathologyDatas = data.data;
-            $scope.providerData = data.data;
-            console.log($scope.providerData)
-        });
-    $http.get(platformDetailsApi)
-        .then(function (data) {
-            // $scope.pathologyDatas = data.data;
-            $scope.platformData = data.data;
-            console.log(data)
-        });
+    // $http.get(providereDetailsApi)
+    //     .then(function (data) {
+    //         // $scope.pathologyDatas = data.data;
+    //         $scope.providerData = data.data;
+    //         console.log($scope.providerData)
+    //     });
+    // $http.get(platformDetailsApi)
+    //     .then(function (data) {
+    //         // $scope.pathologyDatas = data.data;
+    //         $scope.platformData = data.data;
+    //         console.log(data)
+    //     });
 
     $scope.getLabId = function () {
         $scope.labIds.push($scope.entity.LabId)
@@ -146,16 +127,22 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
         }
     }
 
-    function fetchSimilarLabIds(labId) {
-        $http.get(patientsOptionsApi + "/suggestLabIds/" + labId)
-            .then(data => {
-                $scope.labIds = data.data
-            })
-    }
+    // function fetchSimilarLabIds(labId) {
+    //     $http.get(patientsOptionsApi + "/suggestLabIds/" + labId)
+    //         .then(data => {
+    //             $scope.labIds = data.data
+    //         })
+    // }
 
-    fetchSimilarLabIds('%');
+    // fetchSimilarLabIds('%');
 
     function validateSuggestion(suggestion) {
         return suggestion.length > 3;
     }
+
+    let analysis = $localStorage.analysis;
+    console.log($scope.analysis, "$localStorage");
+    $scope.analysisId = analysis.Id;
+    localStorage.clear();
+
 }])
