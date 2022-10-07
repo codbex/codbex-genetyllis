@@ -16,8 +16,38 @@ patientDetails.config(function (paginationTemplateProvider) {
 });
 patientDetails.controller('patientDetailsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
-    $scope.patientsDetails = $sessionStorage.x;
-    console.log("sessionStorage", $sessionStorage)
+    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+
+    $scope.fromData;
+    $scope.patientIdFromStorage = $sessionStorage.patient
+
+    $scope.editPatients = function () {
+        $sessionStorage.$default({
+            patientId: $scope.patientIdFromStorage
+        });
+        console.log($scope.fromData.PATIENT_ID, 'dam')
+    }
+    $scope.getIdFromStorage = function () {
+        $http.get(patientsOptionsApi + "/loadPatientFormData/" + $scope.patientIdFromStorage)
+            .then(data => {
+                console.log(data, 'patient data');
+                $scope.fromData = data.data
+                let currDate = new Date();
+                let mlscndsNow = Date.parse(currDate)
+                const mlscndsFrom = Date.parse(data.data.PATIENT_AGE);
+                let patientAgeInMlscnds = mlscndsNow - mlscndsFrom;
+                $scope.patientBirthDate = data.data.PATIENT_AGE.split('T')[0]
+                $scope.patientYear = getDate(patientAgeInMlscnds).year - 1;
+
+                $scope.patientsGender = $scope.fromData.Gender == 1 ? "male" : $scope.fromData.Gender == 2 ? "female" : "other";
+                $scope.patientEthnicity = $scope.fromData.Ethnicity == 12 ? "Bulgarian" : "Other ethnicity"
+                $sessionStorage.$reset()
+            })
+    }
+    $scope.getIdFromStorage()
+
+    // $scope.fromData = $sessionStorage.patient
+
     $scope.variants;
     $scope.patientsDetailsTable = []
     $scope.selectedGeneId = '';
@@ -174,13 +204,15 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
     $scope.patientDetailsTable = ['HGVS', 'Gene', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
     $scope.patientDetailsTableInfo = ["HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency", "Patients"];
-
     // patientsDetailsTable
     $scope.filter = function () {
         var query = {};
+        $scope.gender = ''
+        //Gender Id
+
         query.GENETYLLIS_PATIENT = {};
-        query.GENETYLLIS_PATIENT.PATIENT_ID = $scope.patientId;
-        console.log($scope.patientId)
+
+        query.GENETYLLIS_PATIENT.PATIENT_ID = $scope.patientIdFromStorage
         query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
         query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE
         query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY
@@ -196,15 +228,16 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         $http.post(variantDetailsApi + "/filterPatientDetails", JSON.stringify(query))
             .then(function (response) {
                 console.log(response)
+                console.log("response")
                 $scope.patientsDetailsTable = [];
                 $scope.patientClinicalHistory = []
                 $scope.patientFamilylHistory = []
 
                 // patient clinical history 
-                let patientClinicalHistoryDetails = response.data.data[0].variantRecords[0]?.patients
-                console.log(response.data.data[0].variantRecords[0]?.patients, "eh")
-                if (patientClinicalHistoryDetails.length > 0) {
-                    patientClinicalHistoryDetails = response.data.data[0].variantRecords[0]?.patients[0]?.clinicalHistory;
+                let patientClinicalHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients
+                console.log(response.data.data[0]?.variantRecords[0]?.patients)
+                if (patientClinicalHistoryDetails) {
+                    patientClinicalHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients[0]?.clinicalHistory;
 
                     patientClinicalHistoryDetails.forEach((el, i) => {
                         patientClinicalHistoryObj = {}
@@ -258,21 +291,18 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                     let patientsInfo = patientResult.variantRecords[0]?.patients[0];
                     patientObject.Patients = patientsInfo?.GENETYLLIS_PATIENT_LABID;
                     patientObject.Gender = patientsInfo?.PATIENT_GENDERID === 1 ? "male" : "female";
-
                     patientObject.Ethnicity = patientsInfo?.GENETYLLIS_PATIENT_POPULATIONID === 12 ? "Bulgarian" : "Other ethnicity";
-
                     $scope.patientsDetailsTable.push(patientObject);
-
                 })
 
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
-                // localStorage.clear();
             });
+        // $sessionStorage.$reset();
 
     }
-
+    console.log($scope.patientIdFromStorage, "$scope.patientIdFromStorage")
     $scope.clearAllFilters = function () {
         angular.forEach($scope.clinicalSignificance, function (item) {
             item.Selected = false;
@@ -292,42 +322,30 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     }
 
 
-    $scope.fromData = $sessionStorage.patient;
-    $scope.gender = ''
-    //Gender Id
-    console.log($scope.fromData)
-    $scope.patientId = $scope.fromData.Id;
+    function getDate(t) {
+        let year,
+            month,
+            day,
+            hour,
+            minute,
+            second;
 
-    // let currDate = new Date();
-    // let mlscndsNow = Date.parse(currDate)
-    // const mlscndsFrom = Date.parse($scope.fromData.BirthDate);
-    // let patientAgeInMlscnds = mlscndsNow - mlscndsFrom;
-    // function getDate(t) {
-    //     let year,
-    //         month,
-    //         day,
-    //         hour,
-    //         minute,
-    //         second;
+        second = Math.floor(t / 1000);
+        minute = Math.floor(second / 60);
+        second = second % 60;
+        hour = Math.floor(minute / 60);
+        minute = minute % 60;
+        day = Math.floor(hour / 24);
+        hour = hour % 24;
+        month = Math.floor(day / 30);
+        day = day % 30;
+        year = Math.floor(month / 12);
+        month = month % 12;
 
-    //     second = Math.floor(t / 1000);
-    //     minute = Math.floor(second / 60);
-    //     second = second % 60;
-    //     hour = Math.floor(minute / 60);
-    //     minute = minute % 60;
-    //     day = Math.floor(hour / 24);
-    //     hour = hour % 24;
-    //     month = Math.floor(day / 30);
-    //     day = day % 30;
-    //     year = Math.floor(month / 12);
-    //     month = month % 12;
+        return { year, month, day, hour, minute, second };
+    }
 
-    //     return { year, month, day, hour, minute, second };
-    // }
-    // $scope.patientBirthDate = $scope.fromData.BirthDate.split("T")[0]
-    // $scope.patientYear = getDate(patientAgeInMlscnds).year - 1;
-    // $scope.patientsGender = $scope.fromData.Gender == 1 ? "male" : $scope.fromData.Gender == 2 ? "female" : "other";
-    // $scope.patientEthnicity = $scope.fromData.Ethnicity == 12 ? "Bulgarian" : "Other ethnicity"
 
     $scope.filter();
+
 }]);

@@ -11,13 +11,30 @@
  */
 
 
-let homePage = angular.module("home-page", ['ngStorage', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
+let homePage = angular.module("home-page", ['ngStorage', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect', 'ui.router']);
 
 homePage.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
+// homePage.config(['$stateProvider', function ($stateProvider) {
+//     $stateProvider
+//         .state('firstMessage', {
+//             url: '/first-msg/:a/:b',
+//             templateUrl: 'msg1.html',
+//             controller: 'msg1'
+//         })
+//     .state('root', {
+//         url: '/',
+//         template: '<div>DAFAK</div>'
+//     })
+//     .state('otherwise', {
+//         url: "*path",
+//         template: '<div>ko praim</div>'
+//     })
+// }])
 
-homePage.controller("homePageController", ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
+homePage.controller("homePageController", ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
+
     var analysisCount = '/services/v4/js/genetyllis-pages/services/api/analysis/Analysis.js';
 
     var patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
@@ -177,18 +194,13 @@ homePage.controller("homePageController", ['$scope', '$http', '$localStorage', f
 
     $scope.redirectAnalysis = function (data) {
 
-        $localStorage.$default({
+        $sessionStorage.$default({
             analysis: data
         });
     }
 
 
-    $scope.redirectPatients = function (data) {
-        console.log(data)
-        $localStorage.$default({
-            patient: data
-        });
-    }
+
 
     $scope.checkColumn = function (e) {
         console.log(e)
@@ -197,4 +209,12 @@ homePage.controller("homePageController", ['$scope', '$http', '$localStorage', f
     $scope.notLink = function (e) {
         return e != 'Id' && e != "Patient"
     }
-}]);
+    $scope.redirectPatients = function (data) {
+        $sessionStorage.$default({
+            patient: data.Id
+        });
+        console.log($sessionStorage.patient, "data");
+        // $sessionStorage.$reset()
+    }
+
+}])

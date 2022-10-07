@@ -30,7 +30,10 @@
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js">
 		</script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
-
+		<script src="../angular/route.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.30/angular-ui-router.min.js"
+			integrity="sha512-HdDqpFK+5KwK5gZTuViiNt6aw/dBc3d0pUArax73z0fYN8UXiSozGNTo3MFx4pwbBPldf5gaMUq/EqposBQyWQ=="
+			crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<link rel="stylesheet" href="../css/pagination.css">
 		<link rel="stylesheet" href="../css/style.css">
 
@@ -58,6 +61,15 @@
 							<a href="../../../web/genetyllis-pages/Variants/index.html">Variants</a>
 
 						</li>
+
+						<!-- <li>
+							<a ui-sref="firstMessage({a:2,b:5})" class="currPage">Variants</a>
+
+						</li>
+						<li>
+							<a href="#/first-msg/20/30" class="currPage">Variants</a>
+
+						</li> -->
 					</ul>
 				</div>
 				<div class="logOut">
@@ -154,11 +166,10 @@
 										<td ng-repeat="i in homePageTableInfo">
 											<a href="partials/addAnalysis.html" ng-if="i=='Id'"
 												ng-click="redirectAnalysis(data)">{{data[i]}}</a>
-											<a href="../Patients/partials/patient-details.html" ng-if="i=='Patient'"
+											<a href="../Patients/partials/patient-details.html" ng-if=" i=='Patient'"
 												ng-click="redirectPatients(data)">{{data[i]}}</a>
 											<span ng-if="notLink(i)">{{data[i]}}</span>
 										</td>
-
 
 									</tr>
 								</tbody>

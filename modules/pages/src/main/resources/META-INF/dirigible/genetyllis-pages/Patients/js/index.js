@@ -75,7 +75,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
     $scope.selectedHgvsArr = [];
 
     $scope.GENETYLLIS_PATIENT = {
-        GENETYLLIS_PATIENT_LABID: [],
+        PATIENT_LABID: [],
         PATIENT_AGE_FROM: '',
         PATIENT_AGE_TO: '',
         PATIENT_GENDERID: [],
@@ -163,7 +163,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
                     // if (patientResult.familyHistory && patientResult.familyHistory.clinicalHistory) {
                     //     patientObject["Family history"] = patientResult.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
                     // }
-                    // patientObject["Family history"] = 
+                    // patientObject["Family history"] =
                     patientResult.familyHistory.map((el, iindex) => {
                         el.clinicalHistory.map(fel => {
 
@@ -171,8 +171,8 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
                             fel.pathology.map(pel => {
                                 let result = ` ${pel.PATHOLOGY_NAME} (${relation(el.FAMILYHISTORY_RELATIONID)},${fel.CLINICALHISTORY_AGEONSET})`;
                                 $scope.familyHistoryArr.push(result)
-                                // patientObject["Family history"] += `${pel.PATHOLOGY_NAME} 
-                                // (${relation(el.FAMILYHISTORY_RELATIONID)}, 
+                                // patientObject["Family history"] += `${pel.PATHOLOGY_NAME}
+                                // (${relation(el.FAMILYHISTORY_RELATIONID)},
                                 // ${fel.CLINICALHISTORY_AGEONSET})`;
                             })
                         })
@@ -332,13 +332,6 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
     }
 
 
-    $scope.redirectPatients = function (data) {
-        $sessionStorage.$reset();
-        $sessionStorage.$default({
-            patient: data
-        });
-        console.log($sessionStorage, "data");
-    }
     $scope.checkColumn = function (e) {
         return e == 'Id'
     }
@@ -412,9 +405,11 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
         return result;
     }
 
+    $scope.redirectPatients = function (data) {
+        $sessionStorage.$default({
+            patient: data.Id
+        });
+        console.log($sessionStorage.patient, "data");
+        // $sessionStorage.$reset()
+    }
 }]);
-
-// patients.filter('startFrom', function () {
-
-// })
-

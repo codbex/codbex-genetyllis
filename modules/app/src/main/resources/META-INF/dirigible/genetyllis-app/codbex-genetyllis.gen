@@ -168,7 +168,7 @@
         }
       ],
       "caption": "Manage entity Gender",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM GENDER",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_GENDER\"",
       "dataName": "GENDER",
       "dataQuery": "",
       "icon": "intersex",
@@ -338,7 +338,7 @@
         }
       ],
       "caption": "Manage entity Patient",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM PATIENT",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_PATIENT\"",
       "dataName": "PATIENT",
       "dataQuery": "",
       "feedPassword": "ZGlyaWdpYmxl",
@@ -536,7 +536,7 @@
         }
       ],
       "caption": "Manage entity Pathology",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM PATHOLOGY",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_PATHOLOGY\"",
       "dataName": "PATHOLOGY",
       "dataQuery": "",
       "icon": "flash",
@@ -664,7 +664,7 @@
         }
       ],
       "caption": "Manage entity ClinicalHistory",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM CLINICALHISTORY",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_CLINICALHISTORY\"",
       "dataName": "CLINICALHISTORY",
       "dataQuery": "",
       "icon": "history",
@@ -948,7 +948,7 @@
         }
       ],
       "caption": "Manage entity Variant",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM VARIANT",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_VARIANT\"",
       "dataName": "VARIANT",
       "dataQuery": "",
       "icon": "bar-chart",
@@ -1230,7 +1230,7 @@
         }
       ],
       "caption": "Manage entity VariantRecord",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM VARIANTRECORD",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_VARIANTRECORD\"",
       "dataName": "VARIANTRECORD",
       "dataQuery": "",
       "icon": "ellipsis-v",
@@ -1417,7 +1417,7 @@
         }
       ],
       "caption": "Manage entity Gene",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM GENE",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_GENE\"",
       "dataName": "GENE",
       "dataQuery": "",
       "icon": "sliders",
@@ -1504,7 +1504,7 @@
         }
       ],
       "caption": "Manage entity Filter",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM FILTER",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_FILTER\"",
       "dataName": "FILTER",
       "dataQuery": "",
       "icon": "filter",
@@ -1696,7 +1696,7 @@
         }
       ],
       "caption": "Manage entity ClinicalSignificance",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM CLINICALSIGNIFICANCE",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_CLINICALSIGNIFICANCE\"",
       "dataName": "CLINICALSIGNIFICANCE",
       "dataQuery": "",
       "icon": "ellipsis-h",
@@ -1762,7 +1762,7 @@
         }
       ],
       "caption": "Manage entity Significance",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM SIGNIFICANCE",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_SIGNIFICANCE\"",
       "dataName": "SIGNIFICANCE",
       "dataQuery": "",
       "icon": "star",
@@ -1912,7 +1912,7 @@
         }
       ],
       "caption": "Manage entity AlleleFrequency",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM ALLELEFREQUENCY",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_ALLELEFREQUENCY\"",
       "dataName": "ALLELEFREQUENCY",
       "dataQuery": "",
       "icon": "tachometer",
@@ -1998,7 +1998,7 @@
         }
       ],
       "caption": "Manage entity Population",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM POPULATION",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_POPULATION\"",
       "dataName": "POPULATION",
       "dataQuery": "",
       "icon": "user",
@@ -2128,7 +2128,7 @@
         }
       ],
       "caption": "Manage entity Analysis",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM ANALYSIS",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_ANALYSIS\"",
       "dataName": "ANALYSIS",
       "dataQuery": "",
       "icon": "/services/v4/web/resources/unicons/file.svg",
@@ -2192,7 +2192,7 @@
         }
       ],
       "caption": "Manage entity Provider",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM PROVIDER",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_PROVIDER\"",
       "dataName": "PROVIDER",
       "dataQuery": "",
       "icon": "/services/v4/web/resources/unicons/file.svg",
@@ -2254,7 +2254,7 @@
         }
       ],
       "caption": "Manage entity Platform",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM PLATFORM",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_PLATFORM\"",
       "dataName": "PLATFORM",
       "dataQuery": "",
       "icon": "/services/v4/web/resources/unicons/file.svg",
@@ -2359,7 +2359,7 @@
         }
       ],
       "caption": "Manage entity Physician",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM PHYSICIAN",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_PHYSICIAN\"",
       "dataName": "PHYSICIAN",
       "dataQuery": "",
       "icon": "/services/v4/web/resources/unicons/file.svg",
@@ -2442,7 +2442,7 @@
         }
       ],
       "caption": "Manage entity Institution",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM INSTITUTION",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_INSTITUTION\"",
       "dataName": "INSTITUTION",
       "dataQuery": "",
       "icon": "/services/v4/web/resources/unicons/file.svg",
@@ -2553,7 +2553,7 @@
         }
       ],
       "caption": "Manage entity FamilyHistory",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM FAMILYHISTORY",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_FAMILYHISTORY\"",
       "dataName": "FAMILYHISTORY",
       "dataQuery": "",
       "icon": "/services/v4/web/resources/unicons/file.svg",
@@ -2616,7 +2616,7 @@
         }
       ],
       "caption": "Manage entity Relation",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM RELATION",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_RELATION\"",
       "dataName": "RELATION",
       "dataQuery": "",
       "icon": "/services/v4/web/resources/unicons/file.svg",
@@ -2758,7 +2758,7 @@
         }
       ],
       "caption": "Manage entity Notification",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM NOTIFICATION",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_NOTIFICATION\"",
       "dataName": "NOTIFICATION",
       "dataQuery": "",
       "icon": "/services/v4/web/resources/unicons/file.svg",
@@ -2841,7 +2841,7 @@
         }
       ],
       "caption": "Manage entity User",
-      "dataCount": "SELECT COUNT(*) AS COUNT FROM USER",
+      "dataCount": "SELECT COUNT(*) AS COUNT FROM \"GENETYLLIS_USER\"",
       "dataName": "USER",
       "dataQuery": "",
       "icon": "/services/v4/web/resources/unicons/file.svg",

@@ -15,7 +15,8 @@ variantDetails.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../../components/pagination.html');
 });
 
-variantDetails.controller('variantDetailsController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
+variantDetails.controller('variantDetailsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
+
 
     $scope.clinicalSignificance = ["Accession", "Pathology", "Significance", "Evaluation", "Review"]
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
@@ -233,14 +234,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     }
 
 
-    $scope.redirectPatients = function (data) {
-        console.log(data, "data");
-        $localStorage.$default({
-            key: data
-        });
-        console.log($localStorage.$default, "local")
-        // $localStorage.setItem('key', data);
-    }
 
 
 
@@ -340,6 +333,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     $scope.filter = function () {
         let query = {};
+        console.log($scope.fromData)
         query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
         query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
         query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
@@ -352,14 +346,15 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
             .then(function (response) {
                 $scope.variants = []
                 $scope.clinicalSignificanceArr = []
-                console.log(response, "response")
                 response.data.data.forEach(data => {
 
                     let variantObj = {}
                     let clinicalSignificanceObj = {}
-                    // console.log(data, "clinicalSignificance");
 
+<<<<<<< HEAD
                     // console.log(data.clinicalSignificance, "clinicalSignificance");
+=======
+>>>>>>> 625236ebfda8a98d43bf4f10904b0956d566b54c
 
                     data.clinicalSignificance.map(el => {
                         clinicalSignificanceObj.Accession = el.CLINICALSIGNIFICANCE_ACCESSION
@@ -368,9 +363,12 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                         clinicalSignificanceObj.Evaluation = el.CLINICALSIGNIFICANCE_EVALUATED.split("T")[0]
                         clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
                     })
+<<<<<<< HEAD
 
                     console.log(data)
 
+=======
+>>>>>>> 625236ebfda8a98d43bf4f10904b0956d566b54c
                     variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
@@ -383,13 +381,13 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                     variantObj.Ethnicity = data.PATIENT_POPULATIONID === 12 ? "Bulgarian" : data.PATIENT_POPULATIONID === 18 ? "Other ethnicity" : "European (non-Finnish)";
                     $scope.variants.push(variantObj);
                     $scope.clinicalSignificanceArr.push(clinicalSignificanceObj)
-                    // console.log(clinicalSignificanceObj.Review.split(/^.|.$/gi)[1], "clinicalSignificance");
 
                 });
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
-                // localStorage.clear();
             })
+        $sessionStorage.$reset();
+
     }
 
     $scope.pageChangeHandler = function (curPage) {
@@ -399,12 +397,18 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     }
 
 
+<<<<<<< HEAD
     $scope.fromData = $localStorage.HGVS;
     console.log($localStorage.HGVS, "local")
     $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
     $scope.Patients = $scope.fromData.Patients
     console.log($scope.Patients, "patients")
     console.log($scope.GENETYLLIS_VARIANT.VARIANT_HGVS, "local")
+=======
+    $scope.fromData = $sessionStorage.HGVS;
+    $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
+    console.log($scope.GENETYLLIS_VARIANT)
+>>>>>>> 625236ebfda8a98d43bf4f10904b0956d566b54c
     $scope.filter()
     // $scope.getPatients()
 

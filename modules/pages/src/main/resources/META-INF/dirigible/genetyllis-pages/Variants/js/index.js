@@ -14,7 +14,7 @@ var page = angular.module("variant", ['ngStorage', 'angularUtils.directives.dirP
 page.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
-page.controller('VariantController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
+page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     const notificationOptionsApi = '/services/v4/js/genetyllis-pages/services/api/users/Notification.js';
@@ -152,6 +152,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))
             .then(function (response) {
+                console.log(response, 'respo')
                 $scope.variantsDetails = [];
                 console.log(response.data, "response")
                 getHighlights();
@@ -159,22 +160,22 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
                     let variantObj = {}
                     variantObj.VariantId = data.VARIANT_ID
                     variantObj.HGVS = data.VARIANT_HGVS
-                    if (data.genes) {
-                        variantObj.Gene = data.genes[0]?.GENE_NAME != "NULL" ? data.genes[0]?.GENE_NAME : "-";
-                        if (data.genes[0]?.GENE_NAME !== 'NULL') {
-                            $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + data.genes[0]?.GENE_NAME)
-                                .then(function (responseSite) {
-                                    responseSite.data[3].forEach(gene => {
-                                        if (gene[3] === data.genes[0]?.GENE_NAME) {
-                                            variantObj.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
-                                        }
+                    // if (data.genes) {
+                    //     variantObj.Gene = data.genes[0]?.GENE_NAME != "NULL" ? data.genes[0]?.GENE_NAME : "-";
+                    //     if (data.genes[0]?.GENE_NAME !== 'NULL') {
+                    //         $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + data.genes[0]?.GENE_NAME)
+                    //             .then(function (responseSite) {
+                    //                 responseSite.data[3].forEach(gene => {
+                    //                     if (gene[3] === data.genes[0]?.GENE_NAME) {
+                    //                         variantObj.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
+                    //                     }
 
-                                    })
-                                });
-                        }
+                    //                 })
+                    //             });
+                    //     }
 
-                        // console.log($scope.geneResponse, "geneResponse")
-                    }
+                    //     // console.log($scope.geneResponse, "geneResponse")
+                    // }
                     variantObj.VARIANT_CONSEQUENCE = data.VARIANT_CONSEQUENCE
                     variantObj.GeneId = data.VARIANT_GENEID
 
@@ -267,9 +268,14 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
         $scope.filter()
     }
 
+
     $scope.redirectPatients = function (data) {
+<<<<<<< HEAD
         console.log(data, "data");
         $localStorage.$default({
+=======
+        $sessionStorage.$default({
+>>>>>>> 625236ebfda8a98d43bf4f10904b0956d566b54c
             HGVS: data
         });
     }

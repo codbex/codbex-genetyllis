@@ -21,7 +21,8 @@
         <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/22.1.4/css/dx.light.css" />
         <script src="https://cdn3.devexpress.com/jslib/22.1.4/js/dx.all.js"></script>
         <script src="../js/addPatient.js"></script>
-
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js">
+        </script>
 
     </head>
 
@@ -53,27 +54,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="holder">
-            <div class="container">
-                <div class="row">
-                    <div class="col-3">
-                        <input type="submit" value="Add entry" ng-click="addEntryFamilyHistory()"
-                            class="btn btn-primary filterBtn addFilter" id="family-history-entry">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="holder">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div id="gridContainer" dx-data-grid="dataGridOptionsFamilyHistory">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="patient-wrapper">
             <div class="container">
                 <div class="row">
@@ -317,69 +297,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class=" holder">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="col-4">
-
-                                            </div>
-
-                                            <table fd-table display-mode="compact" ng-show="isEmptyTableFamilyMember"
-                                                class="table table-bordered">
-                                                <thead fd-table-header sticky="true">
-                                                    <tr fd-table-row>
-                                                        <th fd-table-header-cell>Lab ID</th>
-                                                        <th fd-table-header-cell>Relation</th>
-                                                        <th fd-table-header-cell>Disease</th>
-                                                        <th fd-table-header-cell>Age of Onset</th>
-                                                        <th fd-table-header-cell></th>
-                                                        <th fd-table-header-cell></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody fd-table-body>
-                                                    <tr fd-table-row ng-repeat="next in familyMembersArray"
-                                                        hoverable="true">
-                                                        <td fd-table-cell>{{next.LabId}}</td>
-                                                        <td fd-table-cell>{{next.RelationName}}</td>
-                                                        <td fd-table-cell>
-                                                            <table fd-table display-mode="compact">
-                                                                <tbody fd-table-body>
-                                                                    <tr fd-table-row
-                                                                        ng-repeat="hsitory in next.ClinicalHistoryDataArray"
-                                                                        hoverable="true">
-                                                                        <td fd-table-cell>
-                                                                            {{hsitory.PathologyName}}
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                        <td fd-table-cell>
-                                                            <table fd-table display-mode="compact">
-                                                                <tbody fd-table-body>
-                                                                    <tr fd-table-row
-                                                                        ng-repeat="hsitory in next.ClinicalHistoryDataArray"
-                                                                        hoverable="true">
-                                                                        <td fd-table-cell>
-                                                                            {{hsitory.AgeOnset}}
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                        <td><button id="remove"
-                                                                ng-click="deleteFamilyMember(next)">DELETE</button>
-                                                        </td>
-                                                        <td><button id="edit">EDIT</button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -390,7 +307,7 @@
 
                                 <button class="btn btn-sm btn-danger"
                                     ng-confirm-click="Are you sure to delete this record ?"
-                                    confirmed-click="removeUser($index)">Delete patient</button>
+                                    confirmed-click="removeUser()">Delete patient</button>
                             </div>
 
                             <div class="col">

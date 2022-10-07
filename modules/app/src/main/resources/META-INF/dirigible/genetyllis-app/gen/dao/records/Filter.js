@@ -71,7 +71,7 @@ exports.delete = function(id) {
 };
 
 exports.count = function (VariantRecordId) {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENETYLLIS_FILTER WHERE FILTER_VARIANTRECORDID = ?", [VariantRecordId]);
+	let resultSet = query.execute('SELECT COUNT(*) AS COUNT FROM "GENETYLLIS_FILTER" WHERE "FILTER_VARIANTRECORDID" = ?', [VariantRecordId]);
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -83,7 +83,7 @@ exports.count = function (VariantRecordId) {
 };
 
 exports.customDataCount = function() {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM FILTER");
+	let resultSet = query.execute('SELECT COUNT(*) AS COUNT FROM "GENETYLLIS_FILTER"');
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
