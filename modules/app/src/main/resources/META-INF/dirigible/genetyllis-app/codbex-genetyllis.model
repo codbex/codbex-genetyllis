@@ -1930,6 +1930,21 @@
                         "widgetLabel": "Change Flag",
                         "widgetLength": "20",
                         "widgetType": "CHECKBOX"
+                    },
+                    {
+                        "calculatedPropertyExpression": "",
+                        "dataAutoIncrement": "false",
+                        "dataLength": "20",
+                        "dataName": "NOTIFICATION_HIGHLIGHT",
+                        "dataNullable": "true",
+                        "dataPrimaryKey": "false",
+                        "dataType": "BOOLEAN",
+                        "dataUnique": "false",
+                        "isCalculatedProperty": "false",
+                        "name": "Highlight",
+                        "widgetIsMajor": "true",
+                        "widgetLength": "20",
+                        "widgetType": "TEXTBOX"
                     }
                 ],
                 "caption": "Manage entity Notification",

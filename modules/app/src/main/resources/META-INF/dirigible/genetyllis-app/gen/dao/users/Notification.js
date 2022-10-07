@@ -32,6 +32,11 @@ let dao = daoApi.create({
 			name: "ChangeFlag",
 			column: "NOTIFICATION_CHANGEFLAG",
 			type: "BOOLEAN",
+		},
+ {
+			name: "Highlight",
+			column: "NOTIFICATION_HIGHLIGHT",
+			type: "BOOLEAN",
 		}
 ]
 });
@@ -40,6 +45,7 @@ exports.list = function(settings) {
 	return dao.list(settings).map(function(e) {
 		EntityUtils.setBoolean(e, "SeenFlag");
 		EntityUtils.setBoolean(e, "ChangeFlag");
+		EntityUtils.setBoolean(e, "Highlight");
 		return e;
 	});
 };
@@ -48,12 +54,14 @@ exports.get = function(id) {
 	let entity = dao.find(id);
 	EntityUtils.setBoolean(entity, "SeenFlag");
 	EntityUtils.setBoolean(entity, "ChangeFlag");
+	EntityUtils.setBoolean(entity, "Highlight");
 	return entity;
 };
 
 exports.create = function(entity) {
 	EntityUtils.setBoolean(entity, "SeenFlag");
 	EntityUtils.setBoolean(entity, "ChangeFlag");
+	EntityUtils.setBoolean(entity, "Highlight");
 	let id = dao.insert(entity);
 	triggerEvent("Create", {
 		table: "GENETYLLIS_NOTIFICATION",
@@ -69,6 +77,7 @@ exports.create = function(entity) {
 exports.update = function(entity) {
 	EntityUtils.setBoolean(entity, "SeenFlag");
 	EntityUtils.setBoolean(entity, "ChangeFlag");
+	EntityUtils.setBoolean(entity, "Highlight");
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_NOTIFICATION",

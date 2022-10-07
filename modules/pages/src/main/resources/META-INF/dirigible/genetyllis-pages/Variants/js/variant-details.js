@@ -88,6 +88,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         CLINICALHISTORY_AGEONSET_TO: ''
     }
     $scope.GENETYLLIS_VARIANT = {
+        VARIANT_ID: '',
         VARIANT_CHROMOSOME: '',
         VARIANT_START_FROM: '',
         VARIANT_END_TO: '',
@@ -283,6 +284,57 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
         $scope.filter()
     }
 
+    // $scope.getPatients = function () {
+    //     $http.post(patientsOptionsApi + "/getPatientsForVariant", $scope.GENETYLLIS_VARIANT.VARIANT_ID)
+    //         .then(function (response) {
+    //             $scope.patients = []
+    //             $scope.clinicalSignificanceArr = []
+    //             console.log(response.data, "responseDataPatients")
+    //             // response.data.forEach(data => {
+
+    //             //     let variantObj = {}
+    //             //     let clinicalSignificanceObj = {}
+    //             //     // console.log(data, "clinicalSignificance");
+
+    //             //     console.log(data.clinicalSignificance, "clinicalSignificance");
+
+    //             //     data.clinicalSignificance.map(el => {
+    //             //         clinicalSignificanceObj.Accession = el.CLINICALSIGNIFICANCE_ACCESSION
+    //             //         clinicalSignificanceObj.Pathology = el.pathology[0]?.PATHOLOGY_NAME
+    //             //         clinicalSignificanceObj.Significance = el.significance[0]?.SIGNIFICANCE_NAME
+    //             //         clinicalSignificanceObj.Evaluation = el.CLINICALSIGNIFICANCE_EVALUATED.split("T")[0]
+    //             //         clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
+    //             //     })
+
+    //             //     console.log(data)
+
+    //             //     variantObj.LabId = data.PATIENT_LABID;
+    //             //     variantObj.Id = data.PATIENT_ID;
+    //             //     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
+
+    //             //     variantObj.GenderId = data.PATIENT_GENDERID === 1 ? "Male" : data.PATIENT_GENDERID == 2 ? "Female" : "Nonspecifed gender";
+    //             //     variantObj["Clinical history"] = data.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+    //             //     variantObj["Family history"] = data.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+    //             //     variantObj.Analysis = data.analysis[0]?.ANALYSIS_ID;
+    //             //     variantObj.Date = data.analysis[0]?.ANALYSIS_DATE.split("T")[0];
+    //             //     variantObj.Ethnicity = data.PATIENT_POPULATIONID === 12 ? "Bulgarian" : data.PATIENT_POPULATIONID === 18 ? "Other ethnicity" : "European (non-Finnish)";
+    //             //     $scope.variants.push(variantObj);
+    //             //     $scope.clinicalSignificanceArr.push(clinicalSignificanceObj)
+    //             //     // console.log(clinicalSignificanceObj.Review.split(/^.|.$/gi)[1], "clinicalSignificance");
+
+    //             // });
+    //             // $scope.totalPages = response.data.totalPages;
+    //             // $scope.totalItems = response.data.totalItems;
+    //             // // localStorage.clear();
+    //         })
+    // }
+
+    $scope.pageChangeHandler = function (curPage) {
+        $scope.currentPage = curPage;
+        $scope.filter()
+        $scope.patientsDetails = [];
+    }
+
 
     // GENETYLLIS_ANALYSIS GENETYLLIS_VARIANT GENETYLLIS_FAMILYHISTORY GENETYLLIS_CLINICALHISTORY
 
@@ -304,11 +356,10 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                 response.data.data.forEach(data => {
 
                     let variantObj = {}
-<<<<<<< HEAD
                     let clinicalSignificanceObj = {}
                     // console.log(data, "clinicalSignificance");
 
-                    console.log(data.clinicalSignificance, "clinicalSignificance");
+                    // console.log(data.clinicalSignificance, "clinicalSignificance");
 
                     data.clinicalSignificance.map(el => {
                         clinicalSignificanceObj.Accession = el.CLINICALSIGNIFICANCE_ACCESSION
@@ -317,9 +368,9 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                         clinicalSignificanceObj.Evaluation = el.CLINICALSIGNIFICANCE_EVALUATED.split("T")[0]
                         clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
                     })
-=======
+
                     console.log(data)
->>>>>>> branch 'notification-working' of https://github.com/codbex/codbex-genetyllis.git
+
                     variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
@@ -349,9 +400,13 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
 
     $scope.fromData = $localStorage.HGVS;
+    console.log($localStorage.HGVS, "local")
     $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
-    console.log($scope.GENETYLLIS_VARIANT.VARIANT_HGVS)
+    $scope.Patients = $scope.fromData.Patients
+    console.log($scope.Patients, "patients")
+    console.log($scope.GENETYLLIS_VARIANT.VARIANT_HGVS, "local")
     $scope.filter()
+    // $scope.getPatients()
 
 
 }]);

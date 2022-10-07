@@ -191,12 +191,22 @@ exports.filterVariants = function (variant) {
 		let geneIdsInStatement = addArrayValuesToSql(geneIds);
 		let geneQuery = 'SELECT * FROM "GENETYLLIS_GENE" WHERE "GENE_ID"' + geneIdsInStatement;
 		let genes = query.execute(geneQuery, geneIds);
+
 		/* MAP CLINICALSIGNIFICANCE, ALLELEFREQUENCY AND GENES TO VARIANT */
 		response.data.forEach(foundVariant => {
 			foundVariant.clinicalSignificance = clinicalSignificance.filter(significance => significance.CLINICALSIGNIFICANCE_VARIANTID === foundVariant.VARIANT_ID);
 			foundVariant.alleleFrequency = alleleFrequency.filter(allele => allele.ALLELEFREQUENCY_VARIANTID === foundVariant.VARIANT_ID);
 			foundVariant.genes = genes.filter(gene => gene.GENE_ID === foundVariant.VARIANT_GENEID);
+			let patientsCount = query.execute('SELECT DISTINCT VARIANTRECORD_PATIENTID FROM "GENETYLLIS_VARIANTRECORD" WHERE "VARIANTRECORD_VARIANTID" = ?', [foundVariant.VARIANT_ID]);
+			foundVariant.patientsCount = patientsCount.length
+
+			let patients = query.execute('SELECT DISTINCT * FROM "GENETYLLIS_PATIENT" GP JOIN "GENETYLLIS_VARIANTRECORD" GV ON GP."PATIENT_ID" = GV."VARIANTRECORD_PATIENTID" WHERE "VARIANTRECORD_VARIANTID" = ?', [foundVariant.VARIANT_ID]);
+			foundVariant.patients = patients
+
+			let highlight = query.execute('SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID" = ?', [foundVariant.VARIANT_ID]);
+			foundVariant.highlight = highlight
 		})
+
 	}
 	filterSql = "";
 	return response;

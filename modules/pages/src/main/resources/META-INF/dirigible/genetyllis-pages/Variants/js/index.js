@@ -17,7 +17,11 @@ page.config(function (paginationTemplateProvider) {
 page.controller('VariantController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
-    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+    const notificationOptionsApi = '/services/v4/js/genetyllis-pages/services/api/users/Notification.js';
+    // const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+
+    $scope.clickedUrl = "../images/star.svg";
+    $scope.notClickedUrl = "../images/not-clicked-star.svg";
 
     $scope.variantsDetails = [];
     $scope.selectedPerPage = 10;
@@ -150,8 +154,10 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
             .then(function (response) {
                 $scope.variantsDetails = [];
                 console.log(response.data, "response")
+                getHighlights();
                 response.data.data.forEach(data => {
                     let variantObj = {}
+                    variantObj.VariantId = data.VARIANT_ID
                     variantObj.HGVS = data.VARIANT_HGVS
                     if (data.genes) {
                         variantObj.Gene = data.genes[0]?.GENE_NAME != "NULL" ? data.genes[0]?.GENE_NAME : "-";
@@ -180,9 +186,10 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
                     }
                     if (data.alleleFrequency) {
                         variantObj.AlleleFrequency = (Number(data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) * 1000000);
-
                     }
-                    // console.log(data, "data")
+                    variantObj.PatientsCount = data.patientsCount
+                    variantObj.Patients = data.patients
+                    console.log(data, "data")
                     $scope.variantsDetails.push(variantObj)
                 })
                 $scope.totalPages = response.data.totalPages;
@@ -192,37 +199,10 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
             }, function (response) {
             });
 
-        $http.post(patientsOptionsApi + "/filterVariantDetails", JSON.stringify(query))
-            .then(function (response) {
-                $scope.variants = []
-                // console.log(response, "response")
-                response.data.data.forEach(data => {
-                    let variantObj = {}
-                    // console.log(data)
-                    variantObj.PatientsCount = data.count;
-                    $scope.variants.push(variantObj);
-                });
-                // localStorage.clear();
-            })
-
         console.log($scope.variants);
-
-        $scope.filter = function () {
-            let query = {};
-            query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
-            query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
-            query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
-            query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-            query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
-            query.perPage = $scope.selectedPerPage;
-            query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
-
-            console.log(query.GENETYLLIS_VARIANT)
-        }
     }
 
     $scope.filter();
-
 
     // _|_
     $scope.variantTableModel = [];
@@ -257,8 +237,8 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
         return e != '-'
     }
 
-    $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "ClinicalSignificance", "AlleleFrequency", 'Patients'];
-    $scope.variantTable = ['HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
+    $scope.variantPageTableInfo = ["", "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "ClinicalSignificance", "AlleleFrequency", 'PatientsCount'];
+    $scope.variantTable = ["", 'HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
 
 
 
@@ -288,7 +268,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
     }
 
     $scope.redirectPatients = function (data) {
-        // console.log(data, "data");
+        console.log(data, "data");
         $localStorage.$default({
             HGVS: data
         });
@@ -299,6 +279,24 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', functi
     }
     $scope.notLink = function (e) {
         return e != "HGVS"
+    }
+
+    $scope.imageHandler = function (data) {
+        $http.post(notificationOptionsApi + "/getByVariantId", data.VariantId)
+            .then(function (responseNotification) {
+                console.log(responseNotification.data, "response")
+
+            }, function (response) {
+            });
+    }
+
+    getHighlights = function (data) {
+        $http.get(notificationOptionsApi)
+            .then(function (responseNotification) {
+                console.log(responseNotification, "response")
+
+            }, function (response) {
+            });
     }
 
 }]);
