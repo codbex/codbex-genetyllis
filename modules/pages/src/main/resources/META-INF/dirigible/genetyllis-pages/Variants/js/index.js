@@ -20,8 +20,8 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     const notificationOptionsApi = '/services/v4/js/genetyllis-pages/services/api/users/Notification.js';
     // const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
-    $scope.clickedUrl = "../images/star.svg";
-    $scope.notClickedUrl = "../images/not-clicked-star.svg";
+    $scope.clickedUrl = "../images/flagged.svg";
+    $scope.notClickedUrl = "../images/notFlagged.svg";
 
     $scope.variantsDetails = [];
     $scope.selectedPerPage = 10;

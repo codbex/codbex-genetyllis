@@ -23,9 +23,8 @@
 
         <script type="text/javascript"
             src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js"></script>
-        <script <!--
+        <script
             src="https://rawgit.com/myforce/angularjs-dropdown-multiselect/master/src/angularjs-dropdown-multiselect.js"
-            -->
             type="text/javascript">
         </script>
 
@@ -300,7 +299,7 @@
                                         <a href="{{data.GeneLink}}" ng-if="info === 'Gene'">{{data[info]}}</a>
                                         <span ng-if="info == 'AlleleFrequency'">{{data[info]}} * 10<sup>-6</sup></span>
                                         <span
-                                            ng-if="notLink(info) && info !== 'Gene' && info !== 'AlleleFrequency'">{{data[info]}}</span>
+                                            ng-if="notLink(info) && info !== 'Gene' && info !== 'AlleleFrequency' && info!=''">{{data[info]}}</span>
                                     </td>
                                 </tr>
                             </tbody>
