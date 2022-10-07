@@ -289,14 +289,11 @@
                                     total-items="totalItems">
                                     <td ng-repeat="info in variantPageTableInfo">
 
-                                        <a ng-if="info == ''" ng-click="imageHandler(data)">
-                                            <image
-                                                ng-click="{{data.highlight[0].NOTIFICATION_HIGHLIGHT = !data.highlight[0].NOTIFICATION_HIGHLIGHT ;imageHandler($index)}}"
-                                                ng-src="{{data.highlight[0].NOTIFICATION_HIGHLIGHT ? clickedUrl : notClickedUrl}}"
-                                                style="height: 20px; width: 20px;
-            cursor: pointer" />
+                                        <a ng-if=" info==''" ng-click=" imageHandler(data)">
+                                            <image ng-click="imageHandler($index)"
+                                                ng-src="{{data[info] ? clickedUrl : notClickedUrl}}"
+                                                style="height: 20px; width: 20px; cursor: pointer" />
                                         </a>
-
                                         <a href="partials/variant-details.html" ng-click="redirectPatients(data)"
                                             ng-if="checkColumn(info)">{{data[info]}}</a>
 

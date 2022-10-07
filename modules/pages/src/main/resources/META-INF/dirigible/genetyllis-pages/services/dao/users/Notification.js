@@ -54,6 +54,7 @@ exports.getByVariantId = function (variantId) {
 
 		dao.update(notificationObject);
 	} else {
+		console.log("_________~~~~~~~~~~~~~~________________~~~~~~~~~~~~")
 		let notificationObject = {}
 
 		notificationObject.UserUserId = null;
