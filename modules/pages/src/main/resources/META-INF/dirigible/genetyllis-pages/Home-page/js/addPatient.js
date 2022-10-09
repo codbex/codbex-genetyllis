@@ -95,6 +95,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
     function persistClinicalHistory(clinicalHistoryDataArray, patientId) {
 
         clinicalHistoryDataArray.forEach(clinicalHistory => {
+            clinicalHistory.Id = clinicalHistory.Id;
             clinicalHistory.PatientId = patientId;
             $http.post(clinicalHistroryApi, JSON.stringify(clinicalHistory))
                 .then(function (response) {
@@ -109,18 +110,19 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
             familyMemberPatient = {}
             familyMemberPatient.Id = familyMember.Id;
             familyMemberPatient.LabId = familyMember.LabId;
+            familyMemberPatient.PatientId = familyMember.PatientId;
             $http.post(patientsOptionsApi, JSON.stringify(familyMemberPatient))
                 .then(function (response) {
-                    familyMember.Id = response.data.Id
-                    persistClinicalHistory(familyMember.ClinicalHistoryDataArray, familyMember.Id);
+                    familyMember.PatientId = response.data.PatientId
+                    persistClinicalHistory(familyMember.ClinicalHistoryDataArray, familyMember.PatientId);
 
-                    persistFamilyHistory(familyMember.Id, familyMember.RelationId);
+                    persistFamilyHistory(familyMember.PatientId, familyMember.RelationId, familyMember.Id);
                 }, function (response) {
                 });
         });
     }
 
-    function persistFamilyHistory(familyMemberId, familyMemberRelationId) {
+    function persistFamilyHistory(familyMemberPatientId, familyMemberRelationId, familyHistoryId) {
         var familyHistory = {
             Id: '',
             PatientId: '',
@@ -131,7 +133,8 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
         // Patient to Family Member relation
         familyHistory.PatientId = $scope.entity.Id;
         familyHistory.RelationId = familyMemberRelationId;
-        familyHistory.FamilyMemberId = familyMemberId;
+        familyHistory.FamilyMemberId = familyMemberPatientId;
+        familyHistory.Id = familyHistoryId;
         $http.post(familyHistroryApi, JSON.stringify(familyHistory))
             .then(function (response) {
                 familyHistory.Id = response.data.Id
