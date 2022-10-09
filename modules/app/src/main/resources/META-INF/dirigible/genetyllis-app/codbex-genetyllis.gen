@@ -2737,6 +2737,24 @@
           "widgetType": "CHECKBOX",
           "dataNotNull": false,
           "inputRule": ""
+        },
+        {
+          "calculatedPropertyExpression": "",
+          "dataAutoIncrement": false,
+          "dataLength": "20",
+          "dataName": "NOTIFICATION_HIGHLIGHT",
+          "dataNullable": true,
+          "dataPrimaryKey": false,
+          "dataType": "BOOLEAN",
+          "dataUnique": false,
+          "isCalculatedProperty": false,
+          "name": "Highlight",
+          "widgetIsMajor": true,
+          "widgetLength": "20",
+          "widgetType": "TEXTBOX",
+          "dataNotNull": false,
+          "widgetLabel": "Highlight",
+          "inputRule": ""
         }
       ],
       "caption": "Manage entity Notification",

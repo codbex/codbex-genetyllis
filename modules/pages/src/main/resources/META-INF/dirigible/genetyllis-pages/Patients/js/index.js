@@ -332,12 +332,6 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
     }
 
 
-    $scope.redirectPatients = function (data) {
-        $sessionStorage.$default({
-            patient: data
-        });
-        console.log($sessionStorage, "data");
-    }
     $scope.checkColumn = function (e) {
         return e == 'Id'
     }
@@ -411,8 +405,11 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
         return result;
     }
 
+    $scope.redirectPatients = function (data) {
+        $sessionStorage.$default({
+            patient: data.Id
+        });
+        console.log($sessionStorage.patient, "data");
+        // $sessionStorage.$reset()
+    }
 }]);
-
-// patients.filter('startFrom', function () {
-
-// })

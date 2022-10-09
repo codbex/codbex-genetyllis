@@ -28,9 +28,9 @@ addPatient.directive('ngConfirmClick', [
         };
     }])
 
-addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage) {
+addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
     $scope.dataGridOptionsFamilyHistory = {}
-
+    const gedPIDFromStorage = $sessionStorage.patientId;
     var api = "/services/v4/js/Home-page/services/patientInfo.js";
     var patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
     var clinicalHistroryApi = '/services/v4/js/genetyllis-pages/services/api/patients/ClinicalHistory.js';
@@ -95,6 +95,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
     function persistClinicalHistory(clinicalHistoryDataArray, patientId) {
 
         clinicalHistoryDataArray.forEach(clinicalHistory => {
+            clinicalHistory.Id = clinicalHistory.Id;
             clinicalHistory.PatientId = patientId;
             $http.post(clinicalHistroryApi, JSON.stringify(clinicalHistory))
                 .then(function (response) {
@@ -109,18 +110,19 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
             familyMemberPatient = {}
             familyMemberPatient.Id = familyMember.Id;
             familyMemberPatient.LabId = familyMember.LabId;
+            familyMemberPatient.PatientId = familyMember.PatientId;
             $http.post(patientsOptionsApi, JSON.stringify(familyMemberPatient))
                 .then(function (response) {
-                    familyMember.Id = response.data.Id
-                    persistClinicalHistory(familyMember.ClinicalHistoryDataArray, familyMember.Id);
+                    familyMember.PatientId = response.data.PatientId
+                    persistClinicalHistory(familyMember.ClinicalHistoryDataArray, familyMember.PatientId);
 
-                    persistFamilyHistory(familyMember.Id, familyMember.RelationId);
+                    persistFamilyHistory(familyMember.PatientId, familyMember.RelationId, familyMember.Id);
                 }, function (response) {
                 });
         });
     }
 
-    function persistFamilyHistory(familyMemberId, familyMemberRelationId) {
+    function persistFamilyHistory(familyMemberPatientId, familyMemberRelationId, familyHistoryId) {
         var familyHistory = {
             Id: '',
             PatientId: '',
@@ -131,7 +133,8 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
         // Patient to Family Member relation
         familyHistory.PatientId = $scope.entity.Id;
         familyHistory.RelationId = familyMemberRelationId;
-        familyHistory.FamilyMemberId = familyMemberId;
+        familyHistory.FamilyMemberId = familyMemberPatientId;
+        familyHistory.Id = familyHistoryId;
         $http.post(familyHistroryApi, JSON.stringify(familyHistory))
             .then(function (response) {
                 familyHistory.Id = response.data.Id
@@ -223,6 +226,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
 
 
     $scope.isEmptyTableFamilyHistory = false;
+    $scope.dataArray = []
     $scope.addEntryFamilyHistory = function () {
         $scope.isEmptyTableFamilyHistory = true;
         $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.push($scope.familyClinicalHistoryData);
@@ -237,32 +241,35 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
 
 
         }
-
         if ($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.lenght === 0) $scope.isEmptyTableFamilyHistory = false;
+
+        $scope.dataArray.push($scope.familyClinicalHistoryDataArray)
+        console.log('dataArray: ', $scope.dataArray)
+
         $scope.familyClinicalHistoryData = {};
     };
     $scope.isEmptyTableFamilyMember = false;
 
     $scope.addEntryFamilyMember = function () {
-        let result = {}
-        $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.map(el => {
-            console.log(el)
-            console.log("el")
-            result.AgeOnset = el.AgeOnset;
-            result.Notes = el.Notes
+        console.log('test: ', $scope.familyData)
+        // console.log($scope.familyClinicalHistoryDataArray)
+        // result.RelationName = el.RelationName
+        // result.Notes = el.Notes
+        $scope.dataArray[0].ClinicalHistoryDataArray.map(el => {
+            let result = {}
+            console.log(el, ":Leelee")
+            result.LabId = $scope.dataArray[0].LabId;
+            result.RelationName = $scope.dataArray[0].RelationName
             result.PathologyName = el.PathologyName
+            result.AgeOnset = el.AgeOnset
             result.Notes = el.Notes
+
+            $scope.familyMembersArray.push(result);
         })
-        result.LabId = $scope.familyClinicalHistoryDataArray.LabId
-        result.RelationName = $scope.familyClinicalHistoryDataArray.RelationName
-        $scope.familyMembersArray.push(result);
-        console.log("familyClinicalHistoryDataArray")
-        console.log($scope.familyClinicalHistoryDataArray)
-        console.log($scope.familyMembersArra)
 
         $scope.familyMemberData = $scope.familyMembersArray;
-        console.log("familyMemberData")
-        console.log($scope.familyMemberData)
+        // console.log("familyMemberData")
+        // console.log($scope.familyMemberData)
         $scope.familyClinicalHistoryData = {};
         $scope.familyClinicalHistoryDataArray = {
             Id: '',
@@ -278,7 +285,9 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
             $scope.isEmptyTableFamilyHistory = false
         }
         $scope.isEmptyTableFamilyMember = true;
-        $scope.familyData = []
+        $scope.familyData = [];
+        $scope.dataArray = []
+        // $scope.familyMembersArray = []
 
     };
 
@@ -288,18 +297,18 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
                 $scope.isLabIdTaken = data.data.length > 0
             })
     }
-
+    console.log(gedPIDFromStorage, "gedPIDFromStorage")
     function loadPatientFormData() {
-
-        $http.get(patientsOptionsApi + "/loadPatientFormData/" + 1)
+        $http.get(patientsOptionsApi + "/loadPatientFormData/" + gedPIDFromStorage)
             .then(data => {
                 $scope.entity.Id = data.data.PATIENT_ID;
                 $scope.entity.LabId = data.data.PATIENT_LABID;
                 $scope.entity.Info = data.data.PATIENT_INFO;
                 $scope.entity.BirthDate = data.data.PATIENT_AGE;
                 $scope.entity.GenderId = data.data.PATIENT_GENDERID;
-
+                console.log(data.data, "data")
                 data.data.clinicalHistory.forEach(history => {
+
                     let loadedHistory = {};
                     loadedHistory.Id = history.CLINICALHISTORY_ID;
                     loadedHistory.PathologyName = history.pathology[0].PATHOLOGY_NAME;
@@ -309,7 +318,6 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
                     $scope.clinicalHistoryDataArray.push(loadedHistory);
                 })
                 $("#gridContainer").dxDataGrid("instance").refresh();
-                let arrarara = []
                 data.data.familyHistory.forEach(member => {
                     console.log(member)
                     console.log("member")
@@ -317,39 +325,44 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
                     familyMember.ClinicalHistoryDataArray = [];
                     familyMember.patient = {};
                     familyMember.Id = member.FAMILYHISTORY_ID;
-                    familyMember.LabId = member.patient[0].PATIENT_LABID;
+                    familyMember.LabId = member.patient[0]?.PATIENT_LABID;
                     familyMember.RelationId = member.FAMILYHISTORY_RELATIONID;
                     // TODO fix
                     // familyMember.RelationName = $scope.relationData.find(el => el.Id == member.FAMILYHISTORY_RELATIONID).RelationType;
                     familyMember.PatientId = member.FAMILYHISTORY_PATIENTID;
                     familyMember.FamilyMemberId = member.FAMILYHISTORY_FAMILYMEMBERID;
-                    familyMember.patient.Id = member.patient[0].PATIENT_ID;
-                    familyMember.patient.LabId = member.patient[0].PATIENT_LABID;
-                    familyMember.patient.BirthDate = member.patient[0].PATIENT_AGE;
-                    familyMember.patient.GenderId = member.patient[0].PATIENT_GENDERID;
-                    familyMember.patient.Info = member.patient[0].PATIENT_INFO;
+                    familyMember.patient.Id = member.patient[0]?.PATIENT_ID;
+                    familyMember.patient.LabId = member.patient[0]?.PATIENT_LABID;
+                    familyMember.patient.BirthDate = member.patient[0]?.PATIENT_AGE;
+                    familyMember.patient.GenderId = member.patient[0]?.PATIENT_GENDERID;
+                    familyMember.patient.Info = member.patient[0]?.PATIENT_INFO;
 
-                    member.clinicalHistory.forEach(history => {
+                    member.clinicalHistory.forEach((history, i) => {
                         let clinicalHistory = {};
+
                         clinicalHistory.ClinicalHistoryDataArray = [];
-
-                        console.log("$scope.history")
-                        console.log(history)
-
-                        clinicalHistory.ClinicalHistoryDataArray.LabId = member.patient[0].PATIENT_LABID;
+                        clinicalHistory.ClinicalHistoryDataArray.LabId = member.patient[0]?.PATIENT_LABID;
+                        console.log(familyMember.patient.LabId)
+                        console.log(i)
+                        console.log("clinicalHistory.ClinicalHistoryDataArray.LabId")
                         clinicalHistory.ClinicalHistoryDataArray.RelationName = relation(member.FAMILYHISTORY_RELATIONID)
                         clinicalHistory.ClinicalHistoryDataArray.PathologyName = history.pathology[0].PATHOLOGY_NAME
                         clinicalHistory.ClinicalHistoryDataArray.AgeOnset = history.CLINICALHISTORY_AGEONSET
                         clinicalHistory.ClinicalHistoryDataArray.Notes = history.CLINICALHISTORY_NOTES;
 
-                        clinicalHistory.ClinicalHistoryDataArray.push(clinicalHistory);
+                        // clinicalHistory.ClinicalHistoryDataArray.push(clinicalHistory);
                         $scope.familyMembersArray.push(clinicalHistory.ClinicalHistoryDataArray);
                     })
                     $scope.familyMemberData = $scope.familyMembersArray;
                 })
                 $("#familyMemberGrid").dxDataGrid("instance").refresh();
             })
+        $sessionStorage.$reset();
     }
+
+    // $scope.loadFamilyMemberId= function(){
+
+    // }
 
     loadPatientFormData();
 
@@ -372,7 +385,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
                         clinicalHistory.PathologyName = element.PATHOLOGY_NAME;
                         clinicalHistory.Notes = element.GENETYLLIS_CLINICALHISTORY_NOTES;
                         clinicalHistory.AgeOnset = element.GENETYLLIS_CLINICALHISTORY_AGEONSET;
-                        $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.push(angular.copy(clinicalHistory));
+                        $scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.push(clinicalHistory);
                     });
                 }
             })
@@ -651,5 +664,13 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
                 break;
         }
         return result;
+    }
+
+    $scope.removeUser = function () {
+        $http.delete(patientsOptionsApi + '/' + 11)
+            .then(data => {
+                console.log("data", data)
+
+            })
     }
 }]);

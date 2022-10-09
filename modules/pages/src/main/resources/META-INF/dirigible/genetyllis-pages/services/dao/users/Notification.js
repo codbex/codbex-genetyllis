@@ -10,27 +10,61 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 const dao = require("genetyllis-app/gen/dao/users/Notification");
+const query = require("db/v4/query");
 
-exports.list = function(settings) {
+exports.list = function (settings) {
 	return dao.list(settings);
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	return dao.get(id);
 };
 
-exports.create = function(entity) {
+exports.create = function (entity) {
 	return dao.create(entity);
 };
 
-exports.update = function(entity) {
+exports.update = function (entity) {
 	dao.update(entity);
 };
 
-exports.delete = function(id) {
+exports.delete = function (id) {
 	dao.delete(id);
 };
 
-exports.count = function() {
+exports.count = function () {
 	return dao.count();
 };
+
+exports.getByVariantId = function (variantId) {
+	console.log(variantId)
+	let response = {};
+	response = query.execute('SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID" = ?', [variantId]);
+	console.log(JSON.stringify(response))
+
+	if (response.length !== 0) {
+		let notificationObject = {}
+
+		notificationObject.NotificationId = response[0]?.NOTIFICATION_NOTIFICATIONID;
+		notificationObject.UserUserId = response[0]?.NOTIFICATION_USERUSERID;
+		notificationObject.VariantId = response[0]?.NOTIFICATION_VARIANTID;
+		notificationObject.SeenFlag = response[0]?.NOTIFICATION_SEENFLAG;
+		notificationObject.ChangeFlag = response[0]?.NOTIFICATION_CHANGEFLAG;
+		notificationObject.Highlight = !response[0]?.NOTIFICATION_HIGHLIGHT;
+
+		dao.update(notificationObject);
+	} else {
+		console.log("_________~~~~~~~~~~~~~~________________~~~~~~~~~~~~")
+		let notificationObject = {}
+
+		notificationObject.UserUserId = null;
+		notificationObject.VariantId = variantId;
+		notificationObject.SeenFlag = false;
+		notificationObject.ChangeFlag = false;
+		notificationObject.Highlight = true;
+
+		dao.create(notificationObject);
+	}
+
+	return response;
+}

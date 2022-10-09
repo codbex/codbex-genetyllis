@@ -17,7 +17,11 @@ page.config(function (paginationTemplateProvider) {
 page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
-    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+    const notificationOptionsApi = '/services/v4/js/genetyllis-pages/services/api/users/Notification.js';
+    // const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+
+    $scope.clickedUrl = "../images/flagged.svg";
+    $scope.notClickedUrl = "../images/notFlagged.svg";
 
     $scope.variantsDetails = [];
     $scope.selectedPerPage = 10;
@@ -153,23 +157,28 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
                 console.log(response.data, "response")
                 response.data.data.forEach(data => {
                     let variantObj = {}
+                    if (data.highlight != undefined) {
+                        console.log(data.highlight[0].NOTIFICATION_HIGHLIGHT)
+                        variantObj[""] = data.highlight[0].NOTIFICATION_HIGHLIGHT
+                    }
+                    variantObj.VariantId = data.VARIANT_ID
                     variantObj.HGVS = data.VARIANT_HGVS
-                    // if (data.genes) {
-                    //     variantObj.Gene = data.genes[0]?.GENE_NAME != "NULL" ? data.genes[0]?.GENE_NAME : "-";
-                    //     if (data.genes[0]?.GENE_NAME !== 'NULL') {
-                    //         $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + data.genes[0]?.GENE_NAME)
-                    //             .then(function (responseSite) {
-                    //                 responseSite.data[3].forEach(gene => {
-                    //                     if (gene[3] === data.genes[0]?.GENE_NAME) {
-                    //                         variantObj.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
-                    //                     }
+                    if (data.genes) {
+                        variantObj.Gene = data.genes[0]?.GENE_NAME != "NULL" ? data.genes[0]?.GENE_NAME : "-";
+                        if (data.genes[0]?.GENE_NAME !== 'NULL') {
+                            $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + data.genes[0]?.GENE_NAME)
+                                .then(function (responseSite) {
+                                    responseSite.data[3].forEach(gene => {
+                                        if (gene[3] === data.genes[0]?.GENE_NAME) {
+                                            variantObj.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
+                                        }
 
-                    //                 })
-                    //             });
-                    //     }
+                                    })
+                                });
+                        }
 
-                    //     // console.log($scope.geneResponse, "geneResponse")
-                    // }
+                        // console.log($scope.geneResponse, "geneResponse")
+                    }
                     variantObj.VARIANT_CONSEQUENCE = data.VARIANT_CONSEQUENCE
                     variantObj.GeneId = data.VARIANT_GENEID
 
@@ -181,9 +190,10 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
                     }
                     if (data.alleleFrequency) {
                         variantObj.AlleleFrequency = (Number(data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) * 1000000);
-
                     }
-                    // console.log(data, "data")
+                    variantObj.PatientsCount = data.patientsCount
+                    variantObj.Patients = data.patients
+
                     $scope.variantsDetails.push(variantObj)
                 })
                 $scope.totalPages = response.data.totalPages;
@@ -193,24 +203,10 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
             }, function (response) {
             });
 
-        $http.post(patientsOptionsApi + "/filterVariantDetails", JSON.stringify(query))
-            .then(function (response) {
-                $scope.variants = []
-                // console.log(response, "response")
-                response.data.data.forEach(data => {
-                    let variantObj = {}
-                    // console.log(data)
-                    variantObj.PatientsCount = data.count;
-                    $scope.variants.push(variantObj);
-                });
-                // localStorage.clear();
-            })
-
         console.log($scope.variants);
     }
 
     $scope.filter();
-
 
     // _|_
     $scope.variantTableModel = [];
@@ -225,8 +221,8 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     $scope.selectFucn = function () {
 
         console.log($scope.variants, "variants")
-        $scope.variantTable = ['HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients'];
-        $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "Reference", "AlleleFrequency", "Patients"];
+        $scope.variantTable = ['', 'HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients'];
+        $scope.variantPageTableInfo = ['', "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "Reference", "AlleleFrequency", "Patients"];
         for (let x = 0; x < $scope.variantTableModel.length; x++) {
             let value = $scope.variantsTableData.find(e => e.id == $scope.variantTableModel[x].id)
             $scope.variantTable.push(value.label);
@@ -245,8 +241,8 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         return e != '-'
     }
 
-    $scope.variantPageTableInfo = ["HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "ClinicalSignificance", "AlleleFrequency", 'Patients'];
-    $scope.variantTable = ['HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
+    $scope.variantPageTableInfo = ["", "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "ClinicalSignificance", "AlleleFrequency", 'PatientsCount'];
+    $scope.variantTable = ["", 'HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
 
 
 
@@ -277,6 +273,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
 
     $scope.redirectPatients = function (data) {
+
         $sessionStorage.$default({
             HGVS: data
         });
@@ -288,5 +285,31 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     $scope.notLink = function (e) {
         return e != "HGVS"
     }
+
+    $scope.imageHandler = function (data) {
+        // console.log($scope.variantsDetails[data.VariantId - 1]["hl"], 'data', data)
+        $scope.variantsDetails[data.VariantId - 1][""] = !$scope.variantsDetails[data.VariantId - 1][""]
+        console.log(data.VariantId)
+        $http.post(notificationOptionsApi + "/getByVariantId", data.VariantId)
+            .then(function (responseNotification) {
+
+            }, function (response) {
+            });
+        // $scope.filter()
+    }
+
+    // getHighlights = function (data) {
+    //     $http.get(notificationOptionsApi)
+    //         .then(function (responseNotification) {
+    //             responseNotification.data.forEach((el, index) => {
+    //                 if(index>10)return
+    //                 // $scope.variantsDetails[index].push({ Highlight: el.Highlight })
+    //                 console.log($scope.variantsDetails, "response", index);
+    //             })
+
+    //             // Highlight
+    //         }, function (response) {
+    //         });
+    // }
 
 }]);

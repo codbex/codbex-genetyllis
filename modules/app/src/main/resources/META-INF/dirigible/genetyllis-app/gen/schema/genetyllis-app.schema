@@ -710,6 +710,12 @@
                         "length": 20,
                         "nullable": true,
                         "name": "NOTIFICATION_CHANGEFLAG"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "NOTIFICATION_HIGHLIGHT"
                     }
                 ]
             },
