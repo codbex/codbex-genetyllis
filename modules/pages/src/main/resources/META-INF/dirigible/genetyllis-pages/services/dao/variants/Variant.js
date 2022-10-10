@@ -267,11 +267,11 @@ function buildFilterSql(object) {
 
 			} else if (keys[i].toString().endsWith('_TO')) {
 				condition = columnLowerCondition(keys[i].slice(0, -3), isLower) + " <= ?";
-				addFilterParam(val, isLower);
+				addFilterParam(val, false);
 
 			} else if (keys[i].toString().endsWith('_FROM')) {
 				condition = columnLowerCondition(keys[i].slice(0, -5), isLower) + " >= ?";
-				addFilterParam(val, isLower);
+				addFilterParam(val, false);
 
 			} else {
 				condition = columnLowerCondition(keys[i], isLower) + " = ?";
