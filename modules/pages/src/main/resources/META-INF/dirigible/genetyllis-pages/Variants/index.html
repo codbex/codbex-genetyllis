@@ -23,9 +23,8 @@
 
         <script type="text/javascript"
             src="https://cdn.jsdelivr.net/npm/angular-utils-pagination@0.11.1/dirPagination.js"></script>
-        <script <!--
+        <script
             src="https://rawgit.com/myforce/angularjs-dropdown-multiselect/master/src/angularjs-dropdown-multiselect.js"
-            -->
             type="text/javascript">
         </script>
 
@@ -72,7 +71,9 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="tracking">
+                                        <input class="form-check-input" type="checkbox" value="" id="tracking"
+                                            ng-model="GENETYLLIS_NOTIFICATION.NOTIFICATION_VARIANTID"
+                                            ng-click="notificationHl()">
                                         <label class="form-check-label" for="tracking">
                                             Flagged for tracking
                                         </label>
@@ -195,8 +196,8 @@
                     <div class="holder">
                         <div class="container checkboxes-holder">
                             <label ng-repeat="x in clinicalSignificance">
-                                <input type="checkbox" value="{{clinicalSignificance}}"
-                                    ng-click="toggleSelection(x.name)" ng-model="x.Selected">
+                                <input type="checkbox" value="{{clinicalSignificance}}" ng-click="toggleSelection(x.id)"
+                                    ng-model="x.Selected">
                                 {{x.name}}
                             </label>
                         </div>
@@ -289,21 +290,18 @@
                                     total-items="totalItems">
                                     <td ng-repeat="info in variantPageTableInfo">
 
-                                        <a ng-if="info == ''" ng-click="imageHandler(data)">
-                                            <image
-                                                ng-click="{{data.highlight[0].NOTIFICATION_HIGHLIGHT = !data.highlight[0].NOTIFICATION_HIGHLIGHT ;imageHandler($index)}}"
-                                                ng-src="{{data.highlight[0].NOTIFICATION_HIGHLIGHT ? clickedUrl : notClickedUrl}}"
-                                                style="height: 20px; width: 20px;
-            cursor: pointer" />
+                                        <a ng-if=" info==''" ng-click=" imageHandler(data)">
+                                            <image ng-click="imageHandler($index)"
+                                                ng-src="{{data[info] ? clickedUrl : notClickedUrl}}"
+                                                style="height: 20px; width: 20px; cursor: pointer" />
                                         </a>
-
                                         <a href="partials/variant-details.html" ng-click="redirectPatients(data)"
                                             ng-if="checkColumn(info)">{{data[info]}}</a>
 
                                         <a href="{{data.GeneLink}}" ng-if="info === 'Gene'">{{data[info]}}</a>
                                         <span ng-if="info == 'AlleleFrequency'">{{data[info]}} * 10<sup>-6</sup></span>
                                         <span
-                                            ng-if="notLink(info) && info !== 'Gene' && info !== 'AlleleFrequency'">{{data[info]}}</span>
+                                            ng-if="notLink(info) && info !== 'Gene' && info !== 'AlleleFrequency' && info!=''">{{data[info]}}</span>
                                     </td>
                                 </tr>
                             </tbody>

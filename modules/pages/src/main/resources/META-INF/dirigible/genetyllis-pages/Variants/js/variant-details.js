@@ -211,6 +211,8 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
             var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(2);
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
         }
+
+        console.log($scope.GENETYLLIS_PATIENT.PATIENT_GENDERID, $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID)
     }
 
 
@@ -351,10 +353,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                     let variantObj = {}
                     let clinicalSignificanceObj = {}
 
-<<<<<<< HEAD
-                    // console.log(data.clinicalSignificance, "clinicalSignificance");
-=======
->>>>>>> 625236ebfda8a98d43bf4f10904b0956d566b54c
 
                     data.clinicalSignificance.map(el => {
                         clinicalSignificanceObj.Accession = el.CLINICALSIGNIFICANCE_ACCESSION
@@ -363,12 +361,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                         clinicalSignificanceObj.Evaluation = el.CLINICALSIGNIFICANCE_EVALUATED.split("T")[0]
                         clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
                     })
-<<<<<<< HEAD
 
-                    console.log(data)
-
-=======
->>>>>>> 625236ebfda8a98d43bf4f10904b0956d566b54c
                     variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
@@ -386,7 +379,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
             })
-        $sessionStorage.$reset();
+        // $sessionStorage.$reset();
 
     }
 
@@ -397,18 +390,8 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     }
 
 
-<<<<<<< HEAD
-    $scope.fromData = $localStorage.HGVS;
-    console.log($localStorage.HGVS, "local")
-    $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
-    $scope.Patients = $scope.fromData.Patients
-    console.log($scope.Patients, "patients")
-    console.log($scope.GENETYLLIS_VARIANT.VARIANT_HGVS, "local")
-=======
     $scope.fromData = $sessionStorage.HGVS;
     $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
-    console.log($scope.GENETYLLIS_VARIANT)
->>>>>>> 625236ebfda8a98d43bf4f10904b0956d566b54c
     $scope.filter()
     // $scope.getPatients()
 
