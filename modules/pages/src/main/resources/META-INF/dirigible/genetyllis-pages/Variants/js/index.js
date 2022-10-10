@@ -71,6 +71,18 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         ALLELEFREQUENCY_FREQUENCY_FROM: '',
         ALLELEFREQUENCY_FREQUENCY_TO: ''
     }
+
+    $scope.GENETYLLIS_NOTIFICATION = {
+        NOTIFICATION_VARIANTID: "",
+        NOTIFICATION_HIGHLIGHT: "",
+    }
+
+    // flagged notification
+    $scope.notificationHl = function () {
+        if ($scope.GENETYLLIS_NOTIFICATION.NOTIFICATION_VARIANTID) {
+            console.log("da")
+        }
+    }
     // add gene filters
     $scope.addGeneFilter = function () {
         if (!$scope.selectedGeneId || $scope.GENETYLLIS_GENE.GENE_NAME.includes($scope.selectedGeneId)) return
@@ -148,6 +160,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY;
         query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
         query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
+        query.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))

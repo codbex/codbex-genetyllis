@@ -211,6 +211,14 @@ exports.filterVariants = function (variant) {
 		clinicalSignificance.forEach(significance => {
 			significance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === significance.CLINICALSIGNIFICANCE_PATHOLOGYID)
 		})
+
+		/* LOAD NOTIFICATION */
+
+		let notificationQuery = 'SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID"' + variantIdsInStatement;
+		let notification = query.execute(notificationQuery, variantIds);
+		console.log(notification)
+		console.log(JSON.stringify(notification))
+		console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~_~__~_~_~_~_~_~_~_~_~_~~__~~_~_~_~_~_~__~_______~")
 		/* LOAD ALLELEFREQUENCY */
 		let alleleFrequencyQuery = 'SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID"' + variantIdsInStatement;
 		let alleleFrequency = query.execute(alleleFrequencyQuery, variantIds);
@@ -308,6 +316,7 @@ function initPatientDetailsSql() {
 	filterSqlParams = [];
 	filterSql = 'SELECT DISTINCT GV.* FROM "GENETYLLIS_VARIANT" GV ' +
 		'LEFT JOIN "GENETYLLIS_VARIANTRECORD" GVR ON GV."VARIANT_ID" = GVR."VARIANTRECORD_VARIANTID" ' +
+		'LEFT JOIN "GENETYLLIS_NOTIFICATION" GNF ON GV."VARIANT_ID" = GNF."NOTIFICATION_VARIANTID" ' +
 		'LEFT JOIN "GENETYLLIS_PATIENT" GP ON GVR."VARIANTRECORD_PATIENTID" = GP."PATIENT_ID" ' +
 		'LEFT JOIN "GENETYLLIS_ANALYSIS" GAL ON GVR."VARIANTRECORD_ANALYSISID" = GAL."ANALYSIS_ID" ' +
 		'LEFT JOIN "GENETYLLIS_GENE" GG ON GV."VARIANT_GENEID" = GG."GENE_ID" ' +
