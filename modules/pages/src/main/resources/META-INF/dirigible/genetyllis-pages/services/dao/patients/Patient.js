@@ -356,11 +356,11 @@ function buildFilterSql(object) {
 				condition = columnLowerCondition(keys[i], isLower) + addArrayValuesToSql(val, isLower);
 
 			} else if (keys[i].toString().endsWith('_TO')) {
-				condition = columnLowerCondition(keys[i].slice(0, -3), isLower) + " <= ?";
+				condition = columnLowerCondition(keys[i].slice(0, -3), false) + " <= ?";
 				addFilterParam(val, false);
 
 			} else if (keys[i].toString().endsWith('_FROM')) {
-				condition = columnLowerCondition(keys[i].slice(0, -5), isLower) + " >= ?";
+				condition = columnLowerCondition(keys[i].slice(0, -5), false) + " >= ?";
 				addFilterParam(val, false);
 
 			} else {
