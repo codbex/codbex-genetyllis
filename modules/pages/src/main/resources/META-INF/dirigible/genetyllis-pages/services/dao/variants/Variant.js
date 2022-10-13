@@ -40,7 +40,6 @@ exports.count = function () {
 };
 
 exports.filterVariantsPatientDetails = function (variant) {
-	// console.log(JSON.stringify(variant.GENETYLLIS_PATIENT))
 	initPatientDetailsSql();
 	let response = {};
 	let countSql = "";
@@ -148,9 +147,7 @@ exports.filterVariantsPatientDetails = function (variant) {
 		})
 
 		// FIX FOR PATIENTS BUG IN VARIANT RECORDS
-		// console.log(JSON.stringify(variantRecords))
 		variantRecords.sort((a, b) => b.patients.length - a.patients.length);
-		// console.log(JSON.stringify(variantRecords))
 
 
 		/* LOAD ALLELEFREQUENCY */
@@ -170,7 +167,6 @@ exports.filterVariantsPatientDetails = function (variant) {
 	return response;
 }
 exports.filterVariants = function (variant) {
-	console.log("HE;;p")
 	initFilterSql();
 	let response = {};
 	let countSql = "";
@@ -198,7 +194,6 @@ exports.filterVariants = function (variant) {
 	countSql = 'SELECT COUNT(DISTINCT GV."VARIANT_ID") AS "COUNT"' + countSql.slice(20);
 	let resultSetCount = query.execute(countSql, filterSqlParams);
 	response.data = resultSet;
-	console.log("opdasodsap[as")
 	response.totalItems = resultSetCount[0]["COUNT"];
 	response.totalPages = Math.floor(response.totalItems / variant.perPage) + (response.totalItems % variant.perPage == 0 ? 0 : 1);
 	let variantIds = response.data.map(foundVariant => foundVariant.VARIANT_ID);
@@ -228,9 +223,6 @@ exports.filterVariants = function (variant) {
 
 		let notificationQuery = 'SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID"' + variantIdsInStatement;
 		let notification = query.execute(notificationQuery, variantIds);
-		console.log(notification)
-		console.log(JSON.stringify(notification))
-		console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~_~__~_~_~_~_~_~_~_~_~_~~__~~_~_~_~_~_~__~_______~")
 
 		/* LOAD ALLELEFREQUENCY */
 		let alleleFrequencyQuery = 'SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID"' + variantIdsInStatement;
@@ -278,6 +270,8 @@ function buildFilterSql(object) {
 				condition = columnLowerCondition(keys[i].slice(0, -5), isLower) + " >= ?";
 				addFilterParam(val, false);
 			} else if (typeof val == "boolean" && val) {
+				console.log(val)
+				console.log(typeof val)
 				condition = columnLowerCondition(keys[i], false) + " IS TRUE";
 			} else if (keys[i].toString().endsWith('_FROM')) {
 				condition = columnLowerCondition(keys[i].slice(0, -5), false) + " >= ?";
@@ -288,6 +282,7 @@ function buildFilterSql(object) {
 				condition = columnLowerCondition(keys[i], isLower) + " = ?";
 				addFilterParam(val, isLower);
 			}
+
 			filterSql += condition;
 			useWhere = false;
 		}
