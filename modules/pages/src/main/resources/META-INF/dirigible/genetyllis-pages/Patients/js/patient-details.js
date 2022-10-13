@@ -279,17 +279,18 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                     // console.log(patientResult.genes)
                     if (patientResult.genes[0]) {
                         patientObject.GeneId = patientResult.genes[0]?.GENE_NAME != "NULL" ? patientResult.genes[0]?.GENE_NAME : "-";
+                        patientObject.GeneLink = "";
                         if (patientResult.genes[0]?.GENE_NAME != "NULL") {
                             $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + patientObject.GeneId)
                                 .then(function (responseSite) {
                                     // console.log(responseSite)
                                     responseSite.data[3].forEach(gene => {
-                                        if (gene[3] === patientResult.genes[0]?.GENE_NAME) {
+                                        if (gene.includes(patientResult.genes[0]?.GENE_NAME)) {
                                             patientObject.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
                                         }
                                     })
                                 });
-                            console.log(patientObject.GeneLink)
+                            console.log(patientObject.GeneLink, "genelink")
                         }
                     }
                     patientObject.Consequence = patientResult.VARIANT_CONSEQUENCE;

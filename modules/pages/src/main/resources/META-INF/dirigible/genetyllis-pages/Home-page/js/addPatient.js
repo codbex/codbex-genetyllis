@@ -110,12 +110,9 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
             familyMemberPatient = {}
             familyMemberPatient.Id = familyMember.Id;
             familyMemberPatient.LabId = familyMember.LabId;
-<<<<<<< HEAD
             $http.post(patientsOptionsApi, familyMemberPatient)
-=======
             familyMemberPatient.PatientId = familyMember.PatientId;
             $http.post(patientsOptionsApi, JSON.stringify(familyMemberPatient))
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
                 .then(function (response) {
                     familyMember.PatientId = response.data.PatientId
                     persistClinicalHistory(familyMember.ClinicalHistoryDataArray, familyMember.PatientId);

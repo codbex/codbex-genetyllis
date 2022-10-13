@@ -75,14 +75,12 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         ALLELEFREQUENCY_FREQUENCY_TO: ''
     }
 
-<<<<<<< HEAD
     // flagged notification
     $scope.notificationHl = function () {
         if (!$scope.GENETYLLIS_NOTIFICATION.NOTIFICATION_VARIANTID) {
         }
     }
 
-=======
     $scope.GENETYLLIS_NOTIFICATION = {
         NOTIFICATION_VARIANTID: "",
         NOTIFICATION_HIGHLIGHT: "",
@@ -90,15 +88,16 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
     // flagged notification
     $scope.notificationHl = function () {
-<<<<<<< HEAD
+
         if (!$scope.GENETYLLIS_NOTIFICATION.NOTIFICATION_VARIANTID) {
-=======
-        if ($scope.GENETYLLIS_NOTIFICATION.NOTIFICATION_VARIANTID) {
-            console.log("da")
->>>>>>> b64e67c49be35dffe1730052c937aa28928e3eef
+
+            if ($scope.GENETYLLIS_NOTIFICATION.NOTIFICATION_VARIANTID) {
+                console.log("da")
+
+            }
         }
     }
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
+
     // add gene filters
     $scope.addGeneFilter = function () {
         if (!$scope.selectedGeneId || $scope.GENETYLLIS_GENE.GENE_NAME.includes($scope.selectedGeneId)) return
@@ -176,15 +175,9 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY;
         query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
         query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
-<<<<<<< HEAD
+
         query.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION
-=======
-<<<<<<< HEAD
-        // query.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION
-=======
-        query.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION
->>>>>>> b64e67c49be35dffe1730052c937aa28928e3eef
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
+
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))
@@ -304,22 +297,17 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         angular.forEach($scope.clinicalSignificance, function (item) {
             item.Selected = false;
         });
-<<<<<<< HEAD
-=======
 
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
         $scope.selectConsequences = ["intron", "exon", "intragenic", "regulatory", "stop", "synonymous", "coding", "non", "splice", "other"]
         $scope.geneIds = [];
         $scope.selectedGeneId = '';
         $scope.selectedGeneIds = [];
-<<<<<<< HEAD
         $scope.consequences = [];
         $scope.selectedConsequence = '';
         $scope.selectedConsequences = [];
         $scope.pathologyCuis = [];
         $scope.selectedPathologyCui = '';
         $scope.selectedPathologyCuis = [];
-=======
 
         $scope.consequences = [];
         $scope.selectedConsequence = '';
@@ -329,7 +317,6 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         $scope.selectedPathologyCui = '';
         $scope.selectedPathologyCuis = [];
 
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
         $scope.GENETYLLIS_VARIANT = {
             VARIANT_CHROMOSOME: '',
             VARIANT_START_FROM: '',
@@ -338,22 +325,19 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
             VARIANT_REFERENCE: "",
             VARIANT_ALTERNATIVE: ""
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
         $scope.GENETYLLIS_GENE = {
             GENE_GENEID: [],
             GENE_NAME: [],
         }
-<<<<<<< HEAD
+
         $scope.GENETYLLIS_PATHOLOGY = {
             PATHOLOGY_CUI: []
         }
         $scope.GENETYLLIS_SIGNIFICANCE = {
             SIGNIFICANCE_ID: []
         }
-=======
+
 
         $scope.GENETYLLIS_PATHOLOGY = {
             PATHOLOGY_CUI: []
@@ -365,15 +349,11 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
 
 
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
         $scope.GENETYLLIS_ALLELEFREQUENCY = {
             ALLELEFREQUENCY_FREQUENCY_FROM: '',
             ALLELEFREQUENCY_FREQUENCY_TO: ''
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
         $scope.GENETYLLIS_NOTIFICATION = {
             NOTIFICATION_VARIANTID: "",
             NOTIFICATION_HIGHLIGHT: "",
@@ -397,8 +377,9 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     }
 
     $scope.imageHandler = function (data) {
+
         $scope.variantsDetails[data.VariantId - 1][""] = !$scope.variantsDetails[data.VariantId - 1][""]
-        console.log(data.VariantId)
+        console.log($scope.variantsDetails, "thisisimagehjandler")
         $http.post(notificationOptionsApi + "/getByVariantId", data.VariantId)
             .then(function (responseNotification) {
             }, function (response) {
