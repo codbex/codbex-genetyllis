@@ -72,7 +72,11 @@
                                 <div class="col">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="tracking"
+<<<<<<< HEAD
                                             ng-model="GENETYLLIS_NOTIFICATION.NOTIFICATION_HIGHLIGHT"
+=======
+                                            ng-model="GENETYLLIS_NOTIFICATION.NOTIFICATION_VARIANTID"
+>>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
                                             ng-click="notificationHl()">
                                         <label class="form-check-label" for="tracking">
                                             Flagged for tracking
@@ -196,8 +200,8 @@
                     <div class="holder">
                         <div class="container checkboxes-holder">
                             <label ng-repeat="x in clinicalSignificance">
-                                <input type="checkbox" value="{{clinicalSignificance}}"
-                                    ng-click="toggleSelection(x.name)" ng-model="x.Selected">
+                                <input type="checkbox" value="{{clinicalSignificance}}" ng-click="toggleSelection(x.id)"
+                                    ng-model="x.Selected">
                                 {{x.name}}
                             </label>
                         </div>

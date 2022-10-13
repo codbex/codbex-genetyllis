@@ -211,6 +211,8 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
             var index = $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.indexOf(2);
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
         }
+
+        console.log($scope.GENETYLLIS_PATIENT.PATIENT_GENDERID, $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID)
     }
 
 
@@ -351,9 +353,12 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                     let variantObj = {}
                     let clinicalSignificanceObj = {}
 
+<<<<<<< HEAD
 
                     // console.log(data.clinicalSignificance, "clinicalSignificance");
 
+=======
+>>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
 
                     data.clinicalSignificance.map(el => {
                         clinicalSignificanceObj.Accession = el.CLINICALSIGNIFICANCE_ACCESSION
@@ -363,9 +368,12 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                         clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
                     })
 
+<<<<<<< HEAD
 
                     // console.log(data)
 
+=======
+>>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
                     variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
@@ -397,8 +405,11 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     $scope.fromData = $sessionStorage.HGVS;
     console.log($sessionStorage)
     $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
+<<<<<<< HEAD
     console.log($scope.GENETYLLIS_VARIANT)
 
+=======
+>>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
     $scope.filter()
     // $scope.getPatients()
 

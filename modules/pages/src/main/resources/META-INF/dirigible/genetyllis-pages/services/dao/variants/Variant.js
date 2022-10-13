@@ -218,9 +218,20 @@ exports.filterVariants = function (variant) {
 		clinicalSignificance.forEach(significance => {
 			significance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === significance.CLINICALSIGNIFICANCE_PATHOLOGYID)
 		})
+<<<<<<< HEAD
 		/* LOAD NOTIFICATION */
 		// let notificationQuery = 'SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID"' + variantIdsInStatement;
 		// let notification = query.execute(notificationQuery, variantIds);
+=======
+
+		/* LOAD NOTIFICATION */
+
+		let notificationQuery = 'SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID"' + variantIdsInStatement;
+		let notification = query.execute(notificationQuery, variantIds);
+		console.log(notification)
+		console.log(JSON.stringify(notification))
+		console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~_~__~_~_~_~_~_~_~_~_~_~~__~~_~_~_~_~_~__~_______~")
+>>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
 		/* LOAD ALLELEFREQUENCY */
 		let alleleFrequencyQuery = 'SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID"' + variantIdsInStatement;
 		let alleleFrequency = query.execute(alleleFrequencyQuery, variantIds);
@@ -260,6 +271,7 @@ function buildFilterSql(object) {
 			if (Array.isArray(val)) {
 				condition = columnLowerCondition(keys[i], isLower) + addArrayValuesToSql(val, isLower);
 			} else if (keys[i].toString().endsWith('_TO')) {
+<<<<<<< HEAD
 				condition = columnLowerCondition(keys[i].slice(0, -3), isLower) + " <= ?";
 				addFilterParam(val, false);
 			} else if (keys[i].toString().endsWith('_FROM')) {
@@ -267,6 +279,15 @@ function buildFilterSql(object) {
 				addFilterParam(val, false);
 			} else if (typeof val == "boolean" && val) {
 				condition = columnLowerCondition(keys[i], false) + " IS TRUE";
+=======
+				condition = columnLowerCondition(keys[i].slice(0, -3), false) + " <= ?";
+				addFilterParam(val, false);
+
+			} else if (keys[i].toString().endsWith('_FROM')) {
+				condition = columnLowerCondition(keys[i].slice(0, -5), false) + " >= ?";
+				addFilterParam(val, false);
+
+>>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
 			} else {
 				condition = columnLowerCondition(keys[i], isLower) + " = ?";
 				addFilterParam(val, isLower);
