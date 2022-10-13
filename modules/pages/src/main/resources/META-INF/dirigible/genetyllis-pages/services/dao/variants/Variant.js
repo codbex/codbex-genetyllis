@@ -40,7 +40,7 @@ exports.count = function () {
 };
 
 exports.filterVariantsPatientDetails = function (variant) {
-
+	// console.log(JSON.stringify(variant.GENETYLLIS_PATIENT))
 	initPatientDetailsSql();
 	let response = {};
 	let countSql = "";
@@ -147,6 +147,12 @@ exports.filterVariantsPatientDetails = function (variant) {
 			variantRecord.patients = patients.filter(patient => patient.PATIENT_ID === variantRecord.VARIANTRECORD_PATIENTID)
 		})
 
+		// FIX FOR PATIENTS BUG IN VARIANT RECORDS
+		// console.log(JSON.stringify(variantRecords))
+		variantRecords.sort((a, b) => b.patients.length - a.patients.length);
+		// console.log(JSON.stringify(variantRecords))
+
+
 		/* LOAD ALLELEFREQUENCY */
 		let alleleFrequencyQuery = 'SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID"' + variantIdsInStatement;
 		let alleleFrequency = query.execute(alleleFrequencyQuery, variantIds);
@@ -163,7 +169,6 @@ exports.filterVariantsPatientDetails = function (variant) {
 	filterSql = "";
 	return response;
 }
-
 exports.filterVariants = function (variant) {
 	console.log("HE;;p")
 	initFilterSql();
@@ -184,6 +189,9 @@ exports.filterVariants = function (variant) {
 	if (variant.GENETYLLIS_ALLELEFREQUENCY) {
 		buildFilterSql(variant.GENETYLLIS_ALLELEFREQUENCY);
 	}
+	if (variant.GENETYLLIS_NOTIFICATION) {
+		buildFilterSql(variant.GENETYLLIS_NOTIFICATION);
+	}
 	countSql += filterSql;
 	filterSql += " LIMIT " + variant.perPage + " OFFSET " + variant.currentPage;
 	let resultSet = query.execute(filterSql, filterSqlParams);
@@ -191,7 +199,6 @@ exports.filterVariants = function (variant) {
 	let resultSetCount = query.execute(countSql, filterSqlParams);
 	response.data = resultSet;
 	console.log("opdasodsap[as")
-
 	response.totalItems = resultSetCount[0]["COUNT"];
 	response.totalPages = Math.floor(response.totalItems / variant.perPage) + (response.totalItems % variant.perPage == 0 ? 0 : 1);
 	let variantIds = response.data.map(foundVariant => foundVariant.VARIANT_ID);
@@ -211,6 +218,9 @@ exports.filterVariants = function (variant) {
 		clinicalSignificance.forEach(significance => {
 			significance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === significance.CLINICALSIGNIFICANCE_PATHOLOGYID)
 		})
+		/* LOAD NOTIFICATION */
+		// let notificationQuery = 'SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID"' + variantIdsInStatement;
+		// let notification = query.execute(notificationQuery, variantIds);
 		/* LOAD ALLELEFREQUENCY */
 		let alleleFrequencyQuery = 'SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID"' + variantIdsInStatement;
 		let alleleFrequency = query.execute(alleleFrequencyQuery, variantIds);
@@ -219,7 +229,6 @@ exports.filterVariants = function (variant) {
 		let geneIdsInStatement = addArrayValuesToSql(geneIds, false);
 		let geneQuery = 'SELECT * FROM "GENETYLLIS_GENE" WHERE "GENE_ID"' + geneIdsInStatement;
 		let genes = query.execute(geneQuery, geneIds);
-
 		/* MAP CLINICALSIGNIFICANCE, ALLELEFREQUENCY AND GENES TO VARIANT */
 		response.data.forEach(foundVariant => {
 			foundVariant.clinicalSignificance = clinicalSignificance.filter(significance => significance.CLINICALSIGNIFICANCE_VARIANTID === foundVariant.VARIANT_ID);
@@ -227,19 +236,15 @@ exports.filterVariants = function (variant) {
 			foundVariant.genes = genes.filter(gene => gene.GENE_ID === foundVariant.VARIANT_GENEID);
 			let patientsCount = query.execute('SELECT DISTINCT VARIANTRECORD_PATIENTID FROM "GENETYLLIS_VARIANTRECORD" WHERE "VARIANTRECORD_VARIANTID" = ?', [foundVariant.VARIANT_ID]);
 			foundVariant.patientsCount = patientsCount.length
-
 			let patients = query.execute('SELECT DISTINCT * FROM "GENETYLLIS_PATIENT" GP JOIN "GENETYLLIS_VARIANTRECORD" GV ON GP."PATIENT_ID" = GV."VARIANTRECORD_PATIENTID" WHERE "VARIANTRECORD_VARIANTID" = ?', [foundVariant.VARIANT_ID]);
 			foundVariant.patients = patients
-
 			let highlight = query.execute('SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID" = ?', [foundVariant.VARIANT_ID]);
 			foundVariant.highlight = highlight
 		})
-
 	}
 	filterSql = "";
 	return response;
 }
-
 function buildFilterSql(object) {
 	var keys = Object.keys(object);
 	for (var i = 0; i < keys.length; i++) {
@@ -250,55 +255,45 @@ function buildFilterSql(object) {
 			} else {
 				filterSql += " AND ";
 			}
-
 			condition = "";
 			let isLower = isNaN(val);
-
 			if (Array.isArray(val)) {
 				condition = columnLowerCondition(keys[i], isLower) + addArrayValuesToSql(val, isLower);
-
 			} else if (keys[i].toString().endsWith('_TO')) {
 				condition = columnLowerCondition(keys[i].slice(0, -3), isLower) + " <= ?";
-				addFilterParam(val, isLower);
-
+				addFilterParam(val, false);
 			} else if (keys[i].toString().endsWith('_FROM')) {
 				condition = columnLowerCondition(keys[i].slice(0, -5), isLower) + " >= ?";
-				addFilterParam(val, isLower);
-
+				addFilterParam(val, false);
+			} else if (typeof val == "boolean" && val) {
+				condition = columnLowerCondition(keys[i], false) + " IS TRUE";
 			} else {
 				condition = columnLowerCondition(keys[i], isLower) + " = ?";
 				addFilterParam(val, isLower);
 			}
-
 			filterSql += condition;
 			useWhere = false;
-
 		}
 	}
-
 	return filterSql;
 }
-
 function addArrayValuesToSql(array, isLower) {
-
 	let inStatement = " IN (";
 	array.forEach(element => {
 		inStatement += "?,";
 		addFilterParam(element, isLower);
 	})
-
 	inStatement = inStatement.slice(0, -1)
 	inStatement += ")";
-
 	return inStatement;
 }
-
 function initFilterSql() {
 	useWhere = true;
 	filterSqlParams = [];
 	filterSql = 'SELECT DISTINCT GV.* FROM "GENETYLLIS_VARIANT" GV ' +
 		'LEFT JOIN "GENETYLLIS_GENE" GG ON GV."VARIANT_GENEID" = GG."GENE_ID" ' +
 		'LEFT JOIN "GENETYLLIS_CLINICALSIGNIFICANCE" GC ON GV."VARIANT_ID" = GC."CLINICALSIGNIFICANCE_VARIANTID" ' +
+		'LEFT JOIN "GENETYLLIS_NOTIFICATION" GNF ON GV."VARIANT_ID" = GNF."NOTIFICATION_VARIANTID" ' +
 		'LEFT JOIN "GENETYLLIS_PATHOLOGY" GP ON GC."CLINICALSIGNIFICANCE_PATHOLOGYID" = GP."PATHOLOGY_ID" ' +
 		'LEFT JOIN "GENETYLLIS_SIGNIFICANCE" GS ON GC."CLINICALSIGNIFICANCE_SIGNIFICANCEID" = GS."SIGNIFICANCE_ID" ' +
 		'LEFT JOIN "GENETYLLIS_ALLELEFREQUENCY" GA ON GV."VARIANT_ID" = GA."ALLELEFREQUENCY_VARIANTID"';
@@ -308,6 +303,7 @@ function initPatientDetailsSql() {
 	filterSqlParams = [];
 	filterSql = 'SELECT DISTINCT GV.* FROM "GENETYLLIS_VARIANT" GV ' +
 		'LEFT JOIN "GENETYLLIS_VARIANTRECORD" GVR ON GV."VARIANT_ID" = GVR."VARIANTRECORD_VARIANTID" ' +
+		'LEFT JOIN "GENETYLLIS_NOTIFICATION" GNF ON GV."VARIANT_ID" = GNF."NOTIFICATION_VARIANTID" ' +
 		'LEFT JOIN "GENETYLLIS_PATIENT" GP ON GVR."VARIANTRECORD_PATIENTID" = GP."PATIENT_ID" ' +
 		'LEFT JOIN "GENETYLLIS_ANALYSIS" GAL ON GVR."VARIANTRECORD_ANALYSISID" = GAL."ANALYSIS_ID" ' +
 		'LEFT JOIN "GENETYLLIS_GENE" GG ON GV."VARIANT_GENEID" = GG."GENE_ID" ' +
@@ -316,7 +312,6 @@ function initPatientDetailsSql() {
 		'LEFT JOIN "GENETYLLIS_SIGNIFICANCE" GS ON GC."CLINICALSIGNIFICANCE_SIGNIFICANCEID" = GS."SIGNIFICANCE_ID" ' +
 		'LEFT JOIN "GENETYLLIS_ALLELEFREQUENCY" GA ON GV."VARIANT_ID" = GA."ALLELEFREQUENCY_VARIANTID"';
 }
-
 function addFilterParam(param, isLower) {
 	if (isLower) {
 		filterSqlParams.push(param.toString().toLowerCase());
@@ -324,7 +319,6 @@ function addFilterParam(param, isLower) {
 		filterSqlParams.push(param);
 	}
 }
-
 function columnLowerCondition(column, isLower) {
 	if (isLower) {
 		return 'LOWER("' + column + '")'

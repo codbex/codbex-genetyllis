@@ -17,6 +17,11 @@ patientDetails.config(function (paginationTemplateProvider) {
 patientDetails.controller('patientDetailsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+    const variantRecordOptionsApi = '/services/v4/js/genetyllis-pages/services/api/records/VariantRecord.js';
+
+
+    $scope.clickedUrl = "../images/flagged.svg";
+    $scope.notClickedUrl = "../images/notFlagged.svg";
 
     $scope.fromData;
     $scope.patientIdFromStorage = $sessionStorage.patient
@@ -41,7 +46,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
                 $scope.patientsGender = $scope.fromData.Gender == 1 ? "male" : $scope.fromData.Gender == 2 ? "female" : "other";
                 $scope.patientEthnicity = $scope.fromData.Ethnicity == 12 ? "Bulgarian" : "Other ethnicity"
-                $sessionStorage.$reset()
+                // $sessionStorage.$reset()
             })
     }
     $scope.getIdFromStorage()
@@ -192,9 +197,9 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     };
 
     $scope.selectFucn = function () {
-        $scope.patientDetailsTable = ['HGVS', 'Gene', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
+        $scope.patientDetailsTable = ['', 'HGVS', 'Gene', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency'];
 
-        $scope.patientDetailsTableInfo = ["HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency", "Patients"];
+        $scope.patientDetailsTableInfo = ["", "HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency"];
         for (let x = 0; x < $scope.patientsTableModel.length; x++) {
             let value = $scope.patientsTableData.find(e => e.id == $scope.patientsTableModel[x].id)
             $scope.patientDetailsTable.push(value.label);
@@ -202,8 +207,8 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         }
     }
 
-    $scope.patientDetailsTable = ['HGVS', 'Gene', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency', 'Patients'];
-    $scope.patientDetailsTableInfo = ["HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency", "Patients"];
+    $scope.patientDetailsTable = ['', 'HGVS', 'Gene', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency'];
+    $scope.patientDetailsTableInfo = ["", "HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency"];
     // patientsDetailsTable
     $scope.filter = function () {
         var query = {};
@@ -233,9 +238,10 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                 $scope.patientClinicalHistory = []
                 $scope.patientFamilylHistory = []
 
+                console.log(response.data)
                 // patient clinical history 
                 let patientClinicalHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients
-                console.log(response.data.data[0]?.variantRecords[0]?.patients)
+                // console.log(response.data.data[0]?.variantRecords[0]?.patients)
                 if (patientClinicalHistoryDetails) {
                     patientClinicalHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients[0]?.clinicalHistory;
 
@@ -248,9 +254,9 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                     })
                 }
                 // patient family history 
-                let patientFamilyHistoryDetails = response.data.data[0].variantRecords[0]?.patients
-
-                if (patientFamilyHistoryDetails.length > 0) {
+                let patientFamilyHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients
+                // console.log(patientFamilyHistoryDetails)
+                if (patientFamilyHistoryDetails !== undefined && patientFamilyHistoryDetails.length > 0) {
                     patientFamilyHistoryDetails = response.data.data[0].variantRecords[0]?.patients[0]?.familyHistory;
 
                     patientFamilyHistoryDetails.forEach((el, i) => {
@@ -267,10 +273,25 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                 }
 
                 response.data.data.forEach((patientResult, i) => {
-
+                    // console.log(patientResult)
                     patientObject = {};
                     patientObject.HGVS = patientResult.VARIANT_HGVS;
-                    patientObject.GeneId = patientResult.genes[0]?.GENE_NAME;
+                    // console.log(patientResult.genes)
+                    if (patientResult.genes[0]) {
+                        patientObject.GeneId = patientResult.genes[0]?.GENE_NAME != "NULL" ? patientResult.genes[0]?.GENE_NAME : "-";
+                        if (patientResult.genes[0]?.GENE_NAME != "NULL") {
+                            $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + patientObject.GeneId)
+                                .then(function (responseSite) {
+                                    // console.log(responseSite)
+                                    responseSite.data[3].forEach(gene => {
+                                        if (gene[3] === patientResult.genes[0]?.GENE_NAME) {
+                                            patientObject.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
+                                        }
+                                    })
+                                });
+                            console.log(patientObject.GeneLink)
+                        }
+                    }
                     patientObject.Consequence = patientResult.VARIANT_CONSEQUENCE;
                     patientObject.Homozygous = patientResult.variantRecords[0]?.VARIANTRECORD_HOMOZYGOUS ? "Yes" : "No";
                     patientObject.Pathology = patientResult.clinicalSignificance[0]?.pathology[0]?.PATHOLOGY_NAME;
@@ -292,14 +313,17 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                     patientObject.Patients = patientsInfo?.GENETYLLIS_PATIENT_LABID;
                     patientObject.Gender = patientsInfo?.PATIENT_GENDERID === 1 ? "male" : "female";
                     patientObject.Ethnicity = patientsInfo?.GENETYLLIS_PATIENT_POPULATIONID === 12 ? "Bulgarian" : "Other ethnicity";
+                    // console.log(patientObject, "looking for gene")
                     $scope.patientsDetailsTable.push(patientObject);
                 })
 
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
+                // console.log($scope.patientsDetailsTable, "table")
+
             });
-        // $sessionStorage.$reset();
+        $sessionStorage.$reset();
 
     }
     console.log($scope.patientIdFromStorage, "$scope.patientIdFromStorage")
@@ -343,6 +367,34 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         month = month % 12;
 
         return { year, month, day, hour, minute, second };
+    }
+
+    $scope.checkColumn = function (e) {
+        return e == 'Id'
+    }
+    $scope.notLink = function (e) {
+        return e != 'Id'
+    }
+    $scope.isGene = function (e) {
+        return e != '-'
+    }
+
+    $scope.redirectVariant = function (data) {
+
+        $sessionStorage.$default({
+            HGVS: data
+        });
+    }
+
+    $scope.imageHandler = function (data) {
+        // console.log(data.HGVS)
+        // $scope.variantsDetails[data.VariantId - 1][""] = !$scope.variantsDetails[data.VariantId - 1][""]
+
+        $http.post(variantRecordOptionsApi + "/getByVariantId", data)
+            .then(function (responseNotification) {
+            }, function (response) {
+            });
+        // $scope.filter()
     }
 
 

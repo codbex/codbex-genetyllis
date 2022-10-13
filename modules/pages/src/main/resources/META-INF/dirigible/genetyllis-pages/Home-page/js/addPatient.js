@@ -77,8 +77,8 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
         if ($scope.entity.GenderId == 'male') $scope.entity.GenderId = 1
         else if ($scope.entity.GenderId == 'female') $scope.entity.GenderId = 2
         else $scope.entity.GenderId = 3;
-
-        $http.post(patientsOptionsApi, JSON.stringify($scope.entity))
+        console.log($scope.entity)
+        $http.post(patientsOptionsApi, $scope.entity)
             .then(function (response) {
                 $scope.entity.Id = response.data.Id
 
@@ -109,7 +109,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
             familyMemberPatient = {}
             familyMemberPatient.Id = familyMember.Id;
             familyMemberPatient.LabId = familyMember.LabId;
-            $http.post(patientsOptionsApi, JSON.stringify(familyMemberPatient))
+            $http.post(patientsOptionsApi, familyMemberPatient)
                 .then(function (response) {
                     familyMember.Id = response.data.Id
                     persistClinicalHistory(familyMember.ClinicalHistoryDataArray, familyMember.Id);

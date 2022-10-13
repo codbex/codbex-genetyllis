@@ -167,7 +167,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
                     patientResult.familyHistory.map((el, iindex) => {
                         el.clinicalHistory.map(fel => {
 
-                            console.log("EL", fel)
+                            // console.log("EL", fel)
                             fel.pathology.map(pel => {
                                 let result = ` ${pel.PATHOLOGY_NAME} (${relation(el.FAMILYHISTORY_RELATIONID)},${fel.CLINICALHISTORY_AGEONSET})`;
                                 $scope.familyHistoryArr.push(result)
