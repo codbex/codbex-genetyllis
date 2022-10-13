@@ -279,10 +279,6 @@ function buildFilterSql(object) {
 				addFilterParam(val, false);
 			} else if (typeof val == "boolean" && val) {
 				condition = columnLowerCondition(keys[i], false) + " IS TRUE";
-
-				condition = columnLowerCondition(keys[i], false) + " <= ?";
-				addFilterParam(val, false);
-
 			} else if (keys[i].toString().endsWith('_FROM')) {
 				condition = columnLowerCondition(keys[i].slice(0, -5), false) + " >= ?";
 				addFilterParam(val, false);
