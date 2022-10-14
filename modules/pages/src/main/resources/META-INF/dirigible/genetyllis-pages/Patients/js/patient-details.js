@@ -30,12 +30,10 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         $sessionStorage.$default({
             patientId: $scope.patientIdFromStorage
         });
-        console.log($scope.fromData.PATIENT_ID, 'dam')
     }
     $scope.getIdFromStorage = function () {
         $http.get(patientsOptionsApi + "/loadPatientFormData/" + $scope.patientIdFromStorage)
             .then(data => {
-                console.log(data, 'patient data');
                 $scope.fromData = data.data
                 let currDate = new Date();
                 let mlscndsNow = Date.parse(currDate)
@@ -209,7 +207,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
     $scope.patientDetailsTable = ['', 'HGVS', 'Gene', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency'];
     $scope.patientDetailsTableInfo = ["", "HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency"];
-    // patientsDetailsTable
     $scope.filter = function () {
         var query = {};
         $scope.gender = ''
@@ -232,30 +229,29 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
         $http.post(variantDetailsApi + "/filterPatientDetails", JSON.stringify(query))
             .then(function (response) {
-                console.log(response)
-                console.log("response")
+                console.log(response.data.data, "res")
                 $scope.patientsDetailsTable = [];
                 $scope.patientClinicalHistory = []
                 $scope.patientFamilylHistory = []
 
-                console.log(response.data)
                 // patient clinical history 
+                response.data.data[0]?.variantRecords.forEach(variantRecord => {
+                    console.log(variantRecord?.VARIANTRECORD_HIGHLIGHT, "variantRecord")
+                })
                 let patientClinicalHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients
-                // console.log(response.data.data[0]?.variantRecords[0]?.patients)
                 if (patientClinicalHistoryDetails) {
                     patientClinicalHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients[0]?.clinicalHistory;
 
                     patientClinicalHistoryDetails.forEach((el, i) => {
                         patientClinicalHistoryObj = {}
                         patientClinicalHistoryObj['Age of onset'] = el.GENETYLLIS_CLINICALHISTORY_AGEONSET
-                        patientClinicalHistoryObj.Pathology = el.pathology[0].PATHOLOGY_NAME
+                        patientClinicalHistoryObj.Pathology = el.pathology[0]?.PATHOLOGY_NAME
                         patientClinicalHistoryObj.Notes = el.GENETYLLIS_CLINICALHISTORY_NOTES
                         $scope.patientClinicalHistory.push(patientClinicalHistoryObj);
                     })
                 }
                 // patient family history 
                 let patientFamilyHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients
-                // console.log(patientFamilyHistoryDetails)
                 if (patientFamilyHistoryDetails !== undefined && patientFamilyHistoryDetails.length > 0) {
                     patientFamilyHistoryDetails = response.data.data[0].variantRecords[0]?.patients[0]?.familyHistory;
 
@@ -264,7 +260,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                         patientfamilylHistoryObj.PID = el.FAMILYHISTORY_FAMILYMEMBERID
                         patientfamilylHistoryObj.Relation = el.FAMILYHISTORY_RELATIONID
                         patientfamilylHistoryObj["Age of onset"] = el.clinicalHistory[0].GENETYLLIS_CLINICALHISTORY_AGEONSET
-                        patientfamilylHistoryObj.Pathology = el.clinicalHistory[0].pathology[0].PATHOLOGY_NAME
+                        patientfamilylHistoryObj.Pathology = el.clinicalHistory[0].pathology[0]?.PATHOLOGY_NAME
                         patientfamilylHistoryObj.Notes = el.clinicalHistory[0].GENETYLLIS_CLINICALHISTORY_NOTES
                         $scope.patientFamilylHistory.push(patientfamilylHistoryObj);
 
@@ -273,24 +269,21 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                 }
 
                 response.data.data.forEach((patientResult, i) => {
-                    // console.log(patientResult)
                     patientObject = {};
+                    patientObject.VariantId = patientResult.VARIANT_ID
                     patientObject.HGVS = patientResult.VARIANT_HGVS;
-                    // console.log(patientResult.genes)
                     if (patientResult.genes[0]) {
                         patientObject.GeneId = patientResult.genes[0]?.GENE_NAME != "NULL" ? patientResult.genes[0]?.GENE_NAME : "-";
                         patientObject.GeneLink = "";
                         if (patientResult.genes[0]?.GENE_NAME != "NULL") {
                             $http.get("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?terms=" + patientObject.GeneId)
                                 .then(function (responseSite) {
-                                    // console.log(responseSite)
                                     responseSite.data[3].forEach(gene => {
                                         if (gene.includes(patientResult.genes[0]?.GENE_NAME)) {
                                             patientObject.GeneLink = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/" + gene[1]
                                         }
                                     })
                                 });
-                            console.log(patientObject.GeneLink, "genelink")
                         }
                     }
                     patientObject.Consequence = patientResult.VARIANT_CONSEQUENCE;
@@ -314,20 +307,17 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                     patientObject.Patients = patientsInfo?.GENETYLLIS_PATIENT_LABID;
                     patientObject.Gender = patientsInfo?.PATIENT_GENDERID === 1 ? "male" : "female";
                     patientObject.Ethnicity = patientsInfo?.GENETYLLIS_PATIENT_POPULATIONID === 12 ? "Bulgarian" : "Other ethnicity";
-                    // console.log(patientObject, "looking for gene")
                     $scope.patientsDetailsTable.push(patientObject);
                 })
 
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
-                // console.log($scope.patientsDetailsTable, "table")
 
             });
-        $sessionStorage.$reset();
+        // $sessionStorage.$reset();
 
     }
-    console.log($scope.patientIdFromStorage, "$scope.patientIdFromStorage")
     $scope.clearAllFilters = function () {
         angular.forEach($scope.clinicalSignificance, function (item) {
             item.Selected = false;
@@ -388,12 +378,14 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     }
 
     $scope.imageHandler = function (data) {
-        // console.log(data.HGVS)
-        // $scope.variantsDetails[data.VariantId - 1][""] = !$scope.variantsDetails[data.VariantId - 1][""]
+        console.log(data)
+        data = {}
+        data.VARIANTRECORD_VARIANTID = +data.VariantId
+        data.VARIANTRECORD_PATIENTID = $scope.fromData.PATIENT_ID
 
         $http.post(variantRecordOptionsApi + "/getByVariantId", data)
             .then(function (responseNotification) {
-            }, function (response) {
+                console.log(responseNotification, 'responseNotification')
             });
         // $scope.filter()
     }

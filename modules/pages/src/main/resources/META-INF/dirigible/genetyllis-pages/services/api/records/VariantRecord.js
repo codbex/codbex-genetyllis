@@ -86,11 +86,8 @@ rs.service()
 	})
 	.resource("getByVariantId")
 	.post(function (ctx, request, response) {
-		console.log("in")
 		var variantHGVS = request.getJSON();
-		console.log(JSON.stringify(variantHGVS))
-		console.log(variantHGVS.HGVS)
-		var result = dao.getByVariantId(variantHGVS.HGVS);
+		var result = dao.getByVariantId(variantHGVS);
 		console.log(result)
 		if (result) {
 			http.sendResponseOk(result);

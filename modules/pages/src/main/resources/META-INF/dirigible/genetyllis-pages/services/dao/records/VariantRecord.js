@@ -36,15 +36,14 @@ exports.count = function () {
 	return dao.count();
 };
 
-
 exports.getByVariantId = function (variantId) {
 	console.log(variantId)
 	let response = {};
-	response = query.execute('SELECT * FROM "GENETYLLIS_VARIANTRECORD" GVR JOIN "GENETYLLIS_VARIANT" GV ON GVR."VARIANTRECORD_VARIANTID" = GV."VARIANT_ID" WHERE GV."VARIANT_HGVS" = ?', [variantId]);
-	console.log(JSON.stringify(response))
+	response = query.execute('SELECT * FROM "GENETYLLIS_VARIANTRECORD" WHERE "VARIANTRECORD_VARIANTID" = ? AND "VARIANTRECORD_PATIENTID" = ?', [variantId.VARIANTRECORD_VARIANTID, variantId.VARIANTRECORD_PATIENTID]);
 
 	if (response.length !== 0) {
 		let variantRecordObject = {}
+		console.log("response");
 
 		variantRecordObject.Id = response[0]?.VARIANTRECORD_ID;
 		variantRecordObject.PatientId = response[0]?.VARIANTRECORD_PATIENTID;
@@ -56,6 +55,8 @@ exports.getByVariantId = function (variantId) {
 		variantRecordObject.AnalysisId = response[0]?.VARIANTRECORD_ANALYSISID;
 		variantRecordObject.Highlight = !response[0]?.VARIANTRECORD_HIGHLIGHT;
 
+		console.log(JSON.stringify(variantRecordObject))
+		console.log("responseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponse");
 		dao.update(variantRecordObject);
 	}
 

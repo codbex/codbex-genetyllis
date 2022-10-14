@@ -142,9 +142,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     }
     $scope.addClinicalHistoryId = function () {
-
-
-
         if ($scope.GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI.includes($scope.selectedPatientConceptId) || $scope.selectedPatientConceptId == '') return
 
         $scope.GENETYLLIS_CLINICALHISTORY.PATHOLOGY_CUI.push($scope.selectedPatientConceptId);
@@ -212,30 +209,27 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.splice(index, 1);
         }
 
-        console.log($scope.GENETYLLIS_PATIENT.PATIENT_GENDERID, $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID)
     }
 
 
     $scope.bulgarianFunc = function () {
         if (!$scope.bulgarian) {
-            $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.push(12)
+            $scope.GENETYLLIS_PATIENT.PATIENT_POPULATIONID.push(12)
         } else {
 
-            var index = $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.indexOf(12);
-            $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.splice(index, 1)
+            var index = $scope.GENETYLLIS_PATIENT.PATIENT_POPULATIONID.indexOf(12);
+            $scope.GENETYLLIS_PATIENT.PATIENT_POPULATIONID.splice(index, 1)
         }
     }
 
-    $scope.otherEthnicityFunc = function () {
-        if (!$scope.otherEthnicity) {
-            $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.push(18)
-        } else {
-            var index = $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.indexOf(12);
-            $scope.GENETYLLIS_PATIENT.GENETYLLIS_PATIENT_POPULATIONID.splice(index, 1)
-        }
-    }
-
-
+    // $scope.otherEthnicityFunc = function () {
+    //     if (!$scope.otherEthnicity) {
+    //         $scope.GENETYLLIS_PATIENT.PATIENT_POPULATIONID.push(18)
+    //     } else {
+    //         var index = $scope.GENETYLLIS_PATIENT.PATIENT_POPULATIONID.indexOf(12);
+    //         $scope.GENETYLLIS_PATIENT.PATIENT_POPULATIONID.splice(index, 1)
+    //     }
+    // }
 
 
 
@@ -335,7 +329,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     $scope.filter = function () {
         let query = {};
-        console.log($scope.fromData)
         query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
         query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
         query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
@@ -353,13 +346,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                     let variantObj = {}
                     let clinicalSignificanceObj = {}
 
-<<<<<<< HEAD
-
-                    // console.log(data.clinicalSignificance, "clinicalSignificance");
-
-=======
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
-
                     data.clinicalSignificance.map(el => {
                         clinicalSignificanceObj.Accession = el.CLINICALSIGNIFICANCE_ACCESSION
                         clinicalSignificanceObj.Pathology = el.pathology[0]?.PATHOLOGY_NAME
@@ -368,12 +354,6 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                         clinicalSignificanceObj.Review = el.CLINICALSIGNIFICANCE_REVIEWSTATUS.split(/^.|.$/gi)[1]
                     })
 
-<<<<<<< HEAD
-
-                    // console.log(data)
-
-=======
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
                     variantObj.LabId = data.PATIENT_LABID;
                     variantObj.Id = data.PATIENT_ID;
                     variantObj.BirthDate = data.PATIENT_AGE.split("T")[0];
@@ -403,17 +383,11 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
 
     $scope.fromData = $sessionStorage.HGVS;
-    console.log($sessionStorage)
     $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
-<<<<<<< HEAD
-    console.log($scope.GENETYLLIS_VARIANT)
 
-=======
->>>>>>> 47657c9f0b332bf4c7a741f9d6bbb083ad8a5408
-    $scope.filter()
     // $scope.getPatients()
 
-
+    $scope.filter()
 }]);
 
 

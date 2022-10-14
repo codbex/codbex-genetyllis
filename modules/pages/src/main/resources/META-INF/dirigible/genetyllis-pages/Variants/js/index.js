@@ -362,7 +362,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     $scope.imageHandler = function (data) {
 
         $scope.variantsDetails.find(el => el.VariantId == data.VariantId ? el[''] = !el[''] : el['']);
-
+        console.log($scope.variantsDetails)
         $http.post(notificationOptionsApi + "/getByVariantId", data.VariantId)
             .then(function (responseNotification) {
             });
