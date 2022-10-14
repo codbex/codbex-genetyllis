@@ -288,7 +288,9 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                     patientObject.Homozygous = patientResult.variantRecords[0]?.VARIANTRECORD_HOMOZYGOUS ? "Yes" : "No";
                     patientObject.Pathology = patientResult.clinicalSignificance[0]?.pathology[0]?.PATHOLOGY_NAME;
 
-                    patientObject["Clinical significance"] = patientResult.clinicalSignificance[0]?.CLINICALSIGNIFICANCE_ID;
+                    //TODO add .name after making sure that info in db all has significance id
+                    patientObject["Clinical significance"] = $scope.clinicalSignificance[patientResult.clinicalSignificance[0]?.CLINICALSIGNIFICANCE_SIGNIFICANCEID - 1];
+
                     patientObject["Allele frequency"] = patientResult.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY;
                     if (patientResult.clinicalHistory) {
                         patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
@@ -321,7 +323,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
 
             });
-        // $sessionStorage.$reset();
+        $sessionStorage.$reset();
 
     }
     $scope.clearAllFilters = function () {

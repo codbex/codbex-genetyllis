@@ -33,7 +33,7 @@ addAnalysis.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpRequestInterceptor');
 }])
 
-addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', '$localStorage', function ($scope, $http, FileUploader, $localStorage) {
+addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', '$sessionStorage', function ($scope, $http, FileUploader, $sessionStorage) {
     var patientidOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.patientidOptions = [];
@@ -140,9 +140,10 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
         return suggestion.length > 3;
     }
 
-    let analysis = $localStorage.analysis;
-    console.log($scope.analysis, "$localStorage");
+    console.log($sessionStorage, "$sessionStorage");
+    let analysis = $sessionStorage.analysis;
+    console.log(analysis, "$analy");
     $scope.analysisId = analysis.Id;
-    localStorage.clear();
+    $sessionStorage.$reset();
 
 }])

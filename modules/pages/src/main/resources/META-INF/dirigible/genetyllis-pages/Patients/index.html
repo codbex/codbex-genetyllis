@@ -427,6 +427,9 @@
                                             <a href="partials/patient-details.html" ng-if="checkColumn(i)"
                                                 ng-click="redirectPatients(data)">{{data[i]}}</a>
 
+                                            <a href="../Home-page/partials/addAnalysis.html" ng-if="i === 'Analysis'"
+                                                ng-click="redirectAnalysis(data)">WGS ({{data[i]}})</a>
+
                                             <span ng-if="notLink(i)">{{data[i]}}</span>
                                         </td>
                                     </tr>

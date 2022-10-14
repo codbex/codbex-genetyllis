@@ -336,7 +336,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
         return e == 'Id'
     }
     $scope.notLink = function (e) {
-        return e != 'Id'
+        return e != 'Id' && e != 'Analysis'
     }
 
     $scope.clearAllFilters = function () {
@@ -411,5 +411,15 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
         });
         console.log($sessionStorage.patient, "data");
         // $sessionStorage.$reset()
+    }
+
+    //TODO add more data to redirectData if needed
+    $scope.redirectAnalysis = function (data) {
+
+        let redirectData = {}
+        redirectData.Id = data.Analysis
+        $sessionStorage.$default({
+            analysis: redirectData
+        });
     }
 }]);
