@@ -80,6 +80,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     $scope.notificationHl = function () {
         $scope.GENETYLLIS_NOTIFICATION = {
             NOTIFICATION_HIGHLIGHT: Boolean,
+            NOTIFICATION_VARIANTID: ""
         }
     }
 
@@ -360,8 +361,14 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     }
 
     $scope.imageHandler = function (data) {
-
-        $scope.variantsDetails.find(el => el.VariantId == data.VariantId ? el[''] = !el[''] : el['']);
+        $scope.variantsDetails.find(el => {
+            if (el.VariantId == data.VariantId) {
+                console.log(el[''])
+                console.log(data.VariantId)
+                console.log(el.VariantId)
+                return el[''] = !el['']
+            }
+        });
         console.log($scope.variantsDetails)
         $http.post(notificationOptionsApi + "/getByVariantId", data.VariantId)
             .then(function (responseNotification) {

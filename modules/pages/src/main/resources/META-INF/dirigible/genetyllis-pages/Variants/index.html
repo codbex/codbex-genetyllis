@@ -293,6 +293,7 @@
                                             <image ng-src="{{data[info] ? clickedUrl : notClickedUrl}}"
                                                 style="height: 20px; width: 20px; cursor: pointer" />
                                         </a>
+
                                         <a href="partials/variant-details.html" ng-click="redirectPatients(data)"
                                             ng-if="checkColumn(info)">{{data[info]}}</a>
                                         <a href="{{data.GeneLink}}" ng-if="info === 'Gene'">{{data[info]}}</a>

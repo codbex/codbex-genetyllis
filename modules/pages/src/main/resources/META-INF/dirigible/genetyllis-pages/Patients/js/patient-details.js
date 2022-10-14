@@ -235,9 +235,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                 $scope.patientFamilylHistory = []
 
                 // patient clinical history 
-                response.data.data[0]?.variantRecords.forEach(variantRecord => {
-                    console.log(variantRecord?.VARIANTRECORD_HIGHLIGHT, "variantRecord")
-                })
+
                 let patientClinicalHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients
                 if (patientClinicalHistoryDetails) {
                     patientClinicalHistoryDetails = response.data.data[0]?.variantRecords[0]?.patients[0]?.clinicalHistory;
@@ -307,6 +305,14 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                     patientObject.Patients = patientsInfo?.GENETYLLIS_PATIENT_LABID;
                     patientObject.Gender = patientsInfo?.PATIENT_GENDERID === 1 ? "male" : "female";
                     patientObject.Ethnicity = patientsInfo?.GENETYLLIS_PATIENT_POPULATIONID === 12 ? "Bulgarian" : "Other ethnicity";
+                    console.log(patientResult, "patientResult")
+
+                    patientResult.variantRecords.forEach(variantRecord => {
+                        // variantRecord.VARIANTRECORD_HIGHLIGHT
+                        if (variantRecord.VARIANTRECORD_PATIENTID === $scope.patientIdFromStorage) {
+                            patientObject[''] = variantRecord.VARIANTRECORD_HIGHLIGHT
+                        }
+                    })
                     $scope.patientsDetailsTable.push(patientObject);
                 })
 
@@ -377,17 +383,27 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         });
     }
 
-    $scope.imageHandler = function (data) {
-        console.log(data)
-        data = {}
-        data.VARIANTRECORD_VARIANTID = +data.VariantId
-        data.VARIANTRECORD_PATIENTID = $scope.fromData.PATIENT_ID
 
-        $http.post(variantRecordOptionsApi + "/getByVariantId", data)
+    $scope.imageHandler = function (data) {
+        console.log(data.HIGHLIGHT)
+
+        requestData = {}
+
+        requestData.VARIANTRECORD_VARIANTID = data.VariantId
+        requestData.VARIANTRECORD_PATIENTID = $scope.fromData.PATIENT_ID
+
+        $scope.patientsDetailsTable.find(el => {
+            if (el.VariantId == data.VariantId) {
+                console.log(el[''])
+                console.log(data.VariantId)
+                console.log(el.VariantId)
+                return el[''] = !el['']
+            }
+        });
+        $http.post(variantRecordOptionsApi + "/getByVariantId", requestData)
             .then(function (responseNotification) {
                 console.log(responseNotification, 'responseNotification')
             });
-        // $scope.filter()
     }
 
 
