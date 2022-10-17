@@ -17,7 +17,6 @@ variantDetails.config(function (paginationTemplateProvider) {
 
 variantDetails.controller('variantDetailsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
 
-
     $scope.clinicalSignificance = ["Accession", "Pathology", "Significance", "Evaluation", "Review"]
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
@@ -234,6 +233,8 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
 
     $scope.clearAllFilters = function () {
+        $scope.isChecked = false;
+
         $scope.selectedLabId = ""
         selectedPatientConceptId = ""
         $scope.selectedPatientConceptId = ""
@@ -326,6 +327,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
 
     // GENETYLLIS_ANALYSIS GENETYLLIS_VARIANT GENETYLLIS_FAMILYHISTORY GENETYLLIS_CLINICALHISTORY
+    $scope.isChecked = false;
 
     $scope.filter = function () {
         let query = {};

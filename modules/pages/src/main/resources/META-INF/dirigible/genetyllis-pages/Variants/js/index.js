@@ -158,16 +158,20 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         }
     }
     //  allelefrequency
-
+    $scope.isChecked = false
+    $scope.alleleFrequencyCheck = false
     $scope.filter = function () {
         var query = {};
-        query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE;
-        query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY;
-        query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
-        query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
+        console.log($scope.isChecked)
+        if ($scope.isChecked) {
+            query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
+            query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE;
+            query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY;
+            query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
+            query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
+            query.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION
+        }
 
-        query.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION
 
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
@@ -201,7 +205,9 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
                     variantObj.Reference = data.VARIANT_REFERENCE
                     variantObj.Alternative = data.VARIANT_ALTERNATIVE
-                    variantObj.ClinicalSignificance = data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 1 ? "Pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 2 ? "Likely pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 3 ? "Variant of uncerain significance (VUS)" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 4 ? "Likely benign variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 5 ? "Benign variant" : "undefined";
+                    if (data?.clinicalSignificance.length > 0) {
+                        variantObj.ClinicalSignificance = data?.clinicalSignificance[0]?.CLINICALSIGNIFICANCE_SIGNIFICANCEID === 1 ? "Pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 2 ? "Likely pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 3 ? "Variant of uncerain significance (VUS)" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 4 ? "Likely benign variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 5 ? "Benign variant" : "";
+                    }
                     if (data.clinicalSignificance && data.clinicalSignificance.pathology) {
                         variantObj.Pathology = data.clinicalSignificance.pathology[0]?.PATHOLOGY_NAME;
                     }
@@ -209,7 +215,11 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
                     variantObj.Patients = data.patients
 
                     if (data.alleleFrequency) {
-                        variantObj.AlleleFrequency = (Number(data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) * 1000000);
+                        if (data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) {
+                            variantObj.AlleleFrequency = (Number(data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) * 1000000);
+                        } else {
+                            variantObj.AlleleFrequency = false
+                        }
                     }
 
                     let alleleFrequencyArray = []
@@ -278,6 +288,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     }
 
     $scope.clearAllFilters = function () {
+        $scope.isChecked = false;
         angular.forEach($scope.clinicalSignificance, function (item) {
             item.Selected = false;
         });
