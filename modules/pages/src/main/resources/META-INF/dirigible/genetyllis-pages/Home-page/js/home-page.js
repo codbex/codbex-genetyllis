@@ -78,6 +78,8 @@ homePage.controller("homePageController", ['$scope', '$http', '$localStorage', '
                             patientObject.Provider = el.provider[0].PROVIDER_NAME;
                             patientObject.Dates = el.ANALYSIS_DATE.split('T')[0];
                             patientObject.Patient = patientRes;
+                            patientObject.PatientId = patientResult.PATIENT_ID
+
 
                             patientObject.Gender = patientResult.PATIENT_GENDERID;
                             patientObject.Ethnicity = patientResult.GENETYLLIS_PATIENT_POPULATIONID;
@@ -91,7 +93,6 @@ homePage.controller("homePageController", ['$scope', '$http', '$localStorage', '
                 $scope.patientsDetails.sort((a, b) => {
                     return a.Id - b.Id
                 })
-
             });
     }
     loadPatients();
@@ -210,10 +211,10 @@ homePage.controller("homePageController", ['$scope', '$http', '$localStorage', '
         return e != 'Id' && e != "Patient"
     }
     $scope.redirectPatients = function (data) {
+        console.log(data, "data");
         $sessionStorage.$default({
             patient: data.Id
         });
-        console.log($sessionStorage.patient, "data");
         // $sessionStorage.$reset()
     }
 
