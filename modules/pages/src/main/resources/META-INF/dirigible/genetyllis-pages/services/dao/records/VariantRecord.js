@@ -38,27 +38,26 @@ exports.count = function () {
 
 exports.getByVariantId = function (variantId) {
 	console.log(variantId)
-	let response = {};
+	let response = [];
 	response = query.execute('SELECT * FROM "GENETYLLIS_VARIANTRECORD" WHERE "VARIANTRECORD_VARIANTID" = ? AND "VARIANTRECORD_PATIENTID" = ?', [variantId.VARIANTRECORD_VARIANTID, variantId.VARIANTRECORD_PATIENTID]);
-
+	console.log(JSON.stringify(response))
 	if (response.length !== 0) {
-		let variantRecordObject = {}
-		console.log("response");
+		response.forEach(resp => {
+			let variantRecordObject = {}
 
-		variantRecordObject.Id = response[0]?.VARIANTRECORD_ID;
-		variantRecordObject.PatientId = response[0]?.VARIANTRECORD_PATIENTID;
-		variantRecordObject.VariantId = response[0]?.VARIANTRECORD_VARIANTID;
-		variantRecordObject.Homozygous = response[0]?.VARIANTRECORD_HOMOZYGOUS;
-		variantRecordObject.AlleleDepth = response[0]?.VARIANTRECORD_ALLELEDEPTH;
-		variantRecordObject.Depth = response[0]?.VARIANTRECORD_DEPTH;
-		variantRecordObject.Quality = response[0]?.VARIANTRECORD_QUALITY;
-		variantRecordObject.AnalysisId = response[0]?.VARIANTRECORD_ANALYSISID;
-		variantRecordObject.Highlight = !response[0]?.VARIANTRECORD_HIGHLIGHT;
+			variantRecordObject.Id = resp.VARIANTRECORD_ID;
+			variantRecordObject.PatientId = resp.VARIANTRECORD_PATIENTID;
+			variantRecordObject.VariantId = resp.VARIANTRECORD_VARIANTID;
+			variantRecordObject.Homozygous = resp.VARIANTRECORD_HOMOZYGOUS;
+			variantRecordObject.AlleleDepth = resp.VARIANTRECORD_ALLELEDEPTH;
+			variantRecordObject.Depth = resp.VARIANTRECORD_DEPTH;
+			variantRecordObject.Quality = resp.VARIANTRECORD_QUALITY;
+			variantRecordObject.AnalysisId = resp.VARIANTRECORD_ANALYSISID;
+			variantRecordObject.Highlight = !resp.VARIANTRECORD_HIGHLIGHT;
 
-		console.log(JSON.stringify(variantRecordObject))
-		console.log("responseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponse");
-		dao.update(variantRecordObject);
+			dao.update(variantRecordObject);
+		})
 	}
-
 	return response;
+
 }

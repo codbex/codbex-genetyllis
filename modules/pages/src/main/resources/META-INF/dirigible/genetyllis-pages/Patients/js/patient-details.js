@@ -60,7 +60,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     $scope.notClickedUrl = "../../images/not-clicked-star.svg";
 
     $scope.patientClinicalHistory = []
-    $scope.clinicalHistoryThead = ["Age of onset", "Pathology", "Notes"];
+    $scope.clinicalHistoryThead = ["Pathology", "Age of onset", "Notes"];
     $scope.patientFamilylHistory = []
     $scope.familyHistoryThead = ["PID", "Relation", "Age of onset", "Pathology", "Notes"];
 
@@ -92,6 +92,10 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         ALLELEFREQUENCY_FREQUENCY_TO: ''
     }
 
+    $scope.GENETYLLIS_VARIANTRECORD = {
+        VARIANTRECORD_VARIANTID: '',
+        VARIANTRECORD_HIGHLIGHT: Boolean
+    }
 
     // clinical significance
     $scope.clinicalSignificance = ['Benign', 'Likely benign', 'Pathogenic', 'Likely pathogenic', 'VUS'];
@@ -220,7 +224,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY
         query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE
         query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY
-
+        query.GENETYLLIS_VARIANTRECORD = $scope.GENETYLLIS_VARIANTRECORD
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         let patientObject = {};
@@ -229,7 +233,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
         $http.post(variantDetailsApi + "/filterPatientDetails", JSON.stringify(query))
             .then(function (response) {
-                console.log(response.data.data, "res")
+
                 $scope.patientsDetailsTable = [];
                 $scope.patientClinicalHistory = []
                 $scope.patientFamilylHistory = []
@@ -242,9 +246,9 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
                     patientClinicalHistoryDetails.forEach((el, i) => {
                         patientClinicalHistoryObj = {}
-                        patientClinicalHistoryObj['Age of onset'] = el.GENETYLLIS_CLINICALHISTORY_AGEONSET
+                        patientClinicalHistoryObj['Age of onset'] = el.CLINICALHISTORY_AGEONSET
                         patientClinicalHistoryObj.Pathology = el.pathology[0]?.PATHOLOGY_NAME
-                        patientClinicalHistoryObj.Notes = el.GENETYLLIS_CLINICALHISTORY_NOTES
+                        patientClinicalHistoryObj.Notes = el.CLINICALHISTORY_NOTES
                         $scope.patientClinicalHistory.push(patientClinicalHistoryObj);
                     })
                 }
@@ -257,9 +261,9 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                         patientfamilylHistoryObj = {}
                         patientfamilylHistoryObj.PID = el.FAMILYHISTORY_FAMILYMEMBERID
                         patientfamilylHistoryObj.Relation = el.FAMILYHISTORY_RELATIONID
-                        patientfamilylHistoryObj["Age of onset"] = el.clinicalHistory[0].GENETYLLIS_CLINICALHISTORY_AGEONSET
+                        patientfamilylHistoryObj["Age of onset"] = el.clinicalHistory[0].CLINICALHISTORY_AGEONSET
                         patientfamilylHistoryObj.Pathology = el.clinicalHistory[0].pathology[0]?.PATHOLOGY_NAME
-                        patientfamilylHistoryObj.Notes = el.clinicalHistory[0].GENETYLLIS_CLINICALHISTORY_NOTES
+                        patientfamilylHistoryObj.Notes = el.clinicalHistory[0].CLINICALHISTORY_NOTES
                         $scope.patientFamilylHistory.push(patientfamilylHistoryObj);
 
                     })
@@ -289,7 +293,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                     patientObject.Pathology = patientResult.clinicalSignificance[0]?.pathology[0]?.PATHOLOGY_NAME;
 
                     //TODO add .name after making sure that info in db all has significance id
-                    patientObject["Clinical significance"] = $scope.clinicalSignificance[patientResult.clinicalSignificance[0]?.CLINICALSIGNIFICANCE_SIGNIFICANCEID - 1];
+                    patientObject["Clinical significance"] = $scope.clinicalSignificance[patientResult.clinicalSignificance[0]?.CLINICALSIGNIFICANCE_SIGNIFICANCEID - 1].name;
 
                     patientObject["Allele frequency"] = patientResult.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY;
                     if (patientResult.clinicalHistory) {
@@ -307,15 +311,13 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
                     patientObject.Patients = patientsInfo?.GENETYLLIS_PATIENT_LABID;
                     patientObject.Gender = patientsInfo?.PATIENT_GENDERID === 1 ? "male" : "female";
                     patientObject.Ethnicity = patientsInfo?.GENETYLLIS_PATIENT_POPULATIONID === 12 ? "Bulgarian" : "Other ethnicity";
-                    console.log(patientResult, "patientResult")
-
                     patientResult.variantRecords.forEach(variantRecord => {
-                        // variantRecord.VARIANTRECORD_HIGHLIGHT
                         if (variantRecord.VARIANTRECORD_PATIENTID === $scope.patientIdFromStorage) {
                             patientObject[''] = variantRecord.VARIANTRECORD_HIGHLIGHT
                         }
                     })
                     $scope.patientsDetailsTable.push(patientObject);
+                    // console.log(patientObject)
                 })
 
                 $scope.totalPages = response.data.totalPages;
@@ -330,7 +332,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         angular.forEach($scope.clinicalSignificance, function (item) {
             item.Selected = false;
         });
-        $scope.GENETYLLIS_ANALYSIS.ANALYSIS_DATE = ""
         $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ""
         $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ""
         $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ""
@@ -341,6 +342,43 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
         $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI = []
         $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_FROM = ""
         $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_TO = ""
+        $scope.GENETYLLIS_GENE = {
+            GENE_GENEID: [],
+            GENE_NAME: [],
+        }
+
+        $scope.GENETYLLIS_VARIANT = {
+            VARIANT_CHROMOSOME: '',
+            VARIANT_START_FROM: '',
+            VARIANT_END_TO: '',
+            VARIANT_CONSEQUENCE: [],
+            VARIANT_REFERENCE: "",
+            VARIANT_ALTERNATIVE: ""
+        }
+
+        $scope.GENETYLLIS_SIGNIFICANCE = {
+            SIGNIFICANCE_ID: []
+        }
+
+        $scope.GENETYLLIS_PATHOLOGY = {
+            PATHOLOGY_CUI: []
+        }
+
+
+        $scope.GENETYLLIS_ALLELEFREQUENCY = {
+            ALLELEFREQUENCY_FREQUENCY_FROM: '',
+            ALLELEFREQUENCY_FREQUENCY_TO: ''
+        }
+
+        $scope.GENETYLLIS_VARIANTRECORD = {
+            VARIANTRECORD_VARIANTID: '',
+            VARIANTRECORD_HIGHLIGHT: Boolean
+        }
+
+        $scope.GENETYLLIS_VARIANTRECORD = {
+            VARIANTRECORD_VARIANTID: '',
+            VARIANTRECORD_HIGHLIGHT: Boolean
+        }
         $scope.filter()
     }
 
@@ -387,7 +425,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
 
     $scope.imageHandler = function (data) {
-        console.log(data.HIGHLIGHT)
 
         requestData = {}
 
@@ -396,15 +433,12 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
         $scope.patientsDetailsTable.find(el => {
             if (el.VariantId == data.VariantId) {
-                console.log(el[''])
-                console.log(data.VariantId)
-                console.log(el.VariantId)
+
                 return el[''] = !el['']
             }
         });
         $http.post(variantRecordOptionsApi + "/getByVariantId", requestData)
             .then(function (responseNotification) {
-                console.log(responseNotification, 'responseNotification')
             });
     }
 

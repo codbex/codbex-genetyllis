@@ -289,7 +289,7 @@
                                 <tr dir-paginate="data in variantsDetails | itemsPerPage: selectedPerPage"
                                     total-items="totalItems">
                                     <td ng-repeat="info in variantPageTableInfo">
-                                        <a ng-if=" info==''" ng-click=" imageHandler(data)">
+                                        <a ng-if="info==''" ng-click=" imageHandler(data)">
                                             <image ng-src="{{data[info] ? clickedUrl : notClickedUrl}}"
                                                 style="height: 20px; width: 20px; cursor: pointer" />
                                         </a>
