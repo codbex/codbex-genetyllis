@@ -239,7 +239,7 @@
                                         filter</button>
                                 </div>
                                 <div class="col">
-                                    <button ng-click="filter()" type="button"
+                                    <button ng-click="isChecked=!isChecked;filter()" type="button"
                                         class="btn btn-primary filterBtn addFilter">Filter</button>
                                 </div>
                             </div>
@@ -289,7 +289,7 @@
                                 <tr dir-paginate="data in variantsDetails | itemsPerPage: selectedPerPage"
                                     total-items="totalItems">
                                     <td ng-repeat="info in variantPageTableInfo">
-                                        <a ng-if=" info==''" ng-click=" imageHandler(data)">
+                                        <a ng-if="info==''" ng-click=" imageHandler(data)">
                                             <image ng-src="{{data[info] ? clickedUrl : notClickedUrl}}"
                                                 style="height: 20px; width: 20px; cursor: pointer" />
                                         </a>
@@ -297,7 +297,8 @@
                                         <a href="partials/variant-details.html" ng-click="redirectPatients(data)"
                                             ng-if="checkColumn(info)">{{data[info]}}</a>
                                         <a href="{{data.GeneLink}}" ng-if="info === 'Gene'">{{data[info]}}</a>
-                                        <span ng-if="info == 'AlleleFrequency'">{{data[info]}} * 10<sup>-6</sup></span>
+                                        <span ng-if="info == 'AlleleFrequency' && data[info]">{{data[info]}} *
+                                            10<sup>-6</sup></span>
                                         <span
                                             ng-if="notLink(info) && info !== 'Gene' && info !== 'AlleleFrequency' && info!=''">{{data[info]}}</span>
                                     </td>

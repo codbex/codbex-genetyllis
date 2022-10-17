@@ -130,13 +130,18 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
     $scope.pathologyName = '';
     $scope.relationID = '';
     $scope.ageOnSet = ''
+    $scope.isChecked = false;
     $scope.filter = function () {
         var query = {};
-        query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
-        query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
-        query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
-        query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
+        console.log($scope.isChecked)
+        if ($scope.isChecked) {
+
+            query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
+            query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
+            query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
+            query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
+            query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
+        }
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $scope.familyHistoryArr = []
@@ -187,13 +192,14 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
                 // console.log(" $scope.patientsDetails", $scope.patientsDetails)
             }, function (response) {
             });
-
+        $scope.isChecked = false;
     }
 
 
     $scope.filter();
 
     $scope.pageChangeHandler = function (curPage) {
+        $scope.isChecked = false;
         $scope.currentPage = curPage;
         $scope.filter()
         $scope.patientsDetails = [];
@@ -340,6 +346,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
     }
 
     $scope.clearAllFilters = function () {
+        $scope.isChecked = false;
         $scope.selectedLabId = ""
         selectedPatientConceptId = ""
         $scope.selectedPatientConceptId = ""

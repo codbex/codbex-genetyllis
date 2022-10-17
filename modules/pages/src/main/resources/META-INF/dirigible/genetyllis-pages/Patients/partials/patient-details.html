@@ -122,8 +122,8 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="data in patientClinicalHistory">
-                                        <td ng-repeat="x in data">
-                                            {{data}}
+                                        <td ng-repeat="i in clinicalHistoryThead">
+                                            {{data[i]}}
                                         </td>
 
                                     </tr>
@@ -172,7 +172,10 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" value="" id="highlighted-variants" checked>
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            id="highlighted-variants"
+                                            ng-model="GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HIGHLIGHT"
+                                            ng-click="notificationHl()">
                                         <label class="form-check-label" for="highlighted-variants">
                                             Highlighted-variants
                                         </label>
@@ -445,7 +448,7 @@
                                 <tr dir-paginate="data in patientsDetailsTable | itemsPerPage:selectedPerPage"
                                     total-items="totalItems">
                                     <td ng-repeat="i in patientDetailsTableInfo ">
-                                        <a ng-if=" i==''" ng-click=" imageHandler(data)">
+                                        <a ng-if="i==''" ng-click=" imageHandler(data)">
                                             <image ng-src="{{data[i] ? clickedUrl : notClickedUrl}}"
                                                 style="height: 20px; width: 20px; cursor: pointer" />
                                         </a>

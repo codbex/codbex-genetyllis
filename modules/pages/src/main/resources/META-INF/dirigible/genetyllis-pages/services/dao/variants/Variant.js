@@ -68,6 +68,9 @@ exports.filterVariantsPatientDetails = function (variant) {
 	if (variant.GENETYLLIS_SIGNIFICANCE) {
 		buildFilterSql(variant.GENETYLLIS_SIGNIFICANCE);
 	}
+	if (variant.GENETYLLIS_VARIANTRECORD) {
+		buildFilterSql(variant.GENETYLLIS_VARIANTRECORD);
+	}
 
 	countSql += filterSql;
 	filterSql += " LIMIT " + variant.perPage + " OFFSET " + variant.currentPage;
@@ -159,7 +162,7 @@ exports.filterVariantsPatientDetails = function (variant) {
 			foundVariant.clinicalSignificance = clinicalSignificance.filter(significance => significance.CLINICALSIGNIFICANCE_VARIANTID === foundVariant.VARIANT_ID);
 			foundVariant.alleleFrequency = alleleFrequency.filter(allele => allele.ALLELEFREQUENCY_VARIANTID === foundVariant.VARIANT_ID);
 			foundVariant.genes = genes.filter(gene => gene.GENE_ID === foundVariant.VARIANT_GENEID);
-			foundVariant.variantRecords = variantRecords.filter(variantRecord => variantRecord.VARIANTRECORD_VARIANTID === foundVariant.VARIANT_ID);
+			foundVariant.variantRecords = variantRecords.filter(variantRecord => variantRecord.VARIANTRECORD_VARIANTID === foundVariant.VARIANT_ID)
 		})
 	}
 
@@ -187,6 +190,7 @@ exports.filterVariants = function (variant) {
 	}
 	if (variant.GENETYLLIS_NOTIFICATION) {
 		buildFilterSql(variant.GENETYLLIS_NOTIFICATION);
+
 	}
 	countSql += filterSql;
 	filterSql += " LIMIT " + variant.perPage + " OFFSET " + variant.currentPage;
@@ -214,15 +218,14 @@ exports.filterVariants = function (variant) {
 			significance.pathology = pathologyResult.filter(pathology => pathology.PATHOLOGY_ID === significance.CLINICALSIGNIFICANCE_PATHOLOGYID)
 		})
 
-		/* LOAD NOTIFICATION */
-		// let notificationQuery = 'SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID"' + variantIdsInStatement;
-		// let notification = query.execute(notificationQuery, variantIds);
-
 
 		/* LOAD NOTIFICATION */
 
 		let notificationQuery = 'SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID"' + variantIdsInStatement;
 		let notification = query.execute(notificationQuery, variantIds);
+
+		let variantNotificationQuery = 'SELECT * FROM "GENETYLLIS_VARIANTRECORD" WHERE "VARIANTRECORD_ID"' + variantIdsInStatement;
+		let variantNotification = query.execute(variantNotificationQuery, variantIds);
 
 		/* LOAD ALLELEFREQUENCY */
 		let alleleFrequencyQuery = 'SELECT * FROM "GENETYLLIS_ALLELEFREQUENCY" WHERE "ALLELEFREQUENCY_VARIANTID"' + variantIdsInStatement;
@@ -243,6 +246,8 @@ exports.filterVariants = function (variant) {
 			foundVariant.patients = patients
 			let highlight = query.execute('SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID" = ?', [foundVariant.VARIANT_ID]);
 			foundVariant.highlight = highlight
+			// let variantRecordHighlight = query.execute('SELECT * FROM "GENETYLLIS_VARIANTRECORD" WHERE "VARIANTRECORD_ID" = ?', [foundVariant.VARIANT_ID]);
+			// foundVariant.variantRecordHighlight = variantRecordHighlight
 		})
 	}
 	filterSql = "";
@@ -270,8 +275,6 @@ function buildFilterSql(object) {
 				condition = columnLowerCondition(keys[i].slice(0, -5), isLower) + " >= ?";
 				addFilterParam(val, false);
 			} else if (typeof val == "boolean" && val) {
-				console.log(val)
-				console.log(typeof val)
 				condition = columnLowerCondition(keys[i], false) + " IS TRUE";
 			} else if (keys[i].toString().endsWith('_FROM')) {
 				condition = columnLowerCondition(keys[i].slice(0, -5), false) + " >= ?";
@@ -305,6 +308,7 @@ function initFilterSql() {
 	filterSql = 'SELECT DISTINCT GV.* FROM "GENETYLLIS_VARIANT" GV ' +
 		'LEFT JOIN "GENETYLLIS_GENE" GG ON GV."VARIANT_GENEID" = GG."GENE_ID" ' +
 		'LEFT JOIN "GENETYLLIS_CLINICALSIGNIFICANCE" GC ON GV."VARIANT_ID" = GC."CLINICALSIGNIFICANCE_VARIANTID" ' +
+		'LEFT JOIN "GENETYLLIS_VARIANTRECORD" GVR ON GV."VARIANT_ID" = GVR."VARIANTRECORD_ID" ' +
 		'LEFT JOIN "GENETYLLIS_NOTIFICATION" GNF ON GV."VARIANT_ID" = GNF."NOTIFICATION_VARIANTID" ' +
 		'LEFT JOIN "GENETYLLIS_PATHOLOGY" GP ON GC."CLINICALSIGNIFICANCE_PATHOLOGYID" = GP."PATHOLOGY_ID" ' +
 		'LEFT JOIN "GENETYLLIS_SIGNIFICANCE" GS ON GC."CLINICALSIGNIFICANCE_SIGNIFICANCEID" = GS."SIGNIFICANCE_ID" ' +
