@@ -101,7 +101,6 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     // add conssequence
     $scope.addConsequenceFilter = function () {
         $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE.push($scope.selectedConsequence)
-
         let indexOfSelectedConsequence = $scope.selectConsequences.indexOf($scope.selectedConsequence);
         $scope.selectConsequences.splice(indexOfSelectedConsequence, 1)
         $scope.selectedConsequence = '';
@@ -110,7 +109,8 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     // remove Consequence
     $scope.removeConsequence = function (index) {
         let removedItem = $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE.splice(index, 1);
-        $scope.selectConsequences.push(removedItem)
+        $scope.selectConsequences.push(removedItem[0]);
+
     }
 
     // add Pathology
@@ -158,23 +158,45 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         }
     }
     //  allelefrequency
+    let nextObjQuery = {}
     $scope.isChecked = false
     $scope.alleleFrequencyCheck = false
-    $scope.filter = function () {
+    $scope.addFilters = function () {
+        $scope.isChecked = true;
+        let objQuery = {}
+        if (isPageChange) {
+            filter(nextObjQuery)
+        } else {
+
+            objQuery.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
+            objQuery.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE;
+            objQuery.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY;
+            objQuery.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
+            objQuery.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
+            objQuery.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION;
+            nextObjQuery = objQuery
+            filter(objQuery)
+        }
+        isPageChange = false
+    }
+    function filter(obj) {
         var query = {};
-        console.log($scope.isChecked)
         if ($scope.isChecked) {
-            query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-            query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE;
-            query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY;
-            query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
-            query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
-            query.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION
+            query.GENETYLLIS_VARIANT = obj.GENETYLLIS_VARIANT;
+            query.GENETYLLIS_GENE = obj.GENETYLLIS_GENE;
+            query.GENETYLLIS_PATHOLOGY = obj.GENETYLLIS_PATHOLOGY;
+            query.GENETYLLIS_SIGNIFICANCE = obj.GENETYLLIS_SIGNIFICANCE;
+            query.GENETYLLIS_ALLELEFREQUENCY = obj.GENETYLLIS_ALLELEFREQUENCY;
+            query.GENETYLLIS_NOTIFICATION = obj.GENETYLLIS_NOTIFICATION;
+            query.perPage = $scope.selectedPerPage;
+            query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
+        } else {
+            query.perPage = $scope.selectedPerPage;
+            query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         }
 
+        console.log($scope.GENETYLLIS_SIGNIFICANCE)
 
-        query.perPage = $scope.selectedPerPage;
-        query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))
             .then(function (response) {
                 $scope.variantsDetails = [];
@@ -242,7 +264,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
     }
 
-    $scope.filter();
+    filter({});
 
     // _|_
     $scope.variantTableModel = [];
@@ -280,10 +302,16 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     $scope.variantTable = ["", 'HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
 
 
-
+    let isPageChange = false;
     $scope.pageChangeHandler = function (curPage) {
+        isPageChange = true;
         $scope.currentPage = curPage;
-        $scope.filter()
+        if ($scope.isChecked) {
+            $scope.addFilters()
+        } else {
+
+            filter({})
+        }
         $scope.variantsDetails = [];
     }
 
@@ -353,7 +381,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
             NOTIFICATION_VARIANTID: "",
             NOTIFICATION_HIGHLIGHT: Boolean,
         }
-        $scope.filter()
+        filter({})
     }
 
 
@@ -374,13 +402,10 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     $scope.imageHandler = function (data) {
         $scope.variantsDetails.find(el => {
             if (el.VariantId == data.VariantId) {
-                console.log(el[''])
-                console.log(data.VariantId)
-                console.log(el.VariantId)
+
                 return el[''] = !el['']
             }
         });
-        console.log($scope.variantsDetails)
         $http.post(notificationOptionsApi + "/getByVariantId", data.VariantId)
             .then(function (responseNotification) {
             });
