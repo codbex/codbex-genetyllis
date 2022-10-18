@@ -96,7 +96,7 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
 
     const providereDetailsApi = '/services/v4/js/genetyllis-pages/Home-page/services/provider.js';
     const platformDetailsApi = '/services/v4/js/genetyllis-pages/Home-page/services/platform.js';
-    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/Patient.js';
+    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.providerData;
     $scope.platformData;
@@ -127,12 +127,16 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
         }
     }
 
-    // function fetchSimilarLabIds(labId) {
-    //     $http.get(patientsOptionsApi + "/suggestLabIds/" + labId)
-    //         .then(data => {
-    //             $scope.labIds = data.data
-    //         })
-    // }
+    function fetchSimilarLabIds(labId) {
+        $http.get(patientsOptionsApi + "/suggestLabIds/" + labId)
+            .then(data => {
+                $scope.labIds = data.data
+            })
+    }
+
+    $scope.showLink = function (labId) {
+        console.log(labId, "labid")
+    }
 
     // fetchSimilarLabIds('%');
 
@@ -143,7 +147,23 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
     console.log($sessionStorage, "$sessionStorage");
     let analysis = $sessionStorage.analysis;
     console.log(analysis, "$analy");
-    $scope.analysisId = analysis.Id;
+    if (analysis != undefined) {
+        $scope.isLoaded = true
+        $scope.analysisId = analysis.Id;
+        $scope.entity.LabId = analysis.Patient
+        $scope.entity.PatientId = analysis.PatientId
+    }
+    else
+        $scope.isLoaded = false
     $sessionStorage.$reset();
 
+
+    $scope.redirectPatients = function (data, e) {
+        console.log(data, "data", e)
+        $sessionStorage.$default({
+            patient: data[0].PATIENT_ID
+
+            // $sessionStorage.$reset()
+        })
+    }
 }])

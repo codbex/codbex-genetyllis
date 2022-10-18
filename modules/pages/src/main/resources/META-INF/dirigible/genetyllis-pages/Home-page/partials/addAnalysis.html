@@ -50,7 +50,8 @@
         </div>
         <div class="patient-wrapper">
             <div class="container">
-                <h4>Analysis #{{analysisId}}</h4>
+                <h4 ng-if="!isLoaded">Analysis</h4>
+                <h4 ng-if="isLoaded">Analysis #{{analysisId}}</h4>
                 <div class="row">
                     <div class="col-6  align-items ">
                         <div class="border-content patientDetails">
@@ -98,16 +99,30 @@
                             <div class="holder">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col">
+                                        <div ng-if="!isLoaded" class="col">
                                             <input list="dataList" ng-model='entity.LabId' class="form-control"
-                                                ng-keyup="suggestLabId(entity.LabId)" placeholder="Enter LabId" />
+                                                ng-keyup="suggestLabId(entity.LabId)" ng-blur="selected=true"
+                                                ng-keydown="selected=false" placeholder="Enter LabId"
+                                                ng-change="showLink(x)" />
+
                                             <datalist id="dataList">
-                                                <option ng-repeat="x in labIds">{{x}}</option>
+                                                <option ng-repeat="x in labIds">
+                                                    {{x.PATIENT_LABID}}
+                                                </option>
                                             </datalist>
+                                            <!-- <div ng-if="entity.LabId" class="col">
+                                                <a ng-href="../{{entity.LabId}}"
+                                                    ng-repeat="labId in labIds">{{labId}}</a>
+                                            </div> -->
+
+                                            <!-- <span>{{entity.LabId}}</span> -->
+                                            <!-- <div ng-if="selected">{{entity.LabId | json}}</div> -->
+                                            <a ng-if="selected && labIds.length > 0"
+                                                href="../../Patients/partials/patient-details.html"
+                                                ng-click="redirectPatients(labIds)">{{entity.LabId}}</a>
                                         </div>
-                                        <div class="col">
-                                            <a ng-href="../{{entity.LabId}}" ng-repeat="labId in labIds">{{labId}}</a>
-                                        </div>
+                                        <a ng-if="isLoaded" href="../../Patients/partials/patient-details.html"
+                                            ng-click="redirectPatients(entity.PatientId)">{{entity.LabId}}</a>
                                     </div>
                                 </div>
                             </div>
