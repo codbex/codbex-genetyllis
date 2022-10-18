@@ -161,23 +161,38 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     let nextObjQuery = {}
     $scope.isChecked = false
     $scope.alleleFrequencyCheck = false
+    let objQuery = {}
     $scope.addFilters = function () {
         $scope.isChecked = true;
-        let objQuery = {}
+        objQuery = {}
         if (isPageChange) {
+            nextObjQuery.Pesho = "gosho"
             filter(nextObjQuery)
         } else {
-
             objQuery.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
             objQuery.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE;
             objQuery.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY;
             objQuery.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
             objQuery.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
             objQuery.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION;
-            nextObjQuery = objQuery
+            nextObjQuery = objQuery;
             filter(objQuery)
         }
-        isPageChange = false
+        isPageChange = false;
+    }
+
+    let isPageChange = false;
+    $scope.pageChangeHandler = function (curPage) {
+        isPageChange = true;
+        $scope.currentPage = curPage;
+        if ($scope.isChecked) {
+            $scope.addFilters()
+        } else {
+            filter({})
+        }
+        isPageChange = false;
+
+        $scope.variantsDetails = [];
     }
     function filter(obj) {
         var query = {};
@@ -195,10 +210,10 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
             query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         }
 
-        console.log($scope.GENETYLLIS_SIGNIFICANCE)
 
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))
             .then(function (response) {
+                console.log(response.data.data, "dsajkljklads")
                 $scope.variantsDetails = [];
                 response.data.data.forEach(data => {
                     let variantObj = {}
@@ -261,6 +276,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
             }, function (response) {
             });
+        // isPageChange = false;
 
     }
 
@@ -300,20 +316,6 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
     $scope.variantPageTableInfo = ["", "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "ClinicalSignificance", "AlleleFrequency", 'PatientsCount'];
     $scope.variantTable = ["", 'HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
-
-
-    let isPageChange = false;
-    $scope.pageChangeHandler = function (curPage) {
-        isPageChange = true;
-        $scope.currentPage = curPage;
-        if ($scope.isChecked) {
-            $scope.addFilters()
-        } else {
-
-            filter({})
-        }
-        $scope.variantsDetails = [];
-    }
 
     $scope.clearAllFilters = function () {
         $scope.isChecked = false;
