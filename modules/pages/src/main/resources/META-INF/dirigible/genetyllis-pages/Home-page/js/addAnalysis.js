@@ -152,6 +152,9 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
         $scope.analysisId = analysis.Id;
         $scope.entity.LabId = analysis.Patient
         $scope.entity.PatientId = analysis.PatientId
+        $scope.entity.Platform = analysis.Platform
+        $scope.entity.Provider = analysis.Provider
+        $scope.entity.Date = analysis.Date
     }
     else
         $scope.isLoaded = false
