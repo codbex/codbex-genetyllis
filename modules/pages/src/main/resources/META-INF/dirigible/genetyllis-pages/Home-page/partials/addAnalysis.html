@@ -64,27 +64,33 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col">
-                                            <select class="form-control" aria-label="form-select-lg example">
+                                            <select ng-if="!isLoaded" class="form-control"
+                                                aria-label="form-select-lg example">
                                                 <option selected>Select Provider</option>
                                                 <option ng-repeat="data in providerData">
                                                     {{data.Name}}
                                                 </option>
 
                                             </select>
+                                            <span ng-if="isLoaded">{{entity.Provider}}</span>
                                         </div>
                                         <div class="col">
-                                            <select class="form-control " aria-label=".form-select-lg example">
+                                            <select ng-if="!isLoaded" class="form-control "
+                                                aria-label=".form-select-lg example">
                                                 <option selected>Select Platform</option>
                                                 <option ng-repeat="data in platformData">
                                                     {{data.Name}}
                                                 </option>
 
                                             </select>
+                                            <span ng-if="isLoaded">{{entity.Platform}}</span>
                                         </div>
                                         <div class="col">
-                                            <input type="text" class="form-control" placeholder="Date of analysis"
-                                                ng-model="entity.BirthDate" onfocus="(this.type='date')"
-                                                onblur="(this.type='text')" required>
+                                            <input ng-if="!isLoaded" type="text" class="form-control"
+                                                placeholder="Date of analysis" ng-model="entity.BirthDate"
+                                                onfocus="(this.type='date')" onblur="(this.type='text')" required>
+
+                                            <span ng-if="isLoaded">{{entity.Date}}</span>
                                         </div>
                                     </div>
                                 </div>
