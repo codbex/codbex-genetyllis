@@ -162,11 +162,10 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     $scope.isChecked = false
     $scope.alleleFrequencyCheck = false
     let objQuery = {}
+    let indexS = 0
     $scope.addFilters = function () {
         $scope.isChecked = true;
-        objQuery = {}
         if (isPageChange) {
-            nextObjQuery.Pesho = "gosho"
             filter(nextObjQuery)
         } else {
             objQuery.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
@@ -175,7 +174,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
             objQuery.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
             objQuery.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
             objQuery.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION;
-            nextObjQuery = objQuery;
+            nextObjQuery = structuredClone(objQuery)
             filter(objQuery)
         }
         isPageChange = false;
@@ -213,7 +212,6 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))
             .then(function (response) {
-                console.log(response.data.data, "dsajkljklads")
                 $scope.variantsDetails = [];
                 response.data.data.forEach(data => {
                     let variantObj = {}
