@@ -164,21 +164,6 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
     }
 
 
-    $scope.setPatientPathology = function (selectedPathology) {
-        if ($scope.pathologyDatas.length > 0) {
-            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
-            $scope.clinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
-            $scope.clinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
-        }
-    }
-
-    $scope.setFamilyPathology = function (selectedPathology) {
-        if ($scope.pathologyDatas.length > 0) {
-            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
-            $scope.familyClinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
-            $scope.familyClinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
-        }
-    }
 
     // Clinical History
 
@@ -434,6 +419,22 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
 
     function validateSuggestion(suggestion) {
         return suggestion.length > 3;
+    }
+
+    $scope.setPatientPathology = function (selectedPathology) {
+        if ($scope.pathologyDatas.length > 0) {
+            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+            $scope.clinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
+            $scope.clinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
+        }
+    }
+
+    $scope.setFamilyPathology = function (selectedPathology) {
+        if ($scope.pathologyDatas.length > 0) {
+            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+            $scope.familyClinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
+            $scope.familyClinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
+        }
     }
 
 

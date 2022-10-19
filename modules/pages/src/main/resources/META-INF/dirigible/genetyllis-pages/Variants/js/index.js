@@ -9,16 +9,17 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-
 var page = angular.module("variant", ['ngStorage', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
+page.constant('_', window._);
 page.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
-page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
+page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sessionStorage', '_', function ($scope, $http, $localStorage, $sessionStorage, _) {
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     const notificationOptionsApi = '/services/v4/js/genetyllis-pages/services/api/users/Notification.js';
     // const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+    var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
 
     $scope.clickedUrl = "../images/flagged.svg";
     $scope.notClickedUrl = "../images/notFlagged.svg";
@@ -93,6 +94,9 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
     }
 
+
+
+
     // remove gene filter
     $scope.removeGene = function (i) {
         $scope.GENETYLLIS_GENE.GENE_NAME.splice(i, 1)
@@ -112,13 +116,43 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         $scope.selectConsequences.push(removedItem[0]);
 
     }
+    // suggest patology
+    function suggestPathology(pathologyId) {
+        if (validateSuggestion(pathologyId)) {
+            $http.get(pathologyApi + "/filterPathology/" + pathologyId)
+                .then(data => {
+                    $scope.pathologyDatas = data.data
+                })
+        }
+    }
+
+    $scope.suggestVariantPathology = function (pathologyId) {
+        suggestPathology(pathologyId);
+    }
+
+
+    function validateSuggestion(suggestion) {
+        return suggestion.length > 3;
+    }
+
+    $scope.addVariantPathologyFilter = function (selectedPathology) {
+        if (!$scope.pathologyDatas) return
+        if ($scope.pathologyDatas.length > 0) {
+            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+            $scope.clinicalHistoryData.PathologyName = pathology?.PATHOLOGY_NAME;
+            $scope.clinicalHistoryData.PathologyId = pathology?.PATHOLOGY_ID;
+        }
+    }
+
 
     // add Pathology
     $scope.addPathologyFilter = function (cui) {
+        console.log(cui)
         if (!cui || $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.includes(cui)) return
 
         $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.push(cui)
-        $scope.selectedPathologyCui = '';
+        $scope.clinicalHistoryData.PathologyCui = '';
+
     }
     // remove pathologyCui
     $scope.removePathologyCui = function (index) {
@@ -174,7 +208,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
             objQuery.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
             objQuery.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
             objQuery.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION;
-            nextObjQuery = structuredClone(objQuery)
+            nextObjQuery = _.cloneDeep(objQuery)
             filter(objQuery)
         }
         isPageChange = false;
@@ -243,12 +277,14 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
                     if (data?.clinicalSignificance.length > 0) {
                         variantObj.ClinicalSignificance = data?.clinicalSignificance[0]?.CLINICALSIGNIFICANCE_SIGNIFICANCEID === 1 ? "Pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 2 ? "Likely pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 3 ? "Variant of uncerain significance (VUS)" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 4 ? "Likely benign variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 5 ? "Benign variant" : "";
                     }
-                    if (data.clinicalSignificance && data.clinicalSignificance.pathology) {
-                        variantObj.Pathology = data.clinicalSignificance.pathology[0]?.PATHOLOGY_NAME;
+                    if (data.clinicalSignificance) {
+                        data.clinicalSignificance.map(el => {
+
+                            variantObj.Pathologies = el.pathology[0]?.PATHOLOGY_NAME;
+                        })
                     }
                     variantObj.PatientsCount = data.patientsCount
                     variantObj.Patients = data.patients
-
                     if (data.alleleFrequency) {
                         if (data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) {
                             variantObj.AlleleFrequency = (Number(data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) * 1000000);
@@ -293,7 +329,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     $scope.selectFucn = function () {
 
         $scope.variantTable = ['', 'HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients'];
-        $scope.variantPageTableInfo = ['', "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "Reference", "AlleleFrequency", "Patients"];
+        $scope.variantPageTableInfo = ['', "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathologies", "Reference", "AlleleFrequency", "Patients"];
         for (let x = 0; x < $scope.variantTableModel.length; x++) {
             let value = $scope.variantsTableData.find(e => e.id == $scope.variantTableModel[x].id)
             $scope.variantTable.push(value.label);
@@ -312,8 +348,8 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         return e != '-'
     }
 
-    $scope.variantPageTableInfo = ["", "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "ClinicalSignificance", "AlleleFrequency", 'PatientsCount'];
     $scope.variantTable = ["", 'HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
+    $scope.variantPageTableInfo = ["", "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathologies", "ClinicalSignificance", "AlleleFrequency", 'PatientsCount'];
 
     $scope.clearAllFilters = function () {
         $scope.isChecked = false;

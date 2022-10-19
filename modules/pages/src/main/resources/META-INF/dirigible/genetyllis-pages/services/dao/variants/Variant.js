@@ -212,6 +212,7 @@ exports.filterVariants = function (variant) {
 			let pathologyIdsInStatement = addArrayValuesToSql(pathologyIds, false);
 			let pathologyQuery = 'SELECT * FROM "GENETYLLIS_PATHOLOGY" WHERE "PATHOLOGY_ID"' + pathologyIdsInStatement;
 			pathologyResult = query.execute(pathologyQuery, pathologyIds);
+
 		}
 		/* MAP PATHOLOGY TO CLINICALSIGNIFICANCE */
 		clinicalSignificance.forEach(significance => {

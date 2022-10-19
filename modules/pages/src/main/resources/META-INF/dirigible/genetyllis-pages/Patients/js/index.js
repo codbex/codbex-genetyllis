@@ -131,17 +131,15 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
     $scope.relationID = '';
     $scope.ageOnSet = ''
     $scope.isChecked = false;
+
     $scope.filter = function () {
         var query = {};
-        console.log($scope.isChecked)
-        if ($scope.isChecked) {
 
-            query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
-            query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
-            query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
-            query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-            query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
-        }
+        query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
+        query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
+        query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
+        query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
+        query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $scope.familyHistoryArr = []
@@ -164,32 +162,22 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
                     patientObject.Gender = patientResult?.PATIENT_GENDERID === 1 ? "male" : patientResult?.PATIENT_GENDERID === 2 ? "female" : "Other";
                     patientObject.Ethnicity = patientResult?.PATIENT_POPULATIONID === 12 ? "Bulgarian" : "Other ethnicity";
 
-                    // Family history
-                    // if (patientResult.familyHistory && patientResult.familyHistory.clinicalHistory) {
-                    //     patientObject["Family history"] = patientResult.familyHistory[0]?.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
-                    // }
-                    // patientObject["Family history"] =
+
                     patientResult.familyHistory.map((el, iindex) => {
                         el.clinicalHistory.map(fel => {
 
-                            // console.log("EL", fel)
                             fel.pathology.map(pel => {
                                 let result = ` ${pel.PATHOLOGY_NAME} (${relation(el.FAMILYHISTORY_RELATIONID)},${fel.CLINICALHISTORY_AGEONSET})`;
                                 $scope.familyHistoryArr.push(result)
-                                // patientObject["Family history"] += `${pel.PATHOLOGY_NAME}
-                                // (${relation(el.FAMILYHISTORY_RELATIONID)},
-                                // ${fel.CLINICALHISTORY_AGEONSET})`;
                             })
                         })
                     })
                     patientObject["Family history"] = $scope.familyHistoryArr.join(',')
-                    // console.log(familyHistoryArr)
                     $scope.patientsDetails.push(patientObject);
 
                 })
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
-                // console.log(" $scope.patientsDetails", $scope.patientsDetails)
             }, function (response) {
             });
         $scope.isChecked = false;

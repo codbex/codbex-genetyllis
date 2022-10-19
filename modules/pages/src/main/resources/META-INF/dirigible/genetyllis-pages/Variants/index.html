@@ -27,7 +27,9 @@
             src="https://rawgit.com/myforce/angularjs-dropdown-multiselect/master/src/angularjs-dropdown-multiselect.js"
             type="text/javascript">
         </script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+            integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <link rel="stylesheet" href="../css/pagination.css">
 
@@ -179,12 +181,18 @@
                             </div>
                             <div class="row">
                                 <div class="col-8">
-                                    <input list="dataList" ng-model='selectedPathologyCui' class="form-control"
-                                        placeholder="Pathology cui" />
+                                    <input list="dataList"
+                                        ng-change="addVariantPathologyFilter(clinicalHistoryData.PathologyCui)"
+                                        ng-model='clinicalHistoryData.PathologyCui' class="form-control"
+                                        ng-keyup="suggestVariantPathology(clinicalHistoryData.PathologyCui)"
+                                        placeholder="Concept ID" />
+                                    <datalist id="dataList">
+                                        <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
+                                    </datalist>
                                 </div>
                                 <div class="col-4">
                                     <button type="button" class="btn btn-secondary filterBtn"
-                                        ng-click="addPathologyFilter(selectedPathologyCui)">Add</button>
+                                        ng-click="addPathologyFilter(clinicalHistoryData.PathologyCui)">Add</button>
                                 </div>
                             </div>
                             <div class="addedText">
