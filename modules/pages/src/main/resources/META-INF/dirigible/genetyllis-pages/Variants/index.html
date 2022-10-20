@@ -27,7 +27,9 @@
             src="https://rawgit.com/myforce/angularjs-dropdown-multiselect/master/src/angularjs-dropdown-multiselect.js"
             type="text/javascript">
         </script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+            integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <link rel="stylesheet" href="../css/pagination.css">
 
@@ -71,7 +73,9 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="tracking">
+                                        <input class="form-check-input" type="checkbox" value="" id="tracking"
+                                            ng-model="GENETYLLIS_NOTIFICATION.NOTIFICATION_HIGHLIGHT"
+                                            ng-click="notificationHl()">
                                         <label class="form-check-label" for="tracking">
                                             Flagged for tracking
                                         </label>
@@ -95,7 +99,7 @@
                             <div class="row">
                                 <div class="col">
                                     <input type="text" class="form-control"
-                                        ng-model="GENETYLLIS_VARIANT.VARIANT_CHROMOSOME" />
+                                        ng-model="GENETYLLIS_VARIANT.VARIANT_CHROMOSOME" ng-blur="appendCHR()" />
                                 </div>
                                 <div class="col">
                                     <input type="number" min="0" class="form-control"
@@ -177,12 +181,18 @@
                             </div>
                             <div class="row">
                                 <div class="col-8">
-                                    <input list="dataList" ng-model='selectedPathologyCui' class="form-control"
-                                        placeholder="Pathology cui" />
+                                    <input list="dataList"
+                                        ng-change="addVariantPathologyFilter(clinicalHistoryData.PathologyCui)"
+                                        ng-model='clinicalHistoryData.PathologyCui' class="form-control"
+                                        ng-keyup="suggestVariantPathology(clinicalHistoryData.PathologyCui)"
+                                        placeholder="Concept ID" />
+                                    <datalist id="dataList">
+                                        <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
+                                    </datalist>
                                 </div>
                                 <div class="col-4">
                                     <button type="button" class="btn btn-secondary filterBtn"
-                                        ng-click="addPathologyFilter(selectedPathologyCui)">Add</button>
+                                        ng-click="addPathologyFilter(clinicalHistoryData.PathologyCui)">Add</button>
                                 </div>
                             </div>
                             <div class="addedText">
@@ -194,8 +204,8 @@
                     <div class="holder">
                         <div class="container checkboxes-holder">
                             <label ng-repeat="x in clinicalSignificance">
-                                <input type="checkbox" value="{{clinicalSignificance}}"
-                                    ng-click="toggleSelection(x.name)" ng-model="x.Selected">
+                                <input type="checkbox" value="{{clinicalSignificance}}" ng-click="toggleSelection(x.id)"
+                                    ng-model="x.Selected">
                                 {{x.name}}
                             </label>
                         </div>
@@ -237,7 +247,7 @@
                                         filter</button>
                                 </div>
                                 <div class="col">
-                                    <button ng-click="filter()" type="button"
+                                    <button ng-click="addFilters()" type="button"
                                         class="btn btn-primary filterBtn addFilter">Filter</button>
                                 </div>
                             </div>
@@ -287,17 +297,16 @@
                                 <tr dir-paginate="data in variantsDetails | itemsPerPage: selectedPerPage"
                                     total-items="totalItems">
                                     <td ng-repeat="info in variantPageTableInfo">
-
-                                        <a ng-if=" info==''" ng-click=" imageHandler(data)">
-                                            <image ng-click="imageHandler($index)"
-                                                ng-src="{{data[info] ? clickedUrl : notClickedUrl}}"
+                                        <a ng-if="info==''" ng-click=" imageHandler(data)">
+                                            <image ng-src="{{data[info] ? clickedUrl : notClickedUrl}}"
                                                 style="height: 20px; width: 20px; cursor: pointer" />
                                         </a>
+
                                         <a href="partials/variant-details.html" ng-click="redirectPatients(data)"
                                             ng-if="checkColumn(info)">{{data[info]}}</a>
-
                                         <a href="{{data.GeneLink}}" ng-if="info === 'Gene'">{{data[info]}}</a>
-                                        <span ng-if="info == 'AlleleFrequency'">{{data[info]}} * 10<sup>-6</sup></span>
+                                        <span ng-if="info == 'AlleleFrequency' && data[info]">{{data[info]}} *
+                                            10<sup>-6</sup></span>
                                         <span
                                             ng-if="notLink(info) && info !== 'Gene' && info !== 'AlleleFrequency' && info!=''">{{data[info]}}</span>
                                     </td>

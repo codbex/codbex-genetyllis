@@ -9,6 +9,13 @@ li {
   margin-bottom: 30px;
 }
 
+a {
+  text-decoration: none;
+}
+a:hover {
+  color: #001F38;
+}
+
 
 .holder {
   padding-bottom: 15px;

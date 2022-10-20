@@ -77,8 +77,8 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
         if ($scope.entity.GenderId == 'male') $scope.entity.GenderId = 1
         else if ($scope.entity.GenderId == 'female') $scope.entity.GenderId = 2
         else $scope.entity.GenderId = 3;
-
-        $http.post(patientsOptionsApi, JSON.stringify($scope.entity))
+        console.log($scope.entity)
+        $http.post(patientsOptionsApi, $scope.entity)
             .then(function (response) {
                 $scope.entity.Id = response.data.Id
 
@@ -110,6 +110,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
             familyMemberPatient = {}
             familyMemberPatient.Id = familyMember.Id;
             familyMemberPatient.LabId = familyMember.LabId;
+            $http.post(patientsOptionsApi, familyMemberPatient)
             familyMemberPatient.PatientId = familyMember.PatientId;
             $http.post(patientsOptionsApi, JSON.stringify(familyMemberPatient))
                 .then(function (response) {
@@ -163,21 +164,6 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
     }
 
 
-    $scope.setPatientPathology = function (selectedPathology) {
-        if ($scope.pathologyDatas.length > 0) {
-            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
-            $scope.clinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
-            $scope.clinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
-        }
-    }
-
-    $scope.setFamilyPathology = function (selectedPathology) {
-        if ($scope.pathologyDatas.length > 0) {
-            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
-            $scope.familyClinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
-            $scope.familyClinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
-        }
-    }
 
     // Clinical History
 
@@ -433,6 +419,22 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
 
     function validateSuggestion(suggestion) {
         return suggestion.length > 3;
+    }
+
+    $scope.setPatientPathology = function (selectedPathology) {
+        if ($scope.pathologyDatas.length > 0) {
+            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+            $scope.clinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
+            $scope.clinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
+        }
+    }
+
+    $scope.setFamilyPathology = function (selectedPathology) {
+        if ($scope.pathologyDatas.length > 0) {
+            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+            $scope.familyClinicalHistoryData.PathologyName = pathology.PATHOLOGY_NAME;
+            $scope.familyClinicalHistoryData.PathologyId = pathology.PATHOLOGY_ID;
+        }
     }
 
 

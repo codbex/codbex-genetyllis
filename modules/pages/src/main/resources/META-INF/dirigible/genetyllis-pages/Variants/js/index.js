@@ -9,16 +9,17 @@
  * SPDX-FileCopyrightText: 2022 codbex or an codbex affiliate company and contributors
  * SPDX-License-Identifier: EPL-2.0
  */
-
 var page = angular.module("variant", ['ngStorage', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
+page.constant('_', window._);
 page.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
-page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
+page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sessionStorage', '_', function ($scope, $http, $localStorage, $sessionStorage, _) {
     // const variantDetailsApi = '/services/v4/js/genetyllis-pages/Variants/services/variants.js';
     const variantOptionsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     const notificationOptionsApi = '/services/v4/js/genetyllis-pages/services/api/users/Notification.js';
     // const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+    var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
 
     $scope.clickedUrl = "../images/flagged.svg";
     $scope.notClickedUrl = "../images/notFlagged.svg";
@@ -66,11 +67,24 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     }
 
 
-
     $scope.GENETYLLIS_ALLELEFREQUENCY = {
         ALLELEFREQUENCY_FREQUENCY_FROM: '',
         ALLELEFREQUENCY_FREQUENCY_TO: ''
     }
+
+    $scope.GENETYLLIS_NOTIFICATION = {
+        NOTIFICATION_VARIANTID: "",
+        NOTIFICATION_HIGHLIGHT: Boolean,
+    }
+
+    // flagged notification
+    $scope.notificationHl = function () {
+        $scope.GENETYLLIS_NOTIFICATION = {
+            NOTIFICATION_HIGHLIGHT: Boolean,
+            NOTIFICATION_VARIANTID: ""
+        }
+    }
+
     // add gene filters
     $scope.addGeneFilter = function () {
         if (!$scope.selectedGeneId || $scope.GENETYLLIS_GENE.GENE_NAME.includes($scope.selectedGeneId)) return
@@ -80,6 +94,9 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
     }
 
+
+
+
     // remove gene filter
     $scope.removeGene = function (i) {
         $scope.GENETYLLIS_GENE.GENE_NAME.splice(i, 1)
@@ -88,8 +105,6 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     // add conssequence
     $scope.addConsequenceFilter = function () {
         $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE.push($scope.selectedConsequence)
-
-        console.log($scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE);
         let indexOfSelectedConsequence = $scope.selectConsequences.indexOf($scope.selectedConsequence);
         $scope.selectConsequences.splice(indexOfSelectedConsequence, 1)
         $scope.selectedConsequence = '';
@@ -98,15 +113,46 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     // remove Consequence
     $scope.removeConsequence = function (index) {
         let removedItem = $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE.splice(index, 1);
-        $scope.selectConsequences.push(removedItem)
+        $scope.selectConsequences.push(removedItem[0]);
+
     }
+    // suggest patology
+    function suggestPathology(pathologyId) {
+        if (validateSuggestion(pathologyId)) {
+            $http.get(pathologyApi + "/filterPathology/" + pathologyId)
+                .then(data => {
+                    $scope.pathologyDatas = data.data
+                })
+        }
+    }
+
+    $scope.suggestVariantPathology = function (pathologyId) {
+        suggestPathology(pathologyId);
+    }
+
+
+    function validateSuggestion(suggestion) {
+        return suggestion.length > 3;
+    }
+
+    $scope.addVariantPathologyFilter = function (selectedPathology) {
+        if (!$scope.pathologyDatas) return
+        if ($scope.pathologyDatas.length > 0) {
+            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+            $scope.clinicalHistoryData.PathologyName = pathology?.PATHOLOGY_NAME;
+            $scope.clinicalHistoryData.PathologyId = pathology?.PATHOLOGY_ID;
+        }
+    }
+
 
     // add Pathology
     $scope.addPathologyFilter = function (cui) {
+        console.log(cui)
         if (!cui || $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.includes(cui)) return
 
         $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.push(cui)
-        $scope.selectedPathologyCui = '';
+        $scope.clinicalHistoryData.PathologyCui = '';
+
     }
     // remove pathologyCui
     $scope.removePathologyCui = function (index) {
@@ -116,12 +162,13 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
     // clinical significance
     $scope.clinicalSignificance = [
-        { name: "Benign" },
-        { name: "Likely benign" },
-        { name: "Pathogenic" },
-        { name: "Likely pathogenic" },
-        { name: "VUS" }
+        { name: "Pathogenic variant", id: 1 },
+        { name: "Likely pathogenic variant", id: 2 },
+        { name: "Variant of uncerain significance", id: 3 },
+        { name: "Likely benign variant", id: 4 },
+        { name: "Benign variant", id: 5 },
     ];
+
 
     $scope.selectionClinicalSignificance = [];
     $scope.toggleSelection = function (clinicalSignificance) {
@@ -135,34 +182,79 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
             $scope.GENETYLLIS_SIGNIFICANCE.SIGNIFICANCE_ID.push(clinicalSignificance)
             $scope.selectionClinicalSignificance.push(clinicalSignificance);
         }
-        console.log($scope.selectionClinicalSignificance)
 
     };
 
-    //  allelefrequency
+    $scope.appendCHR = function () {
+        if ($scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME) {
+            $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = "chr" + $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME;
 
-    $scope.filter = function () {
+        }
+    }
+    //  allelefrequency
+    let nextObjQuery = {}
+    $scope.isChecked = false
+    $scope.alleleFrequencyCheck = false
+    let objQuery = {}
+
+    $scope.addFilters = function () {
+        $scope.isChecked = true;
+        if (isPageChange) {
+            filter(nextObjQuery)
+        } else {
+            objQuery.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
+            objQuery.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE;
+            objQuery.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY;
+            objQuery.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
+            objQuery.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
+            objQuery.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION;
+            nextObjQuery = angular.copy(objQuery)
+            filter(objQuery)
+        }
+        isPageChange = false;
+    }
+
+    let isPageChange = false;
+    $scope.pageChangeHandler = function (curPage) {
+        isPageChange = true;
+        $scope.currentPage = curPage;
+        if ($scope.isChecked) {
+            $scope.addFilters()
+        } else {
+            filter({})
+        }
+        isPageChange = false;
+
+        $scope.variantsDetails = [];
+    }
+    function filter(obj) {
         var query = {};
-        query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE;
-        query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY;
-        query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
-        query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
-        query.perPage = $scope.selectedPerPage;
-        query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
+        if ($scope.isChecked) {
+            query.GENETYLLIS_VARIANT = obj.GENETYLLIS_VARIANT;
+            query.GENETYLLIS_GENE = obj.GENETYLLIS_GENE;
+            query.GENETYLLIS_PATHOLOGY = obj.GENETYLLIS_PATHOLOGY;
+            query.GENETYLLIS_SIGNIFICANCE = obj.GENETYLLIS_SIGNIFICANCE;
+            query.GENETYLLIS_ALLELEFREQUENCY = obj.GENETYLLIS_ALLELEFREQUENCY;
+            query.GENETYLLIS_NOTIFICATION = obj.GENETYLLIS_NOTIFICATION;
+            query.perPage = $scope.selectedPerPage;
+            query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
+        } else {
+            query.perPage = $scope.selectedPerPage;
+            query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
+        }
+
+
         $http.post(variantOptionsApi + "/filterVariants", JSON.stringify(query))
             .then(function (response) {
-                console.log(response, 'respo')
                 $scope.variantsDetails = [];
-                console.log(response.data, "response")
                 response.data.data.forEach(data => {
                     let variantObj = {}
                     if (data.highlight != undefined) {
-                        console.log(data.highlight[0].NOTIFICATION_HIGHLIGHT)
-                        variantObj[""] = data.highlight[0].NOTIFICATION_HIGHLIGHT
+                        variantObj[""] = data.highlight[0]?.NOTIFICATION_HIGHLIGHT
                     }
                     variantObj.VariantId = data.VARIANT_ID
                     variantObj.HGVS = data.VARIANT_HGVS
+                    variantObj.DbSNP = data.VARIANT_DBSNP
                     if (data.genes) {
                         variantObj.Gene = data.genes[0]?.GENE_NAME != "NULL" ? data.genes[0]?.GENE_NAME : "-";
                         if (data.genes[0]?.GENE_NAME !== 'NULL') {
@@ -176,37 +268,53 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
                                     })
                                 });
                         }
-
-                        // console.log($scope.geneResponse, "geneResponse")
                     }
                     variantObj.VARIANT_CONSEQUENCE = data.VARIANT_CONSEQUENCE
                     variantObj.GeneId = data.VARIANT_GENEID
 
                     variantObj.Reference = data.VARIANT_REFERENCE
                     variantObj.Alternative = data.VARIANT_ALTERNATIVE
-                    variantObj.ClinicalSignificance = data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 1 ? "Pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 2 ? "Likely pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 3 ? "Variant of uncerain significance (VUS)" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 4 ? "Likely benign variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 5 ? "Benign variant" : "undefined";
-                    if (data.clinicalSignificance && data.clinicalSignificance.pathology) {
-                        variantObj.Pathology = data.clinicalSignificance.pathology[0]?.PATHOLOGY_NAME;
+                    if (data?.clinicalSignificance.length > 0) {
+                        variantObj.ClinicalSignificance = data?.clinicalSignificance[0]?.CLINICALSIGNIFICANCE_SIGNIFICANCEID === 1 ? "Pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 2 ? "Likely pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 3 ? "Variant of uncerain significance (VUS)" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 4 ? "Likely benign variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 5 ? "Benign variant" : "";
                     }
-                    if (data.alleleFrequency) {
-                        variantObj.AlleleFrequency = (Number(data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) * 1000000);
+                    if (data.clinicalSignificance) {
+                        data.clinicalSignificance.map(el => {
+
+                            variantObj.Pathologies = el.pathology[0]?.PATHOLOGY_NAME;
+                        })
                     }
                     variantObj.PatientsCount = data.patientsCount
                     variantObj.Patients = data.patients
+                    if (data.alleleFrequency) {
+                        if (data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) {
+                            variantObj.AlleleFrequency = (Number(data.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY) * 1000000);
+                        } else {
+                            variantObj.AlleleFrequency = false
+                        }
+                    }
+
+                    let alleleFrequencyArray = []
+                    if (data.alleleFrequency) {
+                        data.alleleFrequency.map(el => {
+                            alleleFrequencyArray.push(el.ALLELEFREQUENCY_FREQUENCY);
+                        })
+
+                        variantObj.AlleleFrequencyArray = alleleFrequencyArray
+
+                    }
 
                     $scope.variantsDetails.push(variantObj)
                 })
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
-                console.log($scope.variantsDetails, "variantsDetails")
             }, function (response) {
             });
+        // isPageChange = false;
 
-        console.log($scope.variants);
     }
 
-    $scope.filter();
+    filter({});
 
     // _|_
     $scope.variantTableModel = [];
@@ -220,9 +328,8 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
     $scope.selectFucn = function () {
 
-        console.log($scope.variants, "variants")
         $scope.variantTable = ['', 'HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients'];
-        $scope.variantPageTableInfo = ['', "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "Reference", "AlleleFrequency", "Patients"];
+        $scope.variantPageTableInfo = ['', "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathologies", "Reference", "AlleleFrequency", "Patients"];
         for (let x = 0; x < $scope.variantTableModel.length; x++) {
             let value = $scope.variantsTableData.find(e => e.id == $scope.variantTableModel[x].id)
             $scope.variantTable.push(value.label);
@@ -241,34 +348,76 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
         return e != '-'
     }
 
-    $scope.variantPageTableInfo = ["", "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathology", "ClinicalSignificance", "AlleleFrequency", 'PatientsCount'];
     $scope.variantTable = ["", 'HGVS', 'Gene', 'Consequence', 'Pathologies', 'Clinical significance', 'Allele frequency', 'Patients']
-
-
-
-    $scope.pageChangeHandler = function (curPage) {
-        $scope.currentPage = curPage;
-        $scope.filter()
-        $scope.variantsDetails = [];
-    }
+    $scope.variantPageTableInfo = ["", "HGVS", "Gene", "VARIANT_CONSEQUENCE", "Pathologies", "ClinicalSignificance", "AlleleFrequency", 'PatientsCount'];
 
     $scope.clearAllFilters = function () {
+        $scope.isChecked = false;
         angular.forEach($scope.clinicalSignificance, function (item) {
             item.Selected = false;
         });
 
-        $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ""
-        $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ""
-        $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ""
-        $scope.GENETYLLIS_VARIANT.VARIANT_REFERENCE = ""
-        $scope.GENETYLLIS_VARIANT.VARIANT_ALTERNATIVE = ""
-        $scope.GENETYLLIS_GENE.GENE_NAME = []
-        $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = []
-        $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI = []
-        $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_FROM = ""
-        $scope.GENETYLLIS_ALLELEFREQUENCY.ALLELEFREQUENCY_FREQUENCY_TO = ""
         $scope.selectConsequences = ["intron", "exon", "intragenic", "regulatory", "stop", "synonymous", "coding", "non", "splice", "other"]
-        $scope.filter()
+        $scope.geneIds = [];
+        $scope.selectedGeneId = '';
+        $scope.selectedGeneIds = [];
+        $scope.consequences = [];
+        $scope.selectedConsequence = '';
+        $scope.selectedConsequences = [];
+        $scope.pathologyCuis = [];
+        $scope.selectedPathologyCui = '';
+        $scope.selectedPathologyCuis = [];
+
+        $scope.consequences = [];
+        $scope.selectedConsequence = '';
+        $scope.selectedConsequences = [];
+
+        $scope.pathologyCuis = [];
+        $scope.selectedPathologyCui = '';
+        $scope.selectedPathologyCuis = [];
+
+        $scope.GENETYLLIS_VARIANT = {
+            VARIANT_CHROMOSOME: '',
+            VARIANT_START_FROM: '',
+            VARIANT_END_TO: '',
+            VARIANT_CONSEQUENCE: [],
+            VARIANT_REFERENCE: "",
+            VARIANT_ALTERNATIVE: ""
+        }
+
+        $scope.GENETYLLIS_GENE = {
+            GENE_GENEID: [],
+            GENE_NAME: [],
+        }
+
+        $scope.GENETYLLIS_PATHOLOGY = {
+            PATHOLOGY_CUI: []
+        }
+        $scope.GENETYLLIS_SIGNIFICANCE = {
+            SIGNIFICANCE_ID: []
+        }
+
+
+        $scope.GENETYLLIS_PATHOLOGY = {
+            PATHOLOGY_CUI: []
+        }
+
+        $scope.GENETYLLIS_SIGNIFICANCE = {
+            SIGNIFICANCE_ID: []
+        }
+
+
+
+        $scope.GENETYLLIS_ALLELEFREQUENCY = {
+            ALLELEFREQUENCY_FREQUENCY_FROM: '',
+            ALLELEFREQUENCY_FREQUENCY_TO: ''
+        }
+
+        $scope.GENETYLLIS_NOTIFICATION = {
+            NOTIFICATION_VARIANTID: "",
+            NOTIFICATION_HIGHLIGHT: Boolean,
+        }
+        filter({})
     }
 
 
@@ -287,29 +436,15 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     }
 
     $scope.imageHandler = function (data) {
-        // console.log($scope.variantsDetails[data.VariantId - 1]["hl"], 'data', data)
-        $scope.variantsDetails[data.VariantId - 1][""] = !$scope.variantsDetails[data.VariantId - 1][""]
-        console.log(data.VariantId)
+        $scope.variantsDetails.find(el => {
+            if (el.VariantId == data.VariantId) {
+
+                return el[''] = !el['']
+            }
+        });
         $http.post(notificationOptionsApi + "/getByVariantId", data.VariantId)
             .then(function (responseNotification) {
-
-            }, function (response) {
             });
-        // $scope.filter()
     }
-
-    // getHighlights = function (data) {
-    //     $http.get(notificationOptionsApi)
-    //         .then(function (responseNotification) {
-    //             responseNotification.data.forEach((el, index) => {
-    //                 if(index>10)return
-    //                 // $scope.variantsDetails[index].push({ Highlight: el.Highlight })
-    //                 console.log($scope.variantsDetails, "response", index);
-    //             })
-
-    //             // Highlight
-    //         }, function (response) {
-    //         });
-    // }
 
 }]);

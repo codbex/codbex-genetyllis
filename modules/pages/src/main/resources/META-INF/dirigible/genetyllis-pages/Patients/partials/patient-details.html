@@ -122,8 +122,8 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="data in patientClinicalHistory">
-                                        <td ng-repeat="x in data">
-                                            {{x}}
+                                        <td ng-repeat="i in clinicalHistoryThead">
+                                            {{data[i]}}
                                         </td>
 
                                     </tr>
@@ -172,7 +172,10 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" value="" id="highlighted-variants" checked>
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            id="highlighted-variants"
+                                            ng-model="GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HIGHLIGHT"
+                                            ng-click="notificationHl()">
                                         <label class="form-check-label" for="highlighted-variants">
                                             Highlighted-variants
                                         </label>
@@ -307,16 +310,30 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
+                                        <!-- <input class="form-check-input" type="checkbox" value="" id="homozygous"
+                                            ng-click="homozygous(homozygous)" ng-model="homozygous" checked>
+                                        <label class="form-check-label" for="homozygous">
+                                            Homozygous
+                                        </label> -->
+                                        <input class="form-check-input" type="checkbox" value="" id="homozygous"
+                                            ng-click="isHomozygousChecked=!isHomozygousChecked;homozygous()"
+                                            ng-model="homozygousCheck">
+                                        <label class="form-check-label" for="homozygous">
                                             Homozygous
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="female" checked>
-                                        <label class="form-check-label" for="male">
+                                        <!-- <input class="form-check-input" type="checkbox" value="" id="heterozygous"
+                                            checked>
+                                        <label class="form-check-label" for="heterozygous">
+                                            Heterozygous
+                                        </label> -->
+                                        <input class="form-check-input" type="checkbox"
+                                            ng-click="isHeterozygousChecked=!isHeterozygousChecked"
+                                            ng-model="heterozygous" value="" id="heterozygous">
+                                        <label class="form-check-label" for="heterozygous">
                                             Heterozygous
                                         </label>
                                     </div>
@@ -395,7 +412,7 @@
                                         filter</button>
                                 </div>
                                 <div class="col">
-                                    <button ng-click="filter()" type="button"
+                                    <button ng-click="addFilter()" type="button"
                                         class="btn btn-primary filterBtn addFilter">Filter</button>
                                 </div>
                             </div>
@@ -445,23 +462,31 @@
                                 <tr dir-paginate="data in patientsDetailsTable | itemsPerPage:selectedPerPage"
                                     total-items="totalItems">
                                     <td ng-repeat="i in patientDetailsTableInfo ">
-
+                                        <a ng-if="i==''" ng-click=" imageHandler(data)">
+                                            <image ng-src="{{data[i] ? clickedUrl : notClickedUrl}}"
+                                                style="height: 20px; width: 20px; cursor: pointer" />
+                                        </a>
                                         <!-- <a href="partials/patient-details.html" ng-if="checkColumn(i)"
                                             ng-click="redirectPatients(data)">{{data[i]}}</a> -->
-
-                                        <span>{{data[i]}}</span>
+                                        <a href="../../Variants/partials/variant-details.html"
+                                            ng-click="redirectVariant(data)" ng-if="i === 'HGVS'">{{data[i]}}</a>
+                                        <a href="{{data.GeneLink}}" ng-if="i === 'GeneId'">{{data[i]}}</a>
+                                        <!-- <span>{{data[i]}}</span> -->
+                                        <!-- <span>{{i}}</span> -->
+                                        <span ng-if="i !== 'HGVS' && i !== 'GeneId' && i !=''"">{{data[i]}}</span>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-center other-controller">
-                            <dir-pagination-controls boundary-links="true"
-                                on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+                        <div class=" text-center other-controller">
+                                            <dir-pagination-controls boundary-links="true"
+                                                on-page-change="pageChangeHandler(newPageNumber)">
+                                            </dir-pagination-controls>
 
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         </div>
 

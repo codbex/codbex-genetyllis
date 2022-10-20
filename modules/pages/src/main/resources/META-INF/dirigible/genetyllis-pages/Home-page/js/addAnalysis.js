@@ -33,7 +33,7 @@ addAnalysis.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpRequestInterceptor');
 }])
 
-addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', '$localStorage', function ($scope, $http, FileUploader, $localStorage) {
+addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', '$sessionStorage', function ($scope, $http, FileUploader, $sessionStorage) {
     var patientidOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.patientidOptions = [];
@@ -96,7 +96,7 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
 
     const providereDetailsApi = '/services/v4/js/genetyllis-pages/Home-page/services/provider.js';
     const platformDetailsApi = '/services/v4/js/genetyllis-pages/Home-page/services/platform.js';
-    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/Home-page/services/api/patients/Patient.js';
+    const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     $scope.providerData;
     $scope.platformData;
@@ -127,12 +127,16 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
         }
     }
 
-    // function fetchSimilarLabIds(labId) {
-    //     $http.get(patientsOptionsApi + "/suggestLabIds/" + labId)
-    //         .then(data => {
-    //             $scope.labIds = data.data
-    //         })
-    // }
+    function fetchSimilarLabIds(labId) {
+        $http.get(patientsOptionsApi + "/suggestLabIds/" + labId)
+            .then(data => {
+                $scope.labIds = data.data
+            })
+    }
+
+    $scope.showLink = function (labId) {
+        console.log(labId, "labid")
+    }
 
     // fetchSimilarLabIds('%');
 
@@ -140,9 +144,29 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
         return suggestion.length > 3;
     }
 
-    let analysis = $localStorage.analysis;
-    console.log($scope.analysis, "$localStorage");
-    $scope.analysisId = analysis.Id;
-    localStorage.clear();
+    console.log($sessionStorage, "$sessionStorage");
+    let analysis = $sessionStorage.analysis;
+    console.log(analysis, "$analy");
+    if (analysis != undefined) {
+        $scope.isLoaded = true
+        $scope.analysisId = analysis.Id;
+        $scope.entity.LabId = analysis.Patient
+        $scope.entity.PatientId = analysis.PatientId
+        $scope.entity.Platform = analysis.Platform
+        $scope.entity.Provider = analysis.Provider
+        $scope.entity.Date = analysis.Date
+    }
+    else
+        $scope.isLoaded = false
+    $sessionStorage.$reset();
 
+
+    $scope.redirectPatients = function (data, e) {
+        console.log(data, "data", e)
+        $sessionStorage.$default({
+            patient: data[0].PATIENT_ID
+
+            // $sessionStorage.$reset()
+        })
+    }
 }])
