@@ -15,7 +15,7 @@ patients.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../components/pagination.html');
 });
 
-patients.controller('patientsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
+patients.controller('patientsController', ['$scope', '$http', '$sessionStorage', function ($scope, $http, $sessionStorage) {
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/variants.js';
@@ -132,14 +132,19 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
     $scope.ageOnSet = ''
     $scope.isChecked = false;
 
-    $scope.filter = function () {
-        var query = {};
+    var query = {};
 
-        query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
-        query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
-        query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
-        query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
+    $scope.addFilter = function () {
+        query.GENETYLLIS_PATIENT = angular.copy($scope.GENETYLLIS_PATIENT);
+        query.GENETYLLIS_CLINICALHISTORY = angular.copy($scope.GENETYLLIS_CLINICALHISTORY);
+        query.GENETYLLIS_FAMILYHISTORY = angular.copy($scope.GENETYLLIS_FAMILYHISTORY);
+        query.GENETYLLIS_VARIANT = angular.copy($scope.GENETYLLIS_VARIANT);
+        query.GENETYLLIS_ANALYSIS = angular.copy($scope.GENETYLLIS_ANALYSIS);
+        filter(query)
+    }
+    function filter(query) {
+
+
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         $scope.familyHistoryArr = []
@@ -148,12 +153,14 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
             .then(function (response) {
                 $scope.patientsDetails = [];
                 response.data.data.forEach((patientResult, i) => {
+                    console.log(patientResult, "patientResult")
                     patientObject = {};
                     patientObject.Id = patientResult.PATIENT_ID;
                     patientObject.LabId = patientResult.PATIENT_LABID;
                     patientObject.BirthDate = patientResult.PATIENT_AGE.split('T')[0];
                     if (patientResult.clinicalHistory) {
-                        patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
+                        patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME + " (" + patientResult.clinicalHistory[0]?.CLINICALHISTORY_AGEONSET + ")";
+
                     }
                     if (patientResult.analysis) {
                         patientObject.Analysis = patientResult.analysis[0]?.ANALYSIS_ID;
@@ -184,12 +191,12 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
     }
 
 
-    $scope.filter();
+    filter(query);
 
     $scope.pageChangeHandler = function (curPage) {
         $scope.isChecked = false;
         $scope.currentPage = curPage;
-        $scope.filter()
+        filter(query)
         $scope.patientsDetails = [];
     }
 
@@ -277,7 +284,7 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
     if ($scope.bulgarian == undefined) $scope.bulgarian = false;
     if ($scope.otherEthnicity == undefined) $scope.otherEthnicity = false;
     $scope.maleFunc = function () {
-
+        console.log($scope.femaleCheckbox)
         if (!$scope.maleCheckbox) {
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(1)
         } else {
@@ -371,7 +378,8 @@ patients.controller('patientsController', ['$scope', '$http', '$localStorage', '
         $scope.GENETYLLIS_VARIANT.VARIANT_ALT = ''
         $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = ''
         $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
-        $scope.filter()
+        query = {}
+        filter(query)
     }
     function relation(rel) {
         result = ""

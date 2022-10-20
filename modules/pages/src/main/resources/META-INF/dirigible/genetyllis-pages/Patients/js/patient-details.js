@@ -14,11 +14,11 @@ var patientDetails = angular.module("patientDetails", ['ngStorage', 'angularUtil
 patientDetails.config(function (paginationTemplateProvider) {
     paginationTemplateProvider.setPath('../../components/pagination.html');
 });
-patientDetails.controller('patientDetailsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
+patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sessionStorage', function ($scope, $http, $sessionStorage) {
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
     const variantRecordOptionsApi = '/services/v4/js/genetyllis-pages/services/api/records/VariantRecord.js';
-
+    let query = {}
 
     $scope.clickedUrl = "../images/flagged.svg";
     $scope.notClickedUrl = "../images/notFlagged.svg";
@@ -94,8 +94,18 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
     $scope.GENETYLLIS_VARIANTRECORD = {
         VARIANTRECORD_VARIANTID: '',
-        VARIANTRECORD_HIGHLIGHT: Boolean
+        VARIANTRECORD_HIGHLIGHT: Boolean,
+        VARIANTRECORD_HOMOZYGOUS: Boolean
     }
+
+    $scope.isHomozygousChecked = false
+    $scope.isHeterozygousChecked = false
+    // $scope.homozygous = function () {
+    //     if (($scope.isHomozygousChecked && $scope.isHeterozygousChecked) || (!$scope.isHomozygousChecked && !$scope.isHeterozygousChecked)) {
+    //         $scope.GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HOMOZYGOUS = Boolean
+    //         console.log("true")
+    //     } 
+    // }
 
     // clinical significance
     $scope.clinicalSignificance = ['Benign', 'Likely benign', 'Pathogenic', 'Likely pathogenic', 'VUS'];
@@ -181,7 +191,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
     $scope.pageChangeHandler = function (curPage) {
         $scope.currentPage = curPage;
-        $scope.filter()
+        filter(query)
         $scope.variantsDetails = [];
     }
 
@@ -211,20 +221,46 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
     $scope.patientDetailsTable = ['', 'HGVS', 'Gene', 'Consequence', 'Homozygous', 'Pathology', 'Clinical significance', 'Allele frequency'];
     $scope.patientDetailsTableInfo = ["", "HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency"];
-    $scope.filter = function () {
-        var query = {};
+
+    $scope.addFilter = function () {
+        //    query.GENETYLLIS_PATIENT = angular.copy($scope.GENETYLLIS_PATIENT);
+        // query.GENETYLLIS_CLINICALHISTORY = angular.copy($scope.GENETYLLIS_CLINICALHISTORY);
+        // query.GENETYLLIS_FAMILYHISTORY = angular.copy($scope.GENETYLLIS_FAMILYHISTORY);
+        // query.GENETYLLIS_VARIANT = angular.copy($scope.GENETYLLIS_VARIANT);
+        // query.GENETYLLIS_ANALYSIS = angular.copy($scope.GENETYLLIS_ANALYSIS);
+        if (($scope.isHomozygousChecked && $scope.isHeterozygousChecked) || (!$scope.isHomozygousChecked && !$scope.isHeterozygousChecked)) {
+            $scope.GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HOMOZYGOUS = Boolean
+            console.log("true")
+        } else if ($scope.homozygousCheck) {
+            $scope.GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HOMOZYGOUS = true
+        } else {
+            $scope.GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HOMOZYGOUS = false
+        }
+
+        // query.GENETYLLIS_VARIANTRECORD = $scope.GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HOMOZYGOUS
+        query.GENETYLLIS_VARIANT = angular.copy($scope.GENETYLLIS_VARIANT)
+        query.GENETYLLIS_GENE = angular.copy($scope.GENETYLLIS_GENE)
+        query.GENETYLLIS_PATHOLOGY = angular.copy($scope.GENETYLLIS_PATHOLOGY)
+        query.GENETYLLIS_SIGNIFICANCE = angular.copy($scope.GENETYLLIS_SIGNIFICANCE)
+        query.GENETYLLIS_ALLELEFREQUENCY = angular.copy($scope.GENETYLLIS_ALLELEFREQUENCY)
+        query.GENETYLLIS_VARIANTRECORD = angular.copy($scope.GENETYLLIS_VARIANTRECORD)
+        filter(query)
+    }
+
+    function filter(query) {
+        // var query = {};
         $scope.gender = ''
         //Gender Id
 
         query.GENETYLLIS_PATIENT = {};
 
         query.GENETYLLIS_PATIENT.PATIENT_ID = $scope.patientIdFromStorage
-        query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE
-        query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY
-        query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE
-        query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY
-        query.GENETYLLIS_VARIANTRECORD = $scope.GENETYLLIS_VARIANTRECORD
+        // query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
+        // query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE
+        // query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY
+        // query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE
+        // query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY
+        // query.GENETYLLIS_VARIANTRECORD = $scope.GENETYLLIS_VARIANTRECORD
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         let patientObject = {};
@@ -233,7 +269,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
         $http.post(variantDetailsApi + "/filterPatientDetails", JSON.stringify(query))
             .then(function (response) {
-
+                console.log(response.data.data)
                 $scope.patientsDetailsTable = [];
                 $scope.patientClinicalHistory = []
                 $scope.patientFamilylHistory = []
@@ -325,13 +361,15 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
 
             });
-        $sessionStorage.$reset();
+        // $sessionStorage.$reset();
 
     }
     $scope.clearAllFilters = function () {
         angular.forEach($scope.clinicalSignificance, function (item) {
             item.Selected = false;
         });
+        $scope.homozygousCheck = false;
+        $scope.heterozygous = false;
         $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ""
         $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ""
         $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ""
@@ -372,14 +410,11 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
 
         $scope.GENETYLLIS_VARIANTRECORD = {
             VARIANTRECORD_VARIANTID: '',
-            VARIANTRECORD_HIGHLIGHT: Boolean
+            VARIANTRECORD_HIGHLIGHT: Boolean,
+            VARIANTRECORD_HOMOZYGOUS: Boolean
         }
-
-        $scope.GENETYLLIS_VARIANTRECORD = {
-            VARIANTRECORD_VARIANTID: '',
-            VARIANTRECORD_HIGHLIGHT: Boolean
-        }
-        $scope.filter()
+        query = {}
+        filter(query)
     }
 
 
@@ -443,6 +478,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$loca
     }
 
 
-    $scope.filter();
+    filter(query);
 
 }]);

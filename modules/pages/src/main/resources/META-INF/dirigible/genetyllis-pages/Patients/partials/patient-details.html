@@ -310,16 +310,30 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="male" checked>
-                                        <label class="form-check-label" for="male">
+                                        <!-- <input class="form-check-input" type="checkbox" value="" id="homozygous"
+                                            ng-click="homozygous(homozygous)" ng-model="homozygous" checked>
+                                        <label class="form-check-label" for="homozygous">
+                                            Homozygous
+                                        </label> -->
+                                        <input class="form-check-input" type="checkbox" value="" id="homozygous"
+                                            ng-click="isHomozygousChecked=!isHomozygousChecked;homozygous()"
+                                            ng-model="homozygousCheck">
+                                        <label class="form-check-label" for="homozygous">
                                             Homozygous
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="female" checked>
-                                        <label class="form-check-label" for="male">
+                                        <!-- <input class="form-check-input" type="checkbox" value="" id="heterozygous"
+                                            checked>
+                                        <label class="form-check-label" for="heterozygous">
+                                            Heterozygous
+                                        </label> -->
+                                        <input class="form-check-input" type="checkbox"
+                                            ng-click="isHeterozygousChecked=!isHeterozygousChecked"
+                                            ng-model="heterozygous" value="" id="heterozygous">
+                                        <label class="form-check-label" for="heterozygous">
                                             Heterozygous
                                         </label>
                                     </div>
@@ -398,7 +412,7 @@
                                         filter</button>
                                 </div>
                                 <div class="col">
-                                    <button ng-click="filter()" type="button"
+                                    <button ng-click="addFilter()" type="button"
                                         class="btn btn-primary filterBtn addFilter">Filter</button>
                                 </div>
                             </div>

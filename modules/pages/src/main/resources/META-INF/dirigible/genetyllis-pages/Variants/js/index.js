@@ -196,7 +196,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     $scope.isChecked = false
     $scope.alleleFrequencyCheck = false
     let objQuery = {}
-    let indexS = 0
+
     $scope.addFilters = function () {
         $scope.isChecked = true;
         if (isPageChange) {
@@ -208,7 +208,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
             objQuery.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE;
             objQuery.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY;
             objQuery.GENETYLLIS_NOTIFICATION = $scope.GENETYLLIS_NOTIFICATION;
-            nextObjQuery = _.cloneDeep(objQuery)
+            nextObjQuery = angular.copy(objQuery)
             filter(objQuery)
         }
         isPageChange = false;
