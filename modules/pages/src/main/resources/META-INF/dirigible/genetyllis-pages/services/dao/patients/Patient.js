@@ -108,15 +108,15 @@ exports.filterVariantDetails = function (patient) {
 	var countSql = "";
 
 	if (patient.GENETYLLIS_PATIENT) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT);
+		filterSql = buildFilterSql(patient.GENETYLLIS_PATIENT, filterSql);
 	}
 
 	if (patient.GENETYLLIS_CLINICALHISTORY) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY);
+		filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY, filterSql);
 	}
 
 	if (patient.GENETYLLIS_VARIANT) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT);
+		filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT, filterSql);
 	}
 
 	if (patient.GENETYLLIS_FAMILYHISTORY) {
@@ -125,7 +125,7 @@ exports.filterVariantDetails = function (patient) {
 		}
 	}
 	if (patient.GENETYLLIS_ANALYSIS) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS);
+		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS, filterSql);
 	}
 
 	countSql += filterSql;
@@ -228,11 +228,11 @@ exports.filterPatients = function (patient) {
 	}
 
 	if (patient.GENETYLLIS_CLINICALHISTORY) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY);
+		filterSql = buildFilterSql(patient.GENETYLLIS_CLINICALHISTORY, filterSql);
 	}
 
 	if (patient.GENETYLLIS_VARIANT) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT);
+		filterSql = buildFilterSql(patient.GENETYLLIS_VARIANT, filterSql);
 	}
 
 	if (patient.GENETYLLIS_FAMILYHISTORY) {
@@ -241,7 +241,7 @@ exports.filterPatients = function (patient) {
 		}
 	}
 	if (patient.GENETYLLIS_ANALYSIS) {
-		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS);
+		filterSql = buildFilterSql(patient.GENETYLLIS_ANALYSIS, filterSql);
 	}
 
 	countSql += filterSql;
@@ -338,15 +338,15 @@ function isFamilyHsistoryEmpty(object) {
 		&& !object.CLINICALHISTORY_AGEONSET_TO;
 }
 
-function buildFilterSql(object) {
+function buildFilterSql(object, sql) {
 	var keys = Object.keys(object);
 	for (var i = 0; i < keys.length; i++) {
 		var val = object[keys[i]];
 		if (Array.isArray(val) ? (val.length > 0) : (val !== undefined && val !== '' && val !== null)) {
 			if (useWhere) {
-				filterSql += " WHERE ";
+				sql += " WHERE ";
 			} else {
-				filterSql += " AND ";
+				sql += " AND ";
 			}
 
 			condition = "";
@@ -368,13 +368,13 @@ function buildFilterSql(object) {
 				addFilterParam(val, isLower);
 			}
 
-			filterSql += condition;
+			sql += condition;
 			useWhere = false;
 
 		}
 	}
 
-	return filterSql;
+	return sql;
 }
 
 function buildFamilyHistoryFilterSql(object) {
