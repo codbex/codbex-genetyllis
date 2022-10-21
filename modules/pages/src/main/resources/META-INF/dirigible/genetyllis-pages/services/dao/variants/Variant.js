@@ -63,6 +63,7 @@ exports.filterVariantsPatientDetails = function (variant) {
 
 	if (variant.GENETYLLIS_ALLELEFREQUENCY) {
 		buildFilterSql(variant.GENETYLLIS_ALLELEFREQUENCY);
+
 	}
 
 	if (variant.GENETYLLIS_SIGNIFICANCE) {
@@ -269,19 +270,13 @@ function buildFilterSql(object) {
 			if (Array.isArray(val)) {
 				condition = columnLowerCondition(keys[i], isLower) + addArrayValuesToSql(val, isLower);
 			} else if (keys[i].toString().endsWith('_TO')) {
-
-				condition = columnLowerCondition(keys[i].slice(0, -3), isLower) + " <= ?";
+				condition = columnLowerCondition(keys[i].slice(0, -3), false) + " <= ?";
 				addFilterParam(val, false);
-			} else if (keys[i].toString().endsWith('_FROM')) {
-				condition = columnLowerCondition(keys[i].slice(0, -5), isLower) + " >= ?";
-				addFilterParam(val, false);
-			} else if (typeof val == "boolean" && val) {
-				condition = columnLowerCondition(keys[i], false) + " IS TRUE";
 			} else if (keys[i].toString().endsWith('_FROM')) {
 				condition = columnLowerCondition(keys[i].slice(0, -5), false) + " >= ?";
 				addFilterParam(val, false);
-
-
+			} else if (typeof val == "boolean" && val) {
+				condition = columnLowerCondition(keys[i], false) + " IS TRUE";
 			} else {
 				condition = columnLowerCondition(keys[i], isLower) + " = ?";
 				addFilterParam(val, isLower);
@@ -291,6 +286,8 @@ function buildFilterSql(object) {
 			useWhere = false;
 		}
 	}
+
+
 	return filterSql;
 }
 function addArrayValuesToSql(array, isLower) {
@@ -314,6 +311,7 @@ function initFilterSql() {
 		'LEFT JOIN "GENETYLLIS_PATHOLOGY" GP ON GC."CLINICALSIGNIFICANCE_PATHOLOGYID" = GP."PATHOLOGY_ID" ' +
 		'LEFT JOIN "GENETYLLIS_SIGNIFICANCE" GS ON GC."CLINICALSIGNIFICANCE_SIGNIFICANCEID" = GS."SIGNIFICANCE_ID" ' +
 		'LEFT JOIN "GENETYLLIS_ALLELEFREQUENCY" GA ON GV."VARIANT_ID" = GA."ALLELEFREQUENCY_VARIANTID"';
+
 }
 function initPatientDetailsSql() {
 	useWhere = true;

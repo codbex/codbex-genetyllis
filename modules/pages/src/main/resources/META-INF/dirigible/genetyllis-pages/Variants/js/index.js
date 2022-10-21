@@ -147,7 +147,6 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
     // add Pathology
     $scope.addPathologyFilter = function (cui) {
-        console.log(cui)
         if (!cui || $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.includes(cui)) return
 
         $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.push(cui)

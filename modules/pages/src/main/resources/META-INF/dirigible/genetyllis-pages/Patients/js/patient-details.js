@@ -18,6 +18,8 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
     const variantRecordOptionsApi = '/services/v4/js/genetyllis-pages/services/api/records/VariantRecord.js';
+    var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
+
     let query = {}
 
     $scope.clickedUrl = "../images/flagged.svg";
@@ -98,17 +100,26 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
         VARIANTRECORD_HOMOZYGOUS: Boolean
     }
 
+    $scope.highlight = function () {
+        $scope.GENETYLLIS_VARIANTRECORD = {
+            VARIANTRECORD_VARIANTID: '',
+            VARIANTRECORD_HIGHLIGHT: Boolean,
+        }
+    }
+
     $scope.isHomozygousChecked = false
     $scope.isHeterozygousChecked = false
-    // $scope.homozygous = function () {
-    //     if (($scope.isHomozygousChecked && $scope.isHeterozygousChecked) || (!$scope.isHomozygousChecked && !$scope.isHeterozygousChecked)) {
-    //         $scope.GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HOMOZYGOUS = Boolean
-    //         console.log("true")
-    //     } 
-    // }
+
 
     // clinical significance
-    $scope.clinicalSignificance = ['Benign', 'Likely benign', 'Pathogenic', 'Likely pathogenic', 'VUS'];
+    $scope.clinicalSignificance = [
+        { name: "Pathogenic variant", id: 1 },
+        { name: "Likely pathogenic variant", id: 2 },
+        { name: "Variant of uncerain significance", id: 3 },
+        { name: "Likely benign variant", id: 4 },
+        { name: "Benign variant", id: 5 },
+    ];
+    // $scope.clinicalSignificance = ['Benign', 'Likely benign', 'Pathogenic', 'Likely pathogenic', 'VUS'];
     $scope.selectionClinicalSignificance = [];
     $scope.toggleSelection = function toggleSelection(clinicalSignificance) {
         var idx = $scope.selectionClinicalSignificance.indexOf(clinicalSignificance);
@@ -124,12 +135,42 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
 
     };
 
+    // suggest pathology
+    function suggestPathology(pathologyId) {
+        if (validateSuggestion(pathologyId)) {
+            $http.get(pathologyApi + "/filterPathology/" + pathologyId)
+                .then(data => {
+                    $scope.pathologyDatas = data.data
+                })
+        }
+    }
+
+    $scope.suggestVariantPathology = function (pathologyId) {
+        suggestPathology(pathologyId);
+    }
+
+
+    function validateSuggestion(suggestion) {
+        return suggestion.length > 3;
+    }
+
+    $scope.addVariantPathologyFilter = function (selectedPathology) {
+        if (!$scope.pathologyDatas) return
+        if ($scope.pathologyDatas.length > 0) {
+            let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+            $scope.clinicalHistoryData.PathologyName = pathology?.PATHOLOGY_NAME;
+            $scope.clinicalHistoryData.PathologyId = pathology?.PATHOLOGY_ID;
+        }
+    }
+
+
     // add Pathology
     $scope.addPathologyFilter = function (cui) {
         if (!cui || $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.includes(cui)) return
 
         $scope.GENETYLLIS_PATHOLOGY.PATHOLOGY_CUI.push(cui)
         $scope.selectedPathologyCui = '';
+        $scope.clinicalHistoryData.PathologyCui = ""
     }
     // remove pathologyCui
     $scope.removePathologyCui = function (index) {
@@ -138,13 +179,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
     }
 
     // clinical significance
-    $scope.clinicalSignificance = [
-        { name: "Benign" },
-        { name: "Likely benign" },
-        { name: "Pathogenic" },
-        { name: "Likely pathogenic" },
-        { name: "VUS" }
-    ];
+
 
     $scope.selectionClinicalSignificance = [];
     $scope.toggleSelection = function (clinicalSignificance) {
@@ -223,14 +258,8 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
     $scope.patientDetailsTableInfo = ["", "HGVS", "GeneId", "Consequence", "Homozygous", "Pathology", "Clinical significance", "Allele frequency"];
 
     $scope.addFilter = function () {
-        //    query.GENETYLLIS_PATIENT = angular.copy($scope.GENETYLLIS_PATIENT);
-        // query.GENETYLLIS_CLINICALHISTORY = angular.copy($scope.GENETYLLIS_CLINICALHISTORY);
-        // query.GENETYLLIS_FAMILYHISTORY = angular.copy($scope.GENETYLLIS_FAMILYHISTORY);
-        // query.GENETYLLIS_VARIANT = angular.copy($scope.GENETYLLIS_VARIANT);
-        // query.GENETYLLIS_ANALYSIS = angular.copy($scope.GENETYLLIS_ANALYSIS);
         if (($scope.isHomozygousChecked && $scope.isHeterozygousChecked) || (!$scope.isHomozygousChecked && !$scope.isHeterozygousChecked)) {
             $scope.GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HOMOZYGOUS = Boolean
-            console.log("true")
         } else if ($scope.homozygousCheck) {
             $scope.GENETYLLIS_VARIANTRECORD.VARIANTRECORD_HOMOZYGOUS = true
         } else {
@@ -255,12 +284,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
         query.GENETYLLIS_PATIENT = {};
 
         query.GENETYLLIS_PATIENT.PATIENT_ID = $scope.patientIdFromStorage
-        // query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        // query.GENETYLLIS_GENE = $scope.GENETYLLIS_GENE
-        // query.GENETYLLIS_PATHOLOGY = $scope.GENETYLLIS_PATHOLOGY
-        // query.GENETYLLIS_SIGNIFICANCE = $scope.GENETYLLIS_SIGNIFICANCE
-        // query.GENETYLLIS_ALLELEFREQUENCY = $scope.GENETYLLIS_ALLELEFREQUENCY
-        // query.GENETYLLIS_VARIANTRECORD = $scope.GENETYLLIS_VARIANTRECORD
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
         let patientObject = {};
@@ -269,7 +292,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
 
         $http.post(variantDetailsApi + "/filterPatientDetails", JSON.stringify(query))
             .then(function (response) {
-                console.log(response.data.data)
                 $scope.patientsDetailsTable = [];
                 $scope.patientClinicalHistory = []
                 $scope.patientFamilylHistory = []
@@ -327,10 +349,16 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
                     patientObject.Consequence = patientResult.VARIANT_CONSEQUENCE;
                     patientObject.Homozygous = patientResult.variantRecords[0]?.VARIANTRECORD_HOMOZYGOUS ? "Yes" : "No";
                     patientObject.Pathology = patientResult.clinicalSignificance[0]?.pathology[0]?.PATHOLOGY_NAME;
-
                     //TODO add .name after making sure that info in db all has significance id
-                    patientObject["Clinical significance"] = $scope.clinicalSignificance[patientResult.clinicalSignificance[0]?.CLINICALSIGNIFICANCE_SIGNIFICANCEID - 1].name;
+                    // patientObject["Clinical significance"] = $scope.clinicalSignificance[patientResult.clinicalSignificance[0]?.CLINICALSIGNIFICANCE_SIGNIFICANCEID - 1].name;
+                    // patientObject["Clinical significance"] = $scope.clinicalSignificance?.CLINICALSIGNIFICANCE_SIGNIFICANCEID === 1 ? "Pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 2 ? "Likely pathogenic variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 3 ? "Variant of uncerain significance (VUS)" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 4 ? "Likely benign variant" : data.clinicalSignificance[0].CLINICALSIGNIFICANCE_SIGNIFICANCEID === 5 ? "Benign variant" : "";
+                    let clinicalSignificanceResultArr = []
+                    patientResult.clinicalSignificance.forEach(el => {
+                        let clinicalSignificanceResult = el.CLINICALSIGNIFICANCE_SIGNIFICANCEID === 1 ? "Pathogenic variant" : el.CLINICALSIGNIFICANCE_SIGNIFICANCEID === 2 ? "Likely pathogenic variant" : el.CLINICALSIGNIFICANCE_SIGNIFICANCEID === 3 ? "Variant of uncerain significance (VUS)" : el.CLINICALSIGNIFICANCE_SIGNIFICANCEID === 4 ? "Likely benign variant" : el.CLINICALSIGNIFICANCE_SIGNIFICANCEID === 5 ? "Benign variant" : "";
 
+                        clinicalSignificanceResultArr.push(clinicalSignificanceResult)
+                    })
+                    patientObject["Clinical significance"] = [...new Set(clinicalSignificanceResultArr)].join(', ')
                     patientObject["Allele frequency"] = patientResult.alleleFrequency[0]?.ALLELEFREQUENCY_FREQUENCY;
                     if (patientResult.clinicalHistory) {
                         patientObject["Clinical history"] = patientResult.clinicalHistory[0]?.pathology[0]?.PATHOLOGY_NAME;
@@ -353,7 +381,6 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
                         }
                     })
                     $scope.patientsDetailsTable.push(patientObject);
-                    // console.log(patientObject)
                 })
 
                 $scope.totalPages = response.data.totalPages;
