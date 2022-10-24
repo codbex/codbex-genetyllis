@@ -20,6 +20,7 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
 
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/variants.js';
     const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/services/alleleFr.js';
+    var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
     // _|_
     $scope.patientsTableModel = [];
     // $scope.patientsTableData = [{ id: 5, label: "Platform" }, { id: 6, label: "Provider" }, { id: 7, label: "Status" }];
@@ -268,6 +269,33 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
         $scope.addedVariantId.splice(i, 1);
     }
 
+    // suggest patology
+    function suggestPathology(pathologyId, conceptIds) {
+        if (validateSuggestion(pathologyId)) {
+            $http.get(pathologyApi + "/filterPathology/" + pathologyId)
+                .then(data => {
+                    conceptIds = data.data
+                    console.log("in", conceptIds)
+                })
+        }
+    }
+
+    $scope.suggestPatientVariantPathology = function (pathologyId) {
+        suggestPathology(pathologyId, $scope.patientConceptIds);
+    }
+
+    $scope.suggestFamilyVariantPathology = function (pathologyId) {
+        suggestPathology(pathologyId, $scope.familyConceptIds);
+    }
+
+    // $scope.addVariantPathologyFilter = function (selectedPathology) {
+    //     if (!$scope.pathologyDatas) return
+    //     if ($scope.pathologyDatas.length > 0) {
+    //         let pathology = $scope.pathologyDatas.find(el => el.PATHOLOGY_CUI == selectedPathology);
+    //         $scope.selectedPatientConceptId.PathologyName = pathology?.PATHOLOGY_NAME;
+    //         $scope.selectedPatientConceptId.PathologyId = pathology?.PATHOLOGY_ID;
+    //     }
+    // }
 
 
 
@@ -406,6 +434,10 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
                 break;
         }
         return result;
+    }
+
+    function validateSuggestion(suggestion) {
+        return suggestion.length > 3;
     }
 
     $scope.redirectPatients = function (data) {

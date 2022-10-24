@@ -106,6 +106,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
     }
 
     function persistFamilyMembers(familyMembersArray) {
+        console.log(familyMembersArray, "familyMembersArray")
         familyMembersArray.forEach(familyMember => {
             familyMemberPatient = {}
             familyMemberPatient.Id = familyMember.Id;

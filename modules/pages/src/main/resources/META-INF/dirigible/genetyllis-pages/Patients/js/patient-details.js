@@ -18,6 +18,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
     const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/api/variants/Variant.js';
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
     const variantRecordOptionsApi = '/services/v4/js/genetyllis-pages/services/api/records/VariantRecord.js';
+    var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
     let query = {}
 
     $scope.clickedUrl = "../images/flagged.svg";
@@ -186,6 +187,20 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
     $scope.removeConsequence = function (index) {
         let removedItem = $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE.splice(index, 1);
         $scope.selectConsequences.push(removedItem)
+    }
+
+    // suggest patology
+    function suggestPathology(pathologyId) {
+        if (validateSuggestion(pathologyId)) {
+            $http.get(pathologyApi + "/filterPathology/" + pathologyId)
+                .then(data => {
+                    $scope.pathologyDatas = data.data
+                })
+        }
+    }
+
+    $scope.suggestVariantPathology = function (pathologyId) {
+        suggestPathology(pathologyId);
     }
 
 
@@ -456,6 +471,10 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
         $sessionStorage.$default({
             HGVS: data
         });
+    }
+
+    function validateSuggestion(suggestion) {
+        return suggestion.length > 3;
     }
 
 

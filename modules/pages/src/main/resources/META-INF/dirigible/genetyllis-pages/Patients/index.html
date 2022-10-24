@@ -193,10 +193,14 @@
                             </div>
                             <div class="row">
                                 <div class="col-8">
+                                    <!-- <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
+                                        placeholder="Concept ID" /> -->
+                                    <!-- ng-change="addVariantPathologyFilter(selectedPatientConceptId.PathologyCui)" -->
                                     <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
+                                        ng-keyup="suggestPatientVariantPathology(selectedPatientConceptId)"
                                         placeholder="Concept ID" />
                                     <datalist id="dataList">
-                                        <option ng-repeat="x in conceptIds">{{x}}</option>
+                                        <option ng-repeat="x in patientConceptIds">{{x}}</option>
                                     </datalist>
                                 </div>
                                 <div class="col-4">
@@ -242,10 +246,17 @@
                             <div class="row">
                                 <div class="col-8">
 
-                                    <input list="dataList" ng-model="selectedFamilyConceptId" class="form-control"
+                                    <!-- <input list="dataList" ng-model="selectedFamilyConceptId" class="form-control"
                                         placeholder="Concept ID" />
                                     <datalist id="dataList">
                                         <option ng-repeat="x in conceptIds">{{x}}</option>
+                                    </datalist> -->
+
+                                    <input list="dataList" ng-model='selectedFamilyConceptId' class="form-control"
+                                        ng-keyup="suggestFamilyVariantPathology(selectedFamilyConceptId)"
+                                        placeholder="Concept ID" />
+                                    <datalist id="dataList">
+                                        <option ng-repeat="x in familyConceptIds">{{x}}</option>
                                     </datalist>
                                 </div>
                                 <div class="col-4">

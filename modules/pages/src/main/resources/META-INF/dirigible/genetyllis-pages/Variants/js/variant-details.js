@@ -19,6 +19,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     $scope.clinicalSignificance = ["Accession", "Pathology", "Significance", "Evaluation", "Review"]
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+    var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
 
     $scope.variants;
     $scope.clinicalSignificanceArr
@@ -118,6 +119,30 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     $scope.addVariantHgvsFilter = function (hgvs) {
         $scope.GENETYLLIS_VARIANT.VARIANT_HGVS.push(hgvs)
         $scope.selectedHgvs = '';
+    }
+
+
+    // suggest patology
+    function suggestPathology(pathologyId, conceptIds) {
+        if (validateSuggestion(pathologyId)) {
+            $http.get(pathologyApi + "/filterPathology/" + pathologyId)
+                .then(data => {
+                    conceptIds = data.data
+                    console.log("in", conceptIds)
+                })
+        }
+    }
+
+    $scope.suggestPatientVariantPathology = function (pathologyId) {
+        suggestPathology(pathologyId, $scope.patientConceptIds);
+    }
+
+    $scope.suggestFamilyVariantPathology = function (pathologyId) {
+        suggestPathology(pathologyId, $scope.familyConceptIds);
+    }
+
+    function validateSuggestion(suggestion) {
+        return suggestion.length > 3;
     }
 
 
@@ -390,6 +415,31 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
     // $scope.getPatients()
 
     $scope.filter()
+
+    $scope.checkColumn = function (e) {
+        return e == 'Id'
+    }
+    $scope.notLink = function (e) {
+        return e != 'Id' && e != 'Analysis'
+    }
+
+    $scope.redirectPatients = function (data) {
+        $sessionStorage.$default({
+            patient: data.Id
+        });
+        console.log($sessionStorage.patient, "data");
+        // $sessionStorage.$reset()
+    }
+
+    //TODO add more data to redirectData if needed
+    $scope.redirectAnalysis = function (data) {
+
+        let redirectData = {}
+        redirectData.Id = data.Analysis
+        $sessionStorage.$default({
+            analysis: redirectData
+        });
+    }
 }]);
 
 

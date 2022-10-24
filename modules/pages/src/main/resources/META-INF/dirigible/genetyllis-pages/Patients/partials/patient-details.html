@@ -350,12 +350,18 @@
                             </div>
                             <div class="row">
                                 <div class="col-8">
-                                    <input list="dataList" ng-model='selectedPathologyCui' class="form-control"
-                                        placeholder="Pathology cui" />
+                                    <input list="dataList"
+                                        ng-change="addVariantPathologyFilter(clinicalHistoryData.PathologyCui)"
+                                        ng-model='clinicalHistoryData.PathologyCui' class="form-control"
+                                        ng-keyup="suggestVariantPathology(clinicalHistoryData.PathologyCui)"
+                                        placeholder="Concept ID" />
+                                    <datalist id="dataList">
+                                        <option ng-repeat="x in pathologyDatas">{{x.PATHOLOGY_CUI}}</option>
+                                    </datalist>
                                 </div>
                                 <div class="col-4">
                                     <button type="button" class="btn btn-secondary filterBtn"
-                                        ng-click="addPathologyFilter(selectedPathologyCui)">Add</button>
+                                        ng-click="addPathologyFilter(clinicalHistoryData.PathologyCui)">Add</button>
                                 </div>
                             </div>
                             <div class="addedText">
