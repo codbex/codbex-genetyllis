@@ -194,10 +194,10 @@
                             <div class="row">
                                 <div class="col-8">
                                     <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
+                                        ng-keyup="suggestPatientVariantPathology(selectedPatientConceptId)"
                                         placeholder="Concept ID" />
                                     <datalist id="dataList">
-                                        <option ng-repeat="x in conceptIds">{{x}}</option>
-                                    </datalist>
+                                        <option ng-repeat="x in patientConceptIds">{{x}}</option>
                                 </div>
                                 <div class="col-4">
                                     <button type="button" class="btn btn-secondary filterBtn"
@@ -242,11 +242,11 @@
                             <div class="row">
                                 <div class="col-8">
 
-                                    <input list="dataList" ng-model="selectedFamilyConceptId" class="form-control"
+                                    <input list="dataList" ng-model='selectedFamilyConceptId' class="form-control"
+                                        ng-keyup="suggestFamilyVariantPathology(selectedFamilyConceptId)"
                                         placeholder="Concept ID" />
                                     <datalist id="dataList">
-                                        <option ng-repeat="x in conceptIds">{{x}}</option>
-                                    </datalist>
+                                        <option ng-repeat="x in familyConceptIds">{{x}}</option>
                                 </div>
                                 <div class="col-4">
                                     <button type="button" class="btn btn-secondary filterBtn"

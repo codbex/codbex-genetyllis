@@ -283,10 +283,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-8">
+                                    <!-- <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
+                                        placeholder="Concept ID" /> -->
                                     <input list="dataList" ng-model='selectedPatientConceptId' class="form-control"
+                                        ng-keyup="suggestPatientVariantPathology(selectedPatientConceptId)"
                                         placeholder="Concept ID" />
                                     <datalist id="dataList">
-                                        <option ng-repeat="x in conceptIds">{{x}}</option>
+                                        <option ng-repeat="x in patientConceptIds">{{x}}</option>
                                     </datalist>
                                 </div>
                                 <div class="col-4">
@@ -332,10 +335,11 @@
                             <div class="row">
                                 <div class="col-8">
 
-                                    <input list="dataList" ng-model="selectedFamilyConceptId" class="form-control"
-                                        placeholder="Concept ID" />
-                                    <datalist id="dataList">
-                                        <option ng-repeat="x in conceptIds">{{x}}</option>
+                                    <input list="dataList" ng-model='selectedFamilyConceptId' class="form-control"
+                                        ng-keyup="suggestFamilyVariantPathology(selectedFamilyConceptId)"
+                                        placeholder="Concept ID" /> <datalist id="dataList">
+
+                                        <option ng-repeat="x in familyConceptIds">{{x}}</option>
                                     </datalist>
                                 </div>
                                 <div class="col-4">
@@ -466,8 +470,14 @@
                                     total-items="totalItems">
                                     <td ng-repeat="i in patientDetailsTableInfo ">
 
-                                        <span>{{data[i]}}</span>
-                                        <!-- <span>{{i}}</span> -->
+                                        <a href="../../Patients/partials/patient-details.html" ng-if="checkColumn(i)"
+                                            ng-click="redirectPatients(data)">{{data[i]}}</a>
+
+
+                                        <a href="../../Home-page/partials/addAnalysis.html" ng-if="i === 'Analysis'"
+                                            ng-click="redirectAnalysis(data)">WGS ({{data[i]}})</a>
+
+                                        <span ng-if="notLink(i)">{{data[i]}}</span>
                                     </td>
                                 </tr>
                             </tbody>
