@@ -19,6 +19,7 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     $scope.clinicalSignificance = ["Accession", "Pathology", "Significance", "Evaluation", "Review"]
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
+    let query = {};
 
     $scope.variants;
     $scope.clinicalSignificanceArr
@@ -250,14 +251,27 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
             CLINICALHISTORY_AGEONSET_TO: ''
         }
         $scope.GENETYLLIS_ANALYSIS.ANALYSIS_DATE = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_ALT = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = ''
-        $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
-        $scope.filter()
+        // $scope.GENETYLLIS_VARIANT.VARIANT_CHROMOSOME = ''
+        // $scope.GENETYLLIS_VARIANT.VARIANT_START_FROM = ''
+        // $scope.GENETYLLIS_VARIANT.VARIANT_END_TO = ''
+        // $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
+        // $scope.GENETYLLIS_VARIANT.VARIANT_ALT = ''
+        // $scope.GENETYLLIS_VARIANT.VARIANT_CONSEQUENCE = ''
+        // $scope.GENETYLLIS_VARIANT.VARIANT_REF = ''
+        query = {}
+        $scope.GENETYLLIS_VARIANT = {
+            VARIANT_ID: '',
+            VARIANT_CHROMOSOME: '',
+            VARIANT_START_FROM: '',
+            VARIANT_END_TO: '',
+            VARIANT_REF: '',
+            VARIANT_ALT: '',
+            VARIANT_CONSEQUENCE: [],
+            VARIANT_HGVS: $scope.GENETYLLIS_VARIANT.VARIANT_HGVS
+        }
+        query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT
+
+        filter(query)
     }
 
 
@@ -265,21 +279,35 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     $scope.pageChangeHandler = function (curPage) {
         $scope.currentPage = curPage;
-        $scope.filter()
+        filter(query)
         $scope.patientsDetails = [];
     }
 
 
-    // GENETYLLIS_ANALYSIS GENETYLLIS_VARIANT GENETYLLIS_FAMILYHISTORY GENETYLLIS_CLINICALHISTORY
     $scope.isChecked = false;
 
-    $scope.filter = function () {
-        let query = {};
-        query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
-        query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
-        query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
-        query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
-        query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
+
+    let isFilterClick = false
+    $scope.addFilter = function () {
+        query.GENETYLLIS_PATIENT = angular.copy($scope.GENETYLLIS_PATIENT);
+        query.GENETYLLIS_CLINICALHISTORY = angular.copy($scope.GENETYLLIS_CLINICALHISTORY);
+        query.GENETYLLIS_FAMILYHISTORY = angular.copy($scope.GENETYLLIS_FAMILYHISTORY);
+        query.GENETYLLIS_VARIANT = angular.copy($scope.GENETYLLIS_VARIANT);
+        query.GENETYLLIS_ANALYSIS = angular.copy($scope.GENETYLLIS_ANALYSIS);
+        isFilterClick = true
+        filter(query)
+    }
+
+    function filter(query) {
+        // let query = {};
+
+        // query.GENETYLLIS_PATIENT = $scope.GENETYLLIS_PATIENT;
+        // query.GENETYLLIS_CLINICALHISTORY = $scope.GENETYLLIS_CLINICALHISTORY;
+        // query.GENETYLLIS_FAMILYHISTORY = $scope.GENETYLLIS_FAMILYHISTORY;
+        // query.GENETYLLIS_ANALYSIS = $scope.GENETYLLIS_ANALYSIS;
+        if (!isFilterClick) {
+            query.GENETYLLIS_VARIANT = $scope.GENETYLLIS_VARIANT;
+        }
         query.perPage = $scope.selectedPerPage;
         query.currentPage = (($scope.currentPage - 1) * $scope.selectedPerPage);
 
@@ -321,17 +349,15 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
 
     }
 
-    $scope.pageChangeHandler = function (curPage) {
-        $scope.currentPage = curPage;
-        $scope.filter()
-        $scope.patientsDetails = [];
+    $scope.fromData = $sessionStorage.HGVS;
+
+
+    if ($scope.fromData) {
+        $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
     }
 
 
-    $scope.fromData = $sessionStorage.HGVS;
-    $scope.GENETYLLIS_VARIANT.VARIANT_HGVS = $scope.fromData.HGVS
-
-    $scope.filter()
+    filter(query)
 }]);
 
 
