@@ -1944,7 +1944,7 @@
                         "name": "Highlight",
                         "widgetIsMajor": "true",
                         "widgetLength": "20",
-                        "widgetType": "TEXTBOX"
+                        "widgetType": "CHECKBOX"
                     }
                 ],
                 "caption": "Manage entity Notification",

@@ -55,7 +55,10 @@
 							<fd-checkbox id="idChangeFlag" compact="false" dg-disabled="true" ng-model="next.ChangeFlag"></fd-checkbox>
 							<fd-checkbox-label for="idChangeFlag"></fd-checkbox-label>
 						</td>
-						<td fd-table-cell ng-click="openDetails(next)" hoverable="true" activable="true">{{next.Highlight}}</td>
+						<td fd-table-cell ng-click="openDetails(next)" hoverable="true" activable="true">
+							<fd-checkbox id="idHighlight" compact="false" dg-disabled="true" ng-model="next.Highlight"></fd-checkbox>
+							<fd-checkbox-label for="idHighlight"></fd-checkbox-label>
+						</td>
 						<td fd-table-cell fit-content="true">
 							<fd-popover>
 								<fd-popover-control>
