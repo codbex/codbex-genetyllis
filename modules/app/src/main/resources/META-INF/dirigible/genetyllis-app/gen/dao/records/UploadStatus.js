@@ -3,18 +3,18 @@ const producer = require("messaging/v4/producer");
 const daoApi = require("db/v4/dao");
 
 let dao = daoApi.create({
-	table: "GENETYLLIS_GENDER",
+	table: "GENETYLLIS_UPLOADSTATUS",
 	properties: [
 		{
 			name: "Id",
-			column: "GENDER_ID",
+			column: "UPLOADSTATUS_ID",
 			type: "INTEGER",
 			id: true,
 			autoIncrement: true,
 		},
  {
 			name: "Name",
-			column: "GENDER_NAME",
+			column: "UPLOADSTATUS_NAME",
 			type: "VARCHAR",
 		}
 ]
@@ -31,10 +31,10 @@ exports.get = function(id) {
 exports.create = function(entity) {
 	let id = dao.insert(entity);
 	triggerEvent("Create", {
-		table: "GENETYLLIS_GENDER",
+		table: "GENETYLLIS_UPLOADSTATUS",
 		key: {
 			name: "Id",
-			column: "GENDER_ID",
+			column: "UPLOADSTATUS_ID",
 			value: id
 		}
 	});
@@ -44,10 +44,10 @@ exports.create = function(entity) {
 exports.update = function(entity) {
 	dao.update(entity);
 	triggerEvent("Update", {
-		table: "GENETYLLIS_GENDER",
+		table: "GENETYLLIS_UPLOADSTATUS",
 		key: {
 			name: "Id",
-			column: "GENDER_ID",
+			column: "UPLOADSTATUS_ID",
 			value: entity.Id
 		}
 	});
@@ -56,10 +56,10 @@ exports.update = function(entity) {
 exports.delete = function(id) {
 	dao.remove(id);
 	triggerEvent("Delete", {
-		table: "GENETYLLIS_GENDER",
+		table: "GENETYLLIS_UPLOADSTATUS",
 		key: {
 			name: "Id",
-			column: "GENDER_ID",
+			column: "UPLOADSTATUS_ID",
 			value: id
 		}
 	});
@@ -70,7 +70,7 @@ exports.count = function() {
 };
 
 exports.customDataCount = function() {
-	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM GENDER");
+	let resultSet = query.execute("SELECT COUNT(*) AS COUNT FROM UPLOADSTATUS");
 	if (resultSet !== null && resultSet[0] !== null) {
 		if (resultSet[0].COUNT !== undefined && resultSet[0].COUNT !== null) {
 			return resultSet[0].COUNT;
@@ -82,5 +82,5 @@ exports.customDataCount = function() {
 };
 
 function triggerEvent(operation, data) {
-	producer.queue("genetyllis-app/nomenclature/Gender/" + operation).send(JSON.stringify(data));
+	producer.queue("genetyllis-app/records/UploadStatus/" + operation).send(JSON.stringify(data));
 }

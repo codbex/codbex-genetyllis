@@ -1,5 +1,5 @@
 const rs = require("http/v4/rs");
-const dao = require("genetyllis-app/gen/dao/patients/ClinicalHistory");
+const dao = require("genetyllis-app/gen/dao/records/UploadStatus");
 const http = require("genetyllis-app/gen/api/utils/http");
 
 rs.service()
@@ -23,10 +23,9 @@ rs.service()
 				http.sendInternalServerError(error.message);
 			}
         })
-	.resource("count/{PatientId}")
+	.resource("count")
 		.get(function(ctx, request) {
-			let PatientId = ctx.pathParameters.PatientId;
-			http.sendResponseOk("" + dao.count(PatientId));
+			http.sendResponseOk("" + dao.count());
 		})
 		.catch(function(ctx, error) {
             if (error.name === "ForbiddenError") {
@@ -44,7 +43,7 @@ rs.service()
 			if (entity) {
 			    http.sendResponseOk(entity);
 			} else {
-				http.sendResponseNotFound("ClinicalHistory not found");
+				http.sendResponseNotFound("UploadStatus not found");
 			}
 		})
 		.produces(["application/json"])
@@ -61,7 +60,7 @@ rs.service()
 		.post(function(ctx, request, response) {
 			let entity = request.getJSON();
 			entity.Id = dao.create(entity);
-			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/ClinicalHistory.js/" + entity.Id);
+			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/UploadStatus.js/" + entity.Id);
 			http.sendResponseCreated(entity);
 		})
 		.produces(["application/json"])
@@ -99,7 +98,7 @@ rs.service()
 				dao.delete(id);
 				http.sendResponseNoContent();
 			} else {
-				http.sendResponseNotFound("ClinicalHistory not found");
+				http.sendResponseNotFound("UploadStatus not found");
 			}
 		})
 		.catch(function(ctx, error) {

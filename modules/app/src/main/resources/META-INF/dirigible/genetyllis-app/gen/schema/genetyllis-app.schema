@@ -280,6 +280,12 @@
                         "length": 20,
                         "nullable": true,
                         "name": "VARIANTRECORD_HIGHLIGHT"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "VARIANTRECORD_FILEID"
                     }
                 ]
             },
@@ -746,6 +752,58 @@
                 ]
             },
             {
+                "name": "GENETYLLIS_FILE",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "FILE_ID"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "FILE_ANALYSISID"
+                    },
+                    {
+                        "type": "DATE",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "FILE_DATEUPLOADED"
+                    },
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "nullable": true,
+                        "name": "FILE_UPLOADSTATUSID"
+                    }
+                ]
+            },
+            {
+                "name": "GENETYLLIS_UPLOADSTATUS",
+                "type": "TABLE",
+                "columns": [
+                    {
+                        "type": "INTEGER",
+                        "length": 0,
+                        "primaryKey": true,
+                        "identity": true,
+                        "nullable": true,
+                        "name": "UPLOADSTATUS_ID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 20,
+                        "nullable": true,
+                        "name": "UPLOADSTATUS_NAME"
+                    }
+                ]
+            },
+            {
                 "name": "Patient_Gender",
                 "type": "foreignKey",
                 "table": "GENETYLLIS_PATIENT",
@@ -825,6 +883,15 @@
                 "columns": "VARIANTRECORD_ANALYSISID",
                 "referencedTable": "GENETYLLIS_ANALYSIS",
                 "referencedColumns": "ANALYSIS_ID"
+            },
+            {
+                "name": "VariantRecord_File",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_VARIANTRECORD",
+                "constraintName": "VariantRecord_File",
+                "columns": "VARIANTRECORD_FILEID",
+                "referencedTable": "GENETYLLIS_FILE",
+                "referencedColumns": "FILE_ID"
             },
             {
                 "name": "Filter_VariantRecord",
@@ -969,6 +1036,24 @@
                 "columns": "NOTIFICATION_VARIANTID",
                 "referencedTable": "GENETYLLIS_VARIANT",
                 "referencedColumns": "VARIANT_ID"
+            },
+            {
+                "name": "File_Analysis",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_FILE",
+                "constraintName": "File_Analysis",
+                "columns": "FILE_ANALYSISID",
+                "referencedTable": "GENETYLLIS_ANALYSIS",
+                "referencedColumns": "ANALYSIS_ID"
+            },
+            {
+                "name": "File_UploadStatus",
+                "type": "foreignKey",
+                "table": "GENETYLLIS_FILE",
+                "constraintName": "File_UploadStatus",
+                "columns": "FILE_UPLOADSTATUSID",
+                "referencedTable": "GENETYLLIS_UPLOADSTATUS",
+                "referencedColumns": "UPLOADSTATUS_ID"
             }
         ]
     }

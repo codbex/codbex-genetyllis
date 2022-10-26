@@ -25,8 +25,7 @@ rs.service()
         })
 	.resource("count/{VariantRecordId}")
 		.get(function(ctx, request) {
-			let VariantRecordId = parseInt(ctx.pathParameters.VariantRecordId);
-			VariantRecordId = isNaN(VariantRecordId) ? ctx.pathParameters.VariantRecordId : VariantRecordId;
+			let VariantRecordId = ctx.pathParameters.VariantRecordId;
 			http.sendResponseOk("" + dao.count(VariantRecordId));
 		})
 		.catch(function(ctx, error) {

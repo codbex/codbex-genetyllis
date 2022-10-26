@@ -42,8 +42,6 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
         }
     }
 
-
-
     $scope.homePageTable = ["PID", "LabId", "DOB", "Clinical history", "Analysis", "Dates"];
     $scope.homePageTableInfo = ["Id", "LabId", "BirthDate", "Clinical history", "Analysis", "Dates"];
     // _|_
