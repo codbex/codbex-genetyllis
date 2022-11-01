@@ -780,6 +780,12 @@
                         "length": 0,
                         "nullable": true,
                         "name": "FILE_UPLOADSTATUSID"
+                    },
+                    {
+                        "type": "VARCHAR",
+                        "length": 1000,
+                        "nullable": true,
+                        "name": "FILE_PATH"
                     }
                 ]
             },

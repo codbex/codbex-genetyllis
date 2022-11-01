@@ -229,5 +229,15 @@
     "distinguishEmptyFromNull": true,
     "keys": [],
     "schema": "public"
+  },
+  {
+    "table": "GENETYLLIS_UPLOADSTATUS",
+    "file": "/genetyllis-data/data/GENETYLLIS_UPLOADSTATUS.csv",
+    "header": true,
+    "useHeaderNames": true,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
   }
 ]

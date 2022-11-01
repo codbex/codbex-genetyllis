@@ -21,6 +21,7 @@
     </head>
 
     <body ng-controller='addAnalysisController'>
+        <!-- <span>{{files}}</span> -->
         <div class="wrapper">
             <div class="header-wrapper">
                 <div class="genHubLogo">
@@ -129,6 +130,7 @@
                                         </div>
                                         <a ng-if="isLoaded" href="../../Patients/partials/patient-details.html"
                                             ng-click="redirectPatients(entity.PatientId)">{{entity.LabId}}</a>
+
                                     </div>
                                 </div>
                             </div>
@@ -157,11 +159,22 @@
                                         <div class="row">
                                             <div class="col-md-12" style="margin-bottom: 40px">
 
+                                                <ul>
+                                                    <li ng-repeat="file in files">
+                                                        <h6>
+                                                            {{file.FILE_PATH}}
+                                                            {{file.UploadStatus}}
+                                                            <button type="button" class="btn btn-danger btn-xs"
+                                                                ng-click="uploader.removeItem(item)">
+                                                                <span class="fa fa-trash"></span> Remove
+                                                            </button>
+                                                        </h6>
+                                                    </li>
+                                                </ul>
 
                                                 <div ng-repeat="item in uploader.queue"
                                                     style="display:flex; justify-content: space-between; align-items: center;">
                                                     <h6>{{ item.file.name }}</h6>
-
                                                     <h6 ng-show="uploader.isHTML5">
                                                         <div class="progress" style="margin-bottom: 0;">
                                                             <div class="progress-bar" role="progressbar"
@@ -171,17 +184,29 @@
                                                     </h6>
                                                     <h6 class="text-center">
                                                         <span ng-show="item.isSuccess"><i
-                                                                class="fa fa-check"></i></span>
-                                                        <span ng-show="item.isCancel"><i class="fa fa-close"></i></span>
+                                                                class="fa fa-check">Complete</i></span>
+                                                        <span ng-show="item.isUploading"><i
+                                                                class="fa fa-close">Processing</i></span>
                                                         <span ng-show="item.isError"><i
-                                                                class="fa fa-warning"></i></span>
+                                                                class="fa fa-warning">Error</i></span>
+                                                        <span ng-show="item.isError"><i
+                                                                class="fa fa-warning">Error</i></span>
+                                                    </h6>
+                                                    <h6>
+                                                        <button type="button" class="btn btn-success btn-xs"
+                                                            ng-click="item.upload()"
+                                                            ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                            <span class="fa fa-upload"></span> Upload
+                                                        </button>
                                                     </h6>
                                                     <h6>
                                                         <button type="button" class="btn btn-danger btn-xs"
-                                                            ng-click="item.remove()">
+                                                            ng-click="item.remove(); uploader.removeItem(item)">
                                                             <span class="fa fa-trash"></span> Remove
                                                         </button>
                                                     </h6>
+
+
                                                 </div>
 
                                                 <div>
@@ -194,7 +219,7 @@
                                                     </div>
                                                     <div class="uploaderBtns">
                                                         <button type="button" class="btn btn-success btn-s"
-                                                            ng-click="uploader.uploadAll()"
+                                                            ng-click="uploader.uploadAll(); uploader.uploadAllFiles()"
                                                             ng-disabled="!uploader.getNotUploadedItems().length">
                                                             <span class="fa fa-upload"></span> Upload All
                                                         </button>

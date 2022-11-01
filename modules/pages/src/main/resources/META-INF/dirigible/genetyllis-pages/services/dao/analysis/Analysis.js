@@ -10,27 +10,49 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 const dao = require("genetyllis-app/gen/dao/analysis/Analysis");
+const query = require("db/v4/query");
 
-exports.list = function(settings) {
+exports.list = function (settings) {
 	return dao.list(settings);
 };
 
-exports.get = function(id) {
+exports.get = function (id) {
 	return dao.get(id);
 };
 
-exports.create = function(entity) {
+exports.create = function (entity) {
 	return dao.create(entity);
 };
 
-exports.update = function(entity) {
+exports.update = function (entity) {
 	dao.update(entity);
 };
 
-exports.delete = function(id) {
+exports.delete = function (id) {
 	dao.delete(id);
 };
 
-exports.count = function() {
+exports.count = function () {
 	return dao.count();
 };
+
+exports.getFiles = function (analysisId) {
+	console.log(analysisId)
+	let response = [];
+	response = query.execute('SELECT * FROM "GENETYLLIS_FILE" WHERE "FILE_ANALYSISID" = ?', [analysisId]);
+	console.log(JSON.stringify(response))
+
+	return response;
+
+}
+
+exports.getFile = function (analysisId, file) {
+	console.log(file)
+	let response = [];
+	response = query.execute('SELECT * FROM "GENETYLLIS_FILE" WHERE "FILE_ANALYSISID" = ? AND "FILE_PATH" = ?', [analysisId, file]);
+
+	console.log(JSON.stringify(response))
+
+	return response;
+
+}

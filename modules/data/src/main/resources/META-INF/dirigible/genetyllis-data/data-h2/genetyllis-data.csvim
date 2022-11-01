@@ -208,5 +208,15 @@
     "delimEnclosing": "\"",
     "distinguishEmptyFromNull": true,
     "keys": []
+  },
+  {
+    "table": "GENETYLLIS_UPLOADSTATUS",
+    "file": "/genetyllis-data/data-h2/GENETYLLIS_UPLOADSTATUS.csv",
+    "header": true,
+    "useHeaderNames": true,
+    "delimField": ",",
+    "delimEnclosing": "\"",
+    "distinguishEmptyFromNull": true,
+    "keys": []
   }
 ]

@@ -1,0 +1,5 @@
+UPLOADSTATUS_ID,UPLOADSTATUS_NAME
+1,Processing
+2,Error
+3,NoUploads
+4,Complete

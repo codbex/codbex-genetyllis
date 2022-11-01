@@ -2114,6 +2114,21 @@
                         "relationshipName": "File_UploadStatus",
                         "relationshipEntityName": "UploadStatus",
                         "relationshipEntityPerspectiveName": "records"
+                    },
+                    {
+                        "calculatedPropertyExpression": "",
+                        "dataAutoIncrement": "false",
+                        "dataLength": "1000",
+                        "dataName": "FILE_PATH",
+                        "dataNullable": "true",
+                        "dataPrimaryKey": "false",
+                        "dataType": "VARCHAR",
+                        "dataUnique": "false",
+                        "isCalculatedProperty": "false",
+                        "name": "Path",
+                        "widgetIsMajor": "true",
+                        "widgetLength": "20",
+                        "widgetType": "TEXTBOX"
                     }
                 ],
                 "caption": "Manage entity File",

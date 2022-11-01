@@ -2985,6 +2985,26 @@
           "dataNotNull": false,
           "widgetLabel": "UploadStatusId",
           "inputRule": ""
+        },
+        {
+          "calculatedPropertyExpression": "",
+          "dataAutoIncrement": false,
+          "dataLength": "1000",
+          "dataName": "FILE_PATH",
+          "dataNullable": true,
+          "dataPrimaryKey": false,
+          "dataType": "VARCHAR",
+          "dataUnique": false,
+          "isCalculatedProperty": false,
+          "name": "Path",
+          "widgetIsMajor": true,
+          "widgetLength": "20",
+          "widgetType": "TEXTBOX",
+          "dataNotNull": false,
+          "widgetLabel": "Path",
+          "minLength": 0,
+          "maxLength": 20,
+          "inputRule": ""
         }
       ],
       "caption": "Manage entity File",
