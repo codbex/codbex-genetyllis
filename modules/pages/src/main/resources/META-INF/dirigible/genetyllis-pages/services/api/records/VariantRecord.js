@@ -88,7 +88,6 @@ rs.service()
 	.post(function (ctx, request, response) {
 		var variantHGVS = request.getJSON();
 		var result = dao.getByVariantId(variantHGVS);
-		console.log(result)
 		if (result) {
 			http.sendResponseOk(result);
 		} else {

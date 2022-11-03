@@ -190,12 +190,9 @@ rs.service()
 	.resource("")
 	.post(function (ctx, request, response) {
 		let entity = request.getJSON();
-		console.log(JSON.stringify(entity))
 		if (entity.Id && entity.Id !== "") {
-			console.log("update", entity.Id)
 			// dao.update(entity);
 		} else {
-			console.log("create", entity.Id)
 			// entity.Id = dao.create(entity);
 		}
 		response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/Patient.js/" + entity.Id);

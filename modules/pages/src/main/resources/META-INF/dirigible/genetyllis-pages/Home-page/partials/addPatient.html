@@ -312,7 +312,11 @@
 
                             <div class="col">
                                 <div class="row content-end">
-                                    <div class="col-2">
+                                    <div ng-if="!isEdit" class="col-2">
+                                        <input type="submit" ng-click="create()" value="Create"
+                                            class="btn btn-primary filterBtn addFilter" />
+                                    </div>
+                                    <div ng-if="isEdit" class="col-2">
                                         <input type="submit" ng-click="create()" value="Save"
                                             class="btn btn-primary filterBtn addFilter" />
                                     </div>

@@ -194,7 +194,7 @@
                                                     </h6>
                                                     <h6>
                                                         <button type="button" class="btn btn-success btn-xs"
-                                                            ng-click="item.upload()"
+                                                            ng-click="item.upload(); uploader.uploadFile(item)"
                                                             ng-disabled="item.isReady || item.isUploading || item.isSuccess">
                                                             <span class="fa fa-upload"></span> Upload
                                                         </button>

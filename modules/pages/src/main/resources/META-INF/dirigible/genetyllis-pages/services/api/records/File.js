@@ -97,6 +97,8 @@ rs.service()
     .put(function (ctx, request) {
         let entity = request.getJSON();
         entity.Id = ctx.pathParameters.id;
+        console.log(JSON.stringify(entity))
+        console.log("JSON.stringify(entity)")
         dao.update(entity);
         http.sendResponseOk(entity);
     })

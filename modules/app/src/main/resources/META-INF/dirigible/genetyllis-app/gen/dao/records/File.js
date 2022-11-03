@@ -65,8 +65,7 @@ exports.create = function (entity) {
 
 exports.update = function (entity) {
 	// EntityUtils.setLocalDate(entity, "DateUploaded");
-	console.log("................................///////////////////////////////")
-	console.log(JSON.stringify(entity))
+
 	dao.update(entity);
 	triggerEvent("Update", {
 		table: "GENETYLLIS_FILE",
