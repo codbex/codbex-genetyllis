@@ -435,7 +435,9 @@
                                 </div>
                                 <div class="per-page">
                                     <div class="align-paragraph">
-                                        <p class="">Showing {{selectedPerPage}} of {{totalItems}}</p>
+                                        <p class="">Showing
+                                            {{totalItems < selectedPerPage ? totalItems: selectedPerPage}} of
+                                            {{totalItems}}</p>
                                     </div>
                                     <div class="export">
                                         <select ng-model="selectedPerPage" ng-options="x for x in perPageData"

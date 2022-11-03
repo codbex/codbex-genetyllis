@@ -257,7 +257,7 @@
                 <div class="variantTable">
                     <div class="holder">
                         <div class="row">
-                            <div class="pagingVariant">
+                            <div class="pagingVariant" style="display:flex;justify-content: flex-end;">
                                 <!-- <div class="select-columns">
                                     <div ng-dropdown-multiselect="" options="variantsTableData"
                                         extra-settings="patientsTableSettings" selected-model="variantTableModel"
@@ -265,7 +265,10 @@
                                 </div> -->
                                 <div class="per-page">
                                     <div class="align-paragraph">
-                                        <p class="">Showing {{selectedPerPage}} of {{totalItems}}</p>
+                                        <p class="">Showing
+                                            {{totalItems < selectedPerPage ? totalItems: selectedPerPage}} of
+                                            {{totalItems}}
+                                        </p>
                                     </div>
                                     <div class="export">
                                         <select ng-model="selectedPerPage" ng-options="x for x in perPageData"

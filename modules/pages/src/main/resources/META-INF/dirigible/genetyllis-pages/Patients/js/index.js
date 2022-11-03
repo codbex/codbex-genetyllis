@@ -152,7 +152,6 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
             .then(function (response) {
                 $scope.patientsDetails = [];
                 response.data.data.forEach((patientResult, i) => {
-                    console.log(patientResult, "patientResult")
                     patientObject = {};
                     patientObject.Id = patientResult.PATIENT_ID;
                     patientObject.LabId = patientResult.PATIENT_LABID;
@@ -182,6 +181,7 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
                     $scope.patientsDetails.push(patientObject);
 
                 })
+                console.log(response.data.data.length)
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
             }, function (response) {
@@ -200,7 +200,6 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
     }
 
     $scope.familyHistoryCheck = function (data) {
-        console.log(data, ":datrasss")
     }
 
     // $http.get(variantDetailsApi)
@@ -225,7 +224,6 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
             $http.get(pathologyApi + "/filterPathology/" + pathologyId)
                 .then(data => {
                     conceptIds = data.data
-                    console.log("in", conceptIds)
                 })
         }
     }
@@ -315,7 +313,6 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
     if ($scope.bulgarian == undefined) $scope.bulgarian = false;
     if ($scope.otherEthnicity == undefined) $scope.otherEthnicity = false;
     $scope.maleFunc = function () {
-        console.log($scope.femaleCheckbox)
         if (!$scope.maleCheckbox) {
             $scope.GENETYLLIS_PATIENT.PATIENT_GENDERID.push(1)
         } else {
@@ -443,7 +440,6 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
         $sessionStorage.$default({
             patient: data.Id
         });
-        console.log($sessionStorage.patient, "data");
         // $sessionStorage.$reset()
     }
 
