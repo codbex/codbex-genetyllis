@@ -132,7 +132,7 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
     $scope.isChecked = false;
 
     var query = {};
-
+    $scope.showingItems;
     $scope.addFilter = function () {
         query.GENETYLLIS_PATIENT = angular.copy($scope.GENETYLLIS_PATIENT);
         query.GENETYLLIS_CLINICALHISTORY = angular.copy($scope.GENETYLLIS_CLINICALHISTORY);
@@ -181,7 +181,7 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
                     $scope.patientsDetails.push(patientObject);
 
                 })
-                console.log(response.data.data.length)
+                $scope.showingItems = response.data.data.length
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
             }, function (response) {

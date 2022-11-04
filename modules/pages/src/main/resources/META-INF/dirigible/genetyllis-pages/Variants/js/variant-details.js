@@ -16,6 +16,7 @@ variantDetails.config(function (paginationTemplateProvider) {
 });
 
 variantDetails.controller('variantDetailsController', ['$scope', '$http', '$localStorage', '$sessionStorage', function ($scope, $http, $localStorage, $sessionStorage) {
+    $scope.showingItems;
 
     $scope.clinicalSignificance = ["Accession", "Pathology", "Significance", "Evaluation", "Review"]
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
@@ -367,6 +368,8 @@ variantDetails.controller('variantDetailsController', ['$scope', '$http', '$loca
                 });
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
+                $scope.showingItems = response.data.data.length;
+
             })
         // $sessionStorage.$reset();
 

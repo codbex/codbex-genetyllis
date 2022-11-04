@@ -20,7 +20,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
     const notificationOptionsApi = '/services/v4/js/genetyllis-pages/services/api/users/Notification.js';
     // const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
     var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
-
+    $scope.showingItems;
     $scope.clickedUrl = "../images/flagged.svg";
     $scope.notClickedUrl = "../images/notFlagged.svg";
 
@@ -304,6 +304,7 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
 
                     $scope.variantsDetails.push(variantObj)
                 })
+                $scope.showingItems = response.data.data.length;
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 

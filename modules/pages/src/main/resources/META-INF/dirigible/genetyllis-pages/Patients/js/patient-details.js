@@ -33,6 +33,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
             patientId: $scope.patientIdFromStorage
         });
     }
+    $scope.showingItems;
     $scope.getIdFromStorage = function () {
         $http.get(patientsOptionsApi + "/loadPatientFormData/" + $scope.patientIdFromStorage)
             .then(data => {
@@ -382,7 +383,7 @@ patientDetails.controller('patientDetailsController', ['$scope', '$http', '$sess
                     })
                     $scope.patientsDetailsTable.push(patientObject);
                 })
-
+                $scope.showingItems = response.data.data.length;
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 

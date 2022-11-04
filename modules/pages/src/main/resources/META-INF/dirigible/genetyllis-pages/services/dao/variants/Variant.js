@@ -171,6 +171,7 @@ exports.filterVariantsPatientDetails = function (variant) {
 	return response;
 }
 exports.filterVariants = function (variant) {
+	console.log(JSON.stringify(variant))
 	initFilterSql();
 	let response = {};
 	let countSql = "";
@@ -222,7 +223,7 @@ exports.filterVariants = function (variant) {
 
 
 		/* LOAD NOTIFICATION */
-
+		console.log("bbbbb")
 		let notificationQuery = 'SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID"' + variantIdsInStatement;
 		let notification = query.execute(notificationQuery, variantIds);
 
@@ -234,11 +235,15 @@ exports.filterVariants = function (variant) {
 		let alleleFrequency = query.execute(alleleFrequencyQuery, variantIds);
 		/* LOAD GENES */
 		let geneIds = response.data.map(foundVariant => foundVariant.VARIANT_GENEID);
+		console.log(geneIds)
 		let geneIdsInStatement = addArrayValuesToSql(geneIds, false);
 		let geneQuery = 'SELECT * FROM "GENETYLLIS_GENE" WHERE "GENE_ID"' + geneIdsInStatement;
 		let genes = query.execute(geneQuery, geneIds);
 		/* MAP CLINICALSIGNIFICANCE, ALLELEFREQUENCY AND GENES TO VARIANT */
+		console.log("ccccc")
+
 		response.data.forEach(foundVariant => {
+
 			foundVariant.clinicalSignificance = clinicalSignificance.filter(significance => significance.CLINICALSIGNIFICANCE_VARIANTID === foundVariant.VARIANT_ID);
 			foundVariant.alleleFrequency = alleleFrequency.filter(allele => allele.ALLELEFREQUENCY_VARIANTID === foundVariant.VARIANT_ID);
 			foundVariant.genes = genes.filter(gene => gene.GENE_ID === foundVariant.VARIANT_GENEID);
