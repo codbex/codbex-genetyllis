@@ -37,21 +37,17 @@ exports.count = function () {
 };
 
 exports.getFiles = function (analysisId) {
-	console.log(analysisId)
 	let response = [];
 	response = query.execute('SELECT * FROM "GENETYLLIS_FILE" WHERE "FILE_ANALYSISID" = ?', [analysisId]);
-	console.log(JSON.stringify(response))
 
 	return response;
 
 }
 
 exports.getFile = function (analysisId, file) {
-	console.log(file)
 	let response = [];
 	response = query.execute('SELECT * FROM "GENETYLLIS_FILE" WHERE "FILE_ANALYSISID" = ? AND "FILE_PATH" = ?', [analysisId, file]);
 
-	console.log(JSON.stringify(response))
 
 	return response;
 

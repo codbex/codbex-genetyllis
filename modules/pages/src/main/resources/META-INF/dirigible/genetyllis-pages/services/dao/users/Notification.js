@@ -37,10 +37,8 @@ exports.count = function () {
 };
 
 exports.getByVariantId = function (variantId) {
-	console.log(variantId)
 	let response = {};
 	response = query.execute('SELECT * FROM "GENETYLLIS_NOTIFICATION" WHERE "NOTIFICATION_VARIANTID" = ?', [variantId]);
-	console.log(JSON.stringify(response))
 
 	if (response.length !== 0) {
 		let notificationObject = {}
@@ -54,7 +52,6 @@ exports.getByVariantId = function (variantId) {
 
 		dao.update(notificationObject);
 	} else {
-		console.log("_________~~~~~~~~~~~~~~________________~~~~~~~~~~~~")
 		let notificationObject = {}
 
 		notificationObject.UserUserId = null;

@@ -16,7 +16,7 @@ var daoNotification = require("genetyllis-app/gen/dao/users/Notification.js");
 var request = require("http/v4/request");
 
 if (request.getMethod() === "POST") {
-    console.log("innn")
+
     const body = request.getJSON();
     let notificationId = body.notificationId;
     markNotificationSeen(notificationId);
@@ -32,7 +32,6 @@ function getNotifications(userId) {
     var resultset = query.execute(statement, [userId], "local", "DefaultDB");
 
     // return resultset;
-    console.log(JSON.stringify(resultset));
 }
 
 function markNotificationSeen(notificationId) {
@@ -40,7 +39,7 @@ function markNotificationSeen(notificationId) {
     entityNotification.SeenFlag = true;
     entityNotification.ChangeFlag = false;
     daoNotification.update(entityNotification);
-    console.log(JSON.stringify(entityNotification));
+
 }
 
 

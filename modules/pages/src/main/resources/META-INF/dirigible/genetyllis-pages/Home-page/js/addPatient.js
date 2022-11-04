@@ -38,6 +38,8 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
     var relationApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Relation.js';
     var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
 
+    $scope.isEdit = gedPIDFromStorage === undefined ? false : true
+
     $scope.entity = {
         Id: '',
         LabId: '',

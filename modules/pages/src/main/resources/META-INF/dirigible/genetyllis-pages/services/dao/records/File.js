@@ -11,12 +11,13 @@ exports.get = function (id) {
 };
 
 exports.create = function (entity) {
-    // // console.log(JSON.stringify(entity))
-    // console.log(JSON.stringify(exports.getFile(entity)))
-    return dao.create(exports.getFile(entity));
+    console.log("JSON.stringify(entdsaadsadsdsaadssadasdasdsdasdasadsdasadsdasity)")
+    return dao.create(exports.checkNonExistantFiles(entity));
 };
 
 exports.update = function (entity) {
+    console.log(JSON.stringify(entity))
+    console.log("JSON.stringify(entity)")
     dao.update(entity);
 };
 
@@ -37,7 +38,7 @@ function triggerEvent(operation, data) {
 }
 
 //function to return files that are not uploaded for a certain analysis
-exports.getFile = function (fileArray) {
+exports.checkNonExistantFiles = function (fileArray) {
     nonExistantFileEntries = [];
     fileArray.forEach(file => {
         let response = [];
@@ -50,4 +51,10 @@ exports.getFile = function (fileArray) {
     return nonExistantFileEntries;
 
 
+}
+
+exports.getFile = function (file) {
+    console.log(file)
+    console.log("lkdasl;kdsakl;dsakl;ads;kldsa;klads;lkads")
+    return query.execute('SELECT * FROM "GENETYLLIS_FILE" WHERE "FILE_ANALYSISID" = ? AND "FILE_PATH" = ?', [file.AnalysisId, file.Path]);
 }

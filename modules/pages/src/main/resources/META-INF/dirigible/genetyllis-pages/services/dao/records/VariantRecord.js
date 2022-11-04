@@ -37,10 +37,8 @@ exports.count = function () {
 };
 
 exports.getByVariantId = function (variantId) {
-	console.log(variantId)
 	let response = [];
 	response = query.execute('SELECT * FROM "GENETYLLIS_VARIANTRECORD" WHERE "VARIANTRECORD_VARIANTID" = ? AND "VARIANTRECORD_PATIENTID" = ?', [variantId.VARIANTRECORD_VARIANTID, variantId.VARIANTRECORD_PATIENTID]);
-	console.log(JSON.stringify(response))
 	if (response.length !== 0) {
 		response.forEach(resp => {
 			let variantRecordObject = {}

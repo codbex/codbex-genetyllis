@@ -34,8 +34,7 @@ exports.update = function (entity) {
 };
 
 exports.delete = function (id) {
-	console.log(id)
-	// console.log("-------------------------------------------");
+
 	// query.execute('DELETE FROM "GENETYLLIS_PATIENT" WHERE "PATIENT_ID" = ?', [id])
 	dao.delete(id);
 };

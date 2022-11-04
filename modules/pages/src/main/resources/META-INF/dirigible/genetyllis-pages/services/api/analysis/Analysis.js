@@ -143,8 +143,7 @@ rs.service()
 	.resource("{id}")
 	.put(function (ctx, request) {
 		let entity = request.getJSON();
-		console.log(entity)
-		console.log("...............................")
+
 		entity.Id = ctx.pathParameters.id;
 		dao.update(entity);
 		http.sendResponseOk(entity);
