@@ -18,8 +18,6 @@ patients.config(function (paginationTemplateProvider) {
 patients.controller('patientsController', ['$scope', '$http', '$sessionStorage', function ($scope, $http, $sessionStorage) {
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
 
-    const variantDetailsApi = '/services/v4/js/genetyllis-pages/services/variants.js';
-    const alleleFrDetailsApi = '/services/v4/js/genetyllis-pages/services/alleleFr.js';
     var pathologyApi = '/services/v4/js/genetyllis-pages/services/api/nomenclature/Pathology.js';
     // _|_
     $scope.patientsTableModel = [];
@@ -437,10 +435,10 @@ patients.controller('patientsController', ['$scope', '$http', '$sessionStorage',
     }
 
     $scope.redirectPatients = function (data) {
+        console.log(data.Id)
         $sessionStorage.$default({
             patient: data.Id
         });
-        // $sessionStorage.$reset()
     }
 
     //TODO add more data to redirectData if needed

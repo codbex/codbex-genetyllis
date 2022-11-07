@@ -89,13 +89,27 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
                 persistFamilyMembers($scope.familyMembersArray);
 
                 $scope.familyClinicalHistoryDataArray = {}
-
-            }, function (response) {
-            });
+            })
     };
+    $scope.udpatePatient = function () {
+        $scope.clinicalHistoryDataArray.forEach(el => {
+            let clinicalQuery = {}
+            clinicalQuery.Id = el.Id
+            clinicalQuery.PatientId = 1
+            clinicalQuery.PathologyId = el.PathologyCui
+            clinicalQuery.AgeOnset = el.AgeOnset
+            clinicalQuery.Notes = el.Notes
+
+            console.log(clinicalQuery, "HEre")
+            $http.post(clinicalHistroryApi + "/updatePatient", JSON.stringify(clinicalQuery))
+                .then(data => {
+                    console.log(data, "Here")
+                })
+        })
+    }
 
     function persistClinicalHistory(clinicalHistoryDataArray, patientId) {
-
+        console.log(clinicalHistoryDataArray, "persistClinicalHistory")
         clinicalHistoryDataArray.forEach(clinicalHistory => {
             clinicalHistory.Id = clinicalHistory.Id;
             clinicalHistory.PatientId = patientId;
@@ -232,7 +246,6 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
         if ($scope.familyClinicalHistoryDataArray.ClinicalHistoryDataArray.lenght === 0) $scope.isEmptyTableFamilyHistory = false;
 
         $scope.dataArray.push($scope.familyClinicalHistoryDataArray)
-        console.log('dataArray: ', $scope.dataArray)
 
         $scope.familyClinicalHistoryData = {};
     };
@@ -345,7 +358,7 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
                 })
                 $("#familyMemberGrid").dxDataGrid("instance").refresh();
             })
-        $sessionStorage.$reset();
+        // $sessionStorage.$reset();
     }
 
     // $scope.loadFamilyMemberId= function(){
@@ -669,12 +682,22 @@ addPatient.controller('addPatientController', ['$scope', '$http', '$localStorage
         }
         return result;
     }
-
+    $scope.isRemoved = true
+    $scope.confirmRemovePatient = false;
     $scope.removeUser = function () {
-        $http.delete(patientsOptionsApi + '/' + 11)
+        $scope.confirmRemovePatient = true
+    }
+    $scope.accept = function () {
+        $scope.isRemoved = false
+        $http.delete(patientsOptionsApi + '/' + gedPIDFromStorage)
             .then(data => {
                 console.log("data", data)
 
             })
     }
+    $scope.reject = function () {
+        console.log("Hello")
+        $scope.confirmRemovePatient = false;
+    }
+
 }]);

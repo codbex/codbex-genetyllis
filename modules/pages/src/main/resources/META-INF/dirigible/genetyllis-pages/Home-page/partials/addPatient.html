@@ -54,7 +54,13 @@
                 </div>
             </div>
         </div>
-        <div class="patient-wrapper">
+        <div ng-if="confirmRemovePatient && isRemoved">
+            ARE U SURE!!!
+            <button ng-click="accept()">YES</button>
+            <button ng-click="reject()">NO</button>
+        </div>
+        <div ng-if="!isRemoved">CONGRATS MY FRENDO </div>
+        <div class="patient-wrapper" ng-if="!confirmRemovePatient">
             <div class="container">
                 <div class="row">
                     <div class="col-6 align-items ">
@@ -303,11 +309,10 @@
                 <div class="btn-form">
                     <div class="holder">
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-2 ">
 
-                                <button class="btn btn-sm btn-danger"
-                                    ng-confirm-click="Are you sure to delete this record ?"
-                                    confirmed-click="removeUser()">Delete patient</button>
+                                <button class="btn btn-sm btn-danger" ng-if="isEdit" ng-click="removeUser()">Delete
+                                    patient</button>
                             </div>
 
                             <div class="col">
@@ -317,7 +322,7 @@
                                             class="btn btn-primary filterBtn addFilter" />
                                     </div>
                                     <div ng-if="isEdit" class="col-2">
-                                        <input type="submit" ng-click="create()" value="Save"
+                                        <input type="submit" ng-click="udpatePatient()" value="Save"
                                             class="btn btn-primary filterBtn addFilter" />
                                     </div>
                                     <div class="col-2">
@@ -328,6 +333,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
 
 
