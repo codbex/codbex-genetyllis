@@ -34,6 +34,7 @@ addAnalysis.config(['$httpProvider', function ($httpProvider) {
 }])
 
 addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploader', '$sessionStorage', function ($scope, $http, FileUploader, $sessionStorage) {
+
     const patientidOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
     const patientsOptionsApi = '/services/v4/js/genetyllis-pages/services/api/patients/Patient.js';
     const fileUploadApi = '/services/v4/js/genetyllis-pages/services/api/records/File.js';
@@ -52,7 +53,7 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
 
     $scope.files = [];
     function filesLoad() {
-        $http.get(analysisApi + "/getFiles/" + $sessionStorage.analysis.Id)
+        $http.get(analysisApi + "/getFiles/" + analysisId)
             .then(function (data) {
                 $scope.files = data.data;
                 $scope.files.forEach(file => {
@@ -64,10 +65,7 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
                     }
                 })
             });
-
-
     }
-    filesLoad();
 
     console.log($scope.files)
 
@@ -89,9 +87,9 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
     });
 
     // UPLOADER CALLBACKS
-
-    console.log("id" + $sessionStorage.analysis.Id)
-    var analysisId = $sessionStorage.analysis.Id
+    console.log($sessionStorage?.analysis?.Id === undefined)
+    var analysisId = $sessionStorage?.analysis?.Id !== undefined ? $sessionStorage.analysis.Id : 0
+    // console.log("id" + $sessionStorage.analysis.Id)
     uploader.uploadAllFiles = function () {
         uploader.queue.forEach(file => {
             uploader.uploadFile(file)
@@ -275,4 +273,6 @@ addAnalysis.controller('addAnalysisController', ['$scope', '$http', 'FileUploade
             // $sessionStorage.$reset()
         })
     }
+
+    filesLoad();
 }])

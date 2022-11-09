@@ -25,8 +25,12 @@ const daoPathology = require("genetyllis-app/gen/dao/nomenclature/Pathology");
 const daoAlleleFreqeuncy = require("genetyllis-app/gen/dao/variants/AlleleFrequency.js");
 const myVariantInfoUrl = "https://myvariant.info/v1/variant/";
 
+let nullGeneId = 0
+
 if (request.getMethod() === "POST") {
+
     if (upload.isMultipartContent()) {
+        checkForNullGene()
         let patientId = request.getParameter("PatientId");
         if (!patientId) {
 
@@ -53,6 +57,22 @@ if (request.getMethod() === "POST") {
     }
 } else if (request.getMethod() === "GET") {
 
+}
+
+function checkForNullGene() {
+    let isNullGenePresent = databaseQuery("SELECT * FROM GENETYLLIS_GENE", []).length;
+    // 0,NULL,NULL,FALSE
+    if (!isNullGenePresent) {
+        var entityGene = {}
+        entityGene.Id = 5
+        entityGene.GeneId = "NULL"
+        entityGene.Name = "NULL"
+
+        nullGeneId = daoGene.create(entityGene)
+    }
+    else
+        nullGeneId = databaseQuery("SELECT * FROM GENETYLLIS_GENE", [])[0].GENE_ID;
+    console.log(nullGeneId)
 }
 
 function processVCFFile(fileName, content, patientId, analysisId) {
@@ -91,8 +111,6 @@ function addVariant(dbHgvsEntries, variantContext) {
         + ">" + variantContext.getAlternateAlleles()[0].getBaseString();
 
     if (doesHgvsExist(dbHgvsEntries, entityVariant.HGVS)) {
-
-
         let variantFromDb = databaseQuery("SELECT * FROM GENETYLLIS_VARIANT WHERE VARIANT_HGVS = ?", [entityVariant.HGVS]);
         // let variantRecordFromDb = databaseQuery(" SELECT VARIANT_HGVS FROM GENETYLLIS_VARIANT JOIN GENETYLLIS_VARIANTRECORD ON GENETYLLIS_VARIANT.VARIANT_ID = GENETYLLIS_VARIANTRECORD.VARIANTRECORD_VARIANTID WHERE VARIANTRECORD_PATIENTID = ?", [entityVariant.HGVS]);
 
@@ -108,8 +126,6 @@ function addVariant(dbHgvsEntries, variantContext) {
         entityVariant.Alternative = variantContext.getAlternateAlleles()[0].getBaseString() // C
 
         // entityVariant.Id = daoVariant.create(entityVariant);
-
-
 
         var httpResponse = httpClient.get(myVariantInfoUrl + entityVariant.HGVS.replace(">", "%3E"));
 
@@ -129,12 +145,15 @@ function addVariant(dbHgvsEntries, variantContext) {
             //GENE
             if (myVariantJSON.cadd !== undefined && myVariantJSON.cadd.gene !== undefined) {
                 entityVariantArray = addGene(myVariantJSON, entityVariant)
+                // console.log("//////////////////////////////////////////////////////")
+                console.log(JSON.stringify(entityVariantArray))
             }
             else {
                 entityVariant.Region = "";
                 entityVariant.RegionNum = "";
-                entityVariant.GeneId = null;
+                entityVariant.GeneId = nullGeneId;
                 entityVariant.Id = daoVariant.create(entityVariant);
+                console.log(JSON.stringify(entityVariant) + "1")
                 entityVariantArray.push(entityVariant)
             }
 
@@ -146,19 +165,19 @@ function addVariant(dbHgvsEntries, variantContext) {
                 addAlleleFrequency(myVariantJSON, variant.Id);
             })
         } else {
-            entityVariant.GeneId = null;
+            entityVariant.GeneId = nullGeneId;
             entityVariant.Region = "";
             entityVariant.RegionNum = "";
             entityVariant.Consequence = "";
             entityVariant.ConsequenceDetails = "";
 
             entityVariant.Id = daoVariant.create(entityVariant);
+            console.log(JSON.stringify(entityVariant) + "2")
             entityVariantArray.push(entityVariant);
         }
 
         return entityVariantArray;
     }
-
 }
 
 function addGene(myVariantJSON, entityVariant) {
@@ -189,14 +208,16 @@ function addGene(myVariantJSON, entityVariant) {
                     entityVariant.RegionNum = "";
                 }
 
-                entityVariant.GeneId = daoGene.create(entityGene);
-
+                entityVariantBuff.GeneId = daoGene.create(entityGene);
                 entityVariantBuff.Id = daoVariant.create(entityVariantBuff)
+                console.log(JSON.stringify(entityVariant) + "3")
                 entityVariantArray.push(entityVariantBuff);
             }
             //TODO What if there's info but no gene_id
             else {
+                entityVariant.GeneId = nullGeneId;
                 entityVariant.Id = daoVariant.create(entityVariant);
+                console.log(JSON.stringify(entityVariant) + "4")
                 entityVariantArray.push(entityVariant);
             }
         }
@@ -221,11 +242,14 @@ function addGene(myVariantJSON, entityVariant) {
 
             entityVariant.GeneId = daoGene.create(entityGene);
             entityVariant.Id = daoVariant.create(entityVariant)
+            console.log(JSON.stringify(entityVariant) + "5")
             entityVariantArray.push(entityVariant);
         }
         //TODO What if there's info but no gene_id
         else {
+            entityVariant.GeneId = nullGeneId;
             entityVariant.Id = daoVariant.create(entityVariant);
+            console.log(JSON.stringify(entityVariant) + "6")
             entityVariantArray.push(entityVariant);
         }
     }
@@ -398,7 +422,6 @@ function addVariantFilter(variantContext, variantRecordId) {
 function doesHgvsExist(hgvsArray, hgvs) {
     var hasMatch = false;
     for (var index = 0; index < hgvsArray.length; ++index) {
-
         var currentHGVS = hgvsArray[index];
 
         if (JSON.stringify(currentHGVS.VARIANT_HGVS) == JSON.stringify(hgvs)) {

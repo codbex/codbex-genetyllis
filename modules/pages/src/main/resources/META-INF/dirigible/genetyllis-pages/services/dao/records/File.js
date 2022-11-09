@@ -11,13 +11,13 @@ exports.get = function (id) {
 };
 
 exports.create = function (entity) {
-    console.log("JSON.stringify(entdsaadsadsdsaadssadasdasdsdasdasadsdasadsdasity)")
+    // console.log("JSON.stringify(entdsaadsadsdsaadssadasdasdsdasdasadsdasadsdasity)")
     return dao.create(exports.checkNonExistantFiles(entity));
 };
 
 exports.update = function (entity) {
-    console.log(JSON.stringify(entity))
-    console.log("JSON.stringify(entity)")
+    // console.log(JSON.stringify(entity))
+    // console.log("JSON.stringify(entity)")
     dao.update(entity);
 };
 
@@ -54,7 +54,7 @@ exports.checkNonExistantFiles = function (fileArray) {
 }
 
 exports.getFile = function (file) {
-    console.log(file)
-    console.log("lkdasl;kdsakl;dsakl;ads;kldsa;klads;lkads")
+    // console.log(file)
+    // console.log("lkdasl;kdsakl;dsakl;ads;kldsa;klads;lkads")
     return query.execute('SELECT * FROM "GENETYLLIS_FILE" WHERE "FILE_ANALYSISID" = ? AND "FILE_PATH" = ?', [file.AnalysisId, file.Path]);
 }

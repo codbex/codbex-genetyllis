@@ -307,6 +307,8 @@ page.controller('VariantController', ['$scope', '$http', '$localStorage', '$sess
                 $scope.totalPages = response.data.totalPages;
                 $scope.totalItems = response.data.totalItems;
 
+                console.log($scope.variantsDetails)
+
             }, function (response) {
             });
         // isPageChange = false;

@@ -73,7 +73,7 @@
                                                 </option>
 
                                             </select>
-                                            <span ng-if="isLoaded">{{entity.Provider}}</span>
+                                            <div class="form-control" ng-if="isLoaded">{{entity.Provider}}</div>
                                         </div>
                                         <div class="col">
                                             <select ng-if="!isLoaded" class="form-control "
@@ -84,14 +84,14 @@
                                                 </option>
 
                                             </select>
-                                            <span ng-if="isLoaded">{{entity.Platform}}</span>
+                                            <div class="form-control" ng-if="isLoaded">{{entity.Platform}}</div>
                                         </div>
                                         <div class="col">
                                             <input ng-if="!isLoaded" type="text" class="form-control"
                                                 placeholder="Date of analysis" ng-model="entity.BirthDate"
                                                 onfocus="(this.type='date')" onblur="(this.type='text')" required>
 
-                                            <span ng-if="isLoaded">{{entity.Date}}</span>
+                                            <div class="form-control" ng-if="isLoaded">{{entity.Date}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -130,7 +130,6 @@
                                         </div>
                                         <a ng-if="isLoaded" href="../../Patients/partials/patient-details.html"
                                             ng-click="redirectPatients(entity.PatientId)">{{entity.LabId}}</a>
-
                                     </div>
                                 </div>
                             </div>
