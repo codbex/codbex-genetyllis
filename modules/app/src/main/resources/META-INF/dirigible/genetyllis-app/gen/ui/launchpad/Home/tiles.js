@@ -3,14 +3,17 @@
  *
  * Do not modify the content as it may be re-generated again.
  */
-const response = require("http/v4/response");
-const extensions = require("core/v4/extensions");
+const response = require("http/response");
+const extensions = require("extensions/extensions");
 
 let tiles = {};
 
 let tileExtensions = extensions.getExtensions("genetyllis-app-tile");
 for (let i = 0; tileExtensions !== null && i < tileExtensions.length; i++) {
     let tileExtension = require(tileExtensions[i]);
+    if (typeof tileExtension.getTile !== "function") {
+        continue;
+    }
     let tile = tileExtension.getTile();
     if (!tiles[tile.group]) {
         tiles[tile.group] = [];
@@ -43,5 +46,5 @@ let sortedTiles = {};
 for (let i = 0; i < sortedGroups.length; i++) {
     sortedTiles[sortedGroups[i].name] = sortedGroups[i].tiles;
 }
-
+response.setContentType("application/json");
 response.println(JSON.stringify(sortedTiles));

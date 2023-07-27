@@ -6,7 +6,7 @@
 const viewData = {
     id: "Filter-details",
     label: "Filter",
-    link: "/services/v4/web/genetyllis-app/gen/ui/records/VariantRecord/Filter/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/records/VariantRecord/Filter/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

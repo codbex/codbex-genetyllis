@@ -6,7 +6,7 @@
 const viewData = {
     id: "Population-details",
     label: "Population",
-    link: "/services/v4/web/genetyllis-app/gen/ui/nomenclature/Population/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/nomenclature/Population/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

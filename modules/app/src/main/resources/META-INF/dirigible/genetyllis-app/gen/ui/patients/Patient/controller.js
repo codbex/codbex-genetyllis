@@ -3,7 +3,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHubProvider.eventIdPrefix = 'genetyllis-app.patients.Patient';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/patients/Patient.js";
+		entityApiProvider.baseUrl = "/services/js/genetyllis-app/gen/api/patients/Patient.js";
 	}])
 	.controller('PageController', ['$scope', '$http', 'messageHub', 'entityApi', function ($scope, $http, messageHub, entityApi) {
 
@@ -143,7 +143,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		$scope.optionsPhysicianId = [];
 		$scope.optionsPopulationId = [];
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/nomenclature/Gender.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/nomenclature/Gender.js").then(function (response) {
 			$scope.optionsGenderId = response.data.map(e => {
 				return {
 					value: e.Id,
@@ -152,7 +152,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/analysis/Physician.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/analysis/Physician.js").then(function (response) {
 			$scope.optionsPhysicianId = response.data.map(e => {
 				return {
 					value: e.Id,
@@ -161,7 +161,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/nomenclature/Population.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/nomenclature/Population.js").then(function (response) {
 			$scope.optionsPopulationId = response.data.map(e => {
 				return {
 					value: e.Id,

@@ -8,7 +8,7 @@ const viewData = {
     label: "Gene",
     factory: "frame",
     region: "center",
-    link: "/services/v4/web/genetyllis-app/gen/ui/genes/Gene/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/genes/Gene/index.html",
 };
 
 if (typeof exports !== 'undefined') {

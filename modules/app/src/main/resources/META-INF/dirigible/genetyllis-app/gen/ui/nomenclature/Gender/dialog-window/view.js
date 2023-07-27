@@ -6,7 +6,7 @@
 const viewData = {
     id: "Gender-details",
     label: "Gender",
-    link: "/services/v4/web/genetyllis-app/gen/ui/nomenclature/Gender/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/nomenclature/Gender/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

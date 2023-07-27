@@ -6,7 +6,7 @@
 const viewData = {
     id: "Institution-details",
     label: "Institution",
-    link: "/services/v4/web/genetyllis-app/gen/ui/analysis/Institution/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/analysis/Institution/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

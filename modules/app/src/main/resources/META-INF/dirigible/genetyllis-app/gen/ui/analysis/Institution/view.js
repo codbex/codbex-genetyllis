@@ -8,7 +8,7 @@ const viewData = {
     label: "Institution",
     factory: "frame",
     region: "center",
-    link: "/services/v4/web/genetyllis-app/gen/ui/analysis/Institution/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/analysis/Institution/index.html",
 };
 
 if (typeof exports !== 'undefined') {

@@ -8,10 +8,10 @@
 		<link rel="icon" href="data:;base64,iVBORw0KGgo=" dg-brand-icon />
 		<title dg-brand-title></title>
 		<theme></theme>
-		<script type="text/javascript" src="/services/v4/js/resources-core/services/loader.js?id=application-view-js">
+		<script type="text/javascript" src="/services/js/resources-core/services/loader.js?id=application-view-js">
 		</script>
 		<link type="text/css" rel="stylesheet"
-			href="/services/v4/js/resources-core/services/loader.js?id=application-view-css" />
+			href="/services/js/resources-core/services/loader.js?id=application-view-css" />
 
 		<script type="text/javascript" src="controller.js"></script>
 	</head>
@@ -27,7 +27,7 @@
 				<br>
 				<div class="fd-panel fd-panel--fixed" ng-repeat="group in groups">
 					<div class="fd-panel__header">
-						<h4 class="fd-panel__title">{{group}}</h4>
+						<h4 class="fd-panel__title" style="text-transform: capitalize;">{{group.replaceAll('-', ' ').replaceAll('_', ' ')}}</h4>
 					</div>
 					<div role="region" class="fd-panel__content" style="border-bottom: none">
 						<div class="fd-container">

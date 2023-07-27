@@ -8,7 +8,7 @@ const viewData = {
     label: "VariantRecord",
     factory: "frame",
     region: "left",
-    link: "/services/v4/web/genetyllis-app/gen/ui/records/VariantRecord/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/records/VariantRecord/index.html",
 };
 
 if (typeof exports !== 'undefined') {

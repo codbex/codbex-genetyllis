@@ -5,6 +5,13 @@
  */
 
 const defaultMenuItems = [
+	{
+        label: "Applications Portal",
+        action: "open",
+        order: 1,
+        data: "/services/web/portal/",
+        divider: false
+    },
     {
         label: "Help Portal",
         action: "open",
@@ -42,7 +49,7 @@ const defaultMenuItems = [
     }
 ];
 
-let config = require("core/v4/configurations");
+let config = require("core/configurations");
 
 exports.getMenu = function () {
     let menu = {

@@ -8,7 +8,7 @@ const viewData = {
     label: "Population",
     factory: "frame",
     region: "center",
-    link: "/services/v4/web/genetyllis-app/gen/ui/nomenclature/Population/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/nomenclature/Population/index.html",
 };
 
 if (typeof exports !== 'undefined') {

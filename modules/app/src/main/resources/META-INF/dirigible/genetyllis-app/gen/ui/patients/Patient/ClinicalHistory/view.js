@@ -8,7 +8,7 @@ const viewData = {
     label: "ClinicalHistory",
     factory: "frame",
     region: "bottom",
-    link: "/services/v4/web/genetyllis-app/gen/ui/patients/Patient/ClinicalHistory/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/patients/Patient/ClinicalHistory/index.html",
 };
 
 if (typeof exports !== 'undefined') {

@@ -8,7 +8,7 @@ const viewData = {
     label: "Patient",
     factory: "frame",
     region: "left",
-    link: "/services/v4/web/genetyllis-app/gen/ui/patients/Patient/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/patients/Patient/index.html",
 };
 
 if (typeof exports !== 'undefined') {

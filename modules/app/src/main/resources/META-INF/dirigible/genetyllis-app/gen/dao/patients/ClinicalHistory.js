@@ -1,6 +1,6 @@
-const query = require("db/v4/query");
-const producer = require("messaging/v4/producer");
-const daoApi = require("db/v4/dao");
+const query = require("db/query");
+const producer = require("messaging/producer");
+const daoApi = require("db/dao");
 
 let dao = daoApi.create({
 	table: "GENETYLLIS_CLINICALHISTORY",

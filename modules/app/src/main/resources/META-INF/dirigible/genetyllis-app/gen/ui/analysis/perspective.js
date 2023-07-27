@@ -6,7 +6,7 @@
 const perspectiveData = {
 	id: "analysis",
 	name: "analysis",
-	link: "/services/v4/web/genetyllis-app/gen/ui/analysis/index.html",
+	link: "/services/web/genetyllis-app/gen/ui/analysis/index.html",
 	order: "50",
 	icon: "/services/v4/web/resources/unicons/ambulance.svg",
 };

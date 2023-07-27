@@ -3,7 +3,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHubProvider.eventIdPrefix = 'genetyllis-app.analysis.Analysis';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/analysis/Analysis.js";
+		entityApiProvider.baseUrl = "/services/js/genetyllis-app/gen/api/analysis/Analysis.js";
 	}])
 	.controller('PageController', ['$scope', '$http', 'messageHub', 'entityApi', function ($scope, $http, messageHub, entityApi) {
 
@@ -122,7 +122,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		$scope.optionsPlatformId = [];
 		$scope.optionsPatientId = [];
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/analysis/Provider.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/analysis/Provider.js").then(function (response) {
 			$scope.optionsProviderId = response.data.map(e => {
 				return {
 					value: e.Id,
@@ -131,7 +131,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/analysis/Platform.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/analysis/Platform.js").then(function (response) {
 			$scope.optionsPlatformId = response.data.map(e => {
 				return {
 					value: e.Id,
@@ -140,7 +140,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/patients/Patient.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/patients/Patient.js").then(function (response) {
 			$scope.optionsPatientId = response.data.map(e => {
 				return {
 					value: e.Id,

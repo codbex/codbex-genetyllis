@@ -6,7 +6,7 @@
 const viewData = {
     id: "ClinicalHistory-details",
     label: "ClinicalHistory",
-    link: "/services/v4/web/genetyllis-app/gen/ui/patients/Patient/ClinicalHistory/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/patients/Patient/ClinicalHistory/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

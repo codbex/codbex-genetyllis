@@ -1,6 +1,6 @@
-const query = require("db/v4/query");
-const producer = require("messaging/v4/producer");
-const daoApi = require("db/v4/dao");
+const query = require("db/query");
+const producer = require("messaging/producer");
+const daoApi = require("db/dao");
 const EntityUtils = require("genetyllis-app/gen/dao/utils/EntityUtils");
 
 let dao = daoApi.create({

@@ -10,7 +10,7 @@ exports.getTile = function () {
         caption: "Manage entity Patient",
         tooltip: "Patient",
         // icon: "file-o",
-        location: "/services/v4/web/genetyllis-app/gen/ui/patients/index.html",
+        location: "/services/web/genetyllis-app/gen/ui/patients/index.html",
         order: "100",
         groupOrder: "20"
     };

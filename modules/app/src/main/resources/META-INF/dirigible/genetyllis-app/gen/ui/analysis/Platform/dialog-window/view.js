@@ -6,7 +6,7 @@
 const viewData = {
     id: "Platform-details",
     label: "Platform",
-    link: "/services/v4/web/genetyllis-app/gen/ui/analysis/Platform/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/analysis/Platform/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

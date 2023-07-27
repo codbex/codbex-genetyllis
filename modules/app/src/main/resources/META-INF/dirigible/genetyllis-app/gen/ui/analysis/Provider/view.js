@@ -8,7 +8,7 @@ const viewData = {
     label: "Provider",
     factory: "frame",
     region: "center",
-    link: "/services/v4/web/genetyllis-app/gen/ui/analysis/Provider/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/analysis/Provider/index.html",
 };
 
 if (typeof exports !== 'undefined') {

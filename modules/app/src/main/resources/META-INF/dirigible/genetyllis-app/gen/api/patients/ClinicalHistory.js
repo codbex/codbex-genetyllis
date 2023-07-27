@@ -1,4 +1,4 @@
-const rs = require("http/v4/rs");
+const rs = require("http/rs");
 const dao = require("genetyllis-app/gen/dao/patients/ClinicalHistory");
 const http = require("genetyllis-app/gen/api/utils/http");
 
@@ -62,7 +62,7 @@ rs.service()
 		.post(function(ctx, request, response) {
 			let entity = request.getJSON();
 			entity.Id = dao.create(entity);
-			response.setHeader("Content-Location", "/services/v4/js/genetyllis-app/gen/api/ClinicalHistory.js/" + entity.Id);
+			response.setHeader("Content-Location", "/services/js/genetyllis-app/gen/api/ClinicalHistory.js/" + entity.Id);
 			http.sendResponseCreated(entity);
 		})
 		.produces(["application/json"])

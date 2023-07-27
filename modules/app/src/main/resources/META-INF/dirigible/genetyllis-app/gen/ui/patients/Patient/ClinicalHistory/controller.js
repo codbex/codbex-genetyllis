@@ -3,9 +3,9 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHubProvider.eventIdPrefix = 'genetyllis-app.patients.ClinicalHistory';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/patients/ClinicalHistory.js";
+		entityApiProvider.baseUrl = "/services/js/genetyllis-app/gen/api/patients/ClinicalHistory.js";
 	}])
-	.controller('PageController', ['$scope', '$http', '$http', 'messageHub', 'entityApi', function ($scope, $http, $http, messageHub, entityApi) {
+	.controller('PageController', ['$scope', '$http', 'messageHub', 'entityApi', function ($scope, $http, messageHub, entityApi) {
 
 		function resetPagination() {
 			$scope.dataPage = 1;
@@ -137,7 +137,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		$scope.optionsPatientId = [];
 		$scope.optionsPathologyId = [];
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/patients/Patient.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/patients/Patient.js").then(function (response) {
 			$scope.optionsPatientId = response.data.map(e => {
 				return {
 					value: e.Id,
@@ -146,7 +146,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/nomenclature/Pathology.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/nomenclature/Pathology.js").then(function (response) {
 			$scope.optionsPathologyId = response.data.map(e => {
 				return {
 					value: e.Id,

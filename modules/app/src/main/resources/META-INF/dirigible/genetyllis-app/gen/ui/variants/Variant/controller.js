@@ -3,7 +3,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHubProvider.eventIdPrefix = 'genetyllis-app.variants.Variant';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/variants/Variant.js";
+		entityApiProvider.baseUrl = "/services/js/genetyllis-app/gen/api/variants/Variant.js";
 	}])
 	.controller('PageController', ['$scope', '$http', 'messageHub', 'entityApi', function ($scope, $http, messageHub, entityApi) {
 
@@ -128,7 +128,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		//----------------Dropdowns-----------------//
 		$scope.optionsGeneId = [];
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/genes/Gene.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/genes/Gene.js").then(function (response) {
 			$scope.optionsGeneId = response.data.map(e => {
 				return {
 					value: e.Id,

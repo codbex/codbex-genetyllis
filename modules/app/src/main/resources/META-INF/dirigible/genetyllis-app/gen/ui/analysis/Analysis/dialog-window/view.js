@@ -6,7 +6,7 @@
 const viewData = {
     id: "Analysis-details",
     label: "Analysis",
-    link: "/services/v4/web/genetyllis-app/gen/ui/analysis/Analysis/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/analysis/Analysis/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

@@ -6,7 +6,7 @@
 const viewData = {
     id: "User-details",
     label: "User",
-    link: "/services/v4/web/genetyllis-app/gen/ui/users/User/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/users/User/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

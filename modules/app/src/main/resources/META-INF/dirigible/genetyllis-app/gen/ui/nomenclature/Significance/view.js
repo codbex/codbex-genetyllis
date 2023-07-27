@@ -8,7 +8,7 @@ const viewData = {
     label: "Significance",
     factory: "frame",
     region: "center",
-    link: "/services/v4/web/genetyllis-app/gen/ui/nomenclature/Significance/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/nomenclature/Significance/index.html",
 };
 
 if (typeof exports !== 'undefined') {

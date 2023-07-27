@@ -6,7 +6,7 @@
 const viewData = {
     id: "Significance-details",
     label: "Significance",
-    link: "/services/v4/web/genetyllis-app/gen/ui/nomenclature/Significance/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/nomenclature/Significance/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

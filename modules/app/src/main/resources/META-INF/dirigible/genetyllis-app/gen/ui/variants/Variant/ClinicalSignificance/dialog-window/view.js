@@ -6,7 +6,7 @@
 const viewData = {
     id: "ClinicalSignificance-details",
     label: "ClinicalSignificance",
-    link: "/services/v4/web/genetyllis-app/gen/ui/variants/Variant/ClinicalSignificance/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/variants/Variant/ClinicalSignificance/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

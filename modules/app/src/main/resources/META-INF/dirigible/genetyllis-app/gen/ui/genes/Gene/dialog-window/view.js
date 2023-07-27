@@ -6,7 +6,7 @@
 const viewData = {
     id: "Gene-details",
     label: "Gene",
-    link: "/services/v4/web/genetyllis-app/gen/ui/genes/Gene/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/genes/Gene/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

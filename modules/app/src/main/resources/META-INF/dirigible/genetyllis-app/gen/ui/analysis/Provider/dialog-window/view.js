@@ -6,7 +6,7 @@
 const viewData = {
     id: "Provider-details",
     label: "Provider",
-    link: "/services/v4/web/genetyllis-app/gen/ui/analysis/Provider/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/analysis/Provider/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

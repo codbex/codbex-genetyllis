@@ -3,9 +3,9 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		messageHubProvider.eventIdPrefix = 'genetyllis-app.variants.AlleleFrequency';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/v4/js/genetyllis-app/gen/api/variants/AlleleFrequency.js";
+		entityApiProvider.baseUrl = "/services/js/genetyllis-app/gen/api/variants/AlleleFrequency.js";
 	}])
-	.controller('PageController', ['$scope', '$http', '$http', 'messageHub', 'entityApi', function ($scope, $http, $http, messageHub, entityApi) {
+	.controller('PageController', ['$scope', '$http', 'messageHub', 'entityApi', function ($scope, $http, messageHub, entityApi) {
 
 		function resetPagination() {
 			$scope.dataPage = 1;
@@ -148,7 +148,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 		$scope.optionsGenderId = [];
 		$scope.optionsPopulationId = [];
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/variants/Variant.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/variants/Variant.js").then(function (response) {
 			$scope.optionsVariantId = response.data.map(e => {
 				return {
 					value: e.Id,
@@ -157,7 +157,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/nomenclature/Gender.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/nomenclature/Gender.js").then(function (response) {
 			$scope.optionsGenderId = response.data.map(e => {
 				return {
 					value: e.Id,
@@ -166,7 +166,7 @@ angular.module('page', ["ideUI", "ideView", "entityApi"])
 			});
 		});
 
-		$http.get("/services/v4/js/genetyllis-app/gen/api/nomenclature/Population.js").then(function (response) {
+		$http.get("/services/js/genetyllis-app/gen/api/nomenclature/Population.js").then(function (response) {
 			$scope.optionsPopulationId = response.data.map(e => {
 				return {
 					value: e.Id,

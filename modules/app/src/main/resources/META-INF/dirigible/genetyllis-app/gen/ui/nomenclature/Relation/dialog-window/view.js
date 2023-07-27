@@ -6,7 +6,7 @@
 const viewData = {
     id: "Relation-details",
     label: "Relation",
-    link: "/services/v4/web/genetyllis-app/gen/ui/nomenclature/Relation/dialog-window/index.html"
+    link: "/services/web/genetyllis-app/gen/ui/nomenclature/Relation/dialog-window/index.html"
 };
 
 if (typeof exports !== 'undefined') {

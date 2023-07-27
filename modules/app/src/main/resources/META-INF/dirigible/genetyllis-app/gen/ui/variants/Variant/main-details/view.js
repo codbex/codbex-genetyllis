@@ -8,7 +8,7 @@ const viewData = {
     label: "Variant",
     factory: "frame",
     region: "center",
-    link: "/services/v4/web/genetyllis-app/gen/ui/variants/Variant/main-details/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/variants/Variant/main-details/index.html",
 };
 
 if (typeof exports !== 'undefined') {

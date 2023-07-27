@@ -10,7 +10,7 @@ exports.getTile = function () {
         caption: "Manage entity Notification",
         tooltip: "Notification",
         // icon: "file-o",
-        location: "/services/v4/web/genetyllis-app/gen/ui/users/index.html",
+        location: "/services/web/genetyllis-app/gen/ui/users/index.html",
         order: "100",
         groupOrder: "100"
     };

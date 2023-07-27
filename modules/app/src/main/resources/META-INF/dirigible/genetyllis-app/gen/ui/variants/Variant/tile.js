@@ -10,7 +10,7 @@ exports.getTile = function () {
         caption: "Manage entity Variant",
         tooltip: "Variant",
         // icon: "file-o",
-        location: "/services/v4/web/genetyllis-app/gen/ui/variants/index.html",
+        location: "/services/web/genetyllis-app/gen/ui/variants/index.html",
         order: "100",
         groupOrder: "40"
     };

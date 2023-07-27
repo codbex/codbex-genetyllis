@@ -10,7 +10,7 @@ exports.getTile = function () {
         caption: "Manage entity VariantRecord",
         tooltip: "VariantRecord",
         // icon: "file-o",
-        location: "/services/v4/web/genetyllis-app/gen/ui/records/index.html",
+        location: "/services/web/genetyllis-app/gen/ui/records/index.html",
         order: "100",
         groupOrder: "10"
     };

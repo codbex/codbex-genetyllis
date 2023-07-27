@@ -4,11 +4,11 @@
  * Do not modify the content as it may be re-generated again.
  */
 const viewData = {
-    id: "home-launchpad",
+    id: "genetyllis-app-home-launchpad",
     label: "Home Launchpad",
     factory: "frame",
     region: "center",
-    link: "/services/v4/web/genetyllis-app/gen/ui/launchpad/Home/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/launchpad/Home/index.html",
 };
 
 if (typeof exports !== 'undefined') {

@@ -9,15 +9,13 @@
         <title dg-brand-title></title>
         <theme></theme>
         <script type="text/javascript"
-            src="/services/v4/js/resources-core/services/loader.js?id=application-view-js"></script>
+            src="/services/js/resources-core/services/loader.js?id=application-view-js"></script>
         <link type="text/css" rel="stylesheet"
-            href="/services/v4/js/resources-core/services/loader.js?id=application-view-css" />
-
+            href="/services/js/resources-core/services/loader.js?id=application-view-css" />
         <script type="text/javascript" src="controller.js"></script>
     </head>
 
-    <body class="dg-vbox" dg-contextmenu="contextMenuContent">
-
+    <body class="dg-vbox">
         <fd-scrollbar class="dg-full-height">
             <fd-fieldset class="fd-margin--md" ng-form="formFieldset">
                 <fd-form-group dg-header="{{formHeaders[action]}}" name="entityForm">
@@ -48,7 +46,7 @@
                         </fd-combobox-input>
                     </fd-form-item>
                     <fd-form-item>
-                        <fd-checkbox id="idHomozygous" compact="false" dg-required="false" ng-model="entity.Homozygous">
+                        <fd-checkbox id="idHomozygous" compact="false" ng-required="false" ng-model="entity.Homozygous">
                         </fd-checkbox>
                         <fd-checkbox-label for="idHomozygous" dg-required="false">Homozygous</fd-checkbox-label>
                     </fd-form-item>

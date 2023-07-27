@@ -10,7 +10,7 @@ exports.getTile = function () {
         caption: "Manage entity Platform",
         tooltip: "Platform",
         // icon: "file-o",
-        location: "/services/v4/web/genetyllis-app/gen/ui/analysis/index.html",
+        location: "/services/web/genetyllis-app/gen/ui/analysis/index.html",
         order: "100",
         groupOrder: "50"
     };

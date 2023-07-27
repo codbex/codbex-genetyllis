@@ -6,9 +6,9 @@
 const perspectiveData = {
 	id: "home",
 	name: "Home",
-	link: "/services/v4/web/genetyllis-app/gen/index.html",
+	link: "/services/web/genetyllis-app/gen/index.html",
 	order: "1",
-	icon: "/services/v4/web/resources/unicons/estate.svg",
+	icon: "/services/web/resources/unicons/estate.svg",
 };
 
 if (typeof exports !== 'undefined') {

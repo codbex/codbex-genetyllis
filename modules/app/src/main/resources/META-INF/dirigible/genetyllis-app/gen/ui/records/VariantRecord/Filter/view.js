@@ -8,7 +8,7 @@ const viewData = {
     label: "Filter",
     factory: "frame",
     region: "bottom",
-    link: "/services/v4/web/genetyllis-app/gen/ui/records/VariantRecord/Filter/index.html",
+    link: "/services/web/genetyllis-app/gen/ui/records/VariantRecord/Filter/index.html",
 };
 
 if (typeof exports !== 'undefined') {
